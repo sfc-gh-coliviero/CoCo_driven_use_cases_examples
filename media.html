@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <title>Snowflake — Soluzioni IA/ML per Media Audiovisivi</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #003545, #11567F);
+      color: #fff;
+      padding: 32px 48px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .hero-left { flex: 1; }
+
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .logo-snowflake {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 6px;
+    }
+
+    .hero-tagline {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .stats-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 28px;
+      text-align: center;
+      color: #1a1a1a;
+      min-width: 160px;
+      flex-shrink: 0;
+    }
+
+    .stats-box .stat-number {
+      font-size: 40px;
+      font-weight: 700;
+      color: #E91E63;
+      line-height: 1;
+    }
+
+    .stats-box .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 14px;
+    }
+
+    .stats-box .stat-time {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1;
+    }
+
+    .stats-box .stat-time-label {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .stats-divider {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 10px 0;
+    }
+
+    .intro {
+      background: #fff;
+      text-align: center;
+      padding: 48px 24px 32px;
+    }
+
+    .intro h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #11567F;
+      margin-bottom: 14px;
+    }
+
+    .intro p {
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .filters-bar {
+      background: #fff;
+      padding: 20px 48px 0;
+      border-bottom: 1px solid #e8e8e8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filters-left {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .filter-btn {
+      padding: 8px 18px;
+      border-radius: 80px;
+      border: 1.5px solid #ccc;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 500;
+      color: #444;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { border-color: #29B5E8; color: #29B5E8; }
+
+    .filter-btn.active {
+      background: #29B5E8;
+      border-color: #29B5E8;
+      color: #fff;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #ccc;
+      border-radius: 80px;
+      padding: 7px 14px;
+      gap: 8px;
+      min-width: 200px;
+      background: #fff;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      font-size: 13px;
+      color: #444;
+      width: 100%;
+      background: transparent;
+    }
+    .search-box input::placeholder { color: #aaa; }
+
+    .results-count {
+      padding: 14px 48px 8px;
+      font-size: 13px;
+      color: #666;
+      background: #f5f5f5;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+      padding: 16px 48px 48px;
+      background: #f5f5f5;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid #e2e2e2;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.1); }
+
+    .card-header {
+      padding: 16px 18px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-badges { display: flex; gap: 6px; align-items: center; }
+
+    .badge-id {
+      font-size: 11px;
+      font-weight: 700;
+      color: #888;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-cat {
+      background: #E0F4FD;
+      color: #11567F;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+    .badge-cat.contenuto    { background: #FCE4EC; color: #C2185B; }
+    .badge-cat.audience    { background: #E8F5E9; color: #2E7D32; }
+    .badge-cat.pubblicità   { background: #FFF3E0; color: #E65100; }
+    .badge-cat.distribuzione { background: #E3F2FD; color: #1565C0; }
+    .badge-cat.sicurezza    { background: #F3E5F5; color: #7B1FA2; }
+
+    .card-time {
+      font-size: 12px;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .card-title {
+      padding: 0 18px 12px;
+      font-size: 17px;
+      font-weight: 700;
+      color: #11567F;
+      line-height: 1.3;
+    }
+
+    .pain-point {
+      margin: 0 18px 14px;
+      background: #FDF2F5;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .pain-point-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #E91E63;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .pain-point p {
+      font-size: 13px;
+      color: #2a2a2a;
+      line-height: 1.55;
+    }
+
+    .card-desc {
+      padding: 0 18px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .card-features {
+      padding: 0 18px 16px;
+      list-style: none;
+    }
+
+    .card-features li {
+      font-size: 13px;
+      color: #444;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .card-features li::before {
+      content: '\2713';
+      color: #29B5E8;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .card-actions {
+      padding: 14px 18px 18px;
+      display: flex;
+      gap: 10px;
+      border-top: 1px solid #f0f0f0;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      flex: 1;
+      padding: 10px;
+      background: #29B5E8;
+      color: #fff;
+      border: none;
+      border-radius: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .btn-secondary:hover { background: #11567F; }
+
+    .btn-tertiary {
+      flex: 1;
+      padding: 10px;
+      background: #003545;
+      color: #29B5E8;
+      border: none;
+      border-radius: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .btn-tertiary:hover { background: #11567F; }
+
+    .prompt-step { margin-bottom: 18px; }
+    .prompt-step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .prompt-step-num { background: #003545; color: #29B5E8; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .prompt-step-title { font-size: 13px; font-weight: 600; color: #333; }
+    .prompt-step-desc { font-size: 12px; color: #666; margin-bottom: 6px; line-height: 1.5; }
+    .prompt-code { position: relative; background: #003545; color: #e0e0e0; border-radius: 8px; padding: 12px 14px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12.5px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .prompt-code .copy-btn { position: absolute; top: 6px; right: 8px; background: rgba(255,255,255,0.1); border: none; color: #aaa; font-size: 11px; padding: 3px 8px; border-radius: 4px; cursor: pointer; }
+    .prompt-code .copy-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .modal-box .prompt-intro { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #eee; }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 700px;
+      width: 92%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 32px 28px;
+      position: relative;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #888;
+      line-height: 1;
+    }
+    .modal-close:hover { color: #E91E63; }
+    .modal-box h2 { color: #11567F; font-size: 20px; margin-bottom: 6px; }
+    .modal-box h3 { font-size: 15px; color: #333; margin: 18px 0 8px; }
+    .modal-box p, .modal-box li { font-size: 13px; line-height: 1.7; color: #444; }
+    .modal-box ul { padding-left: 20px; margin: 6px 0; }
+    .modal-box .guide-badge { display: inline-block; background: #E0F4FD; color: #11567F; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 50px; margin-bottom: 10px; }
+    .modal-box .guide-footer { margin-top: 20px; padding-top: 14px; border-top: 1px solid #eee; font-size: 12px; color: #888; }
+
+    @media (max-width: 700px) {
+      .hero { flex-direction: column; padding: 24px 20px; }
+      .cards-grid { grid-template-columns: 1fr; padding: 16px 16px 48px; }
+      .filters-bar { padding: 16px 16px 0; }
+      .results-count { padding: 12px 16px 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-left">
+    <div class="logos">
+    </div>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.75);text-decoration:none;margin-bottom:8px;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.75)'"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="12,4 6,10 12,16"/></svg>Torna al catalogo dei settori</a>
+    <p class="hero-eyebrow">Settore Media Audiovisivi &times; Snowflake</p>
+    <h1 class="hero-title">Soluzioni IA/ML per Media Audiovisivi</h1>
+    <p class="hero-subtitle">Guide e prompt Cortex Code pronti al deploy in produzione, distribuzione e consumo audiovisivo</p>
+    <p class="hero-tagline">Sviluppato con Snowflake Cortex AI | Impatto immediato</p>
+  </div>
+
+  <div class="stats-box">
+    <div class="stat-number">20</div>
+    <div class="stat-label">Casi d'Uso</div>
+    <hr class="stats-divider"/>
+    <div class="stat-time">8-15 min</div>
+    <div class="stat-time-label">Tempo di Configurazione</div>
+  </div>
+</header>
+
+<section class="intro">
+  <h2>Accelera l&apos;analitica con soluzioni IA preconfigurate per media e intrattenimento</h2>
+  <p>Ogni scheda include i prompt Cortex Code per Snowflake con dati sintetici, guide passo passo
+     e implementazioni SQL-first con Cortex AI/ML, Feature Store e Model Registry per il passaggio in produzione.
+     Ottimizza contenuti, audience, pubblicit&agrave; e distribuzione: tutto in Snowflake,
+     senza dipendenze esterne, pronto per essere adattato ai tuoi dati.</p>
+</section>
+
+<div class="filters-bar">
+  <div class="filters-left" id="filterBtns">
+    <button class="filter-btn active" data-filter="all">Tutti (20)</button>
+    <button class="filter-btn" data-filter="contenuto">Contenuto e Produzione (4)</button>
+    <button class="filter-btn" data-filter="audience">Audience ed Engagement (4)</button>
+    <button class="filter-btn" data-filter="pubblicità">Pubblicit&agrave; e Monetizzazione (4)</button>
+    <button class="filter-btn" data-filter="distribuzione">Distribuzione e Piattaforme (4)</button>
+    <button class="filter-btn" data-filter="sicurezza">Sicurezza e Diritti (4)</button>
+  </div>
+  <div class="search-box">
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round">
+      <circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/>
+    </svg>
+    <input id="searchInput" type="text" placeholder="Cerca casi d'uso&hellip;" />
+  </div>
+</div>
+
+<div class="results-count" id="resultsCount">Mostrando 20 di 20 casi d'uso</div>
+
+<main class="cards-grid" id="cardsGrid"></main>
+<script>
+const USE_CASES = [
+  {
+    "id": "UC01",
+    "cat": "contenuto",
+    "catLabel": "Contenuto e Produzione",
+    "time": "15 min",
+    "title": "Raccomandazione di Contenuti con Model Registry",
+    "pain": "Il 60% del catalogo delle piattaforme di streaming non viene scoperto dagli utenti. Gli algoritmi di raccomandazione generici non catturano preferenze culturali specifiche del mercato, provocando churn dell\'8-12% mensile per mancanza di engagement.",
+    "desc": "Modello ML di raccomandazione personalizzata che analizza storico di visione, valutazioni, metadata dei contenuti (genere, regista, attori, lingua, durata) e pattern temporali. Il modello viene registrato in Snowflake Model Registry per deployment A/B in produzione.",
+    "features": [
+      "Raccomandazione con ML.CLASSIFICATION + Model Registry",
+      "Versionamento dei modelli con log_model() e deploy()",
+      "Variabili: storico, valutazioni, metadata, ora, dispositivo",
+      "Dashboard Streamlit di engagement per raccomandazione"
+    ]
+  },
+  {
+    "id": "UC02",
+    "cat": "contenuto",
+    "catLabel": "Contenuto e Produzione",
+    "time": "14 min",
+    "title": "Previsione del Successo di Contenuti Pre-Produzione",
+    "pain": "Il 70% delle produzioni audiovisive non recupera il proprio investimento. Le decisioni di greenlight si basano sull'intuizione e sul track record degli showrunner, senza analisi quantitativa della domanda di mercato, tendenze e composizione dell\'audience.",
+    "desc": "Modello predittivo di rendimento atteso di un progetto audiovisivo basato su sceneggiatura, genere, talento allegato, budget, stagione di uscita, concorrenza nel catalogo e tendenze di audience. Scoring di fattibilit\u00e0 commerciale prima di approvare la produzione.",
+    "features": [
+      "Scoring di fattibilit\u00e0 con ML.CLASSIFICATION",
+      "Analisi della sceneggiatura con CORTEX.COMPLETE per temi e tono",
+      "Variabili: genere, talento, budget, finestra, concorrenza",
+      "Dashboard Streamlit di pipeline di greenlight"
+    ]
+  },
+  {
+    "id": "UC03",
+    "cat": "audience",
+    "catLabel": "Audience ed Engagement",
+    "time": "14 min",
+    "title": "Previsione dell\'Audience con Model Registry",
+    "pain": "La pianificazione del palinsesto televisivo e calendario delle uscite si basa su dati di audience storici con un errore del 25-35%. I picchi e le valli di audience non vengono anticipati, generando perdita di ricavi pubblicitari e opportunit\u00e0 di programmazione.",
+    "desc": "Modello di previsione dell\'audience per programma, fascia oraria e piattaforma con ML.FORECAST integrando stagionalit\u00e0, eventi sportivi, meteorologia, concorrenza e tendenze sociali. Il modello viene versionato in Model Registry.",
+    "features": [
+      "Forecast dell\'audience con ML.FORECAST + Model Registry",
+      "Variabili esogene: eventi, meteo, concorrenza, social",
+      "Intervalli di confidenza al 95% per fascia e target",
+      "Tracking dell\'accuratezza con MAPE per programma"
+    ]
+  },
+  {
+    "id": "UC04",
+    "cat": "contenuto",
+    "catLabel": "Contenuto e Produzione",
+    "time": "13 min",
+    "title": "Ottimizzazione della Post-Produzione con IA",
+    "pain": "La post-produzione consuma il 30-40% del budget totale e le scadenze vengono superate del 25% in media. La revisione manuale di ore di materiale grezzo, sottotitolazione, doppiaggio e generazione di versioni multi-piattaforma sono colli di bottiglia costosi.",
+    "desc": "Pipeline di IA per automatizzare compiti di post-produzione: trascrizione e sottotitolazione automatica, analisi del sentimento delle scene, rilevamento di momenti chiave per trailer, e generazione di metadati arricchiti per la catalogazione.",
+    "features": [
+      "Trascrizione e sottotitolazione con CORTEX.COMPLETE",
+      "Analisi delle scene e rilevamento degli highlight",
+      "Generazione automatica di metadati e tag",
+      "Dashboard Streamlit di avanzamento della post-produzione"
+    ]
+  },
+  {
+    "id": "UC05",
+    "cat": "audience",
+    "catLabel": "Audience ed Engagement",
+    "time": "14 min",
+    "title": "Segmentazione Avanzata dell\'Audience e CLV",
+    "pain": "Le piattaforme usano segmentazioni demografiche di base (et\u00e0, sesso, posizione) che non catturano pattern di consumo reali. Il 40% delle campagne di acquisizione hanno ROI negativo per targeting impreciso.",
+    "desc": "Motore di segmentazione multidimensionale che combina dati demografici, di consumo, comportamentali e psicografici per creare micro-segmenti azionabili. Include calcolo del CLV (Customer Lifetime Value) per prioritizzare retention e acquisizione.",
+    "features": [
+      "Segmentazione con ML.CLASSIFICATION multivariabile",
+      "Calcolo del CLV predittivo con ML.FORECAST",
+      "Variabili: consumo, engagement, dispositivo, orario, genere preferito",
+      "Dashboard Streamlit di segmenti e CLV"
+    ]
+  },
+  {
+    "id": "UC06",
+    "cat": "pubblicità",
+    "catLabel": "Pubblicit\u00e0 e Monetizzazione",
+    "time": "12 min",
+    "title": "Ottimizzazione dell\'Inventario Pubblicitario e Yield",
+    "pain": "Il 30-40% dell\'inventario pubblicitario premium in TV connessa e streaming viene venduto a prezzi subottimali o resta invenduto. La mancanza di yield management intelligente lascia un 15-20% di revenue sul tavolo.",
+    "desc": "Motore di ottimizzazione del yield pubblicitario che prevede la domanda per segmento di audience, fascia e formato, regolando i prezzi dinamicamente e prioritizzando l\'assegnazione dell\'inventario per massimizzare il revenue totale.",
+    "features": [
+      "Pricing dinamico con ML e regole di business",
+      "Previsione della domanda pubblicitaria per segmento e fascia",
+      "Variabili: audience, fascia, formato, stagionalit\u00e0, evento",
+      "Dashboard Streamlit di yield management"
+    ]
+  },
+  {
+    "id": "UC07",
+    "cat": "distribuzione",
+    "catLabel": "Distribuzione e Piattaforme",
+    "time": "14 min",
+    "title": "Previsione del Churn negli Abbonati",
+    "pain": "Il churn mensile nelle piattaforme di streaming raggiunge l\'8-12%. Il rilevamento reattivo (quando l\'utente cancella) perde la finestra di retention. Ogni abbonato perso costa 5-8× acquisirne uno nuovo.",
+    "desc": "Modello predittivo di probabilit\u00e0 di churn per abbonato analizzando pattern di consumo decrescente, engagement con nuove uscite, interazioni con la piattaforma, metodo di pagamento e ciclo di fatturazione.",
+    "features": [
+      "Previsione del churn con ML.CLASSIFICATION",
+      "Variabili: giorni senza consumo, tendenza engagement, sessioni, dispositivo",
+      "Azioni preventive automatizzate per segmento",
+      "Dashboard Streamlit di retention e allarmi"
+    ]
+  },
+  {
+    "id": "UC08",
+    "cat": "audience",
+    "catLabel": "Audience ed Engagement",
+    "time": "15 min",
+    "title": "Feature Store di Viewer 360",
+    "pain": "I dati di ogni spettatore sono dispersi in CRM, piattaforma di streaming, app mobile, smart TV, social media e sistemi di ticketing. Non c'\u00e8 una visione unificata del consumatore audiovisivo per decisioni di contenuto e monetizzazione.",
+    "desc": "Feature Store centralizzato in Snowflake che consolida le feature di ogni spettatore da tutte le piattaforme. Serve feature in tempo reale per personalizzazione, pubblicit\u00e0 e retention.",
+    "features": [
+      "Snowflake Feature Store con Entity e FeatureView",
+      "Feature: consumo, preferenze, engagement, dispositivi, social",
+      "Versionamento automatico del profilo dello spettatore",
+      "Pipeline di ingestione da streaming, CRM, app, smart TV"
+    ]
+  },
+  {
+    "id": "UC09",
+    "cat": "pubblicità",
+    "catLabel": "Pubblicit\u00e0 e Monetizzazione",
+    "time": "12 min",
+    "title": "Pubblicit\u00e0 Programmatica e Targeting Contestuale",
+    "pain": "La pubblicit\u00e0 contestuale nel video si basa su metadati di base del contenuto. Il 50% degli annunci non sono rilevanti per lo spettatore, generando ad fatigue, bassa conversione e pressione degli abbonati per migrare a piani senza pubblicit\u00e0.",
+    "desc": "Motore di targeting contestuale che analizza contenuto in tempo reale (scena, dialogo, emozioni, product placement naturale) e lo incrocia con il profilo dello spettatore per inserire annunci altamente rilevanti.",
+    "features": [
+      "Analisi contestuale con CORTEX.COMPLETE sui metadata",
+      "Matching annuncio-contenuto-spettatore con ML.CLASSIFICATION",
+      "Variabili: scena, emozione, prodotto, genere, audience",
+      "Dashboard Streamlit di campaign performance"
+    ]
+  },
+  {
+    "id": "UC10",
+    "cat": "contenuto",
+    "catLabel": "Contenuto e Produzione",
+    "time": "12 min",
+    "title": "Analisi delle Tendenze e Social Listening per Contenuti",
+    "pain": "I team di sviluppo contenuti impiegano 3-6 mesi per rilevare tendenze culturali emergenti. Quando producono contenuto basato su una tendenza, questa ha gi\u00e0 superato il picco di rilevanza.",
+    "desc": "Pipeline di social listening e analisi delle tendenze che monitora social media, ricerche, forum e stampa per rilevare temi emergenti, formati popolari e domanda non soddisfatta di contenuto audiovisivo.",
+    "features": [
+      "NLP con CORTEX.SENTIMENT + CORTEX.COMPLETE sui dati social",
+      "Rilevamento di tendenze emergenti con ML",
+      "Variabili: menzioni, sentimento, velocit\u00e0 di crescita, demografia",
+      "Dashboard Streamlit di trend radar"
+    ]
+  },
+  {
+    "id": "UC11",
+    "cat": "distribuzione",
+    "catLabel": "Distribuzione e Piattaforme",
+    "time": "13 min",
+    "title": "Ottimizzazione del Palinsesto e Programmazione",
+    "pain": "La programmazione del palinsesto televisivo e calendario delle uscite si realizza con settimane di anticipo basandosi su intuizione e dati storici limitati. Le audience fluttuano del 30% rispetto alla previsione.",
+    "desc": "Motore di ottimizzazione del palinsesto che massimizza l\'audience totale considerando profili di audience per fascia, concorrenza in tempo reale, eventi, meteorologia e rendimento del catalogo. Include simulazione di scenari.",
+    "features": [
+      "Ottimizzazione del palinsesto con ML.FORECAST + simulazione",
+      "Variabili: fascia, target, concorrenza, eventi, meteo",
+      "Simulazione di scenari di programmazione",
+      "Dashboard Streamlit di planning del palinsesto"
+    ]
+  },
+  {
+    "id": "UC12",
+    "cat": "pubblicità",
+    "catLabel": "Pubblicit\u00e0 e Monetizzazione",
+    "time": "11 min",
+    "title": "Misurazione dell\'Impatto del Product Placement",
+    "pain": "Il product placement rappresenta il 5-15% del revenue di produzione ma il suo impatto \u00e8 impossibile da misurare con metriche tradizionali. Gli inserzionisti richiedono dati di efficacia che le case di produzione non possono offrire.",
+    "desc": "Sistema di misurazione dell\'impatto del product placement che rileva l\'esposizione del brand nei contenuti, correla con il comportamento successivo dello spettatore (ricerche, acquisti, brand lift) e genera report di ROI per inserzionisti.",
+    "features": [
+      "Rilevamento del brand nei contenuti con IA",
+      "Correlazione esposizione-comportamento con ML.CLASSIFICATION",
+      "Variabili: tempo schermo, prominenza, contesto, audience, conversione",
+      "Dashboard Streamlit di ROI del placement"
+    ]
+  },
+  {
+    "id": "UC13",
+    "cat": "distribuzione",
+    "catLabel": "Distribuzione e Piattaforme",
+    "time": "13 min",
+    "title": "Ottimizzazione del Pricing e Bundling degli Abbonamenti",
+    "pain": "I modelli di pricing degli abbonamenti (base/standard/premium) non catturano la disponibilit\u00e0 a pagare di ogni segmento. Il 25% degli abbonati premium consumarebbe lo stesso contenuto con un piano inferiore, e il 15% degli abbonati base pagherebbe di pi\u00f9 per funzionalit\u00e0 premium.",
+    "desc": "Motore di ottimizzazione del pricing che modella l\'elasticit\u00e0 per segmento, simula scenari di bundle (con sport, musica, gaming) e calcola il prezzo ottimale che massimizza l\'ARPU senza incrementare il churn.",
+    "features": [
+      "Modellazione dell\'elasticit\u00e0 con ML.CLASSIFICATION",
+      "Simulazione di bundle e add-on per segmento",
+      "Variabili: consumo, CLV, concorrenza, willingness-to-pay",
+      "Dashboard Streamlit di pricing simulator"
+    ]
+  },
+  {
+    "id": "UC14",
+    "cat": "distribuzione",
+    "catLabel": "Distribuzione e Piattaforme",
+    "time": "15 min",
+    "title": "Feature Store di Performance dei Contenuti",
+    "pain": "I KPI di rendimento dei contenuti (viewership, completion rate, rewatch, sociale buzz) vengono calcolati in batch con 24-48h di ritardo. Le decisioni di investimento in marketing, rinnovo di licenze e produzione di sequel vengono prese con dati obsoleti.",
+    "desc": "Feature Store in Snowflake che consolida metriche di rendimento di ogni titolo in tempo reale: viewership, engagement, sociale buzz, critica e benchmark vs catalogo. Serve feature per decisioni di investimento e programmazione.",
+    "features": [
+      "Snowflake Feature Store con Entity per titolo",
+      "FeatureViews: viewership, engagement, social, benchmark",
+      "Feature servite per decisioni di investimento in tempo reale",
+      "Pipeline automatico di aggiornamento multi-sorgente"
+    ]
+  },
+  {
+    "id": "UC15",
+    "cat": "audience",
+    "catLabel": "Audience ed Engagement",
+    "time": "12 min",
+    "title": "Chatbot RAG per l\'Assistenza Abbonati",
+    "pain": "Il supporto all\'abbonato gestisce 10.000-50.000 richieste mensili su fatturazione, problemi tecnici, catalogo e raccomandazioni. Il 65% sono ripetitive ma la risoluzione manuale costa 3-5\u20ac per interazione.",
+    "desc": "Assistente conversazionale RAG con Cortex Search che indicizza FAQ, guide tecniche, catalogo dei contenuti e politiche di abbonamento. Risolve il 70% delle richieste senza intervento umano e raccomanda contenuto personalizzato.",
+    "features": [
+      "RAG con Cortex Search + CORTEX.COMPLETE",
+      "Base di conoscenza: FAQ, guide tecniche, catalogo, politiche",
+      "Raccomandazione di contenuti integrata nella chat",
+      "Dashboard Streamlit di chat con escalation"
+    ]
+  },
+  {
+    "id": "UC16",
+    "cat": "pubblicità",
+    "catLabel": "Pubblicit\u00e0 e Monetizzazione",
+    "time": "12 min",
+    "title": "Rilevamento di Frode Pubblicitaria e Bot Traffic",
+    "pain": "La frode pubblicitaria digitale (bot, click fraud, ad stacking, domain spoofing) rappresenta il 10-15% della spesa pubblicitaria. Gli inserzionisti perdono fiducia e riducono gli investimenti nelle piattaforme che non possono garantire traffico legittimo.",
+    "desc": "Sistema ML di rilevamento del traffico fraudolento che analizza pattern di visualizzazione, click, comportamento di sessione e segnali del dispositivo per identificare bot, click farm e traffico non umano in tempo reale.",
+    "features": [
+      "Rilevamento di frode con ML.CLASSIFICATION",
+      "Variabili: pattern click, velocit\u00e0, user agent, IP, sessione, engagement",
+      "Scoring di qualit\u00e0 del traffico per campagna e publisher",
+      "Dashboard Streamlit di integrit\u00e0 pubblicitaria"
+    ]
+  },
+  {
+    "id": "UC17",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e Diritti",
+    "time": "12 min",
+    "title": "Gestione dei Diritti Digitali e Finestre di Sfruttamento",
+    "pain": "La gestione dei diritti di contenuto audiovisivo coinvolge migliaia di contratti con finestre temporali, territoriali e di piattaforma. Il 5-10% delle distribuzioni viola qualche clausola contrattuale, generando penalizzazioni di 10.000-500.000\u20ac.",
+    "desc": "Sistema intelligente di gestione dei diritti che monitora le finestre di sfruttamento, rileva conflitti di territorialit\u00e0, avvisa di scadenze imminenti e ottimizza la strategia di distribuzione per finestra.",
+    "features": [
+      "Monitoraggio dei diritti con regole + ML",
+      "Variabili: territorio, finestra, piattaforma, esclusivit\u00e0, scadenza",
+      "Allarmi preventivi 30 giorni prima della scadenza",
+      "Dashboard Streamlit di gestione dei diritti"
+    ]
+  },
+  {
+    "id": "UC18",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e Diritti",
+    "time": "13 min",
+    "title": "Rilevamento di Pirateria e Distribuzione Non Autorizzata",
+    "pain": "La pirateria di contenuti audiovisivi causa perdite del 15-25% del revenue potenziale. Il rilevamento manuale di contenuti pirata in migliaia di siti, reti P2P e social media \u00e8 impossibile su larga scala.",
+    "desc": "Pipeline di rilevamento di contenuti pirata che monitora automaticamente siti web, reti P2P, social media e piattaforme video per identificare copie non autorizzate mediante fingerprinting e generare notifiche di takedown.",
+    "features": [
+      "Rilevamento di pirateria con ML e fingerprinting dei contenuti",
+      "Monitoraggio automatico di fonti sospette",
+      "Variabili: fingerprint, origine, volume, velocit\u00e0 di propagazione",
+      "Dashboard Streamlit di anti-pirateria"
+    ]
+  },
+  {
+    "id": "UC19",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e Diritti",
+    "time": "11 min",
+    "title": "Analisi del Sentimento e Reputazione dei Contenuti",
+    "pain": "I team di comunicazione e marketing monitorano manualmente la ricezione delle uscite nella stampa, social media e forum. La reazione negativa a un\'uscita viene rilevata 24-48h in ritardo, quando ha gi\u00e0 impattato l'audience e la percezione del brand.",
+    "desc": "Pipeline NLP di monitoraggio del sentimento in tempo reale su uscite, brand e talenti nei social media, stampa e forum. Classifica per urgenza, tema e potenziale di viralit\u00e0 per risposta rapida di comunicazione.",
+    "features": [
+      "NLP con CORTEX.SENTIMENT + CORTEX.COMPLETE",
+      "Monitoraggio multi-sorgente in tempo reale",
+      "Variabili: sentimento, volume, velocit\u00e0, influencer, tema",
+      "Dashboard Streamlit di reputation management"
+    ]
+  },
+  {
+    "id": "UC20",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e Diritti",
+    "time": "10 min",
+    "title": "Conformit\u00e0 Regolatoria e Classificazione dei Contenuti",
+    "pain": "La classificazione dei contenuti per et\u00e0 e la verifica di conformit\u00e0 regolatoria (legge audiovisiva, quote di produzione europea, accessibilit\u00e0) richiede revisione manuale di migliaia di ore di contenuto.",
+    "desc": "Sistema di classificazione automatica dei contenuti che analizza scene, dialoghi e metadati per assegnare classificazione per et\u00e0, rilevare contenuto regolamentato (violenza, linguaggio, sostanze) e verificare conformit\u00e0 delle quote e accessibilit\u00e0.",
+    "features": [
+      "Classificazione con CORTEX.COMPLETE + ML.CLASSIFICATION",
+      "Analisi di scene, dialoghi e metadati",
+      "Variabili: violenza, linguaggio, sostanze, nudit\u00e0, fattore paura",
+      "Dashboard Streamlit di compliance audiovisiva"
+    ]
+  }
+];
+const TOTAL = 20;
+
+function renderCards(list) {
+  const grid = document.getElementById('cardsGrid');
+  const count = document.getElementById('resultsCount');
+  grid.innerHTML = '';
+  count.textContent = `Mostrando ${list.length} di ${TOTAL} casi d'uso`;
+  list.forEach(uc => {
+    const catClass = uc.cat;
+    grid.innerHTML += `
+      <article class="card">
+        <div class="card-header">
+          <div class="card-badges">
+            <span class="badge-id">${uc.id}</span>
+            <span class="badge-cat ${catClass}">${uc.catLabel}</span>
+          </div>
+          <span class="card-time">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="#aaa" stroke-width="2"><circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/></svg>
+            ${uc.time}
+          </span>
+        </div>
+        <h3 class="card-title">${uc.title}</h3>
+        <div class="pain-point">
+          <div class="pain-point-label">Problema</div>
+          <p>${uc.pain}</p>
+        </div>
+        <p class="card-desc">${uc.desc}</p>
+        <ul class="card-features">
+          ${uc.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+        <div class="card-actions">
+          <a href="#" class="btn-secondary" onclick="verGuia('${uc.id}');return false;">Vedi Guida</a>
+          <a href="#" class="btn-tertiary" onclick="verPrompts('${uc.id}');return false;">Cortex Code Prompts</a>
+        </div>
+      </article>`;
+  });
+}
+let activeFilter = 'all';
+let searchTerm = '';
+function applyFilters() {
+  let result = USE_CASES;
+  if (activeFilter !== 'all') result = result.filter(u => u.cat === activeFilter);
+  if (searchTerm) result = result.filter(u => u.title.toLowerCase().includes(searchTerm) || u.desc.toLowerCase().includes(searchTerm) || u.pain.toLowerCase().includes(searchTerm));
+  renderCards(result);
+}
+document.getElementById('filterBtns').addEventListener('click', e => {
+  if (!e.target.matches('.filter-btn')) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  activeFilter = e.target.dataset.filter;
+  applyFilters();
+});
+document.getElementById('searchInput').addEventListener('input', e => { searchTerm = e.target.value.toLowerCase().trim(); applyFilters(); });
+renderCards(USE_CASES);
+
+const GUIAS = {
+  "UC01": {
+    "title": "Raccomandazione di Contenuti con Model Registry",
+    "contesto": "Questi Cortex Code Prompt costruiscono un motor di raccomandazione di contenuto personalizzato che si registra in Snowflake Model Registry per deployment in produzione con A/B testing.",
+    "focus": "Personalizzazione — raccomandazioni che massimizzano engagement e riducono churn in piattaforme di streaming.",
+    "sfida": "Aumentare il CTR di raccomandazioni del 15% al 35% e ridurre il churn mensile del 10% al 5%.",
+    "obiettivi": [
+      "Costruire modello di raccomandazione con ML.CLASSIFICATION",
+      "Registrare e versionare con Snowflake Model Registry (log_model)",
+      "Generare dati sintetici di consumo audiovisual",
+      "Deployare modello per inferenza in produzione",
+      "Costruire dashboard di engagement per raccomandazione"
+    ],
+    "funzionalita": [
+      "Modello ML: Classificazione di affinità utente-contenuto",
+      "Model Registry: Versionamento con log_model() e metriche",
+      "Dati sintetici: 50.000 utenti con storico di consumo",
+      "Dashboard Streamlit: Pannello di engagement e A/B testing"
+    ],
+    "dati": [
+      "Utenti: Perfil demografico, dispositivos, plan abbonamento",
+      "Consumo: Historial visualizzazioni, valutazioni, completion rate",
+      "Contenido: Genere, regista, attori, idioma, durazione, anno",
+      "Contexto: Ora del giorno, giorno della settimana, dispositivo, ubicazione"
+    ],
+    "stratificazione": [
+      "Afinidad alta (>0.8): Mostrare in prima posizione del carosello",
+      "Afinidad media (0.5-0.8): Includere in sezione 'Potrebbe piacerti'",
+      "Afinidad baja (0.3-0.5): Solo in ricerca relacionada",
+      "Sin affinità (<0.3): Non raccomandare per questo utente"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Il modello viene addestrato e registrato in Model Registry",
+      "Viene generato inferenza per tutti i utenti attivi",
+      "La dashboard permette di monitorare engagement in tempo reale"
+    ]
+  },
+  "UC02": {
+    "title": "Previsione del Successo di Contenuti Pre-Produzione",
+    "contesto": "Questi Cortex Code Prompt costruiscono un modello di scoring di fattibilità comercial di progetti audiovisuales prima di aprobar produzione (greenlight).",
+    "focus": "Greenlight analytics — scoring quantitativo di progetti per ridurre rischio di investimento in produzione.",
+    "sfida": "Ridurre il ratio di progetti con ROI negativo del 70% al 40% mediante a scoring predittivo pre-produzione.",
+    "obiettivi": [
+      "Generare dati storicos di rendimento di produzioni",
+      "Analizzare sceneggiature con NLP per temas e tono",
+      "Addestrare modello di scoring di fattibilità",
+      "Simulare scenari di casting e budget",
+      "Costruire dashboard di pipeline di greenlight"
+    ],
+    "funzionalita": [
+      "Scoring: ML.CLASSIFICATION di successo comercial",
+      "Analisi di sceneggiatura: CORTEX.COMPLETE per temas, tono, complessità",
+      "Dati sintetici: 2.000 produzioni con rendimento reale",
+      "Dashboard Streamlit: Pipeline di greenlight con scoring"
+    ],
+    "dati": [
+      "Produczioni: Genere, budget, talento, ventana di uscita",
+      "Guiones: Resumen, temas principali, tono, target demografico",
+      "Mercato: Tendenze, concorrenza, domanda per genere",
+      "Risultato: Audiencia, revenue, ROI, premi, critica"
+    ],
+    "stratificazione": [
+      "Score A (>80): Greenlight recomendado con confianza alta",
+      "Score B (60-80): Greenlight condicionado a ajustes di budget",
+      "Score C (40-60): Requiere revisione profunda di concepto",
+      "Score D (<40): No recomendar greenlight"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 2.000 produzioni storicas con risultatos",
+      "Il modello puntúa nuevos progetti pre-produzione",
+      "La dashboard mostra pipeline con scoring e simulador"
+    ]
+  },
+  "UC03": {
+    "title": "Previsione dell\'Audience con Model Registry",
+    "contesto": "Questi Cortex Code Prompt costruiscono modeli di forecast di audience per programa, franja e piattaforma con ML.FORECAST e registro in Model Registry.",
+    "focus": "Pianificazione di audience — previsione di share e spettatori per ottimizzare palinsesto e ricavi pubblicitari.",
+    "sfida": "Ridurre il error di previsione di audience (MAPE) del 30% al 10% e ottimizzare la venta di inventario pubblicitario.",
+    "obiettivi": [
+      "Addestrare modeli di forecast per programa con ML.FORECAST",
+      "Registrare modello in Model Registry con log_model()",
+      "Integrar variables externas: eventi, meteo, concorrenza",
+      "Evaluar accuratezza per franja e target demografico",
+      "Dashboard di forecast con pianificazione pubblicitaria"
+    ],
+    "funzionalita": [
+      "Modello ML: ML.FORECAST con series temporales + Model Registry",
+      "Dati sintetici: 50 programas × 52 settimanas di audience",
+      "Forecast: 1, 4 e 12 settimanas con intervai di confianza",
+      "Dashboard Streamlit: Forecast per programa con alert"
+    ],
+    "dati": [
+      "Audiencia: Share, spettatori, profilo demografico per programa",
+      "Variables externas: Eventos deportivos, meteo, festivos, concorrenza",
+      "Social: Menzioni, trending, engagement in reti del programa"
+    ],
+    "stratificazione": [
+      "MAPE <10%: Venta di inventario con prezzo firme",
+      "MAPE 10-20%: Venta con margen di ajuste del 15%",
+      "MAPE >20%: Revisar modello, posible evento atípico"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 52 settimanas di audience per 50 programas",
+      "Il modello viene addestrato e registrato in Model Registry",
+      "La dashboard mostra forecast vs reale con alert"
+    ]
+  },
+  "UC04": {
+    "title": "Ottimizzazione della Post-Produzione con IA",
+    "contesto": "Questi Cortex Code Prompt costruiscono un pipeline di IA per automatizzare tareas di post-produzione audiovisual: transcripzione, subtitulado, metadati e rilevamento di highlights.",
+    "focus": "Eficiencia di post-produzione — automazione di tareas ripetitive per ridurre costi e scadenze.",
+    "sfida": "Ridurre il tempo di post-produzione un 40% e il costo di transcripzione/subtitulado un 80%.",
+    "obiettivi": [
+      "Generare contenuto simulado con metadati",
+      "Transcribir e subtitular automaticamente",
+      "Rilevare highlights e momentos chiave",
+      "Generare metadati enriquecidos per catalogazione",
+      "Dashboard di progreso di post-produzione"
+    ],
+    "funzionalita": [
+      "Transcripzione e subtitulado: CORTEX.COMPLETE",
+      "Rilevamento di highlights: ML.CLASSIFICATION sui metadati",
+      "Generazione di metadati: CORTEX.COMPLETE per tags e descrizione",
+      "Dashboard Streamlit: Pannello di workflow di post-produzione"
+    ],
+    "dati": [
+      "Contenido: Título, durazione, genere, idioma original",
+      "Escenas: Timestamp, descrizione, personajes, emozione dominante",
+      "Diálogos: Texto transcrito, idioma, speaker, sentimiento",
+      "Técnico: Resoluzione, HDR, audio tracks, subtítui disponibili"
+    ],
+    "stratificazione": [
+      "Automatico (confianza >90%): Publicar senza revisione humana",
+      "Semi-automatico (70-90%): Revisione rápida per editor",
+      "Manual (50-70%): Revisione detallada necessaria",
+      "Rechazado (<50%): Rehacer manualmente"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Viene generato contenuto simulado con escenas e diálogos",
+      "Il pipeline processa automaticamente",
+      "La dashboard mostra progreso e qualità"
+    ]
+  },
+  "UC05": {
+    "title": "Segmentazione Avanzata dell\'Audience e CLV",
+    "contesto": "Questi Cortex Code Prompt costruiscono un motor di segmentazione multidimensional con cálculo di CLV per piattaforme audiovisuales.",
+    "focus": "Micro-segmentazione — segmentos accionables per adquisizione, fidelizzazione e monetizazione diferenciada.",
+    "sfida": "Mejorar il ROI di campagnas di adquisizione del 60% al 150% mediante a micro-segmentazione e CLV.",
+    "obiettivi": [
+      "Generare profili di utente multidimensionales",
+      "Creare micro-segmentos con ML.CLASSIFICATION",
+      "Calcular CLV predittivo con ML.FORECAST",
+      "Diseñar estrategias per segmento",
+      "Dashboard di segmentos e CLV"
+    ],
+    "funzionalita": [
+      "Segmentazione: ML.CLASSIFICATION con clustering implícito",
+      "CLV predittivo: ML.FORECAST per utente",
+      "Dati sintetici: 20.000 suscriptores con 12 mesi di cartella clinica",
+      "Dashboard Streamlit: Pannello di segmentos con azioni"
+    ],
+    "dati": [
+      "Perfil: Edad, ubicazione, plan, anzianità, método di pago",
+      "Consumo: Horas/settimana, generes, completion rate, dispositivos",
+      "Engagement: Sesiones, ricercas, listas, valutazioni",
+      "Monetizazione: ARPU, upgrades, churn risk, risposta a promos"
+    ],
+    "stratificazione": [
+      "VIP (CLV alto + engagement alto): Retenzione premium",
+      "Growth (CLV alto + engagement medio): Upsell e engagement",
+      "At Risk (CLV medio + engagement bajo): Retenzione urgente",
+      "Low Value (CLV bajo + engagement bajo): Optimizar costo di servir"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 20.000 profili con 12 mesi di cartella clinica",
+      "Il modello crea segmentos e calcula CLV",
+      "La dashboard mostra segmentos con azioni"
+    ]
+  },
+  "UC06": {
+    "title": "Ottimizzazione dell\'Inventario Pubblicitario e Yield",
+    "contesto": "Questi Cortex Code Prompt costruiscono un motor di yield management per ottimizzare la venta di inventario pubblicitario in piattaforme audiovisuales.",
+    "focus": "Revenue pubblicitario — pricing dinamico e inventario ottimale per massimizzare ricavi per impression pubblicitarie.",
+    "sfida": "Incrementar il revenue pubblicitario un 25% mediante a yield ottimizzation e ridurre inventario unsold del 35% al 15%.",
+    "obiettivi": [
+      "Generare dati di inventario e domanda pubblicitaria",
+      "Modelar elasticidad di prezzo per segmento",
+      "Optimizar assegnazione di inventario",
+      "Simulare scenari di pricing",
+      "Dashboard di yield management"
+    ],
+    "funzionalita": [
+      "Pricing dinamico: ML + regle di negocio",
+      "Dati sintetici: 12 mesi di inventario con 500 campagnas",
+      "Variabili: audience, fascia, formato, stagionalit\u00e0, evento",
+      "Dashboard Streamlit: Pannello di yield con simulador"
+    ],
+    "dati": [
+      "Inventario: Slots per franja, formato, piattaforma, audience estimada",
+      "Demanda: Campañas activas, budget, targeting, CPM ofertado",
+      "Rendimiento: Fill rate, CPM efficace, revenue per slot",
+      "Mercato: Estacionalidad, eventi, concorrenza per segmento"
+    ],
+    "stratificazione": [
+      "Premium (domanda >120% oferta): Subir CPM 20-30%",
+      "Equilibrado (80-120%): Mdavanti aner prezzo di mercato",
+      "Bajo domanda (50-80%): Descuentos programáticos",
+      "Sin domanda (<50%): Paquetes combo o content sponsorship"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 12 mesi di inventario pubblicitario",
+      "Il motore ottimizza pricing e assegnazione",
+      "La dashboard mostra yield e simulazioni"
+    ]
+  },
+  "UC07": {
+    "title": "Previsione del Churn negli Abbonati",
+    "contesto": "Questi Cortex Code Prompt costruiscono un modello predittivo di churn per suscriptores di piattaforme di streaming audiovisual.",
+    "focus": "Retenzione di suscriptores — previsione e prevenzione di cancellazioni per ridurre costo di adquisizione.",
+    "sfida": "Ridurre il churn mensile del 10% al 5% e ahorrar 500K€/anno in costi di readquisizione.",
+    "obiettivi": [
+      "Generare dati di suscriptores con comportamento",
+      "Addestrare modello predittivo di churn",
+      "Diseñar azioni di fidelizzazione per segmento",
+      "Evaluar impatto económico di fidelizzazione",
+      "Dashboard di fidelizzazione e alert"
+    ],
+    "funzionalita": [
+      "Previsione: ML.CLASSIFICATION di probabilità di churn",
+      "Dati sintetici: 30.000 suscriptores con 6 mesi di cartella clinica",
+      "Variabili: consumo, sesiones, engagement, fatturazione, anzianità",
+      "Dashboard Streamlit: Pannello di fidelizzazione con alert"
+    ],
+    "dati": [
+      "Suscriptor: Plan, anzianità, método pago, upgrades/downgrades",
+      "Consumo: Horas/settimana tendenza, giorni senza consumo, completion rate",
+      "Engagement: Sesiones, ricercas, listas, valutazioni, shares",
+      "Facturazione: Precio, descuentos, pagos fallidos, reclami"
+    ],
+    "stratificazione": [
+      "Churn inminente (>70%): Oferta personalizzata inmediata",
+      "Rischio alto (40-70%): Email con contenuto exclusivo",
+      "Rischio moderato (20-40%): Notificazione di nuevos lanzamientos",
+      "Sin rischio (<20%): Engagement sonodar"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 30.000 suscriptores con cartella clinica",
+      "Il modello prevede probabilità di churn",
+      "La dashboard mostra alert e azioni"
+    ]
+  },
+  "UC08": {
+    "title": "Feature Store di Viewer 360",
+    "contesto": "Questi Cortex Code Prompt costruiscono un Feature Store in Snowflake che consolida il profilo 360° di ogni spettatore da tutte le piattaforme e touchpoints.",
+    "focus": "Visione unifiogni del spettatore — Feature Store centralizzato per personalizzazione, pubblicità e fidelizzazione.",
+    "sfida": "Unificar dati del 95% di spettatori in profilo 360° per decisiones in tempo reale.",
+    "obiettivi": [
+      "Creare entidades e FeatureViews con Snowflake Feature Store",
+      "Generare dati di molteplici piattaforme",
+      "Implementar pipeline di ingesta e merge",
+      "Servir features in tempo reale",
+      "Validar consistencia e frescura"
+    ],
+    "funzionalita": [
+      "Feature Store: Entity (viewer_id) + FeatureViews (consumption, preferences, engagement, devices, sociale)",
+      "Pipeline: Ingesta di streaming, CRM, app, smart TV, sociale",
+      "Dati sintetici: 20.000 spettatori con dati multi-piattaforma",
+      "Dashboard Streamlit: Pannello di viewer 360"
+    ],
+    "dati": [
+      "Consumo: Historial, ore, generes, completion, rewatch",
+      "Preferencias: Generes, attori, registaes, idioma, formato",
+      "Engagement: Valorazioni, listas, shares, ricercas",
+      "Dispositivos: Smart TV, móvil, tablet, desktop, frequenza per dispositivo"
+    ],
+    "stratificazione": [
+      "Perfil completo (>90% features): Personalizzazione avanzata",
+      "Perfil parcial (60-90%): Personalizzazione básica + enriquecimiento",
+      "Perfil mínimo (<60%): Onboarding quiz per completar",
+      "Perfil VIP (CLV alto): Monitoraggio prioritaria"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono create entit\u00e0 e FeatureViews in Feature Store",
+      "Vengono generati dati di 20.000 spettatori multi-piattaforma",
+      "La dashboard mostra profilo 360 del spettatore"
+    ]
+  },
+  "UC09": {
+    "title": "Pubblicit\u00e0 Programmatica e Targeting Contestuale",
+    "contesto": "Questi Cortex Code Prompt costruiscono un motor di targeting contextual che analizza contenuto audiovisual per insertar pubblicità altamente rilevante.",
+    "focus": "Publicidad contextual — ads rilevanti che miglioramenton conversione senza dañar esperienza del spettatore.",
+    "sfida": "Aumentare il CTR di ads del 0.8% al 2.5% e la conversione del 0.3% al 1.2% mediante a targeting contextual.",
+    "obiettivi": [
+      "Generare metadati di contenuto con analisi di escenas",
+      "Creare matching annuncio-contenuto-audience",
+      "Evaluar relevancia e brand safety",
+      "Medir impatto in engagement",
+      "Dashboard di campaign performance"
+    ],
+    "funzionalita": [
+      "Analisi contestuale: CORTEX.COMPLETE sui metadata delle scene",
+      "Matching: ML.CLASSIFICATION di affinità ad-content-viewer",
+      "Dati sintetici: 1.000 títui con escenas + 200 campagnas",
+      "Dashboard Streamlit: Pannello di targeting e performance"
+    ],
+    "dati": [
+      "Contenido: Escenas, emozioni, temas, personajes, productos visibles",
+      "Anuncios: Categoría, target, formato, brand safete requirements",
+      "Audiencia: Perfil del spettatore attuale (dil Feature Store)",
+      "Performance: Impresiones, CTR, conversione, brand lift"
+    ],
+    "stratificazione": [
+      "Match perfecto (relevancia >0.9): Inserzione premium (CPM alto)",
+      "Match bueno (0.7-0.9): Inserzione sonodar",
+      "Match aceptable (0.5-0.7): Solo si non hae migliore opzione",
+      "No match (<0.5): No insertar (proteger esperienza)"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati metadati di escenas e campagnas",
+      "Il motore calcula matching contextual",
+      "La dashboard mostra performance per campagna"
+    ]
+  },
+  "UC10": {
+    "title": "Analisi delle Tendenze e Social Listening per Contenuti",
+    "contesto": "Questi Cortex Code Prompt costruiscono un pipeline di social listening per rilevare tendenze culturales emergentes e oportunitàes di contenuto.",
+    "focus": "Trend intelligence — rilevamento precoce di temas emergentes per desarrollo di contenuto rilevante.",
+    "sfida": "Ridurre il time-to-market di contenuto trend-driven di 6 mesi a 2 mesi rilevanodo tendenze 4 mesi prima del pico.",
+    "obiettivi": [
+      "Generare dati di social media simulados",
+      "Rilevare tendenze emergentes con NLP",
+      "Clasificar potencial di contenuto per tendenza",
+      "Generare briefs creativos automatizzatos",
+      "Dashboard di trend radar"
+    ],
+    "funzionalita": [
+      "NLP: CORTEX.SENTIMENT + CORTEX.COMPLETE sui dati social",
+      "Rilevamento di tendenze: analisi di velocidad e volumen",
+      "Dati sintetici: 100.000 posts di 6 mesi in 5 piattaforme",
+      "Dashboard Streamlit: Trend radar con alert"
+    ],
+    "dati": [
+      "Social: Posts, likes, shares, comentarios, hashtags",
+      "Búsquedas: Tendenze di ricerca per categoría e geografía",
+      "Prensa: Artículos, menzioni, temas culturales emergentes",
+      "Audiencia: Demografía dei che participan in ogni tendenza"
+    ],
+    "stratificazione": [
+      "Tendencia explosiva (crecimiento >200%/settimana): Alerta inmediata",
+      "Tendencia creciente (50-200%): Seguimiento settimanal",
+      "Tendencia stabile (0-50%): Monitoraggio mensile",
+      "Tendencia decreciente (<0%): Archivar"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 100.000 posts simulados di 6 mesi",
+      "Il pipeline rileva tendenze emergentes",
+      "La dashboard mostra radar con oportunitàes"
+    ]
+  },
+  "UC11": {
+    "title": "Ottimizzazione del Palinsesto e Programmazione",
+    "contesto": "Questi Cortex Code Prompt costruiscono un motor di ottimizzazione di palinsesto che massimizza audience considerando concorrenza, eventi e profili di spettatori.",
+    "focus": "Programazione intelligente — ottimizzazione di palinsesto per massimizzare audience totale e revenue pubblicitario.",
+    "sfida": "Aumentare la audience media un 15% e il revenue pubblicitario un 20% mediante a programazione ottimizzada.",
+    "obiettivi": [
+      "Generare dati di audience per franja e programa",
+      "Modelar preferencias per target e franja",
+      "Optimizar assegnazione programa-franja",
+      "Simulare scenari di palinsesto",
+      "Dashboard di planning"
+    ],
+    "funzionalita": [
+      "Optimizazione: ML.FORECAST + simulazione di scenari",
+      "Dati sintetici: 100 programas × 24 franjas × 52 settimanas",
+      "Variabili: franja, target, concorrenza, eventi, meteo, stagionalità",
+      "Dashboard Streamlit: Pannello di planning di palinsesto"
+    ],
+    "dati": [
+      "Programas: Genere, target, audience storica, costo di emisione",
+      "Franjas: Audiencia disponibile, profilo per ora, concorrenza",
+      "Eventos: Deportes, festivos, uscitas concorrenza",
+      "Mercato: Share per cadena, tendenze di consumo"
+    ],
+    "stratificazione": [
+      "Franja prime (20-23h): Contenido uscita di máxima audience",
+      "Franja access (18-20h): Entretenimiento familiar",
+      "Dae time (10-18h): Reposizioni e nicho",
+      "Late night (23-02h): Contenido adulto e nicho"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati dati di audience multi-franja",
+      "Il ottimizzador calcula palinsesto ottimale",
+      "Il dashboard permette simularee scenari"
+    ]
+  },
+  "UC12": {
+    "title": "Misurazione dell\'Impatto del Product Placement",
+    "contesto": "Questi Cortex Code Prompt costruiscono un sistema di medizione di ROI di product placement che correlaciona esposizione di marca con comportamento del consumidor.",
+    "focus": "Branded content analytics — medizione cuantitativa del impatto di product placement per anuncidavanti as.",
+    "sfida": "Ofrecer a anuncidavanti as metriche di ROI di placement con correlazione esposizione-conversione superior al 70%.",
+    "obiettivi": [
+      "Generare dati di esposizione di marca in contenuto",
+      "Simulare comportamento post-esposizione",
+      "Correlacionar esposizione con conversione",
+      "Generare report di ROI per anuncidavanti as",
+      "Dashboard di placement analytics"
+    ],
+    "funzionalita": [
+      "Rilevamento di esposizione: analisi di metadata di escenas",
+      "Correlazione: ML.CLASSIFICATION di impatto",
+      "Dati sintetici: 500 placements in 200 títui con monitoraggio",
+      "Dashboard Streamlit: Pannello di ROI di placement"
+    ],
+    "dati": [
+      "Placement: Marca, producto, título, escena, durazione, prominencia",
+      "Audiencia: Espectadores del contenuto, profilo demografico",
+      "Comportamiento: Búsquedas post-visualizzazione, visitas web, acquisti",
+      "Brand metrics: Awareness, consideration, preference, purchase intent"
+    ],
+    "stratificazione": [
+      "Alto impatto (lift >5%): Case stude premium per anuncidavanti a",
+      "Impacto moderato (2-5%): Renovazione recomendada con ajustes",
+      "Impacto bajo (0-2%): Revisar prominencia e contesto",
+      "Sin impatto (<0%): No renovar, analizzare causas"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 500 placements con tracking",
+      "Il modello correlaciona esposizione con conversione",
+      "Il dashboard genera report di ROI"
+    ]
+  },
+  "UC13": {
+    "title": "Ottimizzazione del Pricing e Bundling degli Abbonamenti",
+    "contesto": "Questi Cortex Code Prompt costruiscono un motor di ottimizzazione di pricing che modela elasticidad e simula bundles per massimizzare ARPU.",
+    "focus": "Revenue ottimizzation — pricing dinamico e bundles per massimizzare ricavi per abbonato.",
+    "sfida": "Aumentare ARPU un 15% e ridurre il churn per prezzo del 3% al 1% mediante a pricing ottimizzado.",
+    "obiettivi": [
+      "Generare dati di suscriptores con willingness-to-pay",
+      "Modelar elasticidad di prezzo per segmento",
+      "Simulare bundles con deportes, música, gaming",
+      "Calcular prezzo ottimale per segmento",
+      "Dashboard di pricing simulator"
+    ],
+    "funzionalita": [
+      "Elasticidad: ML.CLASSIFICATION per segmento",
+      "Simulazione: scenari di pricing e bundles",
+      "Dati sintetici: 50.000 suscriptores con cartella clinica di pricing",
+      "Dashboard Streamlit: Pricing simulator con P&L"
+    ],
+    "dati": [
+      "Suscriptores: Plan attuale, cartella clinica di cambios, anzianità, CLV",
+      "Consumo: Uso di features premium, contenuto exclusivo, simultáneos",
+      "Competencia: Precios di Netflix, Disney+, Amazon, HBO, DAZN",
+      "Mercato: Disposizione a pagar per segmento, sensibilidad al prezzo"
+    ],
+    "stratificazione": [
+      "Insensible al prezzo (CLV alto): Upsell a premium con features",
+      "Sensible moderato: Mdavanti aner plan con bundle atractivo",
+      "Mue sensible: Plan económico con ads per retener",
+      "Price-driven churn: Oferta temporal personalizzata"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 50.000 profili con elasticidad simulada",
+      "Il modello calcula prezzo ottimale per segmento",
+      "Il dashboard simula P&L per scenario"
+    ]
+  },
+  "UC14": {
+    "title": "Feature Store di Performance dei Contenuti",
+    "contesto": "Questi Cortex Code Prompt costruiscono un Feature Store in Snowflake con metriche di rendimento di ogni título per decisiones di investimento e programazione.",
+    "focus": "Content intelligence — Feature Store con KPIs di rendimento di ogni título in tempo reale per decisiones ágiles.",
+    "sfida": "Ridurre latenza di metriche di contenuto di 48h a 1h per decisiones intradae di marketing e programazione.",
+    "obiettivi": [
+      "Creare entidades e FeatureViews con Snowflake Feature Store",
+      "Generare dati di rendimento multi-fonte",
+      "Implementar pipeline di attualeizazione",
+      "Servir features per decisiones di investimento",
+      "Dashboard di content performance"
+    ],
+    "funzionalita": [
+      "Feature Store: Entity (title_id) + FeatureViews (viewership, engagement, sociale, benchmark)",
+      "Pipeline: Actualizazione horaria da streaming, sociale, prensa",
+      "Dati sintetici: 500 títui × 90 giorni × metriche multi-fonte",
+      "Dashboard Streamlit: Pannello di content intelligence"
+    ],
+    "dati": [
+      "Viewership: Reproduzioni, ore, completion rate, unique viewers",
+      "Engagement: Valorazioni, listas, shares, rewatch rate",
+      "Social: Menzioni, sentimiento, trending, influencers",
+      "Benchmark: Ranking vs catálogo, vs concorrenza, vs genere"
+    ],
+    "stratificazione": [
+      "Hit (top 10% viewership + engagement): Marketing push masivo",
+      "Performer (P50-P90): Mdavanti aner visibilidad sonodar",
+      "Underperformer (P10-P50): Analizzare causa, ajustar posizione",
+      "Flop (<P10): Ridurre investimento, analizzare learnings"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono create entit\u00e0 e FeatureViews in Feature Store",
+      "Vengono generati 90 giorni di dati per 500 títulos",
+      "La dashboard mostra KPIs di contenuto in tempo reale"
+    ]
+  },
+  "UC15": {
+    "title": "Chatbot RAG per l\'Assistenza Abbonati",
+    "contesto": "Questi Cortex Code Prompt costruiscono un asistente conversacional RAG per assistenza al suscriptor con base di conoscenza di FAQ, guías e catálogo.",
+    "focus": "Assistenza agli abbonati — chatbot che risolve richieste su fatturazione, tecnica e catalogo senza intervento umano.",
+    "sfida": "Resolver il 70% di consulti automaticamente, reteuciendo costo di assistenza di 4€ a 0.40€ per interazione.",
+    "obiettivi": [
+      "Generare base di conoscenza di supporto",
+      "Creare chunks per indexazione semántica",
+      "Creare Cortex Search Service",
+      "Implementar pipeline RAG con raccomandazione",
+      "Dashboard di chat con metriche"
+    ],
+    "funzionalita": [
+      "RAG: Cortex Search + CORTEX.COMPLETE",
+      "Dati sintetici: 200 documentos (FAQ, guías, políticas, catálogo)",
+      "Raccomandazione di contenuto integrada in rispostas",
+      "Dashboard Streamlit: Chat con cartella clinica e escalado"
+    ],
+    "dati": [
+      "FAQ: 80 domandas frecuentes con rispostas",
+      "Guías tecnicas: 40 guías di configurazione e troubleshooting",
+      "Políticas: 30 documentos di abbonamento, fatturazione, cancellazione",
+      "Catálogo: 50 fichas di contenuto destacado per raccomandazione"
+    ],
+    "stratificazione": [
+      "Confianza alta (>0.85): Respuesta directa automatica",
+      "Confianza media (0.6-0.85): Responder + ofrecer agente",
+      "Confianza baja (<0.6): Escalar a agente humano inmediatamente"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Viene generato base di conoscenza con 200 documentos",
+      "Se crea Cortex Search Service",
+      "Il dashboard permette chatear e ver chunks utilizzados"
+    ]
+  },
+  "UC16": {
+    "title": "Rilevamento di Frode Pubblicitaria e Bot Traffic",
+    "contesto": "Questi Cortex Code Prompt costruiscono un sistema ML di rilevamento di tráfico fraudulento in piattaforme di pubblicità audiovisual digital.",
+    "focus": "Integrità pubblicitaria — rilevamento di bot, click fraud e traffico non umano per proteggere revenue e fiducia degli inserzionisti.",
+    "sfida": "Rilevare il 90% del tráfico fraudulento con <2% di falsos positivos, protegiendo 10-15% del revenue pubblicitario.",
+    "obiettivi": [
+      "Generare dati di tráfico con pattern di frode",
+      "Extraer features di comportamento sospechoso",
+      "Addestrare modello di rilevamento frodi",
+      "Implementar scoring in tempo reale",
+      "Dashboard di integrità pubblicitaria"
+    ],
+    "funzionalita": [
+      "Modello ML: Rilevamento frodi con ML.CLASSIFICATION",
+      "Dati sintetici: 500.000 impresiones con 8% fraudulentas",
+      "Variabili: patrón click, user agent, IP, sesione, engagement, velocidad",
+      "Dashboard Streamlit: Pannello di frode con alert"
+    ],
+    "dati": [
+      "Impresiones: Timestamp, IP, user agent, referrer, geo",
+      "Comportamiento: Click timing, mouse movement, scroll, engagement",
+      "Sesione: Durazione, páginas, frequenza, patrón di navegazione",
+      "Dispositivo: Screen, plugins, fingerprint, proxy/VPN detection"
+    ],
+    "stratificazione": [
+      "Bot confirmado (>90%): Bloqueo inmediato + non cobrar anuncidavanti a",
+      "Sospechoso (60-90%): Cuarentena + investigazione",
+      "Dudoso (30-60%): Monitoraggio intensiva",
+      "Legítimo (<30%): Tráfico válido"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 500.000 impresiones con pattern",
+      "Il modello puntúa ogni impresione",
+      "La dashboard mostra frode per campagna"
+    ]
+  },
+  "UC17": {
+    "title": "Gestione dei Diritti Digitali e Finestre di Sfruttamento",
+    "contesto": "Questi Cortex Code Prompt costruiscono un sistema intelligente di gestione di diritti di contenuto audiovisual con alert di vencimiento e ottimizzazione di ventanas.",
+    "focus": "Rights management — monitoraggio automatica di diritti per evitar infrazioni e ottimizzare sfruttamento.",
+    "sfida": "Ridurre infrazioni di diritti un 95% e massimizzare sfruttamento di ventanas disponibili al 90%.",
+    "obiettivi": [
+      "Generare dati di contratti di diritti",
+      "Implementar motor di regle di ventanas",
+      "Rilevare conflictos di territorialidad",
+      "Alertar di vencimientos prossimos",
+      "Dashboard di gestione di diritti"
+    ],
+    "funzionalita": [
+      "Monitoraggio: Regle di negocio + alert automaticas",
+      "Dati sintetici: 1.000 títui con 3.000 contratti di diritti",
+      "Variabili: territorio, finestra, piattaforma, esclusivit\u00e0, scadenza",
+      "Dashboard Streamlit: Pannello di rights management"
+    ],
+    "dati": [
+      "Contratos: Título, licenzatario, territorio, ventana inicio/fin",
+      "Derechos: Plataforma, exclusividad, sublicenza, rinnovo automatica",
+      "Explotazione: Emisiones reali per título, territorio e piattaforma",
+      "Vencimientos: Próximos 30/60/90 giorni con azione requerida"
+    ],
+    "stratificazione": [
+      "Conflicto activo: Alerta inmediata + bloqueo di emisione",
+      "Vencimiento <30 giorni: Alerta urgente + negociazione",
+      "Vencimiento 30-90 giorni: Pianificazione di rinnovo",
+      "Ventana non explotada: Oportunità di monetizazione"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 1.000 títui con 3.000 contratti",
+      "Il motore rileva conflictos e vencimientos",
+      "La dashboard mostra stato di diritti"
+    ]
+  },
+  "UC18": {
+    "title": "Rilevamento di Pirateria e Distribuzione Non Autorizzata",
+    "contesto": "Questi Cortex Code Prompt costruiscono un pipeline di rilevamento di contenuto pirata in fonti online per proteger revenue e diritti.",
+    "focus": "Anti-pirateria — rilevamento automatica di copias non autorizadas per proteger revenue e attivi creativos.",
+    "sfida": "Rilevare l'80% del contenuto pirata in meno di 24 ore dall'apparizione e generare takedown automatizzati.",
+    "obiettivi": [
+      "Generare dati simulados di pirateria",
+      "Implementar fingerprinting di contenuto",
+      "Monitorizar fonti sospechosas",
+      "Generare notifiche di takedown",
+      "Dashboard di anti-pirateria"
+    ],
+    "funzionalita": [
+      "Rilevamento: ML + fingerprinting simulado",
+      "Dati sintetici: 500 títui con 2.000 aparizioni piratas",
+      "Variabili: fingerprint, fonte, volumen, velocidad propagazione",
+      "Dashboard Streamlit: Pannello anti-pirateria con mapa"
+    ],
+    "dati": [
+      "Títui protegidos: Fingerprint, metadata, ventanas di distribuzione",
+      "Fuentes: Webs, P2P, reti sociali, piattaforme di vídeo",
+      "Deteczioni: Timestamp, URL, tipo di copia, qualità, alcance",
+      "Takedowns: Solicitudes enviadas, estado, tempo di risposta"
+    ],
+    "stratificazione": [
+      "Estreno reciente (<7 giorni): Takedown urgente in <4h",
+      "Contenido premium (abbonamento): Takedown in <24h",
+      "Catálogo general: Takedown in <72h",
+      "Contenido free: Monitoraggio, non azione"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati deteczioni simuladas di pirateria",
+      "Il pipeline classifica e prioriza takedowns",
+      "La dashboard mostra mapa di pirateria"
+    ]
+  },
+  "UC19": {
+    "title": "Analisi del Sentimento e Reputazione dei Contenuti",
+    "contesto": "Questi Cortex Code Prompt costruiscono una pipeline NLP di monitoraggio del sentimento su uscite, marchi e talenti sui social e sulla stampa.",
+    "focus": "Reputation management — monitoraggio in tempo reale di percepzione pubblica per risposta ágil di comunicazione.",
+    "sfida": "Rilevare crisi di reputazione in meno di 2 ore dall'inizio e ridurre l'impatto negativo del 60% con risposta rapida.",
+    "obiettivi": [
+      "Generare dati dai social media sulle uscite",
+      "Clasificar sentimiento e urgenza con Cortex AI",
+      "Rilevare potencial di viralidad negativa",
+      "Generare alert e raccomandazioni di risposta",
+      "Dashboard di reputation management"
+    ],
+    "funzionalita": [
+      "NLP: CORTEX.SENTIMENT + CORTEX.COMPLETE",
+      "Dati sintetici: 50.000 post per 100 uscite/eventi",
+      "Rilevamento di crisi: velocidad + sentimiento + influencers",
+      "Dashboard Streamlit: Pannello di reputazione con alert"
+    ],
+    "dati": [
+      "Posts: Texto, piattaforma, autor, likes, shares, timestamp",
+      "Sentimento: score, temi menzionati, emozioni dominanti",
+      "Influencers: Alcance, creteibilidad, storico di impatto",
+      "Prensa: Artículos, cabecera, tono, alcance estimado"
+    ],
+    "stratificazione": [
+      "Crisis activa (sentimiento <-0.7 + viral): War room inmediato",
+      "Rischio alto (sentimiento <-0.3 + creciendo): Alerta comunicazione",
+      "Neutro/mixto: Monitoraggio sonodar",
+      "Positivo (>0.3): Amplificar con marketing"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 50.000 post per 100 uscite",
+      "Cortex AI classifica e rileva crisi",
+      "La dashboard mostra alert e raccomandazioni"
+    ]
+  },
+  "UC20": {
+    "title": "Conformit\u00e0 Regolatoria e Classificazione dei Contenuti",
+    "contesto": "Questi Cortex Code Prompt costruiscono un sistema di classificazione automatica di contenuto per età e verifica di conformità normativo audiovisual.",
+    "focus": "Compliance audiovisual — classificazione automatica per cumplir regolamentazione espannola e europea di contenuto.",
+    "sfida": "Clasificar il 90% del contenuto automaticamente con 95% di accuratezza vs revisione humana.",
+    "obiettivi": [
+      "Generare contenuto con metadati di escenas",
+      "Clasificar per età con IA",
+      "Verificar cuotas di produzione europea",
+      "Validar accesibilidad (subtítulos, audiodescrizione)",
+      "Dashboard di compliance"
+    ],
+    "funzionalita": [
+      "Classificazione: CORTEX.COMPLETE + ML.CLASSIFICATION",
+      "Dati sintetici: 500 títui con analisi di escenas",
+      "Variabili: violencia, lenguaje, sustancias, desnudez, miedo",
+      "Dashboard Streamlit: Pannello di compliance audiovisual"
+    ],
+    "dati": [
+      "Contenido: Título, genere, país, durazione, idioma",
+      "Escenas: Descripzione, categoría di contenuto sensible, intensidad",
+      "Regulazione: Lee audiovisual espannola, directiva AVMSD europea",
+      "Accesibilidad: Subtítulos, audiodescrizione, lengua di signos"
+    ],
+    "stratificazione": [
+      "TP (tutti pubblicos): Sin restriczioni",
+      "7+: Advertencia parental recomendada",
+      "12+: No recomendado minorees di 12",
+      "16+: No recomendado minorees di 16",
+      "18+: Contenido exclusivamente adulto"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente",
+      "Vengono generati 500 títui con analisi di escenas",
+      "Il classificador asigna età e categorías",
+      "La dashboard mostra stato di compliance"
+    ]
+  }
+};
+
+const PROMPTS = {
+  UC01: {"title": "Raccomandazione di Contenuti con Model Registry", "intro": "Apri Cortex Code in Snowsight ed esegui questi prompt sequenzialmente. Costruirai un motore di raccomandazione di contenuto e lo registrerai in Snowflake Model Registry.", "steps": [{"title": "Configurare ambiente", "desc": "Database e warehouse.", "prompt": "Crea una base di dati chiamata RECOMENDACION_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH tamanno SMALL con auto-suspend 60 segundos."}, {"title": "Generare catálogo di contenuto", "desc": "2.000 títui con metadata.", "prompt": "Genera tabella 'catalogo_contenuto' con 2.000 righe: titulo_id (TIT0001..TIT2000), titulo, genero (Drama 25%, Comedia 20%, Thriller 15%, Documental 15%, Aczione 10%, Animazione 8%, Horror 7%), subgenero, regista, attori_principali (arrae di 3), pais_produccion, anno, duracion_min, idioma_original, classificacion_edad, valoreacion_critica (1-10), stagiones (NULL si película)."}, {"title": "Generare profili di utente", "desc": "50.000 suscriptores.", "prompt": "Genera tabella 'utenti_streaming' con 50.000 righe: utente_id, età, genero, ubicacion_provincia, plan (Básico 30%, Estándar 45%, Premium 25%), dispositivo_principale (Smart_TV 40%, Móvil 30%, Tablet 15%, Desktop 15%), fecha_alta, idioma_preferido."}, {"title": "Generare storico di consumo", "desc": "500.000 visualizzazioni.", "prompt": "Genera tabella 'cartella clinica_consumo' con 500.000 righe: utente_id, titulo_id, fecha_visualizzazione, completion_pct (0-100, distribuzione bimodal: pico in 5% e 85%), valoreacion (NULL 60%, 1-5 estrelle 40%), dispositivo, hora_inicio, duracion_sesion_min."}, {"title": "Feature engineering", "desc": "Variables di affinità.", "prompt": "Crea tabella 'features_recomendacion' con: utente_id, titulo_id, affinità_genero (% cartella clinica del utente in ese genere), popularidad_titulo (visualizzazioni/mes), match_edad (target età del título vs età utente), hora_preferida_match, dispositivo_match, valoreacion_media_utente_genero. Target: enganche (completion >70%)."}, {"title": "Addestrare modello", "desc": "ML.CLASSIFICATION di affinità.", "prompt": "Divide 80/20, trana SNOWFLAKE.ML.CLASSIFICATION . Usa evaluate => TRUE per generare metriche di valutazione.'modello_recomendacion_v1' con target enganche e evaluate TRUE."}, {"title": "Evaluar rendimento", "desc": "Metriche e feature importance.", "prompt": "Ejecuta SHOW_EVALUATION_METRICS, SHOW_CONFUSION_MATRIX e SHOW_FEATURE_IMPORTANCE. Interpreta qué variables più influyen in il engagement."}, {"title": "Registrare in Model Registry", "desc": "Versionar con log_model().", "prompt": "Usando Python: importa snowflake.ml.registry, crea Registry, usa registry.log_model() per registrare con model_name='content_recommendation_media', version_name='v1', metrics={'accuracy': <valore>, 'f1_weighted': <valore>}, comment='Raccomandazione di contenuto audiovisual v1'. Muestra modeli registratos."}, {"title": "Generare raccomandazioni", "desc": "Top-10 per utente.", "prompt": "Recupera modello con registry.get_model('content_recommendation_media').version('v1'). Para 1.000 utenti, genera top-10 raccomandazioni. Calcula: diversidad di genere, novedad (% títui non vistos), CTR estimado."}, {"title": "Dashboard raccomandazioni", "desc": "Pannello di engagement.", "prompt": "Crea dashboard Streamlit: KPIs (CTR raccomandazioni, completion rate, diversidad, novedad), top títui più recomendados, profilo di raccomandazione per segmento, A/B testing simulado, filtros per genere e plan. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS RECOMENDACION_MEDIOS_DB comentado."}]},
+  UC02: {"title": "Previsione del Successo di Contenuti Pre-Produzione", "intro": "Prompt per costruire un modello di scoring di fattibilità comercial di progetti audiovisuales prima del greenlight.", "steps": [{"title": "Configurare ambiente", "desc": "Database per greenlight.", "prompt": "Crea base di dati GREENLIGHT_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare cartella clinica di produzioni", "desc": "2.000 produzioni con risultatos.", "prompt": "Genera tabella 'produzioni_historicas' con 2.000 righe: produccion_id, titulo, genero, subgenero, budget_eur (500K-50M), showrunner, talento_principale (notoriedad 1-100), pais_coproduccion, ventana_uscita (trimestre), piattaforma (Streaming 50%, TV_Lineal 30%, Cine 20%), audience_primera_settimana, revenue_totale_eur, roi_pct, premi (0-5), valoreacion_critica (1-10)."}, {"title": "Generare analisi di sceneggiature", "desc": "Temas e tono con NLP.", "prompt": "Genera tabella 'analisis_sceneggiature' con 2.000 righe: produccion_id, senzaopsis (50-100 palabras). Usa CORTEX.COMPLETE per estrarre: temas_principali (array), tono (Ligero/Dramático/Oscuro/Inspirador), complessità_narrativa (1-5), target_demografico, originalidad_score (1-10)."}, {"title": "Feature engineering", "desc": "Variables preteictoras di successo.", "prompt": "Crea tabella 'features_greenlight' con: genero_encoded, budget_normalizado, talento_notoriedad, ventana_estacional, concorrenza_ventana (títui similees in stesso trimestre), tendenza_genero (creciente/stabile/decreciente), originalidad, complessità. Target: exito (ROI >0%)."}, {"title": "Addestrare modello", "desc": "ML.CLASSIFICATION di successo.", "prompt": "Divide 80/20, trana ML.CLASSIFICATION . Usa evaluate => TRUE per generare metriche di valutazione.. Usa evaluate => TRUE per generare metriche di valutazione.. Usa evaluate => TRUE per generare metriche di valutazione.'modello_greenlight' con target exito e evaluate TRUE. Muestra metriche e feature importance."}, {"title": "Scoring di progetti nuevos", "desc": "Pipeline di greenlight.", "prompt": "Genera 50 progetti nuevos con senzaopsis. Usa modello per puntuar ogni uno. Clasifica: Score A (greenlight), B (condicional), C (revisar), D (no recomendar). Muestra distribuzione."}, {"title": "Simulador di scenari", "desc": "Impacto di cambios.", "prompt": "Para i top-5 progetti Score B, simula: ¿qué pasa si si cambia il showrunner a uno più notable? ¿Si si ajusta budget ±20%? ¿Si si cambia ventana di uscita? Muestra impatto in score."}, {"title": "Brief creativo con IA", "desc": "Recomendazioni di desarrollo.", "prompt": "Usa CORTEX.COMPLETE per generare brief creativo per i top-3 progetti: ajustes sugeridos di tono, target, casting ideal, ventana ottimale, budget recomendado, comperble di mercato."}, {"title": "Dashboard greenlight", "desc": "Pannello di pipeline.", "prompt": "Crea dashboard Streamlit: KPIs (progetti evaluados, aprobados, budget totale, ROI esperado), ranking di progetti per score, simulador di scenari, distribuzione per genere e budget, filtros per score e genere. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS GREENLIGHT_MEDIOS_DB comentado."}]},
+  UC03: {"title": "Previsione dell\'Audience con Model Registry", "intro": "Prompt per costruire modeli di forecast di audience per programa e franja con ML.FORECAST e registro in Model Registry.", "steps": [{"title": "Configurare ambiente", "desc": "Database per forecast.", "prompt": "Crea base di dati AUDIENCIA_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare cartella clinica di audience", "desc": "50 programas × 52 settimanas.", "prompt": "Genera tabella 'audience_historica' con 50 programas × 52 settimanas: programa_id, nombre, genero, franja (Prime 40%, Access 25%, Daytime 20%, Late 15%), settimana (timestamp), share_pct (5-35 secondo franja), spettatori_miles, target_comercial_pct."}, {"title": "Generare variables exógenas", "desc": "Eventos, meteo, concorrenza.", "prompt": "Genera tabella 'exogenas_audience' con 52 settimanas: settimana, hay_futbol_champions (10% settimanas), hay_evento_nacional (5%), temperatura_media, es_festivo, uscitas_concorrenza (0-3 per settimana)."}, {"title": "Preperr dati per ML.FORECAST", "desc": "Series temporales.", "prompt": "Crea tabella 'forecast_input' con: serie_id (programa_franja), timestamp, audience (share_pct come target). Vincula con exógenas. Verifica senza gaps ni nulls."}, {"title": "Addestrare modello forecast", "desc": "ML.FORECAST con exógenas.", "prompt": "Entrena SNOWFLAKE.ML.FORECAST . Usa evaluate => TRUE per generare metriche di valutazione.'preteictor_audience_medios' con SERIES_COLNAME='serie_id', TIMESTAMP_COLNAME='timestamp', TARGET_COLNAME='audience', PREDICTION_INTERVAL=0.95."}, {"title": "Registrare in Model Registry", "desc": "Versionar con log_model().", "prompt": "Usando Python: registry.log_model() con model_name='audience_preteiction_media', version_name='v1', metrics={'mape_global': <valore>}, comment='Previsione di audience audiovisual v1'."}, {"title": "Generare preteiczioni", "desc": "4 e 12 settimanas.", "prompt": "Genera preteiczioni con preteictor_audience_medios!FORECAST(FORECASTING_PERIODS=>12). Extrae forecast, lower_bound, upper_bound. Calcula MAPE per programa e franja."}, {"title": "Pianificazione pubblicitaria", "desc": "Valorazione di inventario.", "prompt": "Crea vista 'valoreacion_inventario' con: franja, settimana, audience_prevista, CPM estimado (basato il suo audience), revenue previsto per slot. Identifica settimanas di alta/baja domanda."}, {"title": "Dashboard audience", "desc": "Pannello di forecast.", "prompt": "Crea dashboard Streamlit: KPIs (MAPE, share previsto, ranking programas, revenue pubblicitario estimado), gráfico forecast con bandas per programa, tabella di pianificazione pubblicitaria, filtros per programa e franja. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS AUDIENCIA_MEDIOS_DB comentado."}]},
+  UC04: {"title": "Ottimizzazione della Post-Produzione con IA", "intro": "Prompts per automatizzare tareas di post-produzione: transcripzione, subtitulado, metadati e rilevamento di highlights.", "steps": [{"title": "Configurare ambiente", "desc": "Database per post-produzione.", "prompt": "Crea base di dati POSTPROD_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare contenuto simulado", "desc": "100 títui con escenas.", "prompt": "Genera tabella 'contenuto_produccion' con 100 righe: titulo_id, titulo, genero, duracion_min (22-150), idioma_original, num_escenas (20-120), estado_postprod (En_Curso 60%, Pendiente 30%, Completado 10%)."}, {"title": "Generare escenas con diálogos", "desc": "3.000 escenas con texto.", "prompt": "Genera tabella 'escenas_detalle' con 3.000 file (~30 per título): escena_id, titulo_id, numero_escena, timestamp_inicio_seg, duracion_seg (30-300), descripcion (1-2 frases), dialogo_texto (3-8 frases di diálogo), personajes (array), emocion_dominante (Alegría/Tristeza/Tensione/Neutral/Aczione/Romance)."}, {"title": "Transcripzione automatica", "desc": "Generare subtítulos.", "prompt": "Usa CORTEX.COMPLETE per: (1) Limpiar diálogos per subtitulado, (2) Segmentar in frases di max 42 caracteres, (3) Generare tabella 'subtitulos' con timestamp, texto, durazione. Simula 3 idiomas: espannol, inglés, francés."}, {"title": "Rilevamento di highlights", "desc": "Momentos chiave per trailer.", "prompt": "Crea tabella 'highlights' con: escenas con emocion_dominante in (Tensione, Aczione, Romance) + longitud di diálogo corta + cambio emocional respecto escena precedente. Ordenar per potencial_trailer (score compuesto). Top 10 per título."}, {"title": "Generazione di metadati", "desc": "Tags e descripzioni.", "prompt": "Usa CORTEX.COMPLETE per generare per título: senzaopsis_corta (50 palabras), senzaopsis_larga (150 palabras), keywords (10 tags), temas_principali, comperble ('Si te gustó X, te gustará Y'). Genera tabella 'metadati_enriquecidos'."}, {"title": "Classificazione di contenuto", "desc": "Rating per età.", "prompt": "Usa CORTEX.COMPLETE per analizzare diálogos e descripzioni di escenas: rilevare violencia, lenguaje, sustancias, contenuto sexual. Assegnare classificazione automatica: TP, 7+, 12+, 16+, 18+. Comperr con classificazione manualeee simulada."}, {"title": "Dashboard post-produzione", "desc": "Pannello di workflow.", "prompt": "Crea dashboard Streamlit: KPIs (títui pendientes, subtítui generados, highlights rilevados, metadati completados), progreso per título, highlights seleccionados, qualità di subtitulado, filtros per estado e genere. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS POSTPROD_MEDIOS_DB comentado."}]},
+  UC05: {"title": "Segmentazione Avanzata dell\'Audience e CLV", "intro": "Prompt per costruire un motor di segmentazione multidimensional con CLV per piattaforme audiovisuales.", "steps": [{"title": "Configurare ambiente", "desc": "Database per segmentazione.", "prompt": "Crea base di dati SEGMENTACION_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare profili di suscriptores", "desc": "20.000 suscriptores con cartella clinica.", "prompt": "Genera tabella 'suscriptores' con 20.000 righe: suscriptor_id, età, genero, provincia, plan (Básico_con_Ads 20%, Estándar 40%, Premium 25%, Familiar 15%), fecha_alta, metodo_pago, dispositivos_registratos (1-5), upgrade_historico (TRUE 15%), downgrade_historico (TRUE 10%)."}, {"title": "Generare dati di consumo", "desc": "12 mesi di actividad.", "prompt": "Genera tabella 'consumo_mensile' con 20.000 × 12: suscriptor_id, mes, ore_visualizzazione (0-80), sesiones, titulos_vistos, generos_distintos, completion_rate_media, valutazioni_dadas, listas_creadas, busquedas."}, {"title": "Calcular features di segmentazione", "desc": "Variables multidimensionales.", "prompt": "Crea tabella 'features_segmentacion' con: ore_mes_media, tendenza_consumo (creciente/stabile/decreciente), diversidad_generos, engagement_score (sesiones×completion), dispositivo_principale, horario_principale (mañana/tarde/noche/madrugada), risposta_a_uscitas (consumo in primera settimana)."}, {"title": "Creare segmentos", "desc": "ML.CLASSIFICATION per clusters.", "prompt": "Entrena ML.CLASSIFICATION con 6 segmentos preteefinidos: Binge_Watcher (>40h/mes), Casual_Viewer (10-40h), Occasional (<10h), Famile (molteplici profili), Premium_Content (solo uscitas), Social_Viewer (shares e listas dimissioni). Muestra distribuzione. Usa evaluate => TRUE per generare metriche di valutazione."}, {"title": "Calcular CLV", "desc": "Valor futuro per suscriptor.", "prompt": "Entrena ML.FORECAST per prevedere revenue per suscriptor a 12 mesi considerando: plan attuale, tendenza consumo, probabilità upgrade/downgrade/churn. Clasifica: VIP (top 10%), High (P60-P90), Medium (P30-P60), Low (<P30). Usa evaluate => TRUE per generare metriche di valutazione."}, {"title": "Estrategias per segmento", "desc": "Aczioni personalizzatas.", "prompt": "Usa CORTEX.COMPLETE per generare estrategia per segmento × CLV: qué contenuto priorizar, qué plan ofrecer, qué comunicazioni inviare, qué features destacar. Genera tabella 'estrategias_segmento'."}, {"title": "Dashboard segmentos", "desc": "Pannello di audience.", "prompt": "Crea dashboard Streamlit: KPIs (suscriptores per segmento, CLV medio, revenue previsto, churn risk), distribuzione di segmentos, profilo detallado per segmento seleccionado, estrategias recomendadas, filtros per segmento e CLV. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS SEGMENTACION_MEDIOS_DB comentado."}]},
+  UC06: {"title": "Ottimizzazione dell\'Inventario Pubblicitario e Yield", "intro": "Prompt per costruire un motor di yield management per inventario pubblicitario in piattaforme audiovisuales.", "steps": [{"title": "Configurare ambiente", "desc": "Database per yield.", "prompt": "Crea base di dati YIELD_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare inventario pubblicitario", "desc": "12 mesi di slots.", "prompt": "Genera tabella 'inventario_ads' con 365 giorni × 24 franjas: fecha, franja_hora, piattaforma (Streaming 50%, CTV 30%, Web 20%), formato (Pre-Roll 40%, Mid-Roll 30%, Banner 20%, Sponsorship 10%), audience_estimada_miles, cpm_base_eur (5-45 secondo franja e formato)."}, {"title": "Generare campagnas activas", "desc": "500 campagnas con targeting.", "prompt": "Genera tabella 'campanas_ads' con 500 righe: campana_id, anuncidavanti a, sector (Automozione 15%, FMCG 20%, Telco 15%, Banca 10%, Retail 15%, Tecnología 10%, Otros 15%), budget_eur, target_demografico (edad, genere), franjas_preferidas, cpm_max_eur, impresiones_obiettivo, fecha_inicio, fecha_fin."}, {"title": "Calcular domanda per slot", "desc": "Ratio domanda/oferta.", "prompt": "Crea vista 'domanda_oferta' con: per ogni slot (fecha, franja, formato), campagnas che lo domandan, budget totale disponibile vs impresiones disponibili, ratio domanda/oferta. Clasificar: Saturado (>1.5), Equilibrado (0.8-1.5), Bajo (<0.8)."}, {"title": "Optimizar pricing", "desc": "CPM dinamico per slot.", "prompt": "Implementa pricing dinamico: slots Saturados → CPM +20-30% vs base; Equilibrados → CPM base; Bajo domanda → CPM -10-20% o paquete combo. Calcula revenue totale ottimizzado vs pricing fijo."}, {"title": "Assegnare campagnas", "desc": "Matching ottimale.", "prompt": "Implementa assegnazione: priorizar per CPM ofertado × match di targeting. Para ogni campagna, assegnare slots che maximicen reach entro budget. Calcular fill rate e revenue totale."}, {"title": "Simulare scenari", "desc": "Impacto di cambios.", "prompt": "Simula: (1) Aumentare inventario 20% (più ad breaks), (2) Subir CPM base 10%, (3) Añadir formato Shoppable Ads premium. Para ogni: revenue, fill rate, satisfazione anuncidavanti a."}, {"title": "Dashboard yield", "desc": "Pannello di gestione.", "prompt": "Crea dashboard Streamlit: KPIs (revenue totale, fill rate, CPM medio, campagnas activas), gráfico di domanda/oferta per franja, ranking di campagnas per revenue, simulador di pricing, filtros per formato e piattaforma. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS YIELD_MEDIOS_DB comentado."}]},
+  UC07: {"title": "Previsione del Churn negli Abbonati", "intro": "Prompt per costruire un modello predittivo di churn per suscriptores di piattaforme di streaming audiovisual.", "steps": [{"title": "Configurare ambiente", "desc": "Database per churn.", "prompt": "Crea base di dati CHURN_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare dati di suscriptores", "desc": "30.000 suscriptores con cartella clinica.", "prompt": "Genera tabella 'suscriptores_churn' con 30.000 righe: suscriptor_id, plan, prezzo_mensile, fecha_alta, metodo_pago, dispositivos, età, provincia. 12% con churn_reale=TRUE (cancelaron in ultimos 3 mesi)."}, {"title": "Generare comportamento", "desc": "6 mesi di actividad.", "prompt": "Genera tabella 'comportamento_mensile' con 30.000 × 6: suscriptor_id, mes, ore_visualizzazione, sesiones, titulos_nuevos, completion_rate, dias_senza_accesso, busquedas, valutazioni, compartidos. Suscriptores con churn: tendenza decreciente in ultimos 2-3 mesi."}, {"title": "Feature engineering", "desc": "Señales di churn.", "prompt": "Crea tabella 'features_churn' con: tendenza_ore_3m (creciente/stabile/decreciente), dias_desde_ultimo_accesso, engagement_con_uscitas (consumo in primera settimana di nuevo contenuto), ratio_completion, sesiones_settimana_tendenza, pagos_fallidos, upgrade_downgrade_reciente. Target: churn_30d."}, {"title": "Addestrare modello", "desc": "ML.CLASSIFICATION di churn.", "prompt": "Divide 80/20, trana ML.CLASSIFICATION 'modello_churn_streaming' con target churn_30d e evaluate TRUE. Optimizar recall per rilevare máximo di churners."}, {"title": "Aczioni di fidelizzazione", "desc": "Estrategias per segmento.", "prompt": "Clasifica suscriptores a rischio por: prob_churn × CLV. Para ogni nivel: Crítico (>70% + CLV alto) → oferta VIP; Alto (40-70%) → contenuto exclusivo; Medio (20-40%) → email personalizzato. Calcula costo vs beneficio di fidelizzazione."}, {"title": "Generare comunicazioni", "desc": "Emails personalizzatos.", "prompt": "Usa CORTEX.COMPLETE per generare emails di fidelizzazione personalizzatos: per ogni suscriptor a rischio, recomendar contenuto nuevo basato il suo su cartella clinica, ofrecer descuento calibrado al CLV, tono empático. Genera 10 esempios."}, {"title": "Dashboard fidelizzazione", "desc": "Pannello di churn.", "prompt": "Crea dashboard Streamlit: KPIs (churn rate, suscriptores a rischio, revenue a rischio, fidelizzazione exitosa), distribuzione di rischio, azioni per segmento, timeline di engagement, filtros per plan e anzianità. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS CHURN_MEDIOS_DB comentado."}]},
+  UC08: {"title": "Feature Store di Viewer 360", "intro": "Prompt per costruire un Feature Store in Snowflake che consolida il profilo 360° di ogni spettatore da tutte le piattaforme.", "steps": [{"title": "Configurare ambiente", "desc": "Database per Feature Store.", "prompt": "Crea base di dati VIEWER_FS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare dati di streaming", "desc": "20.000 spettatori con consumo.", "prompt": "Genera tabella 'streaming_data' con 20.000 spettatori: viewer_id, cartella clinica_titui (ultimos 50), ore_totales, generos_top3, completion_rate_media, valoreacion_media, dispositivo_principale, plan_attuale."}, {"title": "Generare dati CRM", "desc": "Dati di abbonamento.", "prompt": "Genera tabella 'crm_data' con 20.000 registros: viewer_id, fecha_alta, plan_historico, upgrades, downgrades, reclami, nps_ultimo, campagnas_respondidas, metodo_pago, churn_precedente."}, {"title": "Generare dati di app móvil", "desc": "Comportamiento in app.", "prompt": "Genera tabella 'app_data' con 20.000 registros: viewer_id, sesiones_mes, duracion_media_min, funzioni_usadas (ricerca, listas, descargas, shares, valutazioni), notifiche_abiertas_pct, deeplinks_clickados."}, {"title": "Generare dati sociale", "desc": "Actividad in reti.", "prompt": "Genera tabella 'sociale_data' con 8.000 registros (40% di viewers con sociale vinculado): viewer_id, piattaforma_sociale, shares_contenuto_mes, comentarios, likes_contenuto, influencer_score (0-100), hashtags_usados."}, {"title": "Creare Entity e FeatureViews", "desc": "Feature Store di spettatore.", "prompt": "Usando Python con snowflake.ml.feature_store: (1) Entity 'viewer' con join_keys=['viewer_id']. (2) FeatureView 'consumption_profile': ore_mes, generos, completion, tendenza. (3) FeatureView 'preferences': generos_favoritos, attori, horario, dispositivo. (4) FeatureView 'engagement_metrics': sesiones, valutazioni, listas, shares. (5) FeatureView 'lifecycle_status': plan, anzianità, CLV, churn_risk. Registra FeatureViews."}, {"title": "Pipeline di ingesta", "desc": "Merge di fonti.", "prompt": "Crea pipeline che une streaming + CRM + app + sociale per viewer_id. Calcula features derivadas: engagement_score, content_affinity_vector, churn_probability, monetization_potential. Actualizazione giornaliera."}, {"title": "Servir features", "desc": "Consulta di profilo 360.", "prompt": "Usa feature_store.get_features() per 20 spettatori. Muestra profilo 360 completo. Dimostra uso per: raccomandazione, targeting pubblicitario, fidelizzazione."}, {"title": "Dashboard Viewer 360", "desc": "Pannello di spettatore.", "prompt": "Crea dashboard Streamlit: cercador di spettatore, profilo 360 (consumo, preferencias, engagement, lifecycle), timeline di actividad, raccomandazioni, alert di churn, filtros per segmento e plan. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS VIEWER_FS_DB comentado."}]},
+  UC09: {"title": "Pubblicit\u00e0 Programmatica e Targeting Contestuale", "intro": "Prompt per costruire un motor di targeting contextual che analizza contenuto audiovisual per insertar pubblicità rilevante.", "steps": [{"title": "Configurare ambiente", "desc": "Database per targeting.", "prompt": "Crea base di dati TARGETING_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare metadata di contenuto", "desc": "1.000 títui con escenas.", "prompt": "Genera tabella 'metadata_contenuto' con 1.000 títui × 10 escenas: titulo_id, escena_num, descripcion, emocion (Alegría/Tensione/Romance/Aczione/Tristeza/Neutral), personajes, setting (Interior/Exterior/Ciudad/Campo), productos_visibles, tono_escena."}, {"title": "Generare campagnas di anuncidavanti as", "desc": "200 campagnas con criterios.", "prompt": "Genera tabella 'campanas_contextual' con 200 righe: campana_id, anuncidavanti a, producto, sector, target_emozioni (array), target_settings (array), brand_safety_exclusions (Violencia, Drogas, etc.), cpm_ofertado, budget."}, {"title": "Calcular matching contextual", "desc": "Score annuncio-escena.", "prompt": "Crea tabella 'matching_scores' con: per ogni par campagna-escena, calcolare relevancia: match_emocion (0-1), match_setting (0-1), brand_safety_ok (TRUE/FALSE), audience_match. Score_totale = media ponderada. Excluir brand_safety=FALSE."}, {"title": "Optimizar inserzione", "desc": "Mejor annuncio per break.", "prompt": "Para ogni ad break (tra escenas), seleccionar il annuncio con maggiore score × CPM respetando: non repetir anuncidavanti a in stesso título, non superar frequence cap del viewer, respetar budget campagna."}, {"title": "Evaluar rendimento", "desc": "CTR e conversione.", "prompt": "Simula rendimento: CTR base 0.8%, boost per relevancia alta (+200%), penalizazione per baja relevancia (-50%). Calcula CTR, conversione e revenue per campagna e per tipo di matching. Comper: contextual vs demografico puro."}, {"title": "Generare insights con IA", "desc": "Recomendazioni per anuncidavanti as.", "prompt": "Usa CORTEX.COMPLETE per generare insights per campagna: 'I annuncios di [producto] funcionan migliore in escenas di [emozione] durdavanti a [setting]. Raccomandazione: aumentar investimento in [tipo_contenuto].' Genera 10 insights."}, {"title": "Dashboard targeting", "desc": "Pannello di campaigns.", "prompt": "Crea dashboard Streamlit: KPIs (CTR medio, conversione, revenue, brand safete incidents), performance per campagna, heatmap di matching per genere di contenuto, compertiva contextual vs demografico, filtros per sector e emozione. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS TARGETING_MEDIOS_DB comentado."}]},
+  UC10: {"title": "Analisi delle Tendenze e Social Listening per Contenuti", "intro": "Prompts per rilevare tendenze culturales emergentes e oportunitàes di contenuto audiovisual mediante a social listening.", "steps": [{"title": "Configurare ambiente", "desc": "Database per trends.", "prompt": "Crea base di dati TRENDS_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare dati di social media", "desc": "100.000 posts di 6 mesi.", "prompt": "Genera tabella 'sociale_posts' con 100.000 righe: post_id, piattaforma (Twitter 35%, Instagram 25%, TikTok 25%, YouTube 15%), fecha, texto (1-3 frasi sul contenuto audiovisivo, cultura, intrattenimento), hashtags (array), likes, shares, comentarios, autor_seguidores."}, {"title": "Analizzare sentimiento e temas", "desc": "NLP sui post.", "prompt": "Crea tabella 'posts_analizzados' con: CORTEX.SENTIMENT sul testo, e CORTEX.COMPLETE per estrarre: tema_principale (Streaming, Cine, TV, Documental, Gaming, Cultura), subtema, menzione_marca, emocion, formato_domandado (Serie, Película, Documental, Reality, Podcast)."}, {"title": "Rilevare tendenze", "desc": "Velocidad di crecimiento.", "prompt": "Crea vista 'tendenze_rilevadas' con: tema, subtema, volumen_settimanal, crecimiento_settimana_pct, sentimiento_medio, demografía_dominante (edad, genere), piattaforma_principale. Clasificar: Explosiva (>200%/sem), Creciente (50-200%), Estable, Decreciente."}, {"title": "Evaluar potencial di contenuto", "desc": "Oportunitàes.", "prompt": "Crea tabella 'oportunitàes_contenuto' con: tendenza, formato_ideal, target_demografico, tamanno_audience_potencial, concorrenza_esistonote (títui similees in catálogo), ventana_optima, score_oportunità. Ranking top-20."}, {"title": "Generare briefs creativos", "desc": "Propuestas con IA.", "prompt": "Usa CORTEX.COMPLETE per generare brief creativo per top-5 tendenze: título di trabajo, logline, formato, target, tono, comperble di mercato, budget estimado, ventana di produzione ottimale."}, {"title": "Analisi di concorrenza", "desc": "Qué produce la concorrenza.", "prompt": "Genera tabella 'concorrenza_contenuto' simulada: piattaforma, títui anunciados per tema, budget estimado, fecha prevista. Cruza con tendenze per identificare: saturazione vs whitespace per tema."}, {"title": "Dashboard trends", "desc": "Pannello di radar.", "prompt": "Crea dashboard Streamlit: KPIs (tendenze activas, oportunitàes identifiogni, whitespace rilevado, briefs generados), radar di tendenze con velocidad e volumen, timeline di evoluzione per tema, briefs creativos, filtros per tema e formato. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS TRENDS_MEDIOS_DB comentado."}]},
+  UC11: {"title": "Ottimizzazione del Palinsesto e Programmazione", "intro": "Prompt per costruire un motor di ottimizzazione di palinsesto che massimizza audience totale e revenue pubblicitario.", "steps": [{"title": "Configurare ambiente", "desc": "Database per palinsesto.", "prompt": "Crea base di dati PALINSESTO_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare catálogo di programas", "desc": "100 programas disponibili.", "prompt": "Genera tabella 'programas_disponibili' con 100 righe: programa_id, titulo, genero, target_edad, target_genero, audience_media_share, costo_emision_eur, tipo (Estreno 20%, Reposizione 40%, Produczione_Propia 25%, Adquirido 15%), duracion_min (22/45/60/90/120)."}, {"title": "Generare dati di franjas", "desc": "24 franjas con profili.", "prompt": "Genera tabella 'franjas_horarias' con 24 righe: franja_id, hora_inicio, hora_fin, audience_disponibile_miles, profilo_dominante (Niños, Jóvenes, Adultos, Senior, Familiar), concorrenza_share_medio, cpm_pubblicitario_eur."}, {"title": "Generare storico di programazione", "desc": "52 settimanas di palinsesto reale.", "prompt": "Genera tabella 'palinsesto_historica' con 52 settimanas × 7 giorni × 24 franjas: fecha, franja_id, programa_id, share_reale, spettatori_miles, revenue_pubblicitario_eur."}, {"title": "Modelar affinità programa-franja", "desc": "ML per matching.", "prompt": "Entrena ML.CLASSIFICATION per prevedere share per combinazione programa-franja. Features: genero, target, franja, dia_settimana, concorrenza, stagionalità. Identifica le 10 migliorees combinazioni non exploradas. Usa evaluate => TRUE per generare metriche di valutazione."}, {"title": "Optimizar palinsesto settimanal", "desc": "Asignazione ottimale.", "prompt": "Implementa ottimizzazione: (1) Assegnare programas a franjas massimizzanodo share totale, (2) Respetar restriczioni (no repetir programa in 24h, cuotas di produzione europea >50%), (3) Maximizar revenue pubblicitario. Genera 'palinsesto_ottimizzada' per prossima settimana."}, {"title": "Simulare scenari", "desc": "Qué pasaría si...", "prompt": "Simula 3 scenari: (1) Parrilla attuale, (2) Optimizada, (3) Optimizada + uscita premium in prime time viernes. Comper: share medio, revenue, diversidad, costo di programazione."}, {"title": "Dashboard palinsesto", "desc": "Pannello di planning.", "prompt": "Crea dashboard Streamlit: KPIs (share medio settimanal, revenue, costo, ROI programazione), palinsesto visual per giorno e franja, compertiva scenari, top programas per efficienza (share/costo), filtros per giorno e franja. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS PALINSESTO_MEDIOS_DB comentado."}]},
+  UC12: {"title": "Misurazione dell\'Impatto del Product Placement", "intro": "Prompts per medir il ROI di product placement correlacionando esposizione di marca con comportamento del consumidor.", "steps": [{"title": "Configurare ambiente", "desc": "Database per placement.", "prompt": "Crea base di dati PLACEMENT_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare placements in contenuto", "desc": "500 placements in 200 títulos.", "prompt": "Genera tabella 'placements' con 500 righe: placement_id, titulo_id, marca, producto, escena_num, duracion_pantalla_seg (3-60), prominencia (Background 40%, Medium 35%, Hero 25%), tipo (Visual 50%, Verbal 20%, Uso 30%), costo_placement_eur (5K-500K)."}, {"title": "Generare audience del contenuto", "desc": "Espectadores per título.", "prompt": "Genera tabella 'audience_titulo' con 200 títulos: titulo_id, spettatori_unicos, ore_totales, profilo_edad_dominante, profilo_genero, completion_rate. Vincular con placements per calcolare exposizioni."}, {"title": "Generare comportamento post-visualizzazione", "desc": "Respuesta del spettatore.", "prompt": "Genera tabella 'comportamento_post' con 100.000 registros: viewer_id, titulo_id, marca_expuesta, busqueda_marca_post (TRUE 5%), visita_web_post (TRUE 3%), compra_post (TRUE 0.8%), mencion_sociale (TRUE 2%). Mayor probabilità per placements Hero e Uso."}, {"title": "Calcular metriche di impatto", "desc": "KPIs per placement.", "prompt": "Crea vista 'impatto_placement' con: placement_id, impresiones_totales, search_lift_pct (ricercas post vs base), web_lift_pct, purchase_lift_pct, sociale_lift_pct, earned_media_value_eur, roi_placement = (value_generado - costo) / costo."}, {"title": "Análisis per variables", "desc": "Qué funciona migliore.", "prompt": "Analiza ROI por: prominencia (Background vs Hero), tipo (Visual vs Uso), genere di contenuto, durazione di esposizione, profilo di audience. Identifica combinazioni di máximo ROI."}, {"title": "Generare report per anuncidavanti as", "desc": "Reports con IA.", "prompt": "Usa CORTEX.COMPLETE per generare report ejecutivo per marca: exposizioni, reach, lifts, ROI, raccomandazioni per prossimo placement. Formato profesional. Genera 5 report esempio."}, {"title": "Dashboard placement", "desc": "Pannello di ROI.", "prompt": "Crea dashboard Streamlit: KPIs (placements attivi, impresiones totales, ROI medio, best performer), ranking di placements per ROI, analisi per prominencia e tipo, report per anuncidavanti a, filtros per marca e genere. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS PLACEMENT_MEDIOS_DB comentado."}]},
+  UC13: {"title": "Ottimizzazione del Pricing e Bundling degli Abbonamenti", "intro": "Prompts per ottimizzare pricing e bundles di abbonamento modelando elasticidad per segmento.", "steps": [{"title": "Configurare ambiente", "desc": "Database per pricing.", "prompt": "Crea base di dati PRICING_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare dati di suscriptores", "desc": "50.000 suscriptores con cartella clinica.", "prompt": "Genera tabella 'suscriptores_pricing' con 50.000 righe: suscriptor_id, plan_attuale (Básico_Ads 6.99€, Estándar 10.99€, Premium 15.99€, Familiar 19.99€), fecha_alta, cambios_plan_historico (arrae di cambios con fecha e motivo), dispositivos, ore_mes, segmento_CLV."}, {"title": "Generare dati di concorrenza", "desc": "Precios del mercato.", "prompt": "Genera tabella 'concorrenza_prezzos' con: piattaforma (Netflix, Disney+, Amazon, HBO, DAZN, Movistar+), planes con prezzo, contenuto diferencial, market_share_españa_pct. Actualizazione trimestrale simulada."}, {"title": "Modelar elasticidad", "desc": "Sensibilidad al prezzo per segmento.", "prompt": "Crea tabella 'elasticidad_segmento' simulando: per ogni segmento (Binge/Casual/Occasional/Family/Premium/Social), qué % cancelaría si +1€, +2€, +3€; qué % haría upgrade si -1€, -2€ in plan superior. Genera curvas di elasticidad."}, {"title": "Simulare bundles", "desc": "Combinazioni con altri servizi.", "prompt": "Genera tabella 'bundles_simulados' con 10 opzioni: Bundle+Deportes, +Música, +Gaming, +Prensa, +Infantil_Premium, +4K_HDR, +Descargas_Ilimitadas, +Sin_Ads, +Multi_Pantalla, +Estrenos_Cine. Para ogni: costo aggiuntivo, valore percibido per segmento, adopzione estimada."}, {"title": "Calcular prezzo ottimale", "desc": "Maximizar revenue.", "prompt": "Para ogni segmento, calcula prezzo che massimizza: revenue = suscriptores × prezzo - costi. Considera: elasticidad, concorrenza, CLV, churn risk. Genera tabella 'pricing_optimo' con prezzo recomendado vs attuale."}, {"title": "Simulare P&L", "desc": "Impacto financiero.", "prompt": "Simula P&L a 12 mesi con pricing ottimizzado vs attuale: suscriptores per plan, ARPU, revenue totale, churn, costo di adquisizione, margen. Calcula uplift di revenue e impatto in base di suscriptores."}, {"title": "Dashboard pricing", "desc": "Pannello di simulazione.", "prompt": "Crea dashboard Streamlit: KPIs (ARPU attuale vs ottimale, revenue uplift, churn impatto, migliorees bundles), simulador di pricing per segmento, compertiva con concorrenza, P&L a 12 mesi, filtros per segmento e bundle. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS PRICING_MEDIOS_DB comentado."}]},
+  UC14: {"title": "Feature Store di Performance dei Contenuti", "intro": "Prompt per costruire un Feature Store in Snowflake con metriche di rendimento di ogni título per decisiones ágiles.", "steps": [{"title": "Configurare ambiente", "desc": "Database per Feature Store di contenuto.", "prompt": "Crea base di dati CONTENT_FS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare dati di viewership", "desc": "500 títui × 90 giorni.", "prompt": "Genera tabella 'viewership_data' con 500 títui × 90 giorni: titulo_id, fecha, reproduzioni, ore_visualizzazione, viewers_unicos, completion_rate_media, nuevos_viewers_pct, rewatch_rate."}, {"title": "Generare dati di engagement", "desc": "Interazioni per título.", "prompt": "Genera tabella 'engagement_data' con 500 títui × 90 giorni: titulo_id, fecha, valutazioni_media (1-5), num_valutazioni, añadidos_lista, shares, descargas, ricercas_relacionadas."}, {"title": "Generare dati sociale", "desc": "Buzz in reti.", "prompt": "Genera tabella 'sociale_buzz' con 500 títui × 90 giorni: titulo_id, fecha, menzioni_twitter, menzioni_instagram, menzioni_tiktok, sentimiento_medio (-1 a 1), hashtags_trending, influencers_mencionando."}, {"title": "Generare benchmark", "desc": "Compertiva di catálogo.", "prompt": "Genera tabella 'benchmark_catalogo' con 500 títulos: titulo_id, percentil_viewership (vs catálogo e vs genere), percentil_engagement, percentil_sociale, ranking_general, ranking_genero, tendenza_7d (subiendo/stabile/bajando)."}, {"title": "Creare Entity e FeatureViews", "desc": "Feature Store di contenuto.", "prompt": "Usando Python con snowflake.ml.feature_store: (1) Entity 'title_content' con join_keys=['titulo_id']. (2) FeatureView 'viewership_metrics': reproduzioni, ore, completion, trend. (3) FeatureView 'engagement_metrics': valutazioni, listas, shares, descargas. (4) FeatureView 'sociale_metrics': menzioni, sentimiento, trending, influencers. (5) FeatureView 'benchmark_position': percentil, ranking, tendenza. Registra FeatureViews."}, {"title": "Pipeline di attualeizazione", "desc": "Refresh horario.", "prompt": "Crea pipeline che attualeiza FeatureViews ogni hora. Simula 48h di dati con variabilidad. Verifica latenza <15 min."}, {"title": "Servir features per decisiones", "desc": "Content intelligence.", "prompt": "Usa feature_store.get_features() per top-20 títulos. Dimostra uso per: decisione di marketing push, rinnovo di licenza, produzione di secuela, programazione di palinsesto."}, {"title": "Dashboard content intelligence", "desc": "Pannello di títulos.", "prompt": "Crea dashboard Streamlit: KPIs per título (viewership, engagement, sociale, benchmark), ranking di catálogo, alert di títui subiendo/bajando, compertiva con concorrenza, timeline di metriche, filtros per genere e anzianità. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS CONTENT_FS_DB comentado."}]},
+  UC15: {"title": "Chatbot RAG per l\'Assistenza Abbonati", "intro": "Prompt per costruire un asistente conversacional RAG per assistenza al suscriptor di piattaforme audiovisuales.", "steps": [{"title": "Configurare ambiente", "desc": "Database per chatbot.", "prompt": "Crea base di dati CHATBOT_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare base di conoscenza", "desc": "200 documentos.", "prompt": "Genera tabella 'documentos_supporto' con 200 righe: doc_id, tipo (FAQ 35%, Guía_Técnica 20%, Política 15%, Catálogo 20%, Promo 10%), titulo, area (Facturazione, Técnica, Catálogo, Cuenta, Promozioni). Genera contenuto di 200-400 palabras con CORTEX.COMPLETE."}, {"title": "Creare chunks", "desc": "Fragmentar documentos.", "prompt": "Crea tabella 'chunks_supporto' fragmentando documentos: chunk_id, doc_id, tipo, area, texto_chunk (~500 chars), chunk_index. ~3-4 chunks per documento."}, {"title": "Creare Cortex Search Service", "desc": "Indexazione semántica.", "prompt": "Crea Cortex Search Service 'cercador_supporto_medios' il suo chunks_supporto con SEARCH_COLUMN='texto_chunk', ATTRIBUTES='tipo,area'. TARGET_LAG='1 hour'."}, {"title": "Generare catálogo per raccomandazione", "desc": "Contenido destacado.", "prompt": "Genera tabella 'catalogo_destacado' con 100 títulos: titulo_id, titulo, genero, senzaopsis_corta, valoreacion, tags, publico_obiettivo, disponibile_desde. Para raccomandazione contextual in chat."}, {"title": "Pipeline RAG", "desc": "Respuestas con contesto.", "prompt": "Crea pipeline: (1) Clasificar consulto (tecnica/fatturazione/catálogo/cuenta), (2) Cercare chunks rilevanti, (3) Si catálogo → includere raccomandazione, (4) Generare risposta con CORTEX.COMPLETE appuntamentondo fonte. Prueba 10 consulti variadas."}, {"title": "Evaluar qualità", "desc": "Validar rispostas.", "prompt": "Ejecuta 15 domandas: '¿Cómo cancelo mi abbonamento?', '¿Qué series di thriller hay?', '¿Por qué non puedo ver in 4K?', etc. Evalúa relevancia (1-5) con CORTEX.COMPLETE."}, {"title": "Dashboard chatbot", "desc": "Interfaz di chat.", "prompt": "Crea dashboard Streamlit: campo di domanda, risposta con fonte, raccomandazione di contenuto integrada, FAQ rápido per área, cartella clinica di conversazione, escalado a agente. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS CHATBOT_MEDIOS_DB e DROP CORTEX SEARCH SERVICE cercador_supporto_medios comentados."}]},
+  UC16: {"title": "Rilevamento di Frode Pubblicitaria e Bot Traffic", "intro": "Prompt per costruire un sistema ML di rilevamento di tráfico fraudulento in piattaforme di pubblicità audiovisual.", "steps": [{"title": "Configurare ambiente", "desc": "Database per frode.", "prompt": "Crea base di dati FRAUDE_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare dati di impresiones", "desc": "500.000 impresiones.", "prompt": "Genera tabella 'impresiones_ads' con 500.000 righe: impresion_id, timestamp, campana_id, ip_address, user_agent, pais, ciudad, referrer, dispositivo (Desktop 40%, Móvil 45%, Tablet 10%, CTV 5%), duracion_visualizacion_seg."}, {"title": "Generare comportamento di sesione", "desc": "Patrones di navegazione.", "prompt": "Genera tabella 'sesiones_detalle' con: sesion_id, ip_address, paginas_visitadas, duracion_totale_seg, clics_totales, tempo_tra_clics_ms (bots: <100ms uniforme; humanos: 500-3000ms variable), scroll_depth_pct, mouse_movement (bots: lineal; humanos: errático)."}, {"title": "Etiquetar frode conocido", "desc": "8% di impresiones fraudulentas.", "prompt": "Etiqueta 8% di impresiones come fraudulentas: bot_farm (3%): IPs repetidas con user agents rotativos; click_fraud (2%): clics rápidos senza engagement; ad_stacking (2%): molteplici impresiones stessa posizione; domain_spoofing (1%): referrer falso."}, {"title": "Feature engineering", "desc": "Señales di frode.", "prompt": "Crea tabella 'features_frode' con: impresiones_ip_hora, variabilidad_user_agent, ratio_clics_impresiones, tempo_tra_clics_cv, engagement_post_click (pages, time), hora_del_dia_distribuzione, geo_consistencia, device_fingerprint_unicidad. Target: es_frode."}, {"title": "Addestrare modello", "desc": "ML.CLASSIFICATION di frode.", "prompt": "Divide 80/20, trana ML.CLASSIFICATION 'detector_frode_ads' con target es_frode e evaluate TRUE. Optimizar recall >90% con precision >85%."}, {"title": "Scoring in tempo reale", "desc": "Clasificar impresiones.", "prompt": "Aplica modello a 50.000 impresiones nuevas. Genera tabella 'scoring_frode' con: impresion_id, prob_frode, tipo_frode_probable, accion (Bloquear >90%, Cuarentena 60-90%, Monitor 30-60%, OK <30%)."}, {"title": "Generare report di integridad", "desc": "Informe per anuncidavanti as.", "prompt": "Genera report per campagna: impresiones totales, % legítimo, % fraudulento per tipo, revenue protegido, compertiva con industria. Usa CORTEX.COMPLETE per narrativa ejecutiva."}, {"title": "Dashboard integridad", "desc": "Pannello di frode.", "prompt": "Crea dashboard Streamlit: KPIs (impresiones analizzadas, frode rilevado %, revenue protegido, tipos di frode), timeline di frode, distribuzione geografica, alert per campagna, filtros per tipo e campagna. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS FRAUDE_MEDIOS_DB comentado."}]},
+  UC17: {"title": "Gestione dei Diritti Digitali e Finestre di Sfruttamento", "intro": "Prompt per costruire un sistema di gestione di diritti di contenuto audiovisual con alert e ottimizzazione di ventanas.", "steps": [{"title": "Configurare ambiente", "desc": "Database per diritti.", "prompt": "Crea base di dati DERECHOS_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare catálogo di títulos", "desc": "1.000 títulos.", "prompt": "Genera tabella 'titulos_diritti' con 1.000 righe: titulo_id, titulo, tipo (Película 40%, Serie 35%, Documental 15%, Animazione 10%), pais_produccion, anno, duracion, productora, distribuidor_original."}, {"title": "Generare contratti di diritti", "desc": "3.000 contratti.", "prompt": "Genera tabella 'contratti_diritti' con 3.000 righe: contratto_id, titulo_id, licenzatario, territorio (Italia 30%, Latam 25%, Europa 20%, USA 15%, Global 10%), piattaforma (Streaming, TV_Lineal, Cine, VOD), exclusividad (TRUE 40%), ventana_inicio, ventana_fin, prezzo_licenza_eur, renovacion_automatica (TRUE 30%), clausulas_especiales."}, {"title": "Rilevare conflictos", "desc": "Solapamientos e exclusividad.", "prompt": "Crea vista 'conflictos_diritti' che rileva: (1) Mismo título in stesso territorio con 2+ licenzatarios exclusivos, (2) Ventanas solapadas per stesso título e piattaforma, (3) Título emitido fuori da ventana. Clasificar severidad: Crítico/Alto/Medio."}, {"title": "Alert di vencimiento", "desc": "Próximos 90 giorni.", "prompt": "Crea vista 'alert_vencimiento' con: contratti che vencen in 30/60/90 giorni, revenue a rischio si non si renueva, alternativas di licenzatario, raccomandazione (Renovar_Urgente, Negociar, No_Renovar)."}, {"title": "Optimizar ventanas", "desc": "Estrategia di distribuzione.", "prompt": "Para 50 títui con molteplici ventanas, ottimizza: secuencia Cine → Streaming_Premium → Streaming_Estándar → TV → VOD. Maximizar revenue totale respetando periodos di exclusividad. Comperr: estrategia attuale vs ottimizzada."}, {"title": "Generare alert con IA", "desc": "Resúmenes ejecutivos.", "prompt": "Usa CORTEX.COMPLETE per generare resumen settimanal: conflictos attivi, vencimientos prossimos, oportunitàes di renegociazione, rischio financiero. Formato di email ejecutivo per 3 scenari."}, {"title": "Dashboard diritti", "desc": "Pannello di gestione.", "prompt": "Crea dashboard Streamlit: KPIs (contratti attivi, conflictos, vencimientos prossimos, revenue licenzas), timeline di ventanas per título, mapa di territorios, alert di conflictos, filtros per territorio e piattaforma. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS DERECHOS_MEDIOS_DB comentado."}]},
+  UC18: {"title": "Rilevamento di Pirateria e Distribuzione Non Autorizzata", "intro": "Prompt per costruire un pipeline di rilevamento di contenuto pirata e generazione automatizada di takedowns.", "steps": [{"title": "Configurare ambiente", "desc": "Database per anti-pirateria.", "prompt": "Crea base di dati PIRATERIA_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare catálogo protegido", "desc": "500 títui con fingerprint.", "prompt": "Genera tabella 'catalogo_protegido' con 500 righe: titulo_id, titulo, tipo, fecha_uscita, priorità_proteccion (Estreno_Reciente: Alta, Premium: Media, Catálogo: Baja), fingerprint_hash (hash simulado), ventanas_activas."}, {"title": "Generare deteczioni di pirateria", "desc": "2.000 aparizioni.", "prompt": "Genera tabella 'deteczioni_pirata' con 2.000 righe: deteccion_id, titulo_id, fecha_deteccion, fonte (Web_Pirata 40%, P2P_Torrent 25%, Red_Social 20%, YouTube 10%, Otro 5%), url_rilevada, qualità (HD 30%, SD 50%, CAM 20%), visitas_estimadas, velocidad_propagacion (views/hora)."}, {"title": "Clasificar priorità", "desc": "Urgencia di takedown.", "prompt": "Crea vista 'priorità_takedown' con: deteccion_id, titulo priorità × recencia × qualità × propagazione = score_urgenza. Clasificar: Urgente (>80, takedown <4h), Alto (60-80, <24h), Medio (40-60, <72h), Bajo (<40, batch settimanal)."}, {"title": "Generare takedown notices", "desc": "Notificazioni automaticas.", "prompt": "Usa CORTEX.COMPLETE per generare DMCA takedown notices personalizzatas per fonte: per webs (email al hosting), per reti sociali (formulario di copyright), per P2P (notifica al ISP). Genera 10 esempios."}, {"title": "Analisi di impatto económico", "desc": "Revenue protegido.", "prompt": "Calcula per título: visitas piratas × tasa conversione estimada (3-5%) × prezzo abbonamento = revenue perdido. Agrega per periodo. Estima ROI del sistema anti-pirateria: costo operazione vs revenue protegido."}, {"title": "Tracking di efectividad", "desc": "Seguimiento di takedowns.", "prompt": "Genera tabella 'takedown_tracking' con: richiesta enviada, tempo di risposta del host/piattaforma, risultato (Eliminado 70%, Parcial 15%, Rechazado 10%, Sin_Respuesta 5%), tempo medio per fonte. Calcular tasso di successo."}, {"title": "Dashboard anti-pirateria", "desc": "Pannello di monitoraggio.", "prompt": "Crea dashboard Streamlit: KPIs (deteczioni totales, takedowns exitosos %, revenue protegido, fonti activas), mapa di fonti, timeline di deteczioni, efectividad per fonte, alert di nuevas deteczioni, filtros per título e fonte. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS PIRATERIA_MEDIOS_DB comentado."}]},
+  UC19: {"title": "Analisi del Sentimento e Reputazione dei Contenuti", "intro": "Prompt per monitorare il sentimento su uscite, marchi e talenti sui social e sulla stampa.", "steps": [{"title": "Configurare ambiente", "desc": "Database per reputazione.", "prompt": "Crea base di dati REPUTACION_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare posts di reti sociali", "desc": "50.000 post sulle uscite.", "prompt": "Genera tabella 'sociale_mentions' con 50.000 righe: post_id, piattaforma (Twitter 40%, Instagram 25%, TikTok 20%, YouTube 10%, Foro 5%), fecha, autor, seguidores_autor, texto (1-3 frasi su uscita/marca/talento, mix positivo 40%, neutro 30%, negativo 30%), likes, shares, comentarios, titulo_mencionado, talento_mencionado."}, {"title": "Analizzare sentimiento", "desc": "Clasificar con Cortex.", "prompt": "Crea tabella 'menzioni_analizzadas' aplicando CORTEX.SENTIMENT e CORTEX.COMPLETE per: sentimiento (-1 a 1), temas mencionados (trama, actuazione, produzione, prezzo, tecnico), emocion (entusiasmo, decepzione, enfado, diversione), urgenza (0-10), potencial_viral (basato il suo shares/seguidores)."}, {"title": "Rilevare crisi", "desc": "Alert precoci.", "prompt": "Crea vista 'alert_crisi' con: título o talento con sentimiento medio <-0.5 in ultimas 2h Y crecimiento di menzioni >300% Y al meno 1 influencer (>50K seguidores). Clasificar: Crisis (tutte le condizioni), Rischio (2 di 3), Monitorizar (1 di 3)."}, {"title": "Analisi di prensa", "desc": "Cobertura mediática.", "prompt": "Genera tabella 'copertura_prensa' con 500 artículos: medio, cabecera, url, fecha, titulo_mencionado, tono (Positivo/Neutro/Negativo/Mixto), alcance_estimado. Usa CORTEX.SENTIMENT per classificare. Cruza con sociale per correlazione prensa-sociale."}, {"title": "Generare rispostas", "desc": "Comunicados con IA.", "prompt": "Usa CORTEX.COMPLETE per generare 3 templates di risposta per tipo di crisi: (1) Disculpa + azione correctiva, (2) Clarificazione di hechos, (3) Agradecimiento per feedback. Adaptar tono e canal (RRSS, prensa, comunicado oficial)."}, {"title": "Trending e viralidad", "desc": "Contenido che si vuelve viral.", "prompt": "Identifica posts con maggiore potencial viral: ratio shares/impresiones × sentimiento × seguidores del autor. Top-10 posts positivos (amplificar) e top-10 negativos (gestire). Genera estrategia per ogni uno."}, {"title": "Dashboard reputazione", "desc": "Pannello di monitoring.", "prompt": "Crea dashboard Streamlit: KPIs (menzioni 24h, sentimiento medio, crisi activas, tendenza), timeline di sentimiento per título, alert di crisi, nube di temas, top influencers mencionando, filtros per título e piattaforma. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS REPUTACION_MEDIOS_DB comentado."}]},
+  UC20: {"title": "Conformit\u00e0 Regolatoria e Classificazione dei Contenuti", "intro": "Prompts per classificare contenuto per età e verificar conformità normativo audiovisual espannol e europeo.", "steps": [{"title": "Configurare ambiente", "desc": "Database per compliance.", "prompt": "Crea base di dati COMPLIANCE_MEDIOS_DB con schema PUBLIC e warehouse COMPUTE_WH."}, {"title": "Generare catálogo con metadata", "desc": "500 títui con escenas.", "prompt": "Genera tabella 'catalogo_compliance' con 500 righe: titulo_id, titulo, genero, pais_produccion, duracion_min, idioma, es_europeo (TRUE 55%), subtitulos_disponibili (arrae idiomas), audiodescripcion (TRUE 30%), lengua_signos (TRUE 15%)."}, {"title": "Generare analisi di escenas", "desc": "Contenido sensible.", "prompt": "Genera tabella 'escenas_sensibles' con 5.000 registros (~10 per título): titulo_id, escena_num, violencia_livello (0-5), lenguaje_livello (0-5), sustancias_livello (0-5), contenuto_sexual_livello (0-5), miedo_livello (0-5), discriminacion (TRUE 5%), descripcion_escena."}, {"title": "Clasificar per età", "desc": "IA + regle normativas.", "prompt": "Usa CORTEX.COMPLETE per analizzare escenas e applicare criterios CNMC: máximo livello in ogni categoría determina classificazione. Genera tabella 'classificacion_edad' con: titulo_id, classificacion (TP, 7+, 12+, 16+, 18+), categoria_determindavanti a, confianza (0-1). Comper con classificazione manualeee simulada per accuracy."}, {"title": "Verificar cuotas europeas", "desc": "Lee Audiovisual.", "prompt": "Calcula conformità di cuotas: (1) >50% catálogo europeo, (2) >25% catálogo in lenguas oficiales espannolas, (3) >5% financiazione anticipada produzione europea independiente. Genera tabella 'conformità_cuotas' con: cuota, requerido_pct, attuale_pct, cumple."}, {"title": "Verificar accesibilidad", "desc": "Requisitos di accesso.", "prompt": "Verifica: (1) % catálogo con subtítui in italiano, (2) % con audiodescrizione, (3) % con lengua di signos. Requisitos LGCA: subtítui 90%, audiodescrizione 10%, signos 10% programazione. Genera report di gaps."}, {"title": "Generare report normativo", "desc": "Reporte per regulador.", "prompt": "Usa CORTEX.COMPLETE per generare report formal di conformità: resumen ejecutivo, conformità per cuota, classificazione di catálogo, accesibilidad, plan di azione per gaps. Formato oficial."}, {"title": "Dashboard compliance", "desc": "Pannello di regolamentazione.", "prompt": "Crea dashboard Streamlit: KPIs (títui classificados, cuotas cumplidas/no, accesibilidad %, gaps), distribuzione di classificazione per età, stato di cuotas con semáforo, plan di azione per gaps, filtros per genere e país. Usa snowflake.connector.connect() per esecuzione local del dashboard."}, {"title": "Limpieza (opcional)", "desc": "Elimina objetos.", "prompt": "Genera DROP DATABASE IF EXISTS COMPLIANCE_MEDIOS_DB comentado."}]},
+};
+
+function verGuia(ucId) {
+  const g = GUIAS[ucId];
+  if (!g) return;
+  const html = `
+    <span class="guide-badge">${ucId}</span>
+    <h2>${g.title}</h2>
+    <p>${g.contesto}</p>
+    <h3>Focus</h3><p>${g.focus}</p>
+    <h3>Sfida</h3><p>${g.sfida}</p>
+    <h3>Obiettivi</h3><ul>${g.obiettivi.map(o=>`<li>${o}</li>`).join('')}</ul>
+    <h3>Funzionalit\u00e0</h3><ul>${g.funzionalita.map(f=>`<li>${f}</li>`).join('')}</ul>
+    <h3>Dati</h3><ul>${g.dati.map(d=>`<li>${d}</li>`).join('')}</ul>
+    <h3>Stratificazione (Clusterizzazione)</h3><ul>${g.stratificazione.map(e=>`<li>${e}</li>`).join('')}</ul>
+    <h3>Come usare</h3><ul>${g.come_usare.map(c=>`<li>${c}</li>`).join('')}</ul>
+    <div class="guide-footer">Guida generata con Snowflake Cortex Code</div>`;
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+function verPrompts(ucId) {
+  const data = PROMPTS[ucId];
+  if (!data) return;
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  let html = `<span class="guide-badge">${ucId}</span><h2>${data.title}</h2>`;
+  html += `<p class="prompt-intro">${data.intro}</p>`;
+  data.steps.forEach((s,i) => {
+    html += `<div class="prompt-step">
+      <div class="prompt-step-header">
+        <span class="prompt-step-num">${i+1}</span>
+        <span class="prompt-step-title">${s.title}</span>
+      </div>
+      <p class="prompt-step-desc">${s.desc}</p>
+      <div class="prompt-code"><button class="copy-btn" onclick="copiarPrompt(this)">Copia</button>${esc(s.prompt)}</div>
+    </div>`;
+  });
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+function copiarPrompt(btn) {
+  const code = btn.parentElement.textContent.replace('Copiar','').trim();
+  navigator.clipboard.writeText(code).then(()=>{btn.textContent='✓ Copiato';setTimeout(()=>btn.textContent='Copia',1500);});
+}
+function cerrarModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+</script>
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)cerrarModal();">
+  <div class="modal-box">
+    <button class="modal-close" onclick="cerrarModal()">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+</body>
+</html>

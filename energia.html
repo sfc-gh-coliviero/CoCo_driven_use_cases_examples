@@ -1,0 +1,2374 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <title>Snowflake — Soluzioni IA/ML per Energia e Utilities</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+    .hero { background: linear-gradient(135deg, #003545, #11567F); color: #fff; padding: 32px 48px 36px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+    .hero-left { flex: 1; }
+    .logos { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .logo-snowflake { display: flex; align-items: center; gap: 7px; color: #fff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+    .hero-eyebrow { font-size: 11px; letter-spacing: 2px; font-weight: 600; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 8px; }
+    .hero-title { font-size: 42px; font-weight: 700; line-height: 1.1; margin-bottom: 10px; }
+    .hero-subtitle { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); margin-bottom: 6px; }
+    .hero-tagline { font-size: 12px; color: rgba(255,255,255,0.65); }
+    .stats-box { background: #fff; border-radius: 10px; padding: 20px 28px; text-align: center; color: #1a1a1a; min-width: 160px; flex-shrink: 0; }
+    .stats-box .stat-number { font-size: 40px; font-weight: 700; color: #F57C00; line-height: 1; }
+    .stats-box .stat-label { font-size: 12px; color: #666; margin-bottom: 14px; }
+    .stats-box .stat-time { font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1; }
+    .stats-box .stat-time-label { font-size: 12px; color: #666; }
+    .stats-divider { border: none; border-top: 1px solid #e8e8e8; margin: 10px 0; }
+    .intro { background: #fff; text-align: center; padding: 48px 24px 32px; }
+    .intro h2 { font-size: 22px; font-weight: 700; color: #11567F; margin-bottom: 14px; }
+    .intro p { max-width: 600px; margin: 0 auto; font-size: 14px; color: #555; line-height: 1.7; }
+    .filters-bar { background: #fff; padding: 20px 48px 0; border-bottom: 1px solid #e8e8e8; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .filters-left { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+    .filter-btn { padding: 8px 18px; border-radius: 80px; border: 1.5px solid #ccc; background: transparent; font-size: 13px; font-weight: 500; color: #444; cursor: pointer; transition: all 0.15s; }
+    .filter-btn:hover { border-color: #29B5E8; color: #29B5E8; }
+    .filter-btn.active { background: #29B5E8; border-color: #29B5E8; color: #fff; }
+    .search-box { display: flex; align-items: center; border: 1.5px solid #ccc; border-radius: 80px; padding: 7px 14px; gap: 8px; min-width: 200px; background: #fff; }
+    .search-box input { border: none; outline: none; font-size: 13px; color: #444; width: 100%; background: transparent; }
+    .search-box input::placeholder { color: #aaa; }
+    .results-count { padding: 14px 48px 8px; font-size: 13px; color: #666; background: #f5f5f5; }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; padding: 16px 48px 48px; background: #f5f5f5; }
+    .card { background: #fff; border-radius: 10px; border: 1px solid #e2e2e2; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.2s; }
+    .card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.1); }
+    .card-header { padding: 16px 18px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .card-badges { display: flex; gap: 6px; align-items: center; }
+    .badge-id { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.5px; }
+    .badge-cat { background: #E0F4FD; color: #11567F; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+    .badge-cat.rinnovabile   { background: #E8F5E9; color: #2E7D32; }
+    .badge-cat.red         { background: #FFF3E0; color: #E65100; }
+    .badge-cat.cliente     { background: #E3F2FD; color: #1565C0; }
+    .badge-cat.operazioni { background: #EDE7F6; color: #5E35B1; }
+    .badge-cat.sicurezza   { background: #FCE4EC; color: #C62828; }
+    .card-time { font-size: 12px; color: #888; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .card-title { padding: 0 18px 12px; font-size: 17px; font-weight: 700; color: #11567F; line-height: 1.3; }
+    .pain-point { margin: 0 18px 14px; background: #FFF8E1; border-radius: 8px; padding: 12px 14px; }
+    .pain-point-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #F57C00; margin-bottom: 6px; text-transform: uppercase; }
+    .pain-point p { font-size: 13px; color: #2a2a2a; line-height: 1.55; }
+    .card-desc { padding: 0 18px 14px; font-size: 13px; color: #555; line-height: 1.65; flex: 1; }
+    .card-features { padding: 0 18px 16px; list-style: none; }
+    .card-features li { font-size: 13px; color: #444; display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+    .card-features li::before { content: '\2713'; color: #29B5E8; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .card-actions { padding: 14px 18px 18px; display: flex; gap: 10px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
+    .btn-secondary { flex: 1; padding: 10px; background: #29B5E8; color: #fff; border: none; border-radius: 80px; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; transition: background 0.15s; text-decoration: none; display: block; }
+    .btn-secondary:hover { background: #11567F; }
+    .btn-tertiary {
+      flex: 1;
+      padding: 10px;
+      background: #003545;
+      color: #29B5E8;
+      border: none;
+      border-radius: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .btn-tertiary:hover { background: #11567F; }
+    .prompt-step { margin-bottom: 18px; }
+    .prompt-step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .prompt-step-num { background: #003545; color: #29B5E8; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .prompt-step-title { font-size: 13px; font-weight: 600; color: #333; }
+    .prompt-step-desc { font-size: 12px; color: #666; margin-bottom: 6px; line-height: 1.5; }
+    .prompt-code { position: relative; background: #003545; color: #e0e0e0; border-radius: 8px; padding: 12px 14px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12.5px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .prompt-code .copy-btn { position: absolute; top: 6px; right: 8px; background: rgba(255,255,255,0.1); border: none; color: #aaa; font-size: 11px; padding: 3px 8px; border-radius: 4px; cursor: pointer; }
+    .prompt-code .copy-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .modal-box .prompt-intro { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #eee; }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: #fff; border-radius: 12px; max-width: 700px; width: 92%; max-height: 85vh; overflow-y: auto; padding: 32px 28px; position: relative; box-shadow: 0 8px 40px rgba(0,0,0,0.2); }
+    .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 22px; cursor: pointer; color: #888; line-height: 1; }
+    .modal-close:hover { color: #F57C00; }
+    .modal-box h2 { color: #11567F; font-size: 20px; margin-bottom: 6px; }
+    .modal-box h3 { font-size: 15px; color: #333; margin: 18px 0 8px; }
+    .modal-box p, .modal-box li { font-size: 13px; line-height: 1.7; color: #444; }
+    .modal-box ul { padding-left: 20px; margin: 6px 0; }
+    .modal-box .guide-badge { display: inline-block; background: #E0F4FD; color: #11567F; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 50px; margin-bottom: 10px; }
+    .modal-box .guide-footer { margin-top: 20px; padding-top: 14px; border-top: 1px solid #eee; font-size: 12px; color: #888; }
+    @media (max-width: 700px) {
+      .hero { flex-direction: column; padding: 24px 20px; }
+      .cards-grid { grid-template-columns: 1fr; padding: 16px 16px 48px; }
+      .filters-bar { padding: 16px 16px 0; }
+      .results-count { padding: 12px 16px 6px; }
+    }
+  </style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-left">
+    <div class="logos"></div>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.75);text-decoration:none;margin-bottom:8px;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.75)'"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="12,4 6,10 12,16"/></svg>Torna al catalogo dei settori</a>
+    <p class="hero-eyebrow">Settore Energia e Utilities &times; Snowflake</p>
+    <h1 class="hero-title">Soluzioni IA/ML per Energia e Utilities</h1>
+    <p class="hero-subtitle">Guide e prompt Cortex Code pronti al deploy: generazione da rinnovabili, smart grid, operazioni ed esperienza cliente</p>
+    <p class="hero-tagline">Sviluppato con Snowflake Cortex AI | Impatto immediato</p>
+  </div>
+  <div class="stats-box">
+    <div class="stat-number">20</div>
+    <div class="stat-label">Casi d'Uso</div>
+    <hr class="stats-divider"/>
+    <div class="stat-time">8-15 min</div>
+    <div class="stat-time-label">Tempo di Configurazione</div>
+  </div>
+</header>
+<section class="intro">
+  <h2>Accelera l&apos;analitica con soluzioni IA preconfigurate per energia e utilities</h2>
+  <p>Ogni scheda include i prompt Cortex Code per Snowflake con dati sintetici, guide passo passo
+     e implementazioni SQL-first con Cortex AI/ML, Feature Store e Model Registry per il passaggio in produzione.
+     Ottimizza la generazione da rinnovabili, prevedi la domanda, rileva frodi sulla rete e gestisci la smart grid:
+     tutto in Snowflake, senza dipendenze esterne, pronto per essere adattato ai tuoi dati.</p>
+</section>
+<div class="filters-bar">
+  <div class="filters-left" id="filterBtns">
+    <button class="filter-btn active" data-filter="all">Tutti (20)</button>
+    <button class="filter-btn" data-filter="rinnovabile">Generazione Rinnovabile (4)</button>
+    <button class="filter-btn" data-filter="red">Rete e Smart Grid (4)</button>
+    <button class="filter-btn" data-filter="cliente">Esperienza Cliente (4)</button>
+    <button class="filter-btn" data-filter="operazioni">Operazioni ed Efficienza (4)</button>
+    <button class="filter-btn" data-filter="sicurezza">Sicurezza e Compliance (4)</button>
+  </div>
+  <div class="search-box">
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg>
+    <input id="searchInput" type="text" placeholder="Cerca casi d'uso&hellip;" />
+  </div>
+</div>
+<div class="results-count" id="resultsCount">Mostrando 20 di 20 casi d'uso</div>
+<main class="cards-grid" id="cardsGrid"></main>
+<script>
+const USE_CASES = [
+  {
+    "id": "UC01",
+    "cat": "red",
+    "catLabel": "Rete e Smart Grid",
+    "time": "15 min",
+    "title": "Previsione della domanda elettrica con Model Registry",
+    "pain": "Errori di previsione dell'8–12% sulla domanda generano costi di sbilanciamento dell'ordine di 50–100 M€/anno per le utility. Volatilità delle rinnovabili e nuovi profili di consumo (veicoli elettrici, autoconsumo, pompe di calore) rendono obsoleti i modelli basati solo sullo storico.",
+    "desc": "Modello ML per la domanda elettrica per zona, fascia oraria e tipo di cliente con ML.FORECAST, integrando meteo, calendario, prezzi di mercato ed elettrificazione. Registrazione in Snowflake Model Registry per l'esercizio continuativo.",
+    "features": [
+      "Previsione con ML.FORECAST e Model Registry",
+      "Versionamento con log_model() e deploy()",
+      "Variabili esogene: meteo, prezzo, eventi, EV, autoconsumo",
+      "Dashboard Streamlit per la pianificazione della domanda"
+    ]
+  },
+  {
+    "id": "UC02",
+    "cat": "rinnovabile",
+    "catLabel": "Generazione rinnovabile",
+    "time": "14 min",
+    "title": "Previsione della generazione solare fotovoltaica",
+    "pain": "La produzione FV ha variabilità giornaliera del 30–50% legata alla nuvolosità; gli errori di previsione si traducono in deviazioni sul mercato all'ingrosso (ordine di 2–5 €/MWh). Con oltre 20 GW installati (es. mercato iberico), ogni punto percentuale di accuratezza in più ha un impatto economico rilevante.",
+    "desc": "Modello di previsione oraria per impianto con ML.FORECAST, usando irradianza, nuvolosità, temperatura, degrado dei moduli e ombreggiamento stagionale.",
+    "features": [
+      "Previsione oraria multi-impianto con ML.FORECAST",
+      "Variabili: irradianza, nuvolosità, temperatura, degrado",
+      "Intervalli di confidenza al 95% per impianto",
+      "Dashboard Streamlit per la generazione da solare"
+    ]
+  },
+  {
+    "id": "UC03",
+    "cat": "rinnovabile",
+    "catLabel": "Generazione rinnovabile",
+    "time": "14 min",
+    "title": "Previsione della generazione eolica con Model Registry",
+    "pain": "L'eolico è tra le fonti più installate (decine di GW) ma anche la più volatile: errori sulla velocità del vento si riflettono in deviazioni OMIE (tipicamente 3–8 €/MWh) e sulla stabilità del sistema.",
+    "desc": "Previsione della generazione per parco eolico con ML.FORECAST, ensemble di previsioni meteo, curve di potenza per turbina ed effetto scia tra turbine. Modello registrato nel Model Registry.",
+    "features": [
+      "Previsione eolica con ML.FORECAST e Model Registry",
+      "Variabili: vento (velocità, direzione, raffiche), temperatura, pressione",
+      "Curve di potenza per modello di turbina",
+      "Monitoraggio accuratezza (es. MAPE) per parco"
+    ]
+  },
+  {
+    "id": "UC04",
+    "cat": "rinnovabile",
+    "catLabel": "Generazione rinnovabile",
+    "time": "13 min",
+    "title": "Ottimizzazione dello stoccaggio energetico (BESS)",
+    "pain": "Gli impianti di accumulo (BESS) richiedono investimenti elevati (centinaia di €/kWh); la redditività dipende dalla strategia di carica/scarica. Un profilo subottimale può ridurre il ROI del 30–40% e accelerare il degrado delle celle.",
+    "desc": "Motore per ottimizzare i cicli BESS massimizzando ricavi da arbitraggio, servizi di regolazione e autoconsumo e minimizzando il degrado della batteria.",
+    "features": [
+      "Ottimizzazione con ML.FORECAST su prezzi e domanda",
+      "Variabili: prezzo di mercato, domanda locale, SOC, degrado, vincoli normativi",
+      "Simulazione: arbitraggio, peak shaving, servizi di regolazione",
+      "Dashboard Streamlit per il controllo BESS"
+    ]
+  },
+  {
+    "id": "UC05",
+    "cat": "red",
+    "catLabel": "Rete e Smart Grid",
+    "time": "14 min",
+    "title": "Perdite tecniche e non tecniche in rete",
+    "pain": "Le perdite elettriche sono spesso l'8–12% dell'energia distribuita; una quota rilevante è non tecnica (frodi, irregolarità), spesso 1–3 punti percentuali. Ridurre gli scarti di un punto percentuale può valere centinaia di milioni a sistema.",
+    "desc": "Sistema ML che stima le perdite distinguendo cause tecniche (rete, trasformatori) da non tecniche (frodi, manomissioni dei contatori) analizzando bilanci energetici per trasformatore, profili di consumo e anomalie.",
+    "features": [
+      "ML.CLASSIFICATION e bilanci energetici",
+      "Variabili: consumo misurato, energia immessa, fattore di carico, profilo",
+      "Separazione perdite tecniche / non tecniche",
+      "Dashboard Streamlit per il monitoraggio delle perdite"
+    ]
+  },
+  {
+    "id": "UC06",
+    "cat": "red",
+    "catLabel": "Rete e Smart Grid",
+    "time": "13 min",
+    "title": "Congestioni nella rete di distribuzione",
+    "pain": "Generazione distribuita (autoconsumo ed EV) crea flussi bidirezionali su trasformatori dimensionati per flusso prevalentemente unidirezionale; una quota significativa di asset urbani va in sovraccarico nelle ore di massima immissione da FV.",
+    "desc": "Motore di previsione e gestione congestioni che anticipa sovraccarichi su trasformatori e linee e propone flessibilità (demand response, riduzione generazione, accumulo).",
+    "features": [
+      "Previsione congestione con ML.FORECAST per nodo",
+      "Variabili: generazione distribuita, consumo, EV, temperatura, stato rete",
+      "Raccomandazioni operative per priorità",
+      "Dashboard Streamlit per la rete di distribuzione"
+    ]
+  },
+  {
+    "id": "UC07",
+    "cat": "operazioni",
+    "catLabel": "Operazioni ed efficienza",
+    "time": "14 min",
+    "title": "Manutenzione predittiva delle turbine eoliche",
+    "pain": "Un guasto grave su una turbina può costare 100–300 k€ e settimane di fermo; la manutenzione a calendario spreca interventi e non intercetta circa un quarto dei guasti in fase iniziale.",
+    "desc": "Modello predittivo su telemetria SCADA (vibrazioni, temperature su generatore/moltiplicatore, pitch, imbardata, potenza) per degradazione e priorità di intervento.",
+    "features": [
+      "ML.CLASSIFICATION su dati SCADA",
+      "Variabili: vibrazione, temperatura, pitch, yaw, potenza, vento",
+      "Prioritizzazione per impatto economico e rischio",
+      "Dashboard Streamlit per la flotta eolica"
+    ]
+  },
+  {
+    "id": "UC08",
+    "cat": "cliente",
+    "catLabel": "Esperienza cliente",
+    "time": "15 min",
+    "title": "Feature Store cliente energia 360°",
+    "pain": "I dati del cliente finale sono sparsi tra CRM, fatturazione, smart meter, app, contact center e impianti di generazione distribuita: manca una vista unificata per personalizzazione, efficienza e antifrode.",
+    "desc": "Feature Store centralizzato in Snowflake che consolida le feature per cliente da più sistemi e le serve in tempo quasi reale per offerta, efficienza, frodi e fidelizzazione.",
+    "features": [
+      "Snowflake Feature Store con Entity e FeatureView",
+      "Feature: consumo, fatturazione, smart meter, generazione, digitale",
+      "Versionamento del profilo cliente",
+      "Pipeline da billing, metering, CRM e app"
+    ]
+  },
+  {
+    "id": "UC09",
+    "cat": "cliente",
+    "catLabel": "Esperienza cliente",
+    "time": "12 min",
+    "title": "Segmentazione clienti ed efficienza energetica",
+    "pain": "Le campagne di efficienza raggiungono spesso solo il 5–8% di adozione se inviate in modo indifferenziato, senza considerare profilo di consumo, capacità di investimento o propensione al cambiamento.",
+    "desc": "Motore di segmentazione (profilo di carico, potenziale di risparmio, propensione all'autoconsumo, sensibilità al prezzo, engagement digitale) per programmi su misura e offerte commerciali mirate.",
+    "features": [
+      "Segmentazione con ML.CLASSIFICATION multivariata",
+      "Variabili: curva di carico, stagionalità, autoconsumo, tariffa, canali digitali",
+      "Stima del potenziale di risparmio per cliente",
+      "Dashboard Streamlit per i programmi di efficienza"
+    ]
+  },
+  {
+    "id": "UC10",
+    "cat": "rinnovabile",
+    "catLabel": "Generazione rinnovabile",
+    "time": "12 min",
+    "title": "Ottimizzazione del portafoglio di generazione rinnovabile",
+    "pain": "I produttori gestiscono portafogli di centinaia di MW con impianti solari ed eolici geograficamente dispersi: l'offerta sul mercato giornaliero richiede previsioni aggregate accurate; le deviazioni costano tipicamente 3–10 €/MWh.",
+    "desc": "Motore che combina previsioni solare/eolica, prezzi di mercato, PPA e vincoli normativi per costruire offerte sul mercato giornaliero e infragiornaliero.",
+    "features": [
+      "ML.FORECAST multi-impianto integrato con prezzi",
+      "Variabili: generazione attesa, prezzi (es. OMIE), PPA, vincoli",
+      "Offerte ottimizzate per mercato giornaliero e infragiornaliero",
+      "Dashboard Streamlit per desk di trading energetico"
+    ]
+  },
+  {
+    "id": "UC11",
+    "cat": "operazioni",
+    "catLabel": "Operazioni ed efficienza",
+    "time": "13 min",
+    "title": "Manutenzione predittiva della rete di distribuzione",
+    "pain": "Guasti su linee e trasformatori MT/BT causano interruzioni su larga scala; indicatori come il tempo equivalente di interruzione (TIEPI) sono vincolati da regole e penali reputazionali.",
+    "desc": "Modello predittivo su asset di rete (trasformatori, cavi, celle, sezionatori) con telemetria, età dell'asset, carico storico e condizioni ambientali.",
+    "features": [
+      "ML.CLASSIFICATION su telemetria di rete",
+      "Variabili: carico, temperatura, umidità, anzianità, storico guasti",
+      "Prioritizzazione per TIEPI evitabile e clienti coinvolti",
+      "Dashboard Streamlit per lo stato della distribuzione"
+    ]
+  },
+  {
+    "id": "UC12",
+    "cat": "operazioni",
+    "catLabel": "Operazioni ed efficienza",
+    "time": "12 min",
+    "title": "NLP su segnalazioni e ordini di lavoro",
+    "pain": "Le utility gestiscono centinaia di migliaia di ordini all'anno: classificazione manuale lenta, reindirizzamenti errati e know-how legato a tecnici senior in uscita dal ruolo.",
+    "desc": "Pipeline NLP per classificare le segnalazioni, estrarre la causa radice, assegnare priorità e suggerire risoluzioni basate su casi storici, preservando la conoscenza organizzativa.",
+    "features": [
+      "CORTEX.COMPLETE e ML.CLASSIFICATION",
+      "Estrazione della conoscenza tecnica con CORTEX.COMPLETE",
+      "Variabili: testo segnalazione, squadra, zona, storico, meteo",
+      "Dashboard Streamlit per gli ordini di lavoro"
+    ]
+  },
+  {
+    "id": "UC13",
+    "cat": "cliente",
+    "catLabel": "Esperienza cliente",
+    "time": "13 min",
+    "title": "Chatbot RAG per il servizio clienti energetico",
+    "pain": "Gran parte dei contatti al call center riguarda richieste ripetitive (fatturazione, letture, cambio tariffa, guasti) con costi per contatto elevati; i bot a regole risolvono solo una minoranza.",
+    "desc": "Assistente RAG con Cortex Search su tariffe, regolazione, guide al risparmio, FAQ e stato della rete; risposte contestualizzate al profilo del cliente nel Feature Store.",
+    "features": [
+      "RAG con Cortex Search e CORTEX.COMPLETE",
+      "Knowledge base: tariffe, normativa, risparmio, FAQ, rete",
+      "Personalizzazione tramite Feature Store (consumo, tariffa)",
+      "Dashboard Streamlit con escalation verso l'operatore"
+    ]
+  },
+  {
+    "id": "UC14",
+    "cat": "operazioni",
+    "catLabel": "Operazioni ed efficienza",
+    "time": "15 min",
+    "title": "Feature Store delle performance degli asset di rete",
+    "pain": "I KPI degli asset (trasformatori, linee, sottostazioni) spesso arrivano in batch con 24–48 h di ritardo; decisioni di investimento in rete regolata su dati obsoleti aumentano il rischio TIEPI e penali.",
+    "desc": "Feature Store che consolida carico, temperatura, disponibilità, incidenti e benchmark per ogni asset e alimenta decisioni operative e regolatorie.",
+    "features": [
+      "Feature Store con Entity per asset di rete",
+      "FeatureView: carico, temperatura, disponibilità, incidenti, benchmark",
+      "Serving verso processi operativi e compliance",
+      "Pipeline automatiche multi-sorgente"
+    ]
+  },
+  {
+    "id": "UC15",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e compliance",
+    "time": "12 min",
+    "title": "Antifrode su smart meter",
+    "pain": "Le irregolarità sulla misura (manomissioni, bypass, allacci) sono costose da intercettare con ispezioni a campione; serve prioritizzare gli interventi sul campo.",
+    "desc": "Modello ML su curve di carico, confronti con profili simili e indicatori di manomissione per classificare il rischio e ottimizzare il calendario ispezioni.",
+    "features": [
+      "ML.CLASSIFICATION su dati di smart metering",
+      "Variabili: curva di carico, scostamento da stima, vicini omogenei, storico",
+      "Priorità ispezioni per probabilità × importo stimato",
+      "Dashboard Streamlit antifrode"
+    ]
+  },
+  {
+    "id": "UC16",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e compliance",
+    "time": "13 min",
+    "title": "Sicurezza OT/IT dell'infrastruttura energetica",
+    "pain": "Gli impianti energetici sono bersaglio privilegiato di attacchi informatici in crescita; la convergenza OT/IT espone SCADA, RTU e PLC a minacce che possono causare blackout di ampia portata.",
+    "desc": "Pipeline ML per anomalie su traffico OT/IT, comportamento SCADA e accessi, con orchestrazione di risposta.",
+    "features": [
+      "ML.CLASSIFICATION su traffico e log OT",
+      "Variabili: Modbus/DNP3, comportamento SCADA, accessi, anomalie",
+      "Scoring di rischio per asset critico",
+      "Dashboard Streamlit per SOC industriale"
+    ]
+  },
+  {
+    "id": "UC17",
+    "cat": "cliente",
+    "catLabel": "Esperienza cliente",
+    "time": "12 min",
+    "title": "Comunità energetiche e autoconsumo",
+    "pain": "Comunità energetiche e autoconsumo collettivo crescono rapidamente: ripartizione dell'energia, valorizzazione degli eccedenze e gestione di accumuli condivisi richiedono analitiche che molte utility non hanno ancora integrato.",
+    "desc": "Motore per ripartizione energia tra membri, calcolo eccedenze e compensi, previsione generazione/consumo per utenza e fatturazione dettagliata.",
+    "features": [
+      "Ottimizzazione ripartizione con ML.FORECAST per membro",
+      "Variabili: generazione, consumo, accumulo condiviso, eccedenze",
+      "Fatturazione con coefficienti dinamici",
+      "Dashboard Streamlit per la comunità"
+    ]
+  },
+  {
+    "id": "UC18",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e compliance",
+    "time": "11 min",
+    "title": "Conformità normativa e reporting ESG",
+    "pain": "Adempimenti verso autorità (es. CNMC), associazioni di settore, tassonomia UE e questionari ESG richiedono dati da molti sistemi: la preparazione manuale dei report assorbe migliaia di ore e aumenta il rischio di errori sanzionabili.",
+    "desc": "Automazione del reporting normativo: consolidamento dati operativi, economici e ambientali, controlli di coerenza, metriche ESG e output per regolatori e stakeholder.",
+    "features": [
+      "Consolidamento multi-fonte per reporting",
+      "Regole e ML per coerenza dei dati",
+      "Variabili: TIEPI, emissioni, rinnovabili, investimenti, qualità",
+      "Dashboard Streamlit per compliance e ESG"
+    ]
+  },
+  {
+    "id": "UC19",
+    "cat": "red",
+    "catLabel": "Rete e Smart Grid",
+    "time": "11 min",
+    "title": "Ricarica veicoli elettrici in rete",
+    "pain": "La penetrazione degli EV mette sotto stress i trasformatori BT nelle ore di punta serale; senza orchestrazione intelligente, i rinforzi di rete potrebbero richiedere investimenti massicci.",
+    "desc": "Gestione coordinata della ricarica: previsione domanda per zona, carico differito (V1G) e servizi bidirezionali (V2G), ottimizzando l'uso della rete esistente.",
+    "features": [
+      "Previsione carico EV con ML.FORECAST per zona",
+      "Variabili: parco veicoli, abitudini di ricarica, tariffa, stato rete, generazione",
+      "Ottimizzazione V1G/V2G per limitare rinforzi di rete",
+      "Dashboard Streamlit per la ricarica"
+    ]
+  },
+  {
+    "id": "UC20",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e compliance",
+    "time": "10 min",
+    "title": "Anomalie sui mercati elettrici",
+    "pain": "I mercati organizzati (es. OMIE e servizi connessi) possono essere esposti a manipolazioni di prezzo, abuso di posizione dominante e comportamenti coordinati; le analisi manuali delle autorità hanno tempi di reazione lunghi.",
+    "desc": "Sistema di vigilanza su offerte, prezzi e posizioni per segnalare anomalie (ritenuta capacità, offerte correlate, picchi anomali, abusi di mercato).",
+    "features": [
+      "ML.CLASSIFICATION su storico offerte/prezzi",
+      "Variabili: offerte, prezzi, capacità, posizioni, storico",
+      "Correlazione con eventi di sistema e carenza di capacità",
+      "Dashboard Streamlit per la sorveglianza del mercato"
+    ]
+  }
+];
+const TOTAL = 20;
+
+function renderCards(list) {
+  const grid = document.getElementById('cardsGrid');
+  const count = document.getElementById('resultsCount');
+  grid.innerHTML = '';
+  count.textContent = 'Mostrando ' + list.length + ' di ' + TOTAL + " casi d\'uso";
+  list.forEach(uc => {
+    const catClass = uc.cat;
+    grid.innerHTML += '<article class="card">' +
+      '<div class="card-header"><div class="card-badges"><span class="badge-id">' + uc.id + '</span><span class="badge-cat ' + catClass + '">' + uc.catLabel + '</span></div><span class="card-time">\u23F1 ' + uc.time + '</span></div>' +
+      '<div class="card-title">' + uc.title + '</div>' +
+      '<div class="pain-point"><div class="pain-point-label">Problema</div><p>' + uc.pain + '</p></div>' +
+      '<div class="card-desc">' + uc.desc + '</div>' +
+      '<ul class="card-features">' + uc.features.map(function(f){return '<li>' + f + '</li>';}).join('') + '</ul>' +
+      '<div class="card-actions"><a href="#" class="btn-secondary" onclick="verGuia(\'' + uc.id + '\');return false;">Vedi Guida</a><a href="#" class="btn-tertiary" onclick="verPrompts(\'' + uc.id + '\');return false;">Cortex Code Prompts</a></div>' +
+      '</article>';
+  });
+}
+
+let currentFilter = 'all';
+let currentSearch = '';
+function applyFilters() {
+  let list = USE_CASES;
+  if (currentFilter !== 'all') list = list.filter(function(u){return u.cat === currentFilter;});
+  if (currentSearch) { const q = currentSearch.toLowerCase(); list = list.filter(function(u){return (u.title + ' ' + u.desc + ' ' + u.id + ' ' + u.catLabel).toLowerCase().indexOf(q) !== -1;}); }
+  renderCards(list);
+}
+
+document.getElementById('filterBtns').addEventListener('click', function(e) {
+  if (!e.target.classList.contains('filter-btn')) return;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  e.target.classList.add('active');
+  currentFilter = e.target.getAttribute('data-filter');
+  applyFilters();
+});
+
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  currentSearch = e.target.value;
+  applyFilters();
+});
+
+renderCards(USE_CASES);
+
+
+const GUIAS = {
+  "UC01": {
+    "title": "Previsione della Domanda Elettrica con Model Registry",
+    "contesto": "Le utility spagnole gestiscono la acquisto di energia nel mercato OMIE con 24h di antelazione. Errori di previsione della domanda dell\'8-12% generano costi di deviazione di 50-100M€/anno. La elettrificazione accelerata (EV, pompe di calore, autoconsumo) fa sì che i pattern storici siano sempre meno rappresentativi.",
+    "focus": "Costruire un modello ML di previsione della domanda elettrica per zona e fascia oraria con ML.FORECAST, registrandolo in Snowflake Model Registry per operazione continua con versionamento e deploy.",
+    "sfida": "La domanda dipende di decine di variabili (meteorologia, calendario, prezzo, tendenze di elettrificazione) e varia drasticamente per zona. Un modello único non captura la eterogeneità territoriale.",
+    "obiettivi": [
+      "Ridurre il MAPE di previsione della domanda a <4% a 24h vista",
+      "Registrare il modello in Model Registry con log_model() e versionamento",
+      "Automatizzare il re-training con nuovi dati settimanali",
+      "Generare piano acquisti ottimizzato nel mercato giornaliero OMIE",
+      "Implementare alert di deviazione >5% per azione immediata"
+    ],
+    "funzionalita": [
+      "ML.FORECAST per series temporali della domanda per zona",
+      "Snowflake Model Registry: log_model(), get_model(), deploy()",
+      "Variabili esogene: meteorologia, calendario, prezzo, EV, autoconsumo",
+      "Dashboard Streamlit di pianificazione della domanda in tempo reale",
+      "Pipeline automatica di re-training settimanale"
+    ],
+    "dati": [
+      "Domanda elettrica oraria per punto di approvvigionamento (smart meters)",
+      "Previsioni meteo per zona (temperatura, umidità, vento, irradianza)",
+      "Calendario lavorativo, festivi, eventi speciali per provincia",
+      "Prezzi di mercato OMIE (giornaliero e intragiornaliero)",
+      "Parco veicoli EV per zona, installazioni di autoconsumo, pompe di calore"
+    ],
+    "stratificazione": [
+      "Per zona di distribuzione e sottostazione",
+      "Per tipo di cliente: residenziale, commerciale, industriale",
+      "Per fascia oraria: punta, semi-punta, fuori-punta",
+      "Per stagione: estate (AC), inverno (riscaldamento)",
+      "Per tendenza di elettrificazione: zone con alta penetrazione EV/autoconsumo"
+    ],
+    "come_usare": [
+      "Eseguire i prompt in Cortex Code sequenzialmente",
+      "Il modello si addestra con 3 anni di storico e registra in Model Registry",
+      "Regolare gli orizzonti di previsione secondo il mercato (24h, 168h)",
+      "Personalizzare gli alert di deviazione secondo la tolleranza operativa",
+      "Collegare con i sistemi di trading per acquisto automatico"
+    ]
+  },
+  "UC02": {
+    "title": "Previsione della Generazione Solare Fotovoltaica",
+    "contesto": "La Spagna ha 20+ GW di capacità solare installata, con un crescita del 30% annuale. Ogni impianto necessita previsioni precise per offrire nel mercato OMIE e minimizzare deviazioni che costano 2-5€/MWh.",
+    "focus": "Costruire un modello di forecast di generazione solar per impianto integrando irradianza, nuvolosità, temperatura e degradazione per ottimizzare offerte nel mercato elettrico.",
+    "sfida": "La nuvolosità introduce variabilità del 30-50% in generazione giornaliera. I modellii meteorologici hanno incertezza che si amplifica nella conversione a generazione elettrica.",
+    "obiettivi": [
+      "Ridurre il MAPE di previsione solar a <8% a 24h vista",
+      "Generare intervalli di confidenza al 95% per gestione di rischio",
+      "Incorporare degradazione dei pannelli e effetti di sporcizia",
+      "Ottimizzare offerte nel mercato giornaliero e intragiornaliero OMIE",
+      "Automatizzare pipeline di previsione per portafoglio di impianti"
+    ],
+    "funzionalita": [
+      "ML.FORECAST con variabili di irradianza e meteorologia",
+      "Modelo per impianto con características specificas (orientazione, tecnología)",
+      "Intervai di confianza per cuantificazione di rischio",
+      "Ajuste automatico per degradazione e manutenzione",
+      "Dashboard Streamlit di gestione della generazione solare"
+    ],
+    "dati": [
+      "Produczione storica oraria per impianto e inversor",
+      "Irradiancia global horizontal (GHI) e directa normal (DNI) per ubicazione",
+      "Nubosidad, temperatura ambiente, umidità, vento per impianto",
+      "Características tecnicas: potenza pico, orientazione, inclinazione, tecnología",
+      "Calendareio di manutenziones, limpezzos e degradazione medida"
+    ],
+    "stratificazione": [
+      "Por impianto solar e ubicazione geografica",
+      "Por tecnología: fija, monitoraggio 1 eje, monitoraggio 2 ejes",
+      "Per stagione e pattern di nuvolosità regional",
+      "Por antigüedad e ratio di degradazione",
+      "Por mercato destino: OMIE giornaliero, intragiornaliero, PPA"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Regolare parámetros di impianto secondo características reales",
+      "Calibrar modeli con al meno 1 anno di storico",
+      "Integrar con plataforma di trading per offerte automaticas",
+      "Revisar accuratezza mensilmente e retranar si MAPE >10%"
+    ]
+  },
+  "UC03": {
+    "title": "Previsione della Generazione Eolica con Model Registry",
+    "contesto": "La Spagna conta con 30+ GW eólicos, siendo la segunda fonte di generazione del sistema. La volatilità del vento genera deviazioni di 3-8€/MWh nel mercato OMIE. I produttori necessitan previsioni fiables per offertar e gestionar contratti PPA.",
+    "focus": "Costruire un modello di forecast eólico per parque con ML.FORECAST integrando previsiones multi-modello del vento, curvas di potenza per turbina e effetti di scia. Si registra nel Model Registry per produzione.",
+    "sfida": "El vento ha variabilità extrema e dipende di orografía local, effetti di scia tra turbinas e fenómeno meteorologici complejos. I modellii NWP hanno incertezza di 2-4 m/s che si amplifica exponencialmente nella curva di potenza.",
+    "obiettivi": [
+      "Ridurre il MAPE di previsione eólica a <10% a 24h vista",
+      "Registrare il modello in Model Registry con log_model() e versionamento",
+      "Incorporare curvas di potenza specificas per modello di turbina",
+      "Combinar previsioni di múltiples modeli meteorologici (ensemble)",
+      "Tracking automatico di accuratezza con MAPE per parque e orizzonte"
+    ],
+    "funzionalita": [
+      "ML.FORECAST per series temporali di generazione eólica",
+      "Snowflake Model Registry: log_model(), metriche di accuracy",
+      "Ensemble di modeli meteorologici (GFS, ECMWF, HIRLAM)",
+      "Curve di potenza per modello di turbina con correczione di scia",
+      "Dashboard Streamlit di gestione di generazione eólica"
+    ],
+    "dati": [
+      "Produczione storica per turbina e parque (10-min, orario)",
+      "Previsiones del vento multi-modello: velocità, direzione, raffiche, pressione",
+      "Temperatura, umidità, stabilità atmosférica per parque",
+      "Curvas di potenza del fabricante per modello di turbina",
+      "Layout del parque per cálculo di effetti di scia"
+    ],
+    "stratificazione": [
+      "Por parque eólico e ubicazione geografica",
+      "Por modello di turbina e potenza unitaria",
+      "Por régimen del vento: atlántico, mediterráneo, continental",
+      "Por orizzonte di previsione: intragiornaliero, giorno+1, settimana",
+      "Por destino: mercato OMIE, PPA, servizi di regolazione"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Il modello si registra in Model Registry per operazione continua",
+      "Regolare curvas di potenza secondo dati reales di ogni parque",
+      "Calibrar pesos del ensemble secondo accuratezza per zona",
+      "Collegare con plataforma di trading per offerte automaticas"
+    ]
+  },
+  "UC04": {
+    "title": "Ottimizzazione dello Stoccaggio Energetico (BESS)",
+    "contesto": "Los sistemi BESS sono chiave per la integrazione di rinnovabiles ma la sua redditività dipende dalla strategia operativa. Una batería di 100 MWh può generare 5-15M€/anno in arbitraje e servizi di regolazione si si opera óptimamente.",
+    "focus": "Ottimizzare cici di carga/descarga delle batterie massimizzando ricavi in arbitraje, servizi di regolazione e autoconsumo, minimizando la degradazione della batería.",
+    "sfida": "La ottimizzazione richiede previsioni simultáneas di prezzi di mercato, domanda local, generazione rinnovabile e estado di salud della batería. La degradazione è non lineal e dipende di profundidad di descarga, temperatura e ciclos.",
+    "obiettivi": [
+      "Maximizar ricavi di BESS in arbitraje e servizios auxiliares",
+      "Ridurre degradazione di batería un 20% respecto a operazione non ottimizzata",
+      "Predire prezzi di mercato con MAPE <8% a 24h",
+      "Ottimizzare strategia multi-servizio: arbitraje + regolamentazione + peak shaving",
+      "Generare simulazioni di ROI per diversos strategias"
+    ],
+    "funzionalita": [
+      "ML.FORECAST per previsione di prezzi e domanda",
+      "Modelo di degradazione di batería basato su cici e DoD",
+      "Ottimizzazione multi-obiettivo: ricavi vs degradazione",
+      "Simulazione di strategias: arbitraje puro, peak shaving, regolamentazione",
+      "Dashboard Streamlit di gestione BESS"
+    ],
+    "dati": [
+      "Prezzi di mercato OMIE: giornaliero, intragiornaliero, servizios di ajuste",
+      "Telemetría di batería: SoC, temperatura, corriente, ciclos, SoH",
+      "Domanda local e generazione rinnovabile asociada",
+      "Tarifas di acceso a red e peajes per fascia oraria",
+      "Prezzi di servizi di regolazione secundareia e terciaria"
+    ],
+    "stratificazione": [
+      "Por installazione BESS e tecnología (litio, flow, etc.)",
+      "Por servizio: arbitraje, regolamentazione, peak shaving, backup",
+      "Per fascia oraria e stazione del anno",
+      "Por nivil di degradazione e vida útil restante",
+      "Por ubicazione: conectado a red, behind-the-meter, hibridazione"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Regolare parámetros di batería secondo especificazioni del fabricante",
+      "Calibrar modello di degradazione con dati reales di ciclado",
+      "Adaptar strategia secondo regolamentazione di servizios auxiliares vigente",
+      "Revisar ROI mensilmente e regolare umbrales di operazione"
+    ]
+  },
+  "UC05": {
+    "title": "Rilevamento Perdite Tecniche e Non Tecniche nella Rete",
+    "contesto": "Las perdite nella red di distribuzione espannola rappresentan il 8-12% della energia transpertada. Las perdite non tecnicas (frode, manipolazione) suponen il 1-3% e sono specialmente difíciles di rilevare senza analítica avanzata.",
+    "focus": "Costruire un sistema ML di rilevamento di perdite che diferencie tecnicas di non tecnicas analizando balances di energia per transformador, pattern di consumo e anomalías in smart meters.",
+    "sfida": "Las perdite tecnicas dipenden della topología di red e condizioni di carga, mentre che le non tecnicas richieden rilevare pattern sutiles di manipolazione in milioni di smart meters.",
+    "obiettivi": [
+      "Ridurre perdite non tecnicas un 30% in il primer anno",
+      "Identificare zone con maggiore ratio di perdite per priorizar inversión",
+      "Aumentar tasa di éxito di inspeczioni di frode del 30% al 65%",
+      "Diferenciar automaticamente perdite tecnicas vs non tecnicas",
+      "Priorizar azioni correctivas per impatto económico"
+    ],
+    "funzionalita": [
+      "ML.CLASSIFICATION per rilevamento di anomalías di consumo",
+      "Balance di energia per transformador: inyectada vs medida",
+      "Analisi di pattern di consumo di smart meters",
+      "Compertiva di consumo tra clienti similares (vecinos)",
+      "Dashboard Streamlit di gestione delle perdite"
+    ],
+    "dati": [
+      "Consumo orario per smart meter (curvas di carga)",
+      "Energía inyectada per transformador di distribuzione",
+      "Topología di red: conexiones CT-cliente, longitud di líneas",
+      "Características del punto di approvvigionamento: potenza, tarifa, tipo",
+      "Historial di inspeczioni, frodes detectados, reclami"
+    ],
+    "stratificazione": [
+      "Por centro di transformazione e zona geografica",
+      "Per tipo di perdita: tecnica (infraestructura) vs non tecnica (frode)",
+      "Per tipo di cliente: residenziale, commerciale, industriale",
+      "Por nivil di perdite: crítico >15%, alto 10-15%, medio 5-10%",
+      "Por estacionalidad: estate (AC), inverno (riscaldamento), baseline"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Calibrar umbrales di rilevamento con dati storici di inspeczioni",
+      "Validare risultatos con team di perdite prima di programar inspeczioni",
+      "Integrar con sistema di órdenes di trabajo per automatizzare campagnas",
+      "Actualizar modello trimesetralmente con risultatos di inspeczioni"
+    ]
+  },
+  "UC06": {
+    "title": "Gestione delle Congestioni nella Rete di Distribuzione",
+    "contesto": "La generazione distribuida e i EVs crean flujos bidireccionales che congestionan transformadores diseñados fa déognis. En Spagna, il 15% dei CTs urbanos alcanzan sucarga in ore di máxima inyeczione solar.",
+    "focus": "Predire congestiones in red di distribuzione e recomendare azioni di flexibilidad (demand response, curtailment, stoccaggio) per evitar inversiones in refuerzo di red.",
+    "sfida": "Los flujos bidireccionales in baja tensión sono impredecibles e dipenden della combinazione local di autoconsumo, carga di EV, pompe di calore e compertamento del cliente. Los dati SCADA di BT sono limitados.",
+    "obiettivi": [
+      "Predire congestiones con 4-24h di antelazione per nodo di red",
+      "Ridurre sucarga di transformadores un 40%",
+      "Ottimizzare segnalees di flexibilidad per demand response",
+      "Diferir inversiones di refuerzo di red 3-5 anni",
+      "Cumplir requisitos normativos di qualità di approvvigionamento"
+    ],
+    "funzionalita": [
+      "ML.FORECAST per previsione di carga per nodo di red",
+      "Variabili: generazione distribuida, consumo, EV, temperatura, red",
+      "Ottimizzazione di azioni di flexibilidad per prioridad e costo",
+      "Simulazione di scenari di crescita di GD e EV",
+      "Dashboard Streamlit di gestione di congestiones"
+    ],
+    "dati": [
+      "Telemetría di centros di transformazione: carga, tensión, temperatura",
+      "Generazione distribuida per CT: autoconsumo, excedentes",
+      "Carga di EV per zona: puntos di carga, potenza, orarios",
+      "Previsioni meteo locales per generazione solar",
+      "Topología di red BT: conexiones, capacitàes, antigüedad"
+    ],
+    "stratificazione": [
+      "Por centro di transformazione e línea di BT",
+      "Per tipo di congestione: sucarga, sutensión, subtensión",
+      "Por causa: generazione distribuida, EV, AC, calefazione",
+      "Por nivil di rischio: crítico, alto, medio, bajo",
+      "Por azione recomendada: curtailment, DR, stoccaggio, refuerzo"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Calibrar con dati SCADA reales di centros di transformazione",
+      "Regolare umbrales di sucarga secondo normativa vigente",
+      "Integrar con sistema di gestione di flexibilidad",
+      "Validare previsioni con dati reales e recalibrar mensilmente"
+    ]
+  },
+  "UC07": {
+    "title": "Manutenzione Predittiva delle Turbine Eoliche",
+    "contesto": "Una avería maggiore in turbina eólica costa 100-300K€ e 2-4 settimanas di indisponibilità. La Spagna ha 30.000+ turbinas e il manutenzione basato su calendario desperdicia intervenzioni e non detecta fali incipientes.",
+    "focus": "Costruire un modello predittivo di fali in turbinas eólicas analizando segnalees SCADA per rilevare degradazione e priorizar manutenzione per impatto económico.",
+    "sfida": "Las segnalees SCADA (vibrazione, temperatura, pitch, yaw, potenza) generano TB di dati con pattern sutiles di degradazione che evolucionan durante settimanas. El desafío è rilevare segnalees tempranas con bajo ratio di falsos positivos.",
+    "obiettivi": [
+      "Rilevare il 80% di fali maggiorees con 2-4 settimanas di antelazione",
+      "Ridurre manutenzione non planificado un 40%",
+      "Priorizar intervenzioni per impatto económico (produzione perdida)",
+      "Ridurre costo di manutenzione un 20% eliminando intervenzioni innecessarias",
+      "Aumentar disponibilità di flotta al 97%"
+    ],
+    "funzionalita": [
+      "ML.CLASSIFICATION su dati segnalees SCADA di turbinas",
+      "Variabili: vibrazione, temperatura generador/multiplicadora, pitch, yaw",
+      "Priorizazione per impatto: produzione perdida × probabilità di fallo",
+      "Alert con raccomandazione di intervento e venditana óptima",
+      "Dashboard Streamlit dello stato della flotta eolica"
+    ],
+    "dati": [
+      "Señales SCADA 10-minutales: potenza, velocità rotor, pitch, yaw",
+      "Temperaturas: generador, multiplicadora, rodamientos, aceite",
+      "Vibrazione di componentes principalees",
+      "Historial di manutenziones, averías, repuestos utilizzados",
+      "Condizioni meteorologicas: vento, temperatura, umidità"
+    ],
+    "stratificazione": [
+      "Por turbina individual e parque eólico",
+      "Por componente: generador, multiplicadora, pitch, yaw, torre",
+      "Por severidad di alerta: crítica, alta, media, informativa",
+      "Por antigüedad e modello di turbina",
+      "Por impatto económico: produzione estimada perdida per avería"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Addestrar con al meno 2 anni di dati SCADA + historial di averías",
+      "Regolare umbrales di alerta per minimizzare falsos positivos",
+      "Validare con team di O&M prima di programar intervenzioni",
+      "Retranar modello semesetralmente con nuovi dati di averías"
+    ]
+  },
+  "UC08": {
+    "title": "Feature Store Customer Energe 360",
+    "contesto": "Los dati del cliente energetico sono dispersos in 6-10 sistemi (CRM, billing, smart meters, app, call center, generazione distribuida). Sin visión unifiogni, la personalizzazione è impossibile e si perdono opertunidades di cross-sell, efficienza e fidelizzazione.",
+    "focus": "Implementare un Feature Store in Snowflake che consolide features di ogni cliente energetico da tuttos i sistemi, sirviendo features in tempo reale per personalizzazione, efficienza energetica e rilevamento frodi.",
+    "sfida": "Los dati vienen di sistemi heterogéneos con diversos granularidades (smart meter ogni 15min, billing mensile, CRM eventual). Las features deben aggiornarese con frequenzas diversos e ser consistentes per consumo downstream.",
+    "obiettivi": [
+      "Consolidare visión 360 del cliente da 6+ fontes in Snowflake Feature Store",
+      "Creare Entite 'energy_customer' con FeatureViews especializados",
+      "Servir features con get_features() per personalizzazione in tempo reale",
+      "Ridurre tempo di preperzione di features di 2 settimanas a 2 ore",
+      "Habilitar features compartidas tra teams di ML, marketing e operazioni"
+    ],
+    "funzionalita": [
+      "Snowflake Feature Store: Entity('energy_customer', join_keys=['customer_id'])",
+      "FeatureView: consumption_profile (curva di carga, estacionalidad, punta/valle)",
+      "FeatureView: billing_status (fatturazione, pagos, deuda, tarifa)",
+      "FeatureView: smart_meter_analytics (pattern, anomalías, qualità)",
+      "FeatureView: generation_profile (autoconsumo, excedentes, batería)",
+      "FeatureView: digital_engagement (app, web, chatbot, satisfazione)"
+    ],
+    "dati": [
+      "Smart meters: curvas di carga 15-min, tensión, potenza máxima",
+      "Billing: facturas, impertes, pagos, deuda, reclami",
+      "CRM: contactos, campagnas, offerte, satisfazione, NPS",
+      "Generazione distribuida: pannelli, produzione, excedentes, batería",
+      "Digital: uso di app, pertal web, chatbot, notifiche"
+    ],
+    "stratificazione": [
+      "Per tipo di cliente: residenziale, commerciale, industriale, prosumer",
+      "Por nivil di engagement: alto, medio, bajo, inactivo",
+      "Por perfil di consumo: eficiente, medio, alto, estacional",
+      "Por potenzal commerciale: cross-sell, efficienza, autoconsumo",
+      "Por rischio: frode, impago, baja, insatisfazione"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "El Feature Store crea la Entite e FeatureViews automaticamente",
+      "Las features si attualeizan con cadencia configurada per FeatureView",
+      "Consumir features con fs.get_features() da cualquier pipeline ML",
+      "Extender con nuovi FeatureViews secondo necesidades del negocio"
+    ]
+  },
+  "UC09": {
+    "title": "Segmentazione Clienti ed Efficienza Energetica",
+    "contesto": "Las campagnas di efficienza energetica masivas hanno tasas di adopzione del 5-8%. La personalizzazione basata su perfil di consumo real, capacità di inversión e motivazione può triplicar la efectividad.",
+    "focus": "Segmentar clienti per perfil di consumo, potenzal di risparmio e propensión a programas di efficienza/autoconsumo per personalizzare offerte e massimizzar adopzione.",
+    "sfida": "Los perfiles di consumo sono multidimensionales (curva di carga, estacionalidad, punta/valle, autoconsumo) e le motivazioni del cliente varian (risparmio económico, sostenibilità, indipendencia energetica).",
+    "obiettivi": [
+      "Identificare segmentos di clienti con potenzal di risparmio >20%",
+      "Personalizzare recomendazioni di efficienza per segmento",
+      "Aumentar tasa di adopzione di programas di efficienza del 5% al 15%",
+      "Priorizar inversiones in efficienza per ROI per cliente e utility",
+      "Generare scoring di propensión a autoconsumo fotovoltaico"
+    ],
+    "funzionalita": [
+      "ML.CLASSIFICATION per segmentazione multivariabile",
+      "Calcolo del potenziale di risparmio per cliente basato su curva di carga",
+      "Scoring di propensión a autoconsumo e batería",
+      "Personalizzazione di recomendazioni per segmento",
+      "Dashboard Streamlit dei programmi di efficienza"
+    ],
+    "dati": [
+      "Curvas di carga 15-min di smart meters",
+      "Facturazione storica: consumo, impertes, tarifa, potenza contratada",
+      "Dati demográficos e di vivienda: tipo, superficie, zona climática",
+      "Historial di campagnas: respuestas, conversiones, satisfazione",
+      "Dati di autoconsumo: instalazioni esistonotes, produzione, excedentes"
+    ],
+    "stratificazione": [
+      "Por perfil di consumo: eficiente, medio, alto, estacional, nocturno",
+      "Por potenzal di risparmio: alto >30%, medio 15-30%, bajo <15%",
+      "Por propensión a autoconsumo: alta, media, baja, ya prosumer",
+      "Por motivazione: risparmio económico, sostenibilità, indipendencia",
+      "Por canal preferido: app, email, presencial, teléfono"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Addestrar con dati di al meno 1 anno di smart meters",
+      "Validare segmentos con team commerciale e di efficienza",
+      "Integrar scoring in CRM per campagnas personalizadas",
+      "Medir ROI per segmento e regolare recomendazioni trimesetralmente"
+    ]
+  },
+  "UC10": {
+    "title": "Ottimizzazione del Portfolio di Generazione Rinnovabile",
+    "contesto": "I produttori gestionan portafoglios di 500+ MW con impianti solari e eólicas dispersas. La diversificazione geografica riduce variabilità, ma la offerta nel mercato OMIE richiede agregazione intelligente.",
+    "focus": "Ottimizzare offerte di portafoglio rinnovabile nel mercato giornaliero e intragiornaliero combinando previsioni multi-impianto, prezzi di mercato, contratti PPA e restrizioni normativas.",
+    "sfida": "La correlazione tra impianti della stessa tecnología riduce la diversificazione. Gli errori di previsione individuales non si cancelan perfectamente e i contratti PPA añaden restrizioni di volumen e prezzo.",
+    "obiettivi": [
+      "Generare offerte óptimas per mercato giornaliero e intragiornaliero OMIE",
+      "Minimizar costo di deviazioni integrando previsioni multi-impianto",
+      "Ottimizzare gestione di contratti PPA vs mercato spot",
+      "Cuantificar rischio di portafoglio con intervalli di confidenza",
+      "Automatizzare processo di offerta per trading desk"
+    ],
+    "funzionalita": [
+      "ML.FORECAST multi-impianto con agregazione di portafoglio",
+      "Ottimizzazione di offerte bajo incertezza (CVaR)",
+      "Gestione di PPAs: assegnazione óptima di generazione a contratti",
+      "Simulazione di scenari: prezzo, vento, irradianza",
+      "Dashboard Streamlit di trading energetico"
+    ],
+    "dati": [
+      "Prediczioni di generazione per impianto (solar e eólica)",
+      "Prezzi di mercato OMIE: giornaliero, intragiornaliero, servizios di ajuste",
+      "Contratos PPA: volumen, prezzo, penalizazioni, prioridad",
+      "Restriczioni normativas: mínimos tecnicos, rampas, zone",
+      "Correlazioni storicas tra impianti del portafoglio"
+    ],
+    "stratificazione": [
+      "Por impianto e tecnología: solar fija, solar tracker, eólica",
+      "Por mercato destino: giornaliero, intragiornaliero, PPA, regolamentazione",
+      "Per zona geografica e correlazione meteorologica",
+      "Por nivil di rischio: conservador, moderado, agresivo",
+      "Por orizzonte: day-ahead, intraday, settimana, mese"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Configurar portafoglio con impianti reales e contratti PPA",
+      "Regolare parámetros di rischio secondo política della azienda",
+      "Integrar con plataforma di trading per spedizione automatico di offerte",
+      "Revisar performance vs benchmark settimanale e regolare strategia"
+    ]
+  },
+  "UC11": {
+    "title": "Manutenzione Predittiva della Rete di Distribuzione",
+    "contesto": "Las averías nella red di distribuzione causano interrupzioni medidas per il TIEPI (45 min/anno in Spagna). Los reguladores penalizan il inconformità e i costi di reperzione di emergencia sono 3-5x i di manutenzione preventivo.",
+    "focus": "Predire fali in infraestructura di distribuzione (transformadores, líneas, celdas) analizando telemetría, antigüedad, carga e condizioni ambientales per priorizar manutenzione per TIEPI evitado.",
+    "sfida": "La red di distribuzione ha milioni di activos con dati heterogéneos. Los transformadores di BT apenas hanno telemetría, e le líneas subterráneas degradan senza síntomas visibles fino a il fallo catastrófico.",
+    "obiettivi": [
+      "Predire il 70% di fali in transformadores MT/BT con 1-3 mesei di antelazione",
+      "Priorizar manutenzione per TIEPI evitado e clienti colpiscedos",
+      "Ridurre TIEPI un 25% mediante manutenzione proactivo",
+      "Ottimizzare inversión in rinnovo di red per analisi di rischio",
+      "Cumplir sonodarees di qualità di approvvigionamento di CNMC"
+    ],
+    "funzionalita": [
+      "ML.CLASSIFICATION su dati telemetría e estado di activos di red",
+      "Variabili: carga, temperatura, umidità, antigüedad, historial di fallos",
+      "Priorizazione per impatto: TIEPI evitado × clienti colpiscedos",
+      "Planificazione óptima di manutenzione con restrizioni di cuadrillas",
+      "Dashboard Streamlit dello stato della rete di distribuzione"
+    ],
+    "dati": [
+      "Telemetría di centros di transformazione: carga, tensión, temperatura",
+      "Invenditario di activos: antigüedad, fabricante, tecnología, capacità",
+      "Historial di averías, reperzioni e manutenziones",
+      "Topología di red: conexiones, redundancias, clienti colpiscedos",
+      "Condizioni ambientales: temperatura, umidità, salinidad, contaminazione"
+    ],
+    "stratificazione": [
+      "Per tipo di activo: transformador MT/BT, línea aérea/subterránea, celda",
+      "Por nivil di rischio: crítico, alto, medio, bajo",
+      "Por antigüedad: >40 anni, 25-40, 15-25, <15",
+      "Por impatto in TIEPI: alto (>1000 clienti), medio (100-1000), bajo",
+      "Per tipo di intervento: sustituzione, revisión, monitoraggio"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Alimentar con invenditario di activos e telemetría disponibile",
+      "Calibrar modello con historial di averías di al meno 5 anni",
+      "Integrar con sistema di gestione di activos (GIS/EAM)",
+      "Validare priorizazione con ingenieros di red prima di programar"
+    ]
+  },
+  "UC12": {
+    "title": "NLP per incidenti e e Ordini di Lavoro",
+    "contesto": "Le utility procesan 200.000-500.000 órdenes di trabajo annualees. El conoscenza di resoluzione está nella esperienza di tecnicos veteranos che si jubilan, e la classificazione mannuale è lenta e con un 20% di errores.",
+    "focus": "Pipeline NLP che classifica automaticamente gli incidenti, extrae causa raíz, asigna prioridad e sugiere resoluzione basándose in historial. Captura e sistematiza il conoscenza tecnico.",
+    "sfida": "El texto di incidencias è desestructurado, con jerga tecnica specifica del sector elettrico, abreviaturas e múltiples idiomas (castellano + lenguas cooficiales). La causa raíz a menudo richiede correlazione con dati di red.",
+    "obiettivi": [
+      "Clasificar automaticamente il 90% di incidencias con accuratezza >85%",
+      "Ridurre redireccionamiento incorrecto del 20% al 5%",
+      "Sugerir resoluzione basata su historial per il 60% di incidencias",
+      "Capturar conoscenza tecnico di resoluzione in base di dati estructurada",
+      "Ridurre tempo medio di resoluzione un 25%"
+    ],
+    "funzionalita": [
+      "CORTEX.COMPLETE per classificazione e estrazione di informazione",
+      "ML.CLASSIFICATION per categorizazione automatica di incidencias",
+      "Extrazione di causa raíz e entidades tecnicas con NLP",
+      "Base di conoscenza di resoluzioni con Cortex Search",
+      "Dashboard Streamlit di gestione di incidencias e conoscenza"
+    ],
+    "dati": [
+      "Texto di incidencias: descrizione, comentarios di tecnico, resoluzione",
+      "Classificazione storica: tipo, causa, componente, zona, prioridad",
+      "Dati di resoluzione: tempo, risorsas, repuestos, costo",
+      "Mannualees tecnicos e procedimientos di resoluzione",
+      "Dati di red asociados: team, ubicazione, clienti colpiscedos"
+    ],
+    "stratificazione": [
+      "Per tipo di incidencia: avería, manutenzione, reclamo, query",
+      "Por componente: transformador, línea, acometida, contador, celda",
+      "Por prioridad: urgente, alta, normal, baja",
+      "Per zona geografica e team di intervento",
+      "Por causa raíz: climatología, vejez, sucarga, vandalismo, fauna"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Alimentar con historial di incidencias di al meno 2 anni",
+      "Validare classificazione automatica con supervisores di team",
+      "Enriquecer base di conoscenza con resoluzioni validadas",
+      "Integrar con sistema di gestione di órdenes di trabajo (SAP PM, Maximo)"
+    ]
+  },
+  "UC13": {
+    "title": "Chatbot RAG per il Servizio Clienti Energetico",
+    "contesto": "El call center energetico gestiona un 60% di domande ripetitive su fatturazione, letture, tariffe e guasti. Con un costo di 4-7€ per interazione, la automazione ha un ROI immediato.",
+    "focus": "Assistente conversazionale RAG con Cortex Search indexando tarifas, regolamentazione, guías di risparmio, FAQ e estado di red. Resuelve querys contextualizando respuestas al perfil del cliente.",
+    "sfida": "La regolamentazione elettrica espannola è compleja (PVPC, mercato libre, bono social, autoconsumo colectivo) e cambia frecuentemente. Las respuestas deben ser precisas, personalizadas al contratto del cliente e cumplir normativa di protezione al consumatore.",
+    "obiettivi": [
+      "Resolver il 65% di querys senza intervento di agente humano",
+      "Ridurre costo per interazione di 5€ a 0.50€",
+      "Personalizzare respuestas secondo tarifa, consumo e perfil del cliente",
+      "Manavere base di conoscenza attualeizada con cambios normativos",
+      "Escalar a agente humano con contexto completo quando sea necessario"
+    ],
+    "funzionalita": [
+      "Cortex Search per indexazione di base di conoscenza energetica",
+      "CORTEX.COMPLETE per generazione di respuestas contextualizadas",
+      "Integrazione con Feature Store UC08 per perfil del cliente",
+      "Escalado intelligente a agente humano con contexto",
+      "Dashboard Streamlit di chatbot con metriche di resoluzione"
+    ],
+    "dati": [
+      "Tarifas elettricas: PVPC, mercato libre, indexadas, fijas, planas",
+      "Regulazione: RD autoconsumo, bono social, protezione consumatore",
+      "Guías di risparmio energetico per tipo di vivienda e clima",
+      "FAQ: lecturas, facturas, cambio di tarifa, reclami, averías",
+      "Estado di red in tempo reale: averías, cortes programados, restaurazione"
+    ],
+    "stratificazione": [
+      "Per tipo di query: fatturazione, tarifa, lectura, avería, reclamo",
+      "Por perfil di cliente: residenziale, commerciale, prosumer, vulnerable",
+      "Por canal: web chat, app, WhatsApp, teléfono",
+      "Por complejidad: simple (FAQ), media (cálculo), compleja (reclamo)",
+      "Por satisfazione: resuelta, parcial, escalada, insatisfecha"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Indexar base di conoscenza con Cortex Search (tarifas, regolamentazione, FAQ)",
+      "Configurar integrazione con Feature Store UC08 per personalizzazione",
+      "Addestrar con historial di querys reales per migliorare resoluzione",
+      "Monitorare tasa di resoluzione e satisfazione settimanalemente"
+    ]
+  },
+  "UC14": {
+    "title": "Feature Store di Performance degli Asset di Rete",
+    "contesto": "Las decisiones di inversión in red di distribuzione (regulada per CNMC) si toman con KPIs di rendimento calculados in batch con 24-48h di retraso. Las penalizazioni per TIEPI e la pianificazione di inversión necessitan dati frescos.",
+    "focus": "Implementare un Feature Store in Snowflake che consolide metriche di rendimento di ogni activo di red (transformadores, líneas, subestazioni) per decisiones operativas e di inversión regulada.",
+    "sfida": "Los activos di red generano dati heterogéneos da SCADA, GIS, EAM e sistemi di telecontrol. Las metriche deben ser consistentes per comperr activos di diversos tecnologías e antigüedades.",
+    "obiettivi": [
+      "Consolidare metriche di rendimento di activos da 5+ fontes",
+      "Creare Entite per activo con FeatureViews especializados",
+      "Ridurre latencia di KPIs di 48h a near-real-time",
+      "Habilitar benchmarking tra activos similares",
+      "Servir features per modeli di manutenzione predittivo (UC11)"
+    ],
+    "funzionalita": [
+      "Snowflake Feature Store: Entite per asset_id con join_keys=['asset_id']",
+      "FeatureView: load_profile (carga, pico, factor di utilizzazione)",
+      "FeatureView: thermal_status (temperatura, gradientes, envejecimiento)",
+      "FeatureView: availabilite (disponibilità, interrupzioni, TIEPI)",
+      "FeatureView: incident_histore (averías, manutenziones, costi)",
+      "FeatureView: benchmark (compertiva con activos similares)"
+    ],
+    "dati": [
+      "SCADA: carga in tempo reale, tensión, corriente, temperatura",
+      "GIS: ubicazione, zona, clienti alimentados, redundancias",
+      "EAM: historial di manutenzione, inspeczioni, estado",
+      "Averías: causa, durazione, clienti colpiscedos, costo di reperzione",
+      "Invenditario: fabricante, modello, anno installazione, capacità nominal"
+    ],
+    "stratificazione": [
+      "Per tipo di activo: transformador MT/BT, línea, sottostazione, celda",
+      "Por nivil di criticidad: alimentazione única, redundancia, respaldo",
+      "Por antigüedad e estado di vida útil",
+      "Per zona geografica e condizioni ambientales",
+      "Por nivil di carga: sucargado, nominal, infrautilizzado"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "El Feature Store crea Entite e FeatureViews per activos di red",
+      "Las features si attualeizan da SCADA, GIS e EAM",
+      "Consumir features con fs.get_features() per ML e reporting",
+      "Extender con FeatureViews adicionales secondo evoluzione di sensorizazione"
+    ]
+  },
+  "UC15": {
+    "title": "Rilevamento Frode Elettrica con Smart Meter",
+    "contesto": "El frode elettrico in Spagna causa perdite di 150-300M€/anno. Los smart meters generano curvas di carga che permetten rilevare pattern di manipolazione, ma il volumen di dati (30M+ contadores × 96 lecturas/giorno) richiede analítica escalable.",
+    "focus": "Sistema ML di rilevamento frode che analiza curvas di carga di smart meters, pattern anómalos, compertivas con vecinos e segnalees di manipolazione per priorizar inspeczioni con alta probabilità di éxito.",
+    "sfida": "Los pattern di frode evolucionan constantemente (manipolazione electrónica, magnética, by-pass, enganche directo). El ratio di falsos positivos debe ser <10% per che le inspeczioni siano rentables.",
+    "obiettivi": [
+      "Aumentar tasa di éxito di inspeczioni del 30% al 70%",
+      "Rilevare il 60% di frodes activos in il primer anno",
+      "Ridurre costo per frode detectado di 600€ a 200€",
+      "Priorizar per imperte estimado di frode",
+      "Rilevare nuovi pattern di manipolazione emergentes"
+    ],
+    "funzionalita": [
+      "ML.CLASSIFICATION su dati curvas di carga di smart meters",
+      "Analisi di anomalías: consumo vs estimado, variabilità, pattern",
+      "Compertiva con vecinos e clienti similares (peer analysis)",
+      "Scoring di probabilità × imperte per priorizazione di inspeczioni",
+      "Dashboard Streamlit di gestione antifrode"
+    ],
+    "dati": [
+      "Curvas di carga 15-min di smart meters (3+ anni)",
+      "Consumo facturado vs energia medida in CT",
+      "Eventos del contador: manipolazione, apertura, error comunicazione",
+      "Dati del punto di approvvigionamento: potenza, tarifa, tipo vivienda",
+      "Historial di inspeczioni: risultatos, tipo di frode, imperte"
+    ],
+    "stratificazione": [
+      "Per tipo di frode: manipolazione electrónica, magnética, by-pass, enganche",
+      "Por probabilità di frode: mue alta >80%, alta 60-80%, media 40-60%",
+      "Por imperte estimado: alto >5.000€/anno, medio 1.000-5.000, bajo",
+      "Per zona geografica e ratio storico di frode",
+      "Por antigüedad del pattern: nuovo, recurrente, crónico"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Addestrar con historial di inspeczioni di al meno 3 anni",
+      "Calibrar umbrales di scoring per massimizzar tasa di éxito",
+      "Coordinar con team di inspeczioni per feedback continuo",
+      "Actualizar modeli trimesetralmente con nuovi pattern ditectados"
+    ]
+  },
+  "UC16": {
+    "title": "Sicurezza OT/IT dell\'infrastruttura energetica",
+    "contesto": "Le infrastrutture energetiche sono infrastrutture critiche e obiettivo prioritario di attacchi informatici (trend in forte crescita nel 2023–2025). La convergenza OT/IT espone SCADA, RTU e PLC a minacce sempre più sofisticate.",
+    "focus": "Pipeline ML per il rilevamento delle minacce sul traffico OT/IT. Analisi del traffico di rete industriale, comportamento dei dispositivi SCADA e pattern di accesso.",
+    "sfida": "I protocolli industriali (Modbus, DNP3, IEC 61850) generano traffico con pattern molto regolari: qualsiasi anomalia può indicare un attacco. I falsi positivi in OT possono causare interruzioni di servizio non necessarie.",
+    "obiettivi": [
+      "Rilevare il 95% di anomalías in tráfico OT in <5 minutos",
+      "Ridurre falsos positivos in alert OT al <2%",
+      "Correlacionar eventos OT/IT per rilevare ataques multi-vector",
+      "Automatizzare respuesta a incidentes di baja severidad",
+      "Cumplir requisitos NIS2 e ENS per infraestructura crítica"
+    ],
+    "funzionalita": [
+      "ML.CLASSIFICATION su dati tráfico di protocoi industrialees",
+      "Baseline di compertamento normal per dispositivo SCADA",
+      "Correlazione di eventos OT/IT per rilevamento multi-vector",
+      "Scoring di rischio per activo e infraestructura crítica",
+      "Dashboard Streamlit del SOC industriale (OT)"
+    ],
+    "dati": [
+      "Tráfico di red OT: Modbus, DNP3, IEC 61850, IEC 60870-5-104",
+      "Logs di acceso a sistemi SCADA, DCS, HMI",
+      "Compertamiento di dispositivos: RTU, PLC, IED, relés di protezione",
+      "Eventos di sicurezza IT: firewall, IDS/IPS, VPN, Active Directory",
+      "Invenditario di activos OT: fabricante, firmware, vulnerabilitàes"
+    ],
+    "stratificazione": [
+      "Per tipo di amenaza: esplorazione, intrusión, manipolazione, denegazione",
+      "Per zona di red: corperativa, DMZ, control, campo",
+      "Por severidad: crítica (manipolazione SCADA), alta, media, baja",
+      "Por activo colpiscedo: sottostazione, centro di control, generazione",
+      "Por origen: externo, interno, supply chain, insider"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Configurar baseline con dati di tráfico OT normal (2-4 settimanas)",
+      "Integrar con strumentos SIEM/SOAR esistonotes",
+      "Validare alert con team di sicurezza OT prima di automatizzare",
+      "Actualizar regle secondo inteligencia di amenazas del sector energetico"
+    ]
+  },
+  "UC17": {
+    "title": "Gestione delle Comunità Energetiche e Autoconsumo",
+    "contesto": "Las comunidades energeticas crecen un 40% annuale in Spagna impulsadas per il RD 244/2019. El reparto di energia tra miembros, la gestione di excedentes e la fatturazione detallada richieden analítica avanzata.",
+    "focus": "Motore di gestione delle comunità energetiche che optimiza il reparto di energia tra miembros, calcula excedentes e compensazione, predice generazione/consumo per miembro e genera fatturazione.",
+    "sfida": "Ogni comunidad ha i suoi propios coeficientes di reparto, che possono ser fijos o dinamicos. La generazione compartida debe asignarse di forma óptima considerando perfiles di consumo individuales.",
+    "obiettivi": [
+      "Ottimizzare reparto di energia tra miembros della comunidad",
+      "Maximizar autoconsumo colectivo e minimizzare excedentes vertidos",
+      "Generare fatturazione detallada per miembro con desglose di fontes",
+      "Predire generazione e consumo per miembro per pianificazione",
+      "Simulare incorperazione di nuovi miembros e ampliazione di installazione"
+    ],
+    "funzionalita": [
+      "ML.FORECAST di generazione e consumo per miembro",
+      "Ottimizzazione di coeficientes dinamicos di reparto",
+      "Cálculo di excedentes e compensazione simplifiogni",
+      "Facturazione detallada con desglose: autoconsumo, compartido, red",
+      "Dashboard Streamlit di gestione della comunità energetica"
+    ],
+    "dati": [
+      "Generazione della installazione compartida (15-min)",
+      "Consumo individual per miembro (smart meter 15-min)",
+      "Coeficientes di reparto: fijos o dinamicos",
+      "Tarifas applicables: autoconsumo, excedentes, compensazione",
+      "Dati di batería comunitaria si esiste: SoC, carga, descarga"
+    ],
+    "stratificazione": [
+      "Por miembro della comunidad e perfil di consumo",
+      "Por fonte di energia: autoconsumo individual, compartido, red",
+      "Per fascia oraria: coincidente con generazione, nocturno, punta",
+      "Per stagione: verano (alta generazione), invierno (bajo ratio)",
+      "Per tipo di comunidad: residenziale, mixta, industriale, municipal"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Configurar comunidad con dati reales di generazione e consumo",
+      "Regolare coeficientes di reparto secondo acuerdo della comunidad",
+      "Simulare scenari di ampliazione o incorperazione di batería",
+      "Generare informese mensilees per miembros e administrador"
+    ]
+  },
+  "UC18": {
+    "title": "Conformità Normativa e reporting ESG",
+    "contesto": "Le utility in Spagna devono trasmettere report a CNMC (qualità di approvvigionamento), AELEC, EU Taxonome (attivitàes sostenibiles) e múltiples sonodarees ESG. La preperzione mannuale consume 2.000-5.000 ore/anno.",
+    "focus": "Automatizzare la consolidamento di dati e generazione di informese normativos e ESG, verificando consistencia e conformità di umbrales.",
+    "sfida": "Los dati provienen di 15-20 sistemi diversos con formatos e periodicidades distintas. Los requisitos normativos cambian frecuentemente e i errores generano penalizazioni significativas.",
+    "obiettivi": [
+      "Ridurre tempo di preperzione di reporting normativo un 70%",
+      "Automatizzare verifica di consistencia tra fontes di dati",
+      "Generare metriche ESG secondo GRI, SASB, EU Taxonomy",
+      "Rilevare inconformitàs prima di fecha di reperte",
+      "Creare audit trail completo per inspeczioni normativas"
+    ],
+    "funzionalita": [
+      "Consolidazione automatica multi-fonte con verifica di consistencia",
+      "CORTEX.COMPLETE per generazione di narrativas di informe",
+      "ML per rilevamento di anomalías in dati normativos",
+      "Cálculo automatico di KPIs: TIEPI, NIEPI, emisiones, rinnovabiles",
+      "Dashboard Streamlit di compliance normativo e ESG"
+    ],
+    "dati": [
+      "Qualità di approvvigionamento: interrupzioni, durazione, clienti colpiscedos",
+      "Emisiones: CO2, NOx, partícule per impianto e attività",
+      "Generazione rinnovabile: produzione, certificados, garantías di origen",
+      "Inversión in red: capex, opex, efficienza, modernizazione",
+      "Indicadores sociales: empleo, formazione, sicurezza laboral, comunidades"
+    ],
+    "stratificazione": [
+      "Por regulador destino: CNMC, AELEC, EU Taxonomy, GRI",
+      "Per tipo di indicador: ambiental, social, gobernanza",
+      "Por periodicidad: mensile, trimesetral, annuale",
+      "Por nivil di conformità: conforme, rischio, inconformità",
+      "Por área di negocio: generazione, distribuzione, commercialeizazione"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Configurar fontes di dati secondo estructura della azienda",
+      "Mapear indicatori a requisitos normativos vigentes",
+      "Validare informese con teams di compliance e auditoría",
+      "Programar generazione automatica secondo calendario normativo"
+    ]
+  },
+  "UC19": {
+    "title": "Gestione della Ricarica Veicoli Elettrici nella Rete",
+    "contesto": "Spagna prevé 5 milioni di EVs in 2030. La carga simultánea può sucargar transformadores di BT un 40%. La gestione intelligente può diferir inversiones di refuerzo di red di 10.000-15.000M€.",
+    "focus": "Motore di gestione intelligente della ricarica EV che predice domanda, coordina carga diferida (V1G) e bidireccional (V2G), e optimiza il uso della red esistonote.",
+    "sfida": "El compertamento di carga di EV è incierto e dipende di hábitos di movilidad, tipo di cargador, tarifa e generazione local. La coordinazione V2G richiede incentivos e infraestructura bidireccional.",
+    "obiettivi": [
+      "Predire domanda di carga EV per zona con MAPE <15%",
+      "Ridurre pico di carga un 30% mediante gestione intelligente (V1G)",
+      "Valutare potenzal di V2G per servizios di flexibilidad",
+      "Identificare transformadores a rischio di sucarga per EV",
+      "Diferir inversiones di refuerzo di red 3-5 anni"
+    ],
+    "funzionalita": [
+      "ML.FORECAST della domanda di carga EV per zona e franja",
+      "Ottimizzazione V1G: carga diferida a ore valle",
+      "Valutazione V2G: potenzal di inyeczione a red e servizios auxiliares",
+      "Mapa di rischio di sucarga per transformador",
+      "Dashboard Streamlit di gestione ricarica EV"
+    ],
+    "dati": [
+      "Parco veicoli EV per zona: unidades, modellos, capacità di batería",
+      "Sesiones di carga: ubicazione, potenza, durazione, energia, tarifa",
+      "Telemetría di transformadores BT: carga, temperatura, capacità",
+      "Generazione solar local e consumo della zona",
+      "Prezzi di mercato e tarifas di discriminazione oraria"
+    ],
+    "stratificazione": [
+      "Per zona e centro di transformazione",
+      "Per tipo di cargador: doméstico (3.7kW), semi-rápido (11-22kW), rápido (50+kW)",
+      "Por orario: nocturno doméstico, laboral oficina, opertunista",
+      "Por modo di gestione: carga libre, V1G diferida, V2G bidireccional",
+      "Por rischio di red: sucarga attuale, prevista <1 anno, prevista 1-3 anni"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Configurar con dati reales di puntos di carga e red local",
+      "Regolare segnalees di flexibilidad V1G secondo regolamentazione vigente",
+      "Simulare scenari di crescita del parque EV a 3-5 anni",
+      "Integrar con sistemi di gestione di carga (OCPP/OSCP)"
+    ]
+  },
+  "UC20": {
+    "title": "Rilevamento Anomalie nei Mercati Energetici",
+    "contesto": "Los mercatos energeticos (OMIE, servizios di ajuste) sono susceptibles a manipolazione. La CNMC necessita strumentos per rilevare withholding di capacità, offerte coordinientes e abuso di posizione dominante.",
+    "focus": "Sistema ML di vigilanza dei mercati che analiza offerte, prezzi e posizioni per rilevare anomalías di mercato e compertamento anticompetitivo.",
+    "sfida": "Los pattern di manipolazione sono sutiles e si disfrazan di compertamento normal. La distinzione tra ottimizzazione legítima e abuso di mercato richiede analisi multidimensional.",
+    "obiettivi": [
+      "Rilevare anomalías di prezzo con <24h di retraso",
+      "Identificare pattern di withholding di capacità",
+      "Correlacionar compertamento di offerta con eventos di red",
+      "Generare alert priorizadas per investigazione normativa",
+      "Ridurre tempo di investigazione di settimanas a giorni"
+    ],
+    "funzionalita": [
+      "ML.CLASSIFICATION su dati offerte e prezzi di mercato",
+      "Rilevamento di pattern: withholding, coordinazione, price spikes",
+      "Correlazione con eventos di red e escasez di generazione",
+      "Analisi di posizione dominante e market power",
+      "Dashboard Streamlit di vigilanza del mercato energetico"
+    ],
+    "dati": [
+      "Ofertas nel mercato giornaliero OMIE: prezzo, quantità, unidad, agente",
+      "Prezzi di casazione: giornaliero, intragiornaliero, servizios di ajuste",
+      "Capacidad disponibile vs offertada per unidad di generazione",
+      "Eventos di red: restrizioni tecnicas, indisponibilitàes",
+      "Posizioni di mercato: cuota, capacità installata, contratti"
+    ],
+    "stratificazione": [
+      "Per tipo di anomalía: withholding, coordinazione, spike, pivot player",
+      "Por mercato: giornaliero, intragiornaliero, regolamentazione, restrizioni",
+      "Por agente di mercato e grupo aziendareial",
+      "Por ora del giorno e condizione del sistema (escasez, holgura)",
+      "Por severidad: crítica (manipolazione evidente), alta, media, informativa"
+    ],
+    "come_usare": [
+      "Eseguire i prompt sequenzialmente in Cortex Code",
+      "Configurar con dati públicos di mercato OMIE",
+      "Regolare umbrales di rilevamento secondo pattern storici",
+      "Validare alert con analistas di mercato prima di investigazione formal",
+      "Integrar con sistema di reporting normativo di CNMC"
+    ]
+  }
+};
+
+const PROMPTS = {
+  "UC01": {
+    "title": "Previsione della Domanda Elettrica con Model Registry",
+    "intro": "Questa guida te portareá passo a passo per costruire un modello di previsione della domanda elettrica con ML.FORECAST e registrareelo in Snowflake Model Registry per operazione continua.",
+    "steps": [
+      {
+        "title": "Configurare ambiente e dati base",
+        "desc": "Creare database, schema e warehouse per il progetto di previsione della domanda.",
+        "prompt": "Crea la base di dati ENERGIA_DEMANDA_DB con schema ANALYTICS e warehouse ENERGIA_WH (size S). Include commenti descrittivi sul progetto di previsione della domanda elettrica."
+      },
+      {
+        "title": "Creare tabella di puntos di approvvigionamento",
+        "desc": "Generare dati sintetici di puntos di approvvigionamento con zone di distribuzione, tipo di cliente e potenza contratada.",
+        "prompt": "Crea la tabella PUNTOS_SUMINISTRO con campi: punto_id, zona_distribucion (5 zone: Norte, Sur, Este, Oeste, Centro), tipo_cliente (Residencial, Comercial, Industrial), potenza_contratada_kw, municipio, codigo_postal, ha_autoconsumo BOOLEAN, ha_ev BOOLEAN, ha_bomba_calor BOOLEAN. Genera 50,000 records sintetici con distribuzione realista: 70% residenziale, 20% commerciale, 10% industriale. El 15% ha autoconsumo, 8% ha EV, 5% ha bomba di calore. Usa SQL GENERATOR(ROWCOUNT => 50000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Creare storico di domanda oraria",
+        "desc": "Generare 3 anni di dati orarios della domanda elettrica con pattern estacionales, giornalieros e tendenze di elettrificazione.",
+        "prompt": "Crea la tabella DEMANDA_HORARIA con campi: fecha_ora TIMESTAMP, zona_distribucion, tipo_cliente, domanda_mwh FLOAT, temperatura_c FLOAT, es_laborable BOOLEAN, es_festivo BOOLEAN. Genera dati orarios per 3 anni (2022-2024) per zona e tipo di cliente. Applica pattern realistas: punta residenziale 19-22h, punta commerciale 10-14h, punta industriale 8-18h. Estacionalidad: verano +30% (AC), invierno +20% (calefazione). Tendencia creciente del 3% annuale per elettrificazione."
+      },
+      {
+        "title": "Caricare variabili exógenas",
+        "desc": "Creare tabella di variabili meteorologicas, calendario e prezzi di mercato che influyen nella domanda.",
+        "prompt": "Crea la tabella VARIABLES_EXOGENAS con campi: fecha_ora TIMESTAMP, zona_distribucion, temperatura_c, umidità_pct, velocità_vento_ms, irradianza_wm2, prezzo_mercato_eur_mwh, es_festivo BOOLEAN, dia_settimana INT, mese INT, ora INT, penetracion_ev_pct FLOAT, penetracion_autoconsumo_pct FLOAT. Genera dati alineados con DEMANDA_HORARIA. Prezzi OMIE tra 20-200 €/MWh con picos in ore punta. Penetrazione EV/autoconsumo creciente del 2022 al 2024."
+      },
+      {
+        "title": "Addestrare modello di forecast della domanda",
+        "desc": "Costruire modello di previsione della domanda con ML.FORECAST integrando variabili exógenas.",
+        "prompt": "Usa SNOWFLAKE.ML.FORECAST per tranar un modello di previsione della domanda elettrica. La serie temperal è domanda_mwh agrupada per zona_distribucion, con timesetamp fecha_ora. Include come variabili exógenas: temperatura_c, prezzo_mercato_eur_mwh, es_festivo, dia_settimana, ora, penetracion_ev_pct. Addestra con dati 2022-2023 e valida con 2024. Genera previsioni a 24h, 72h e 168h vista. Usa evaluate => TRUE per generare metriche di valutazione."
+      },
+      {
+        "title": "Valutare accuratezza del modello",
+        "desc": "Calcolare metriche di error (MAPE, RMSE, MAE) per zona e orizzonte di previsione.",
+        "prompt": "Evalúa il modello di forecast della domanda calculando: MAPE (Mean Absolute Percentage Error), RMSE e MAE. Comper previsioni vs dati reales di 2024 per zona_distribucion e per orizzonte (24h, 72h, 168h). Muestra una tabella resumen con metriche per zona e orizzonte. Identifica le zone e orizzonti con peggiore accuratezza per diagnóstico."
+      },
+      {
+        "title": "Registrare modello in Model Registry",
+        "desc": "Guardare il modello tranado in Snowflake Model Registry con metadati e metriche di valutazione.",
+        "prompt": "Registra il modello della domanda in Snowflake Model Registry usando Python:\n\nfrom snowflake.ml.registry import Registry\nreg = Registry(session=session, database_name='ENERGIA_DEMANDA_DB', schema_name='ANALYTICS')\nreg.log_model(\n    model=demand_model,\n    model_name='demand_forecast_energy',\n    version_name='v1',\n    metrics={'mape_24h': mape_24, 'mape_72h': mape_72, 'mape_168h': mape_168},\n    comment='Modelo di previsione della domanda elettrica per zona con variabili exógenas'\n)\n\nVerifica il record listando modeli e versiones."
+      },
+      {
+        "title": "Generare piano di acquisti nel mercato",
+        "desc": "Usar le previsioni per generare offerte di acquisto nel mercato OMIE ottimizzatas per fascia oraria.",
+        "prompt": "Crea una vista PLAN_COMPRAS_MERCADO che use le previsioni della domanda per generare un plan di acquisti nel mercato giornaliero OMIE. Para ogni ora del giorno successivo e zona: domanda_prevista_mwh, prezzo_estimado_eur_mwh, costo_estimado_eur, intervalo_confianza_95_inf, intervalo_confianza_95_sup, strategia_acquisto (mercato_giornaliero, intragiornaliero, bilateral). Include alert quando la incertezza supere il 10%."
+      },
+      {
+        "title": "Creare dashboard di pianificazione",
+        "desc": "Costruire un dashboard Streamlit che muestre previsioni, accuratezza e plan di acquisti.",
+        "prompt": "Genera il código per un dashboard Streamlit di pianificazione della domanda con:\n1. Selector di zona e orizzonte temperal\n2. Gráfico della domanda real vs predicha con intervalli di confidenza\n3. Metriche di accuracy: MAPE, RMSE per zona\n4. Plan di acquisti per mercato OMIE del giorno successivo\n5. Alert di deviazione >5% respecto a previsione\n6. Tabla di variabili exógenas che più influyen in ogni zona. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Automazione e pulizia",
+        "desc": "Configurar pipeline di re-training automatico e documentar il progetto.",
+        "prompt": "Crea un TASK programado per retranar il modello della domanda settimanalemente con dati nuovi:\n1. Task REENTRENAR_MODELO_DEMANDA che ejecute ogni lunes a le 6:00\n2. Actualice dati di variabili exógenas\n3. Retrane il modello e registre nuova versión in Model Registry\n4. Compare accuratezza con versión precedente e alerte si empeggiorea\n5. Documenta tutto il pipeline con comentarios in ogni objeto creado."
+      }
+    ]
+  },
+  "UC02": {
+    "title": "Previsione della Generazione Solare Fotovoltaica",
+    "intro": "Questa guida construye un modello di forecast di generazione solar per impianto integrando irradianza, nuvolosità e degradazione per ottimizzare offerte nel mercato elettrico.",
+    "steps": [
+      {
+        "title": "Configurare ambiente e dati base",
+        "desc": "Creare database e schema per il progetto di previsione solar.",
+        "prompt": "Crea la base di dati ENERGIA_SOLAR_DB con schema ANALYTICS e warehouse ENERGIA_WH. Include comentarios descriptivos del progetto di previsione della generazione solar fotovoltaica."
+      },
+      {
+        "title": "Creare catálogo di impianti solari",
+        "desc": "Generare dati sintetici di impianti solari con características tecnicas.",
+        "prompt": "Crea la tabella PLANTAS_SOLARES con campi: impianto_id, nombre, ubicacion, latitud, longitud, potenza_pico_mw FLOAT, tecnologia (Fija, Tracker_1eje, Tracker_2ejes), orientacion_grados INT, inclinacion_grados INT, fecha_instalacion DATE, ratio_degradacion_annuale_pct FLOAT. Genera 30 impianti distribuidas per Spagna con potenzas tra 5-200 MW. Ratio di degradazione 0.4-0.8%/anno."
+      },
+      {
+        "title": "Cargar dati meteorologici solari",
+        "desc": "Creare tabella di variabili meteorologicas relevprima per generazione solar.",
+        "prompt": "Crea la tabella METEO_SOLAR con campi: fecha_ora TIMESTAMP, impianto_id, irradianza_ghi_wm2 FLOAT, irradianza_dni_wm2 FLOAT, nuvolosità_pct FLOAT, temperatura_ambiente_c FLOAT, umidità_pct FLOAT, velocità_vento_ms FLOAT. Genera dati orarios per 2 anni (2023-2024) per impianto. Patrones realistas: irradianza 0-1000 W/m² con ciclo giornaliero e estacional, nuvolosità variabile con correlazione geografica."
+      },
+      {
+        "title": "Creare storico di produzione",
+        "desc": "Generare produzione storica oraria per impianto basata su irradianza e características tecnicas.",
+        "prompt": "Crea la tabella PRODUCCION_SOLAR con campi: fecha_ora TIMESTAMP, impianto_id, produccion_mwh FLOAT, disponibilità_pct FLOAT, factor_capacità FLOAT, en_manutenzione BOOLEAN. Genera dati orarios correlacionados con METEO_SOLAR. Produczione = f(irradianza, temperatura, degradazione, disponibilità). Factor di capacità medio 18-22% annuale. Incluir perdite per temperatura (coef -0.4%/°C oltre i 25°C)."
+      },
+      {
+        "title": "Addestrare modello di forecast solar",
+        "desc": "Costruire modello ML.FORECAST di generazione solar per impianto.",
+        "prompt": "Usa SNOWFLAKE.ML.FORECAST per prevedere produzione solar per impianto. Serie temperal: produccion_mwh agrupada per impianto_id con timesetamp fecha_ora. Variabili esogene: irradianza_ghi_wm2, nuvolosità_pct, temperatura_ambiente_c. Addestra con 2023 e valida con 2024. Genera previsioni a 6h, 24h e 48h con intervalli di confidenza al 95%. Usa evaluate => TRUE per generare metriche di valutazione."
+      },
+      {
+        "title": "Valutare accuratezza e generare metriche",
+        "desc": "Calcolare MAPE per impianto e orizzonte, identificare condizioni di maggiore error.",
+        "prompt": "Evalúa il modello solar calculando MAPE, RMSE e MAE per impianto_id, per orizzonte (6h, 24h, 48h), per mese e per condizione meteorologica (despejado, nublado parcial, nublado). Muestra tabella resumen. Identifica le impianti e condizioni con peggiore accuracy. Analiza si il error si concentra in giorni nublados o transizioni."
+      },
+      {
+        "title": "Generare offerte per mercato OMIE",
+        "desc": "Usar previsioni per creare offerte óptimas nel mercato giornaliero e intragiornaliero.",
+        "prompt": "Crea la vista OFERTAS_MERCADO_SOLAR che agregue previsioni di tuttas le impianti per generare offerte per ora: generacion_prevista_mwh, intervalo_confianza_95, prezzo_estimado_eur_mwh, offerta_giornaliero_mwh (conservadora con P10), offerta_intragiornaliero_mwh (ajuste con ultima previsione), rischio_desvio_eur. Applica strategia conservadora nel mercato giornaliero e ajuste in intragiornaliero."
+      },
+      {
+        "title": "Creare dashboard di gestione solar",
+        "desc": "Dashboard Streamlit di monitoraggio di generazione e offerte.",
+        "prompt": "Genera código Streamlit con:\n1. Mapa di impianti solari con produzione attuale vs prevista\n2. Gráfico di generazione real vs forecast con bandas di confianza\n3. Tabla di offerte per mercato giornaliero e intragiornaliero\n4. Metriche di accuratezza per impianto (MAPE, sesgo)\n5. Alert di deviazione >10% e impianti con baja disponibilità\n6. Resumen di ricavi estimados per impianto e portafoglio. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di attualeizazione e limpezzo",
+        "desc": "Automatizzare attualeizazione di previsiones e re-training.",
+        "prompt": "Crea Tasks programados:\n1. ACTUALIZAR_METEO_SOLAR: ogni 6h attualeiza previsioni meteo\n2. GENERAR_FORECAST_SOLAR: ogni 6h genera nuovas previsioni\n3. REENTRENAR_MODELO_SOLAR: mensile, retrana con dati recientes\n4. Documenta pipeline con comentarios in ogni objeto. Include alert si MAPE mensile supera 12%."
+      }
+    ]
+  },
+  "UC03": {
+    "title": "Previsione della Generazione Eolica con Model Registry",
+    "intro": "Construye un modello di forecast eólico per parque con ML.FORECAST e Model Registry, integrando previsiones multi-modello del vento e curvas di potenza per turbina.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database e schema per previsione eólica.",
+        "prompt": "Crea la base di dati ENERGIA_EOLICA_DB con schema ANALYTICS e warehouse ENERGIA_WH. Include comentarios del progetto di previsione della generazione eólica con Model Registry."
+      },
+      {
+        "title": "Creare catálogo di parques eólicos",
+        "desc": "Generare dati di parques eólicos con turbinas e características tecnicas.",
+        "prompt": "Crea la tabella PARQUES_EOLICOS con: parque_id, nombre, ubicacion, latitud, longitud, potenza_installata_mw, num_turbinas INT, modello_turbina, potenza_unitaria_mw, altura_buje_m INT, diametro_rotor_m INT, fecha_puesta_marcha DATE. Genera 25 parques distribuidos per Spagna con potenzas di 20-200 MW. Modelli: Vestas V136, Siemens Gamesea SG 5.8, Nordex N163."
+      },
+      {
+        "title": "Cargar previsioni meteo multi-modello",
+        "desc": "Dati del vento di múltiples modeli NWP per ensemble.",
+        "prompt": "Crea la tabella METEO_EOLICA con: fecha_ora TIMESTAMP, parque_id, modello_nwp (GFS, ECMWF, HIRLAM), velocità_vento_ms FLOAT, direccion_vento_grados INT, rafaga_max_ms FLOAT, temperatura_c FLOAT, presion_hpa FLOAT, stabilità_atmosferica VARCHAR. Genera dati orarios per 2 anni per parque e modello NWP. Velocidades 0-25 m/s con pattern regionales: atlánticos più intensos, mediterráneos più variabili."
+      },
+      {
+        "title": "Creare storico di produzione eólica",
+        "desc": "Generare produzione per parque correlacioniente con vento e curvas di potenza.",
+        "prompt": "Crea la tabella PRODUCCION_EOLICA con: fecha_ora TIMESTAMP, parque_id, produccion_mwh FLOAT, velocità_media_ms FLOAT, disponibilità_pct FLOAT, curtailment_mwh FLOAT. Genera dati usando curvas di potenza reales: cut-in 3 m/s, nominal 12-13 m/s, cut-out 25 m/s. Factor di capacità medio 25-32%. Incluir effetti di scia (perdita 5-15%), curtailment (1-3%) e perdas per manutenzione."
+      },
+      {
+        "title": "Addestrare modello di forecast eólico",
+        "desc": "Modelo ML.FORECAST con ensemble di previsioni meteo.",
+        "prompt": "Usa SNOWFLAKE.ML.FORECAST per prevedere produzione eólica per parque. Serie temperal: produccion_mwh agrupada per parque_id. Variabili esogene: velocità_vento_ms (promedio di modeli NWP), direccion_vento_grados, rafaga_max_ms, temperatura_c. Addestra con 2023 e valida con 2024. Genera previsioni a 6h, 24h, 48h e 168h. Usa evaluate => TRUE per generare metriche di valutazione."
+      },
+      {
+        "title": "Registrare modello in Model Registry",
+        "desc": "Guardare modello in Registry con metriche di accuracy.",
+        "prompt": "Registra il modello eólico in Snowflake Model Registry:\n\nfrom snowflake.ml.registry import Registry\nreg = Registry(session=session, database_name='ENERGIA_EOLICA_DB', schema_name='ANALYTICS')\nreg.log_model(\n    model=wind_model,\n    model_name='wind_generation_forecast',\n    version_name='v1',\n    metrics={'mape_6h': mape_6, 'mape_24h': mape_24, 'mape_168h': mape_168},\n    comment='Modelo di previsione della generazione eólica per parque con ensemble NWP'\n)\n\nVerifica record e lista versiones disponibiles."
+      },
+      {
+        "title": "Generare previsioni operativas",
+        "desc": "Pipeline di previsione operativa con attualeizazione continua.",
+        "prompt": "Crea la vista PREDICCION_EOLICA_OPERATIVA che genere per ogni ora e parque: produccion_prevista_mwh, intervalo_confianza_95_inf, intervalo_confianza_95_sup, velocità_vento_prevista_ms, modello_registry_version, timesetamp_prediccion. Include lógica di fallback: si la previsione più reciente ha >6h, usar ultima disponibile con flag di advertencia."
+      },
+      {
+        "title": "Creare offerte per trading",
+        "desc": "Integrar previsioni con strategia di trading.",
+        "prompt": "Crea la vista OFERTAS_TRADING_EOLICO che agregue previsioni di portafoglio eólico per mercato OMIE: ora, generacion_prevista_portafoglio_mwh, offerta_giornaliero_mwh (P25 conservadora), offerta_intragiornaliero_mwh (attualeizada), desvio_estimado_mwh, costo_desvio_estimado_eur. Estrategia: offertar P25 in giornaliero per minimizzare penalizazione per exceso e regolare in intragiornaliero."
+      },
+      {
+        "title": "Dashboard di gestione eólica",
+        "desc": "Streamlit di monitoraggio di generazione eólica.",
+        "prompt": "Genera código Streamlit con:\n1. Mapa di parques con produzione attuale e prevista (% di nominal)\n2. Gráfico di generazione real vs forecast con bandas di confianza\n3. Rosa del ventos per parque con frequenza e produzione\n4. Metriche di accuratezza del Model Registry: MAPE per parque e orizzonte\n5. Tabla di offerte per trading desk\n6. Compertiva di versiones del modello in Model Registry. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Automazione e pulizia",
+        "desc": "Pipeline di re-training e versionamento automatico.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_METEO_EOLICA: ogni 3h attualeiza NWP\n2. GENERAR_FORECAST_EOLICO: ogni 3h genera previsioni usando modello di Registry\n3. REENTRENAR_MODELO_EOLICO: mensile, retrana e registra nuova versión in Model Registry\n4. COMPARAR_VERSIONES: settimanale, comper accuratezza di versiones e activa la migliore\n5. Documenta tutto con comentarios. Alerta si MAPE mensile >15%."
+      }
+    ]
+  },
+  "UC04": {
+    "title": "Ottimizzazione dello Stoccaggio Energetico (BESS)",
+    "intro": "Optimiza la operazione di sistemi di stoccaggio con baterías massimizzando ricavi in arbitraje e servizi di regolazione mentre minimizas degradazione.",
+    "steps": [
+      {
+        "title": "Configurar entorno BESS",
+        "desc": "Creare database per ottimizzazione di stoccaggio.",
+        "prompt": "Crea la base di dati ENERGIA_BESS_DB con schema ANALYTICS e warehouse ENERGIA_WH. Comentarios descriptivos del progetto di ottimizzazione di stoccaggio energetico BESS."
+      },
+      {
+        "title": "Creare catálogo di instalazioni BESS",
+        "desc": "Generare dati di sistemi di stoccaggio con características tecnicas.",
+        "prompt": "Crea la tabella INSTALACIONES_BESS con: bess_id, nombre, ubicacion, tecnologia (Li-ion_NMC, Li-ion_LFP, Flow_Vanadio), potenza_mw FLOAT, capacità_mwh FLOAT, efficienza_roundtrip_pct FLOAT, dod_max_pct FLOAT, ciclos_garantizados INT, fecha_instalacion DATE, costo_inversion_eur FLOAT, estado_salud_soh_pct FLOAT. Genera 15 instalazioni con potenzas 5-100 MW, capacitàes 10-400 MWh. Li-ion efficienza 88-92%, Flow 75-82%."
+      },
+      {
+        "title": "Cargar prezzi di mercato",
+        "desc": "Dati di prezzi OMIE e servizios di ajuste per arbitraje.",
+        "prompt": "Crea la tabella PRECIOS_MERCADO con: fecha_ora TIMESTAMP, prezzo_giornaliero_eur_mwh, prezzo_intragiornaliero_eur_mwh, prezzo_regulacion_secundareia_subir_eur_mw, prezzo_regulacion_secundareia_bajar_eur_mw, prezzo_regulacion_terciaria_eur_mwh, domanda_sistema_mwh, generacion_rinnovabile_pct. Genera dati orarios per 2 anni. Prezzi 20-200 €/MWh con spread giornaliero di 30-80 €/MWh tra valle e punta."
+      },
+      {
+        "title": "Creare telemetría delle batterie",
+        "desc": "Generare dati operativos delle baterías.",
+        "prompt": "Crea la tabella TELEMETRIA_BESS con: fecha_ora TIMESTAMP, bess_id, soc_pct FLOAT (state of charge), potenza_kw FLOAT (+carga/-descarga), temperatura_c FLOAT, corriente_a FLOAT, tension_v FLOAT, ciclos_acumulados INT, soh_pct FLOAT. Genera dati ogni 15 min per 1 anno. Simulare cici giornalieros di arbitraje (carga in valle, descarga in punta) con degradazione progresiva del SoH."
+      },
+      {
+        "title": "Predire prezzi e ottimizzare strategia",
+        "desc": "Forecast di prezzi per ottimizzazione di cici di carga/descarga.",
+        "prompt": "Usa ML.FORECAST per prevedere prezzi di mercato a 24h e 48h vista. Luego implementa lógica di ottimizzazione che per ogni ora determine: accion (cargar, descargar, esperar, regolamentazione), potenza_kw, ricavi_estimados_eur, degradacion_estimada_ciclos. Restriczioni: SoC tra 10-90%, potenza máxima, efficienza di ciclo. Comperr strategias: arbitraje puro, peak_shaving, regolamentazione. Usa evaluate => TRUE per generare metriche di valutazione."
+      },
+      {
+        "title": "Modelo di degradazione di batería",
+        "desc": "Modelar degradazione del SoH basata su ciclos, DoD e temperatura.",
+        "prompt": "Crea un modello di degradazione che calcule perdita di SoH per ciclo in funzione di: profundidad di descarga (DoD), temperatura media, corriente di carga/descarga, cici acumulados. Modelo: degradacion_ciclo = f(DoD, T, C_rate) con factores empíricos per Li-ion. Genera vista PROYECCION_VIDA_UTIL che estime la fecha di fin di vida útil (SoH=80%) per ogni BESS bajo strategia attuale."
+      },
+      {
+        "title": "Simulare ROI di strategias",
+        "desc": "Comperr ricavi e degradazione di diversos strategias operativas.",
+        "prompt": "Crea la vista SIMULACION_ROI_BESS che per ogni installazione compare 4 strategias: (1) Arbitraje puro: acquistor in valle, vender in punta, (2) Peak shaving: ridurre picos della domanda, (3) Regulazione: servizios auxiliares, (4) Mixta: arbitraje + regolamentazione. Para ogni strategia calcolare: ricavi_annualees_eur, degradacion_annuale_pct, roi_annuale_pct, payback_years, valoree_residual. Generare ranking per ROI ajustado a degradazione."
+      },
+      {
+        "title": "Dashboard di gestione BESS",
+        "desc": "Streamlit di monitoraggio delle batterie e ottimizzazione.",
+        "prompt": "Genera código Streamlit con:\n1. Estado di ogni BESS: SoC, SoH, temperatura, potenza\n2. Gráfico di prezzi previstos vs reales con segnalees di arbitraje\n3. Compertiva di ROI per strategia e per installazione\n4. Proyeczione di vida útil e degradazione\n5. Plan operativo per le prossimas 24h\n6. Metriche financieras: ricavi acumulados, costo di degradazione. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Automazione e pulizia",
+        "desc": "Pipeline operativo di ottimizzazione continua.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_PRECIOS: ogni ora carga prezzi di mercato\n2. OPTIMIZAR_BESS: ogni ora genera plan operativo óptimo per installazione\n3. EVALUAR_DEGRADACION: giornaliero, attualeiza proyeczione di vida útil\n4. REPORTE_MENSUAL: genera resumen di ricavi, degradazione e ROI\n5. Documenta pipeline completo con comentarios in ogni objeto."
+      }
+    ]
+  },
+  "UC05": {
+    "title": "Rilevamento Perdite Tecniche e Non Tecniche nella Rete",
+    "intro": "Construye un sistema ML per rilevare perdite elettricas diferenciando tecnicas di non tecnicas, priorizando inspeczioni di frode per probabilità e imperte.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per rilevamento di perdite.",
+        "prompt": "Crea la base di dati ENERGIA_PERDIDAS_DB con schema ANALYTICS e warehouse ENERGIA_WH. Comentarios del progetto di rilevamento di perdite tecnicas e non tecnicas."
+      },
+      {
+        "title": "Creare topología di red",
+        "desc": "Generare estructura di red: subestazioni, transformadores, líneas.",
+        "prompt": "Crea la tabella TOPOLOGIA_RED con: elemento_id, tipo (Subestacion, Linea_MT, Centro_Transformacion, Linea_BT), capacità_kva FLOAT, longitud_km FLOAT, antiguedad_anos INT, zona, num_clienti_alimentados INT, impedancia_ohm FLOAT, elemento_padre_id (jerarquía di red). Genera 200 CTs con 5 subestazioni padre. Ogni CT alimenta 50-500 clienti. Usa SQL GENERATOR(ROWCOUNT => 500) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Creare balance di energia per CT",
+        "desc": "Generare dati di energia inyectada vs medida per centro di transformazione.",
+        "prompt": "Crea la tabella BALANCE_ENERGIA con: fecha DATE, ct_id, energia_inyectada_kwh FLOAT (medida in cabecera del CT), energia_medida_clienti_kwh FLOAT (suma di smart meters), perdidas_kwh FLOAT, ratio_perdidas_pct FLOAT. Genera dati giornalieros per 2 anni. Pérdidas tecnicas normales 3-6%, añadir perdite non tecnicas del 2-8% in 15% dei CTs per simulare frode."
+      },
+      {
+        "title": "Cargar consumos di clienti",
+        "desc": "Dati di consumo di smart meters per cliente.",
+        "prompt": "Crea la tabella CONSUMO_CLIENTES con: cliente_id, ct_id, fecha DATE, consumo_kwh FLOAT, potenza_max_kw FLOAT, tarifa VARCHAR, tipo_vivienda VARCHAR, factor_carga FLOAT, variabilità_consumo FLOAT, consumo_vs_estimado_ratio FLOAT. Genera dati giornalieros per 10,000 clienti. El 3% ha pattern di frode: consumo artificialmente bajo, variabilità anormal, desconnessione periódica del contador. Usa SQL GENERATOR(ROWCOUNT => 10000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Calcolare features di rilevamento",
+        "desc": "Generare features analíticas per il modello di rilevamento.",
+        "prompt": "Crea la vista FEATURES_PERDIDAS che calcule per CT e per cliente:\n- Balance CT: ratio_perdidas_pct, tendenza, estacionalidad, deviazione vs CTs similares\n- Cliente: consumo_vs_esperado, variabilità, patron_nocturno, correlacion_temperatura, consumo_vs_vecinos\n- Ratio di perdite tecnicas esperadas secondo impedancia e longitud di línea\n- Delta: perdite reales - perdite tecnicas esperadas = indicador di perdite non tecnicas\nNormaliza tuttas le features per il modello ML."
+      },
+      {
+        "title": "Addestrare modello di rilevamento",
+        "desc": "Modelo ML.CLASSIFICATION per clasificar clienti e CTs con perdite anómalas.",
+        "prompt": "Usa SNOWFLAKE.ML.CLASSIFICATION per clasificar puntos di approvvigionamento como: normal, sospechoso_leve, sospechoso_alto, frode_probable. Variabili: tuttas le features di FEATURES_PERDIDAS. Divide dati 70/30 train/test. Evalúa con precision, recall, F1 per clase. Optimiza per massimizzar recall di frode_probable manteniendo precision >60%. Usa evaluate => TRUE per generare metriche di valutazione."
+      },
+      {
+        "title": "Priorizar inspeczioni",
+        "desc": "Ranking di inspeczioni per probabilità × imperte estimado.",
+        "prompt": "Crea la vista PRIORIZAR_INSPECCIONES che per ogni cliente sospechoso calcule: probabilità_frode (dal modello), consumo_estimado_real_kwh (basato su vecinos similares), consumo_declarado_kwh, frode_estimado_kwh, imperte_estimado_eur (frode × prezzo medio), score_inspeccion (probabilità × imperte), costo_inspeccion_eur. Ordena per score_inspeccion descendente. Filtra i che hanno ROI esperado > 1.5."
+      },
+      {
+        "title": "Dashboard di gestione di perdite",
+        "desc": "Streamlit di monitoraggio e gestione di inspeczioni.",
+        "prompt": "Genera código Streamlit con:\n1. Mapa di CTs coloreados per ratio di perdite\n2. Balance di energia: inyectada vs medida vs perdite per zona\n3. Lista di inspeczioni priorizadas con scoring e ROI esperado\n4. Perfil di cliente sospechoso: consumo, compertiva, alert\n5. Metriche di campagnas di inspeczione: tasa di éxito, frode recuperado\n6. Tendencia di perdite mensilees e efecto delle azioni. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Automazione e pulizia",
+        "desc": "Pipeline di attualeizazione continua del modello di perdite.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_BALANCE: giornaliero, recalcula balance di energia per CT\n2. CALCULAR_FEATURES: giornaliero, attualeiza features di rilevamento\n3. GENERAR_ALERTAS: settimanale, ejecuta modello e genera lista di sospechosos\n4. REENTRENAR_MODELO: trimesetral, retrana con risultatos di inspeczioni\n5. Documenta pipeline. Include metriche di perdite recuperadas."
+      }
+    ]
+  },
+  "UC06": {
+    "title": "Gestione delle Congestioni nella Rete di Distribuzione",
+    "intro": "Predice congestiones in red di distribuzione e recomienda azioni di flexibilidad per evitar inversiones in refuerzo di red.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per gestione di congestiones.",
+        "prompt": "Crea la base di dati ENERGIA_CONGESTION_DB con schema ANALYTICS e warehouse ENERGIA_WH. Comentarios del progetto di gestione di congestiones in red di distribuzione."
+      },
+      {
+        "title": "Creare modello di red di distribuzione",
+        "desc": "Generare topología di red con capacitàes e conexiones.",
+        "prompt": "Crea la tabella RED_DISTRIBUCION con: nodo_id, tipo_nodo (Subestacion, CT_MT, CT_BT, Empalme), capacità_nominal_kva FLOAT, capacità_emergencia_kva FLOAT, tension_nominal_kv FLOAT, zona, clienti_conectados INT, generacion_distribuida_kw FLOAT, puntos_carga_ev INT, ha_bateria BOOLEAN. Genera 500 nodos con jerarquía realista. 20% ha GD solar, 10% ha puntos di carga EV."
+      },
+      {
+        "title": "Cargar telemetría di red",
+        "desc": "Dati di carga, tensión e temperatura per nodo.",
+        "prompt": "Crea la tabella TELEMETRIA_RED con: fecha_ora TIMESTAMP, nodo_id, carga_kva FLOAT, tension_pu FLOAT (per unidad, nominal=1.0), temperatura_transformador_c FLOAT, flujo_potenza_activa_kw FLOAT, flujo_potenza_reactiva_kvar FLOAT, generacion_local_kw FLOAT, consumo_ev_kw FLOAT. Genera dati ogni 15 min per 1 anno. Incluir sutensiones per GD (tensión >1.05 pu) e sucargas per EV in ore punta."
+      },
+      {
+        "title": "Predire congestiones",
+        "desc": "Modelo ML.FORECAST di carga e tensión per nodo.",
+        "prompt": "Usa ML.FORECAST per prevedere carga_kva e tension_pu per nodo a 4h, 12h e 24h vista. Variabili esogene: generacion_local_kw (prevista), consumo_ev_kw (previsto), temperatura_ambiente, ora, dia_settimana. Identifica nodos dove la previsione supere 80% di capacità nominal (alerta), 90% (alarma), 100% (emergencia). Anche rilevare tensiones fuera di rango ±5%. Usa evaluate => TRUE per generare metriche di valutazione."
+      },
+      {
+        "title": "Recomendare azioni di flexibilidad",
+        "desc": "Motor di decisión per azioni correctivas.",
+        "prompt": "Crea la vista ACCIONES_FLEXIBILIDAD che per ogni congestione prevista recomiende azioni priorizadas per costo e efectividad:\n1. Curtailment di GD: ridurre inyeczione solar (costo: compensazione a prodottor)\n2. Demand Response: segnale di reduczione a grandes consumatorees\n3. Carga diferida EV: desplazar carga a ore valle (V1G)\n4. Almacenamiento: absorber excedente con batería local\n5. Refuerzo di red: ultima opzione si azioni non sono suficientes\nCalcula costo_accion_eur, efecto_esperado_kva, tempo_implementacion."
+      },
+      {
+        "title": "Simulare scenari di crescita",
+        "desc": "Proyectar congestiones futuras con diversos tasas di GD e EV.",
+        "prompt": "Crea la vista SIMULACION_CRECIMIENTO che proyecte congestiones a 1, 3 e 5 anni con scenari di crescita di GD (+20%/anno, +40%/anno) e EV (+30%/anno, +50%/anno). Para ogni scenario e nodo: num_ore_congestion_annuale, costo_azioni_flexibilidad_eur, costo_refuerzo_red_eur, recomendacion (flexibilidad vs refuerzo). Identifica i 20 nodos più críticos per ogni scenario."
+      },
+      {
+        "title": "Dashboard di gestione di congestiones",
+        "desc": "Streamlit di monitoraggio e gestione di red.",
+        "prompt": "Genera código Streamlit con:\n1. Mapa di red con nodos coloreados per nivil di carga (verde/amarillo/rojo)\n2. Previsione di congestiones per prossimas 24h\n3. Lista di azioni di flexibilidad recomendadas con costo e efecto\n4. Simulazione di scenari di crescita GD/EV\n5. Metriche: ore di congestione evitadas, costo di flexibilidad, refuerzos diferidos\n6. Ranking di nodos críticos per inversión. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di gestione e limpezzo",
+        "desc": "Automatizzare previsione e gestione di congestiones.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_TELEMETRIA: ogni 15 min ingesta di dati SCADA\n2. PREDECIR_CONGESTIONES: ogni ora genera previsioni per nodo\n3. GENERAR_ACCIONES: ogni ora recomienda azioni di flexibilidad\n4. REPORTE_SEMANAL: resumen di congestiones gestionientes e costi\n5. Documenta pipeline. Alerta si congestiones non gestionables >5% del tempo."
+      }
+    ]
+  },
+  "UC07": {
+    "title": "Manutenzione Predittiva delle Turbine Eoliche",
+    "intro": "Construye un modello predittivo di fali in turbinas eólicas analizando segnalees SCADA per priorizar manutenzione e massimizzar disponibilità della flotta.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per manutenzione predittivo eólico.",
+        "prompt": "Crea la base di dati ENERGIA_MANT_EOLICO_DB con schema ANALYTICS e warehouse ENERGIA_WH. Comentarios del progetto di manutenzione predittivo di turbinas eólicas."
+      },
+      {
+        "title": "Creare invenditario di turbinas",
+        "desc": "Catálogo di turbinas con características tecnicas.",
+        "prompt": "Crea la tabella TURBINAS con: turbina_id, parque_id, modello (Vestas_V136, SG_58_170, Nordex_N163), potenza_nominal_kw INT, altura_buje_m INT, diametro_rotor_m INT, fecha_instalacion DATE, ore_operacion INT, ultimo_manutenzione_maggiore DATE, estado (Operativa, Manutenzione, Averiada). Genera 200 turbinas in 10 parques. Antigüedad 2-20 anni. 90% operativas, 7% manutenzione, 3% averiadas."
+      },
+      {
+        "title": "Cargar dati SCADA",
+        "desc": "Señales operativas di turbinas ogni 10 minutos.",
+        "prompt": "Crea la tabella SCADA_TURBINAS con: fecha_ora TIMESTAMP, turbina_id, potenza_kw FLOAT, velocità_rotor_rpm FLOAT, velocità_vento_ms FLOAT, angulo_pitch_grados FLOAT, angulo_yaw_grados FLOAT, temp_generador_c FLOAT, temp_multiplicadora_c FLOAT, temp_rodamiento_c FLOAT, temp_aceite_c FLOAT, vibracion_generador_mm_s FLOAT, vibracion_multiplicadora_mm_s FLOAT, estado_turbina VARCHAR. Genera dati 10-min per 1 anno. Incluir degradazione gradual in 10% di turbinas: incremento di temperatura e vibrazione 2-4 settimanas prima di avería."
+      },
+      {
+        "title": "Creare storico di averías",
+        "desc": "Registro di fallos, reperzioni e costi.",
+        "prompt": "Crea la tabella HISTORIAL_AVERIAS con: averia_id, turbina_id, fecha_inicio TIMESTAMP, fecha_fin TIMESTAMP, componente_colpiscedo (Generador, Multiplicadora, Sistema_Pitch, Sistema_Yaw, Rodamientos, Electrónica), tipo_fallo, severidad (Critica, Mayor, Menor), costo_repercion_eur FLOAT, tempo_indisponibilità_ore FLOAT, produccion_perdida_mwh FLOAT. Genera 300 averías in 2 anni. Costes: Crítica 100-300K€, Mayor 20-80K€, Menor 2-15K€."
+      },
+      {
+        "title": "Calcolare features predittivas",
+        "desc": "Derivar indicatori di degradazione di segnalees SCADA.",
+        "prompt": "Crea la vista FEATURES_PREDICTIVAS che calcule per turbina e venditana temperal (24h, 7d, 30d):\n- Tendencias: pendiente di temperatura generador, multiplicadora, rodamientos\n- Anomalías: deviazione di vibrazione vs baseline, residual potenza vs curva teórica\n- Patrones: ratio temp_generador/potenza (efficienza), variabilità di pitch\n- Compertiva: deviazione vs turbinas similares dello stesso parque\n- Acumulados: ore in zona di estrés térmico (>80°C), cici di pitch excesivos"
+      },
+      {
+        "title": "Addestrare modello di previsione della fallos",
+        "desc": "ML.CLASSIFICATION per rilevare degradazione e prevedere fallos.",
+        "prompt": "Usa SNOWFLAKE.ML.CLASSIFICATION per clasificar il estado di ogni turbina: normal, atencion (degradazione leve), alerta (fallo probable <4 settimanas), critico (fallo inminente <1 settimana). Variabili: tuttas le features predittivas. Addestra con dati etiquetados usando historial di averías. Evalúa con precision, recall, F1. Il modello debe rilevare >80% di fali maggiorees con precisión >70%. Usa evaluate => TRUE per generare metriche di valutazione."
+      },
+      {
+        "title": "Priorizar intervenzioni",
+        "desc": "Ranking di manutenzione per impatto económico.",
+        "prompt": "Crea la vista PLAN_MANTENIMIENTO che per ogni turbina con alerta calcule: probabilità_fallo, componente_probable, costo_repercion_estimado_eur, produccion_perdida_estimada_mwh, venditana_optima_intervencion (fechas), prioridad_score (probabilità × impatto económico). Ordena per prioridad. Include restrizioni di cuadrille disponibiles e venditanas meteorologicas favorables."
+      },
+      {
+        "title": "Dashboard di salud di flotta",
+        "desc": "Streamlit di monitoraggio di turbinas e manutenzione.",
+        "prompt": "Genera código Streamlit con:\n1. Mapa di parques con turbinas coloreadas per estado (verde/amarillo/rojo)\n2. Panel di segnalees SCADA in tempo reale per turbina seleccioniente\n3. Tendencias di degradazione: temperatura, vibrazione, efficienza\n4. Plan di manutenzione priorizado con venditanas óptimas\n5. Metriche di flotta: disponibilità, fali detectados, falsos positivos\n6. ROI del manutenzione predittivo vs calendario. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di previsione e limpezzo",
+        "desc": "Automatizzare previsione e alert di manutenzione.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_SCADA: ogni 10 min carga dati di turbinas\n2. CALCULAR_FEATURES: ogni ora attualeiza features predittivas\n3. EVALUAR_TURBINAS: ogni 6h ejecuta modello e genera alert\n4. NOTIFICAR_ALERTAS: immediato si estado cambia a critico\n5. REENTRENAR_MODELO: trimesetral con nuovi dati di averías\n6. Documenta pipeline. Métrica obiettivo: >97% disponibilità di flotta."
+      }
+    ]
+  },
+  "UC08": {
+    "title": "Feature Store Customer Energe 360",
+    "intro": "Implementa un Feature Store in Snowflake che consolidella visión 360 del cliente energetico da tuttos i sistemi per personalizzazione, efficienza e fidelizzazione.",
+    "steps": [
+      {
+        "title": "Configurar entorno Feature Store",
+        "desc": "Creare database e preperr Snowflake Feature Store.",
+        "prompt": "Crea la base di dati ENERGIA_CUSTOMER360_DB con schema FEATURE_STORE e warehouse ENERGIA_WH. Comenta che questo progetto implementa Snowflake Feature Store per Customer Energe 360 con Entite 'energy_customer'."
+      },
+      {
+        "title": "Creare dati fonte di clienti",
+        "desc": "Generare dati delle 5 fontes che alimentan il Feature Store.",
+        "prompt": "Crea 5 table fonte:\n1. RAW_SMART_METERS: cliente_id, fecha_ora, consumo_kwh, potenza_kw, tension_v, qualità_senal (30M lecturas/giorno → generare 1 anno per 10,000 clienti)\n2. RAW_BILLING: cliente_id, fecha_factura, imperte_eur, consumo_facturado_kwh, tarifa, potenza_contratada, estado_pago, dias_mora\n3. RAW_CRM: cliente_id, segmento, canal_preferido, nps_score, num_contactos, ultima_interaccion, campanas_respondidas\n4. RAW_GENERACION: cliente_id, tipo_instalacion (solar, solar+bateria), potenza_pico_kw, produccion_kwh, excedentes_kwh, autoconsumo_pct\n5. RAW_DIGITAL: cliente_id, fecha, sesiones_app, sesiones_web, uso_chatbot, notifiche_leidas, valoreeacion_app. Usa SQL GENERATOR(ROWCOUNT => 10000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Creare Entite del Feature Store",
+        "desc": "Definire la Entite 'energy_customer' con join keys.",
+        "prompt": "Usando Snowflake Feature Store in Python, crea la Entity:\n\nfrom snowflake.ml.feature_store import FeatureStore, Entity, FeatureView\nfs = FeatureStore(session=session, database='ENERGIA_CUSTOMER360_DB', name='FEATURE_STORE')\n\nenergy_customer = Entity(\n    name='ENERGY_CUSTOMER',\n    join_keys=['CUSTOMER_ID'],\n    desc='Cliente del sector energetico con visión 360'\n)\nfs.register_entity(energy_customer)\n\nVerifica che la Entite si ha registrado correctamente."
+      },
+      {
+        "title": "Creare FeatureView di consumo",
+        "desc": "FeatureView di perfil di consumo da smart meters.",
+        "prompt": "Crea il FeatureView consumption_profile da RAW_SMART_METERS:\n- consumo_giornaliero_medio_kwh, consumo_punta_kwh, consumo_valle_kwh\n- ratio_punta_valle, factor_carga, variabilità_settimanale\n- tendenza_consumo_3m (creciente/estable/decreciente)\n- patron_estacional (verano_intenso, invierno_intenso, estable)\n- orario_pico_consumo, consumo_percentil_zona\n\nRegistra come FeatureView 'CONSUMPTION_PROFILE' con refresh_freq='1 day'."
+      },
+      {
+        "title": "Creare FeatureView di fatturazione",
+        "desc": "FeatureView di estado di fatturazione e pagos.",
+        "prompt": "Crea il FeatureView billing_status da RAW_BILLING:\n- gasto_mensile_medio_eur, gasto_ultimo_mese_eur\n- tarifa_attuale, potenza_contratada_kw\n- dias_mora_attuale, historial_impagos_12m\n- risparmio_vs_media_zona_pct, recomendacion_tarifa\n- potenzal_risparmio_cambio_tarifa_eur\n\nRegistra come FeatureView 'BILLING_STATUS' con refresh_freq='1 day'."
+      },
+      {
+        "title": "Creare FeatureViews di generazione e digital",
+        "desc": "FeatureViews per autoconsumo e engagement digital.",
+        "prompt": "Crea 2 FeatureViews più:\n\n1. GENERATION_PROFILE da RAW_GENERACION:\n- es_prosumer BOOLEAN, potenza_pico_kw, autoconsumo_pct\n- excedentes_mensilees_kwh, risparmio_autoconsumo_eur\n- ratio_generacion_consumo, potenzal_bateria\n\n2. DIGITAL_ENGAGEMENT da RAW_DIGITAL:\n- engagement_score (0-100), canal_preferido\n- frequenza_app_settimanale, usa_chatbot BOOLEAN\n- responde_notifiche_pct, valoreeacion_app\n- propension_digital (alta/media/baja)\n\nRefresh giornaliero per ambos."
+      },
+      {
+        "title": "Creare FeatureView di smart meter analytics",
+        "desc": "Features avanzatas di analisi di smart meters.",
+        "prompt": "Crea il FeatureView SMART_METER_ANALYTICS da RAW_SMART_METERS:\n- curva_carga_tipica (arrae 24 valoreees normalizados)\n- anomalias_consumo_30d INT, qualità_dati_pct\n- correlacion_temperatura FLOAT, sensibilidad_prezzo FLOAT\n- patron_fin_settimana_vs_laborable FLOAT\n- scoring_frode FLOAT (basato su anomalías del UC15)\n\nRefresh ogni 6 ore per la naturaleza near-real-time di smart meters."
+      },
+      {
+        "title": "Servir features per casos di uso",
+        "desc": "Demostrare consumo di features da altros pipelines ML.",
+        "prompt": "Demuestra come consumir le features del Feature Store:\n\n# Para segmentazione (UC09)\ndf_segmentacion = fs.get_features(\n    entity=energy_customer,\n    feature_views=['CONSUMPTION_PROFILE', 'BILLING_STATUS', 'DIGITAL_ENGAGEMENT'],\n    spine_df=clienti_activos_df\n)\n\n# Para chatbot (UC13)\ndf_chatbot = fs.get_features(\n    entity=energy_customer,\n    feature_views=['CONSUMPTION_PROFILE', 'BILLING_STATUS', 'GENERATION_PROFILE'],\n    spine_df=cliente_attuale_df\n)\n\nMuestra ejempi dei DataFramese resultprima."
+      },
+      {
+        "title": "Dashboard di Feature Store",
+        "desc": "Streamlit di monitoraggio del Feature Store.",
+        "prompt": "Genera código Streamlit con:\n1. Resumen del Feature Store: 5 FeatureViews, features totales, ultimo refresh\n2. Buscador di cliente con perfil 360 completo\n3. Distribuzione di segmentos di clienti\n4. Metriche di qualità di features: completitud, freshness, drift\n5. Uso di features per caso di uso downstream\n6. Top features più querydas e tendenze. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di manutenzione",
+        "desc": "Automatizzare attualeizazione e monitoraggio del Feature Store.",
+        "prompt": "Crea Tasks:\n1. REFRESH_SMART_METER: ogni 6h attualeiza features di smart meters\n2. REFRESH_BILLING: giornaliero attualeiza features di fatturazione\n3. REFRESH_GENERATION: giornaliero attualeiza features di generazione\n4. MONITOR_QUALITY: giornaliero verifica completitud e drift di features\n5. ALERTA_FRESHNESS: immediato si algún FeatureView ha >24h senza refresh\n6. Documenta tutto il Feature Store con comentarios in ogni objeto."
+      }
+    ]
+  },
+  "UC09": {
+    "title": "Segmentazione Clienti ed Efficienza Energetica",
+    "intro": "Segmenta clienti per perfil di consumo e potenzal di risparmio per personalizzare programas di efficienza energetica e massimizzar adopzione.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per segmentazione.",
+        "prompt": "Crea la base di dati ENERGIA_SEGMENTACION_DB con schema ANALYTICS e warehouse ENERGIA_WH. Comentarios del progetto di segmentazione di clienti e efficienza energetica."
+      },
+      {
+        "title": "Preperr dati di clienti",
+        "desc": "Consolidare dati di consumo, fatturazione e perfil.",
+        "prompt": "Crea la tabella CLIENTES_PERFIL con: cliente_id, tipo_vivienda (piso, casa, adosado), superficie_m2 INT, zona_climatica (A-E), num_habitprima INT, ha_ac BOOLEAN, ha_calefaccion_electrica BOOLEAN, ha_autoconsumo BOOLEAN, tarifa_attuale, potenza_contratada_kw, consumo_annuale_kwh FLOAT, gasto_annuale_eur FLOAT, canal_preferido, nps_score. Genera 20,000 clienti con distribuzioni realistas per Spagna. Usa SQL GENERATOR(ROWCOUNT => 20000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Calcolare features di consumo",
+        "desc": "Generare metriche di consumo da curvas di carga.",
+        "prompt": "Crea la vista FEATURES_CONSUMO che calcule per cliente:\n- consumo_medio_giornaliero_kwh, variabilità_consumo_cv\n- ratio_punta_valle, factor_carga\n- consumo_ac_estimado_kwh (verano), consumo_calefaccion_estimado_kwh (invierno)\n- consumo_stand_by_estimado_kwh (nocturno mínimo)\n- efficienza_vs_similar (comperdo con vivienda similar in zona)\n- potenzal_risparmio_kwh e potenzal_risparmio_eur\n- propension_autoconsumo_score (basato su consumo, vivienda, zona)"
+      },
+      {
+        "title": "Addestrare modello di segmentazione",
+        "desc": "ML.CLASSIFICATION per identificare segmentos di clienti.",
+        "prompt": "Usa SNOWFLAKE.ML.CLASSIFICATION per clasificar clienti in segmentos:\n- Eficiente: consumo bajo, stand-be bajo, buen ratio punta/valle\n- Potencial_Alto: consumo alto con opertunidad di risparmio >30%\n- Prosumer_Potencial: perfil ideal per autoconsumo\n- Digital_Engaged: alto engagement, receptivo a campagnas digitales\n- Vulnerable: possibile pobreza energetica, necessita protezione\nVariabili: tuttas le features di consumo + perfil demográfico. Evalúa con metriche di classificazione. Usa evaluate => TRUE per generare metriche di valutazione."
+      },
+      {
+        "title": "Generare recomendazioni per segmento",
+        "desc": "Personalizzare azioni di efficienza per segmento.",
+        "prompt": "Crea la vista RECOMENDACIONES_EFICIENCIA che per ogni cliente genere:\n- segmento_asignado, confianza_pct\n- top_3_recomendazioni: [{accion, risparmio_estimado_kwh, risparmio_estimado_eur, inversion_cliente_eur, payback_mesei}]\n- Aczioni possibiles: cambio_tarifa, ajuste_potenza, LED, aislamiento, autoconsumo, bateria, bomba_calor, smart_thermostat\n- prioridad_contacto (1-5), canal_recomendado, mensaje_personalizado\nUsa CORTEX.COMPLETE per generare il mensaje personalizado."
+      },
+      {
+        "title": "Calcolare ROI di programas",
+        "desc": "Valutare retorno di campagnas di efficienza per segmento.",
+        "prompt": "Crea la vista ROI_PROGRAMAS che calcule per segmento e azione:\n- num_clienti_elegibles, tasa_adopcion_estimada_pct\n- risparmio_total_kwh, risparmio_total_eur (per clienti)\n- costo_campana_eur, inversion_subvencion_eur (per utility)\n- roi_utility_pct (risparmio in acquisto energia + fidelizzazione)\n- reduccion_co2_toneladas\n- ranking per ROI per priorizar presupuesto di efficienza"
+      },
+      {
+        "title": "Dashboard di segmentazione",
+        "desc": "Streamlit di gestione di programas di efficienza.",
+        "prompt": "Genera código Streamlit con:\n1. Distribuzione di clienti per segmento (pie chart)\n2. Perfil detallado per segmento: consumo medio, potenzal risparmio, demografía\n3. Buscador di cliente con recomendazioni personalizadas\n4. ROI di programas di efficienza per segmento e azione\n5. Mapa di calore di potenzal di risparmio per zona geografica\n6. Metriche di campagnas: enviadas, convertidas, risparmio real conseguido. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Automatizzare segmentazione e campagnas.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_PERFILES: mensile, recalcula features di consumo\n2. RESEGMENTAR: trimesetral, retrana modello di segmentazione\n3. GENERAR_CAMPANAS: mensile, genera listas per campagnas per segmento\n4. MEDIR_IMPACTO: mensile, evalúa adopzione e risparmio real di programas\n5. Documenta pipeline. Objetivo: tasa di adopzione >15% in segmentos target."
+      }
+    ]
+  },
+  "UC10": {
+    "title": "Ottimizzazione del Portfolio di Generazione Rinnovabile",
+    "intro": "Optimiza offerte di portafoglio rinnovabile nel mercato OMIE combinando previsioni multi-impianto, prezzi e contratti PPA.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per trading di portafoglio rinnovabile.",
+        "prompt": "Crea la base di dati ENERGIA_PORTFOLIO_DB con schema TRADING e warehouse ENERGIA_WH. Comentarios del progetto di ottimizzazione di portafoglio di generazione rinnovabile."
+      },
+      {
+        "title": "Creare portafoglio di impianti",
+        "desc": "Catálogo di impianti solari e eólicas del portafoglio.",
+        "prompt": "Crea la tabella PORTFOLIO_PLANTAS con: impianto_id, nombre, tecnologia (Solar_Fija, Solar_Tracker, Eolica), potenza_mw FLOAT, ubicacion, latitud, longitud, zona_mercato, factor_capacità_medio_pct, fecha_conexion DATE, contratto_ppa_id (nullable). Genera portafoglio di 800 MW: 400 MW eólicos (10 parques) + 400 MW solari (15 impianti). 60% con PPA, 40% mercato libre."
+      },
+      {
+        "title": "Cargar contratti PPA",
+        "desc": "Dati di contratti PPA con volúmenes e prezzi.",
+        "prompt": "Crea la tabella CONTRATOS_PPA con: ppa_id, contraparte, impianto_id, potenza_contratada_mw, prezzo_fijo_eur_mwh FLOAT, tipo_ppa (baseload, as-produced, shaped), volumen_minimo_annuale_mwh, penalizacion_inconformità_eur_mwh, fecha_inicio DATE, fecha_fin DATE. Genera 12 PPAs con prezzi 40-70 €/MWh. Tipos: 40% baseload, 40% as-produced, 20% shaped."
+      },
+      {
+        "title": "Consolidare previsioni di generazione",
+        "desc": "Agregar previsioni solari e eólicas per portafoglio.",
+        "prompt": "Crea la vista PREDICCION_PORTFOLIO che agregue previsioni di tuttas le impianti:\n- Por impianto: produccion_prevista_mwh, intervalo_95_inf, intervalo_95_sup\n- Por tecnología: total_solar_mwh, total_eolica_mwh\n- Portfolio total: generacion_total_prevista_mwh, diversificacion_benefit_mwh (reduczione di incertezza per correlazione < 1)\n- Calcolare correlazione tra impianti e beneficio di diversificazione real\nAgrega per ora per giorno successivo e settimana."
+      },
+      {
+        "title": "Ottimizzare offerte di mercato giornaliero",
+        "desc": "Generare offerte óptimas per OMIE giorno D+1.",
+        "prompt": "Crea la vista OFERTAS_DIARIO che per ogni ora del giorno successivo calcule:\n- generacion_disponibile_mwh (total - comprometido PPA)\n- offerta_optima_mwh (considerando incertezza e asimetría di deviazioni)\n- prezzo_minimo_offerta_eur_mwh (costo marginal + rischio)\n- volumen_prenotazionedo_intragiornaliero_mwh (per regolare con migliore previsione)\n- ricavo_estimado_eur, rischio_desvio_eur\nEstrategia: offertar P25-P50 in giornaliero secondo aversión al rischio."
+      },
+      {
+        "title": "Gestionar PPAs e deviazioni",
+        "desc": "Asignar generazione a PPAs e calcolare esposizione.",
+        "prompt": "Crea la vista GESTION_PPA che per ogni PPA e ora calcule:\n- generacion_asigniente_mwh (secondo tipo: baseload=fijo, as-produced=real)\n- conformità_pct (generazione vs compromiso)\n- excedente_a_mercato_mwh, deficit_a_acquistor_mwh\n- costo_deficit_eur (acquisto nel mercato + penalizazione)\n- exposicion_total_portafoglio_eur (rischio neto del portafoglio)\nIdentifica PPAs con maggiore rischio di inconformità."
+      },
+      {
+        "title": "Simulare scenari di trading",
+        "desc": "Backtesting di strategias di offerta.",
+        "prompt": "Crea la vista BACKTESTING_ESTRATEGIAS che simule 4 strategie di offerta su dati storici di 1 anno:\n1. Conservadora (P10): minimiza penalizazione, pierde ricavi\n2. Moderada (P25): balance rischio-ricavo\n3. Agresiva (P50): massimizza ricavi, acepta più deviazione\n4. Dinámica: ajusta cuantil secondo spread di prezzi e confianza\nPara ogni strategia: ricavi_totales_eur, penalizaciones_desvio_eur, ricavo_neto_eur, sharpe_ratio."
+      },
+      {
+        "title": "Dashboard di trading",
+        "desc": "Streamlit di trading desk per portafoglio rinnovabile.",
+        "prompt": "Genera código Streamlit con:\n1. Resumen di portafoglio: potenza per tecnología, mapa di impianti\n2. Previsione di generazione per ora e tecnología con bandas\n3. Ofertas per mercato giornaliero: volumen, prezzo, ricavo estimado\n4. Estado di PPAs: conformità, esposizione, alert\n5. Backtesting di strategias con compertiva di P&L\n6. Metriche: ricavo neto, deviazioni, Sharpe ratio, costo di opertunidad. Usa snowflake.connector.connect() per ejecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di trading e limpezzo",
+        "desc": "Automatizzare processo di offerta.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_PREDICCIONES: ogni 3h consolida previsioni di impianti\n2. GENERAR_OFERTAS_DIARIO: giornaliero a le 10:00 genera offerte per D+1\n3. AJUSTAR_INTRADIARIO: ogni 3h ajusta offerte con migliore previsione\n4. LIQUIDAR_DESVIOS: giornaliero calcula deviazioni reales e P&L\n5. REPORTE_SEMANAL: resumen di trading, PPAs e metriche\n6. Documenta pipeline. Objetivo: costo di deviazione <2€/MWh."
+      }
+    ]
+  }
+};
+
+Object.assign(PROMPTS, {
+  "UC11": {
+    "title": "Manutenzione Predittiva della Rete di Distribuzione",
+    "intro": "Predice fali in infraestructura di distribuzione (transformadores, líneas, celdas) per priorizar manutenzione per TIEPI evitado e clienti colpiscedos.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per manutenzione predittivo di red.",
+        "prompt": "Crea la base di dati ENERGIA_MANT_RED_DB con schema ANALYTICS e warehouse ENERGIA_WH. Comentarios del progetto di manutenzione predittivo di red di distribuzione."
+      },
+      {
+        "title": "Creare invenditario di activos",
+        "desc": "Catálogo di transformadores, líneas e celdas.",
+        "prompt": "Crea la tabella ACTIVOS_RED con: activo_id, tipo (Transformador_MT_BT, Linea_Aerea_MT, Linea_Subterranea_MT, Celda_MT, Seccionador), fabricante, modello, capacità_kva FLOAT, tension_kv FLOAT, fecha_instalacion DATE, antiguedad_anos INT, zona, num_clienti_alimentados INT, ha_redundancia BOOLEAN, ultimo_manutenzione DATE, estado_visual VARCHAR. Genera 5,000 activos. 40% transformadores, 30% líneas, 20% celdas, 10% seccionadores. Antigüedad 1-50 anni."
+      },
+      {
+        "title": "Cargar telemetría di activos",
+        "desc": "Dati operativos di transformadores e líneas.",
+        "prompt": "Crea la tabella TELEMETRIA_ACTIVOS con: fecha_ora TIMESTAMP, activo_id, carga_pct FLOAT, temperatura_c FLOAT, umidità_pct FLOAT, corriente_a FLOAT, tension_v FLOAT, factor_potenza FLOAT, aceite_temperatura_c FLOAT (per transformadores), aceite_gases_ppm FLOAT. Genera dati orarios per 2 anni. Incluir degradazione gradual in 8% di activos: aumento di temperatura e gases disueltos prima di fallo."
+      },
+      {
+        "title": "Creare storico di averías",
+        "desc": "Registro di fali e interrupzioni.",
+        "prompt": "Crea la tabella AVERIAS_RED con: averia_id, activo_id, fecha_inicio TIMESTAMP, fecha_fin TIMESTAMP, causa (Envejecimiento, Sobrecarga, Climatologia, Fauna, Vandalismo, Excavacion), duracion_interrupcion_min FLOAT, clienti_colpiscedos INT, tiepi_contribucion_min FLOAT, costo_repercion_eur FLOAT, fue_detectada_preventivamente BOOLEAN. Genera 800 averías in 3 anni. Correlacionar con antigüedad e carga."
+      },
+      {
+        "title": "Calcolare features di rischio",
+        "desc": "Generare indicatori di rischio per activo.",
+        "prompt": "Crea la vista FEATURES_RIESGO_ACTIVOS che calcule per activo:\n- Envejecimiento: antiguedad_normalizada, ratio_uso_vs_capacità, tendenza_degradacion\n- Carga: carga_media_pct, carga_pico_pct, ore_sucarga_30d, factor_carga\n- Térmico: temperatura_media_c, gradiente_temperatura, ore_estres_termico\n- Historial: num_averias_5a, tiepi_acumulado, costo_reperciones_acumulado\n- Contexto: zona_costora BOOLEAN, contaminacion_alta BOOLEAN, exposicion_fauna BOOLEAN\n- Impacto: clienti_senza_redundancia, tiepi_estimado_si_falla"
+      },
+      {
+        "title": "Addestrare modello di previsione",
+        "desc": "ML.CLASSIFICATION per prevedere rischio di fallo.",
+        "prompt": "Usa SNOWFLAKE.ML.CLASSIFICATION per clasificar activos per rischio: bajo, medio, alto, critico. Variabili: tuttas le features di rischio. Addestra con dati di 2022-2023, valida con 2024. Evalúa: precision, recall, F1 per clase. Il modello debe capturar >70% di fali críticos. Genera probabilità di fallo in i prossimos 1, 3 e 6 mesei."
+      },
+      {
+        "title": "Priorizar inversiones e manutenzione",
+        "desc": "Ranking di activos per intervento e sustituzione.",
+        "prompt": "Crea la vista PLAN_INVERSION_RED che per ogni activo di rischio alto/critico calcule:\n- probabilità_fallo_6m, tiepi_estimado_si_falla_min, clienti_colpiscedos\n- costo_manutenzione_preventivo_eur, costo_sustitucion_eur, costo_fallo_no_planificado_eur\n- roi_intervencion = (costo_fallo × probabilità - costo_intervencion) / costo_intervencion\n- recomendacion: sustituir, revisar, monitorare, aceptar_rischio\nOrdena per ROI. Genera plan annuale di inversión con presupuesto."
+      },
+      {
+        "title": "Dashboard di salud di red",
+        "desc": "Streamlit di gestione di activos e manutenzione.",
+        "prompt": "Genera código Streamlit con:\n1. Mapa di red con activos coloreados per rischio\n2. Tabla di activos críticos con plan di intervento\n3. Proyeczione di TIEPI con e senza intervenzioni planifiognis\n4. Presupuesto di inversión per tipo di activo e zona\n5. Metriche: TIEPI evitado, ratio di rilevamento, ROI di predittivo\n6. Historial di averías con correlazione di causa"
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Automatizzare previsione e pianificazione.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_TELEMETRIA: giornaliero, carga dati di activos\n2. CALCULAR_RIESGO: settimanale, attualeiza features e scoring\n3. GENERAR_PLAN: mensile, attualeiza plan di inversión\n4. REENTRENAR: semesetral, retrana con nuovas averías\n5. Documenta. Objetivo: ridurre TIEPI 25% in primer anno."
+      }
+    ]
+  },
+  "UC12": {
+    "title": "NLP per incidenti e e Ordini di Lavoro",
+    "intro": "Pipeline NLP che clasifica incidencias, extrae causa raíz e sugiere resoluzione capturando il conoscenza tecnico della organizzazione.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per NLP di incidencias.",
+        "prompt": "Crea la base di dati ENERGIA_NLP_DB con schema ANALYTICS e warehouse ENERGIA_WH. Commenti sul progetto NLP per incidenze e ordini di lavoro."
+      },
+      {
+        "title": "Creare storico di incidencias",
+        "desc": "Generare dati di órdenes di trabajo con texto descriptivo.",
+        "prompt": "Crea la tabella INCIDENCIAS con: incidencia_id, fecha_creacion TIMESTAMP, texto_descripcion TEXT, texto_resolucion TEXT, clasificacion_mannuale VARCHAR, componente VARCHAR, zona, prioridad_asigniente (Urgente, Alta, Normal, Baja), tecnico_asignado, fecha_resolucion TIMESTAMP, costo_eur FLOAT, fue_redirigida BOOLEAN. Genera 50,000 incidencias con textos realistas in espannol del sector elettrico. Incluir jerga: CT, MT/BT, fusible, reconectador, AT, CGP, derivazione, empalme."
+      },
+      {
+        "title": "Clasificar incidencias con LLM",
+        "desc": "Usar CORTEX.COMPLETE per classificazione automatica.",
+        "prompt": "Crea la vista CLASIFICACION_NLP che use CORTEX.COMPLETE per clasificar ogni incidencia nuova:\n- tipo: averia_red, manutenzione_preventivo, reclamacion_cliente, query_tecnica, emergencia\n- componente: transformador, linea, acometida, contador, celda, altro\n- causa_probable: envejecimiento, sucarga, climatologia, fauna, vandalismo, excavacion, desconocida\n- prioridad_sugerida: urgente, alta, normal, baja\n- confianza_clasificacion: 0-1\nComper con clasificacion_mannuale e mide accuracy."
+      },
+      {
+        "title": "Extraer entidades tecnicas",
+        "desc": "NER sul texto per identificare teams e ubicazioni.",
+        "prompt": "Crea la vista ENTIDADES_EXTRAIDAS che use CORTEX.COMPLETE per extraer di ogni incidencia:\n- teams_mencionados: lista di activos (CT-1234, Línea MT-567)\n- ubicazioni: calles, municipios, zone\n- valoreees_tecnicos: tensiones, corrientes, temperaturas mencionientes\n- personas_involucradas: tecnicos, clienti\n- azioni_realizadas: lista di intervenzioni descritas\nFormato JSON estructurado per alimentar base di conoscenza."
+      },
+      {
+        "title": "Creare base di conoscenza",
+        "desc": "Indexar resoluzioni in Cortex Search per sugerencias.",
+        "prompt": "Crea un Cortex Search Service sulle incidenze risolte:\n- Indexa: texto_descripcion + texto_resolucion + clasificacion + componente\n- Configura per búsqueda semántica in espannol\n- Crea funzione SUGERIR_RESOLUCION(texto_incidencia) che busque le 5 incidencias più similares resueltas e use CORTEX.COMPLETE per sintetizzare una sugerencia di resoluzione basata su i casos similares.\nDemuestra con 3 incidencias esempio."
+      },
+      {
+        "title": "Medir impatto e accuracy",
+        "desc": "Valutare qualità di classificazione e sugerencias.",
+        "prompt": "Crea la vista METRICAS_NLP che calcule:\n- Accurace di classificazione per tipo, componente e causa vs mannuale\n- Tasa di redireccionamiento: prima (20%) vs dopo NLP\n- Tiempo medio di resoluzione: prima vs dopo sugerencias\n- Utilidad di sugerencias: % di tecnicos che siguen la sugerencia\n- Ahorro estimado in ore di classificazione mannuale\nGenera tabella resumen con metriche per categoría."
+      },
+      {
+        "title": "Dashboard di gestione di incidencias",
+        "desc": "Streamlit di monitoraggio NLP.",
+        "prompt": "Genera código Streamlit con:\n1. Feed di incidencias nuovas con classificazione automatica e confianza\n2. Panel di sugerencia di resoluzione per incidencia seleccioniente\n3. Metriche NLP: accuracy, tasa di redireccionamiento, tempo resoluzione\n4. Nube di palabras di causas raíz più frecuentes\n5. Tendencia di incidencias per tipo e zona\n6. Base di conoscenza: búsqueda di resoluzioni similares"
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Automatizzare classificazione e sugerencias.",
+        "prompt": "Crea Tasks:\n1. CLASIFICAR_NUEVAS: ogni ora clasifica incidencias senza clasificar\n2. EXTRAER_ENTIDADES: ogni ora extrae entidades di incidencias nuovas\n3. SUGERIR_RESOLUCIONES: ogni ora genera sugerencias per incidencias abiertas\n4. ACTUALIZAR_CONOCIMIENTO: settimanale, reindeza base con nuovas resoluzioni\n5. Documenta. Objetivo: accuratezza >85%, redireccionamiento <5%."
+      }
+    ]
+  },
+  "UC13": {
+    "title": "Chatbot RAG per il Servizio Clienti Energetico",
+    "intro": "Construye un asistente conversacional RAG per clienti energeticos con Cortex Search e CORTEX.COMPLETE, personalizado con il Feature Store.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per chatbot RAG.",
+        "prompt": "Crea la base di dati ENERGIA_CHATBOT_DB con schema RAG e warehouse ENERGIA_WH. Comentarios del progetto di chatbot RAG di atenzione al cliente energetico."
+      },
+      {
+        "title": "Creare base di conoscenza",
+        "desc": "Generare corpus di tarifas, regolamentazione, FAQ e guías di risparmio.",
+        "prompt": "Crea la tabella CONOCIMIENTO_ENERGIA con: doc_id, categoria (Tarifas, Regulacion, Ahorro, FAQ, Averias, Autoconsumo, Bono_Social), titulo, contenido TEXT, fecha_attualeizacion DATE, applica_a_tarifa VARCHAR, applica_a_segmento VARCHAR. Genera 200 documentos cubriendo: tuttas le tarifas (PVPC, fijo, indexado), regolamentazione di autoconsumo (RD 244/2019), bono social, guías di risparmio per tipo di vivienda, FAQ frecuentes, protocolo di averías."
+      },
+      {
+        "title": "Indexar con Cortex Search",
+        "desc": "Creare un Cortex Search Service sulla base di conoscenza.",
+        "prompt": "Crea un Cortex Search Service sulla knowledge base CONOCIMIENTO_ENERGIA:\n- Columnas indexadas: titulo, contenido, categoria\n- Configurazione per espannol con alta relevancia\n- Filtros disponibiles: categoria, applica_a_tarifa, applica_a_segmento\nDemuestra con 5 querys esempio: '¿Cuánto costa il kWh in PVPC?', '¿Cómo instalo autoconsumo?', '¿Qué è il bono social?', '¿Por qué me ha subido la factura?', 'Tengo un corte di luz'."
+      },
+      {
+        "title": "Creare funzione di chat RAG",
+        "desc": "Funzione che combina búsqueda + contexto di cliente + LLM.",
+        "prompt": "Crea la funzione CHAT_ENERGIA(cliente_id, pregunta) que:\n1. Busca documentos relevprima con Cortex Search (top 5)\n2. Si il cliente está autenticado, query Feature Store UC08 per otavere: tarifa, consumo, autoconsumo, ultimo contacto\n3. Construye prompt con: contexto di documentos + perfil del cliente + pregunta\n4. Genera respuesta con CORTEX.COMPLETE (modello: mistral-large2)\n5. Include referencias a documentos fonte\nDemuestra con 3 conversazioni di esempio."
+      },
+      {
+        "title": "Implementare escalado a agente",
+        "desc": "Rilevare quando escalar a agente humano.",
+        "prompt": "Crea la funzione EVALUAR_ESCALADO(pregunta, respuesta, historial) che use CORTEX.COMPLETE per determinar si escalar:\n- Complejidad alta: reclamo formal, discrepancia di fatturazione, cambio di titular\n- Sentimiento negativo: cliente frustrado o enfadado (CORTEX.SENTIMENT)\n- Fuera di alcance: temas legales, seguros, altros servizios\n- Sin respuesta: confianza baja nella respuesta generada\nRetorna: escalar BOOLEAN, motivo, prioridad, resumen_per_agente."
+      },
+      {
+        "title": "Creare storico di conversazioni",
+        "desc": "Almacenar interazioni per migliorea continua.",
+        "prompt": "Crea la tabella HISTORIAL_CHAT con: sesion_id, cliente_id, fecha_ora TIMESTAMP, pregunta TEXT, respuesta TEXT, documentos_usados ARRAY, fue_util BOOLEAN, fue_escalada BOOLEAN, motivo_escalado, feedback_cliente INT (1-5). Genera 5,000 conversazioni di esempio per misurare qualità."
+      },
+      {
+        "title": "Medir qualità del chatbot",
+        "desc": "Metriche di resoluzione, satisfazione e escalado.",
+        "prompt": "Crea la vista METRICAS_CHATBOT che calcule:\n- Tasa di resoluzione senza escalado: % di querys resueltas\n- Satisfazione media: promedio di feedback_cliente\n- Tasa di escalado per motivo\n- Tiempo medio di respuesta\n- Coste per interazione: chat vs agente humano\n- Top querys non resueltas (per enriquecer base di conoscenza)\nGenera resumen giornaliero, settimanale e mensile."
+      },
+      {
+        "title": "Dashboard del chatbot",
+        "desc": "Streamlit di operazione del chatbot.",
+        "prompt": "Genera código Streamlit con:\n1. Interfaz di chat demo con perfil di cliente\n2. Metriche in tempo reale: resoluzione, satisfazione, escalados\n3. Analisi di querys: categorías più frecuentes, tendenze\n4. Consultas non resueltas per enriquecer base di conoscenza\n5. Compertiva di costo: chatbot vs call center\n6. Feedback di clienti e opertunidades di miglioramento"
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Manavere chatbot attualeizado.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_CONOCIMIENTO: settimanale, reindeza base con nuovi documentos\n2. ANALIZAR_NO_RESUELTAS: settimanale, identifica gaps in conoscenza\n3. METRICAS_DIARIAS: giornaliero, calcula metriche di rendimento\n4. REPORTE_MENSUAL: mensile, genera informe di operazione\n5. Documenta. Objetivo: resoluzione >65%, satisfazione >4.0/5."
+      }
+    ]
+  },
+  "UC14": {
+    "title": "Feature Store di Performance degli Asset di Rete",
+    "intro": "Implementa un Feature Store in Snowflake che consolide metriche di rendimento di ogni activo di red per decisiones operativas e normativas.",
+    "steps": [
+      {
+        "title": "Configurar entorno Feature Store",
+        "desc": "Creare database per Feature Store di activos.",
+        "prompt": "Crea la base di dati ENERGIA_ASSETS_FS_DB con schema FEATURE_STORE e warehouse ENERGIA_WH. Comenta che questo progetto implementa Snowflake Feature Store per Performance di Activos di Red."
+      },
+      {
+        "title": "Creare dati fonte di activos",
+        "desc": "Generare dati delle 5 fontes che alimentan il Feature Store.",
+        "prompt": "Crea 5 table fonte:\n1. RAW_SCADA_ASSETS: asset_id, fecha_ora, carga_kva, tension_v, corriente_a, temperatura_c, potenza_activa_kw (dati ogni 15 min, 1 anno, 2,000 activos)\n2. RAW_GIS_ASSETS: asset_id, tipo, ubicacion, zona, clienti_alimentados, redundancia, longitud_linea_km\n3. RAW_EAM_ASSETS: asset_id, fecha_manutenzione, tipo_manutenzione, costo_eur, estado_tras_inspeccion, proximo_manutenzione\n4. RAW_INTERRUPCIONES: asset_id, fecha_inicio, fecha_fin, causa, clienti_colpiscedos, tiepi_min\n5. RAW_INVENTARIO: asset_id, fabricante, modello, fecha_instalacion, capacità_nominal, vida_util_anos"
+      },
+      {
+        "title": "Creare Entite del Feature Store",
+        "desc": "Definire Entite per activo di red.",
+        "prompt": "Usando Snowflake Feature Store in Python:\n\nfrom snowflake.ml.feature_store import FeatureStore, Entity, FeatureView\nfs = FeatureStore(session=session, database='ENERGIA_ASSETS_FS_DB', name='FEATURE_STORE')\n\ngrid_asset = Entity(\n    name='GRID_ASSET',\n    join_keys=['ASSET_ID'],\n    desc='Activo della red di distribuzione elettrica'\n)\nfs.register_entity(grid_asset)\n\nVerifica record della Entity."
+      },
+      {
+        "title": "Creare FeatureView di carga",
+        "desc": "FeatureView di perfil di carga da SCADA.",
+        "prompt": "Crea il FeatureView LOAD_PROFILE da RAW_SCADA_ASSETS:\n- carga_media_pct, carga_pico_pct, carga_minima_pct\n- factor_utilizzacion, ore_sucarga_30d\n- tendenza_carga_3m (creciente/estable/decreciente)\n- patron_carga_giornaliero (arrae 24h normalizado)\n- rischio_sucarga_score (0-100)\n\nRegistra con refresh_freq='1 hour' per la naturaleza near-real-time."
+      },
+      {
+        "title": "Creare FeatureViews térmico e disponibilità",
+        "desc": "Features di temperatura e disponibilità.",
+        "prompt": "Crea 2 FeatureViews:\n\n1. THERMAL_STATUS da RAW_SCADA_ASSETS:\n- temperatura_media_c, temperatura_pico_c, gradiente_termico\n- ore_estres_termico_30d, envejecimiento_termico_acumulado\n- correlacion_carga_temperatura, rischio_termico_score\n\n2. AVAILABILITY da RAW_INTERRUPCIONES + RAW_SCADA_ASSETS:\n- disponibilità_12m_pct, num_interrupciones_12m\n- tiepi_contribucion_12m_min, mtbf_ore (mean time between failures)\n- tendenza_disponibilità (miglioreando/estable/degradando)\n\nRefresh ogni ora per THERMAL, giornaliero per AVAILABILITY."
+      },
+      {
+        "title": "Creare FeatureViews di incidencias e benchmark",
+        "desc": "Historial di incidencias e compertiva tra activos.",
+        "prompt": "Crea 2 FeatureViews:\n\n1. INCIDENT_HISTORY da RAW_INTERRUPCIONES + RAW_EAM_ASSETS:\n- num_averias_3a, costo_total_reperciones_eur\n- causa_principale, componente_mas_fallado\n- tempo_medio_repercion_h, tendenza_averias\n\n2. BENCHMARK da tuttos i RAW_*:\n- percentil_carga_vs_similares, percentil_disponibilità_vs_similares\n- percentil_temperatura_vs_similares, ranking_estado_generale\n- recomendacion (sustituir/revisar/monitorare/ok)\n\nRefresh giornaliero per ambos."
+      },
+      {
+        "title": "Servir features per manutenzione predittivo",
+        "desc": "Demostrare consumo di features da UC11.",
+        "prompt": "Demuestra come consumir features del Feature Store per UC11:\n\n# Para manutenzione predittivo\ndf_predittivo = fs.get_features(\n    entity=grid_asset,\n    feature_views=['LOAD_PROFILE', 'THERMAL_STATUS', 'AVAILABILITY', 'INCIDENT_HISTORY', 'BENCHMARK'],\n    spine_df=activos_criticos_df\n)\n\n# Para pianificazione di inversión\ndf_inversion = fs.get_features(\n    entity=grid_asset,\n    feature_views=['LOAD_PROFILE', 'AVAILABILITY', 'BENCHMARK'],\n    spine_df=activos_antiguos_df\n)\n\nMuestra DataFramese resultprima con features consolidadas."
+      },
+      {
+        "title": "Dashboard del Feature Store",
+        "desc": "Streamlit di monitoraggio di activos.",
+        "prompt": "Genera código Streamlit con:\n1. Resumen: 5 FeatureViews, 2,000 activos, ultimo refresh\n2. Buscador di activo con perfil completo (tuttas le features)\n3. Ranking di activos per rischio con raccomandazione\n4. Mapa di red con activos coloreados per benchmark\n5. Metriche di qualità: freshness, completitud, drift\n6. Compertiva di activos similares"
+      },
+      {
+        "title": "Pipeline di manutenzione",
+        "desc": "Automatizzare attualeizazione del Feature Store.",
+        "prompt": "Crea Tasks:\n1. REFRESH_SCADA: ogni ora attualeiza LOAD_PROFILE e THERMAL_STATUS\n2. REFRESH_AVAILABILITY: giornaliero attualeiza disponibilità\n3. REFRESH_INCIDENTS: giornaliero attualeiza historial di incidencias\n4. REFRESH_BENCHMARK: settimanale recalcula benchmark tra activos\n5. MONITOR_QUALITY: giornaliero verifica freshness e completitud\n6. Documenta Feature Store completo con comentarios in ogni objeto."
+      }
+    ]
+  },
+  "UC15": {
+    "title": "Rilevamento Frode Elettrica con Smart Meter",
+    "intro": "Construye un sistema ML di rilevamento frodi elettrico analizando curvas di carga di smart meters e pattern anómai per priorizar inspeczioni.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per rilevamento frodi.",
+        "prompt": "Crea la base di dati ENERGIA_FRAUDE_DB con schema ANALYTICS e warehouse ENERGIA_WH. Comentarios del progetto di rilevamento frodi elettrico con smart meters."
+      },
+      {
+        "title": "Creare dati di smart meters",
+        "desc": "Generare curvas di carga con pattern normales e fraudulentos.",
+        "prompt": "Crea la tabella SMART_METERS con: contador_id, cliente_id, fecha_ora TIMESTAMP, consumo_kwh FLOAT, potenza_kw FLOAT, tension_v FLOAT, evento_contador VARCHAR (normal, apertura_tapa, error_comunicacion, reset). Genera dati ogni 15 min per 2 anni e 30,000 contadores. El 3% ha pattern di frode: consumo artificialmente bajo (50-70% del esperado), desconexiones periódicas, manipolazione di tensión."
+      },
+      {
+        "title": "Calcolare features di frode",
+        "desc": "Generare indicatori sospechosos per contador.",
+        "prompt": "Crea la vista FEATURES_FRAUDE che calcule per contador:\n- consumo_vs_estimado_ratio (basato su potenza, tipo vivienda, zona climática)\n- variabilità_consumo_cv, patron_nocturno_ratio (consumo 3-6am / media)\n- consumo_vs_vecinos_percentil (comperdo con CTs dello stesso CT)\n- num_eventos_apertura_30d, num_errores_comunicacion_30d\n- correlacion_temperatura (baja correlazione = sospechoso)\n- indice_regularidad (consumo mue regular = sospechoso in residenziale)\n- cambio_brusco_consumo BOOLEAN (caída >40% senza explicazione)"
+      },
+      {
+        "title": "Addestrare modello di rilevamento",
+        "desc": "ML.CLASSIFICATION per scoring di probabilità di frode.",
+        "prompt": "Usa SNOWFLAKE.ML.CLASSIFICATION per clasificar contadores: normal, sospechoso_bajo, sospechoso_medio, sospechoso_alto. Variabili: tuttas le features di frode. Addestra con dati etiquetados di inspeczioni storicas. Evalúa: precision, recall, F1 per clase. Optimiza recall di sospechoso_alto >80% con precision >60% (per che le inspeczioni siano rentables)."
+      },
+      {
+        "title": "Priorizar inspeczioni",
+        "desc": "Ranking di inspeczioni per score × imperte.",
+        "prompt": "Crea la vista RANKING_INSPECCIONES che per ogni sospechoso calcule:\n- probabilità_frode_pct, tipo_frode_probable (manipulacion, bypass, enganche)\n- consumo_estimado_real_kwh (basato su vecinos), consumo_declarado_kwh\n- frode_estimado_kwh_annuale, imperte_frode_eur_annuale\n- score_inspeccion = probabilità × imperte_frode\n- costo_inspeccion_eur (200€), roi_esperado\nFiltra ROI > 2.0 e ordena per score_inspeccion descendente."
+      },
+      {
+        "title": "Analisi di pattern di frode",
+        "desc": "Identificare tipos e evoluzione di pattern.",
+        "prompt": "Crea la vista PATRONES_FRAUDE che use CORTEX.COMPLETE per analizzare i sospechosos detectados:\n- Agrupar per pattern similar (manipolazione electrónica, magnética, bypass, enganche)\n- Identificare zone con concentrazione anormal di sospechosos\n- Rilevare nuovi pattern emergentes non vistos in historial\n- Correlacionar con eventos del contador (aperturas, errores)\nGenera informe narrativo per zona con recomendazioni."
+      },
+      {
+        "title": "Dashboard antifrode",
+        "desc": "Streamlit di gestione di rilevamento frodi.",
+        "prompt": "Genera código Streamlit con:\n1. Mapa di sospechosos per zona con heat map di concentrazione\n2. Lista di inspeczioni priorizadas con ROI esperado\n3. Perfil del sospechoso: curva di carga, compertiva vecinos, eventos\n4. Metriche di campagna: inspeczioni realizadas, tasa di éxito, revenue recuperado\n5. Patrones di frode detectados con evoluzione temperal\n6. KPIs: perdite non tecnicas estimadas, frode detectado, ROI del programa"
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Automatizzare rilevamento e campagnas.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_FEATURES: giornaliero, recalcula features di frode\n2. SCORING_FRAUDE: settimanale, ejecuta modello e genera ranking\n3. GENERAR_CAMPANA: mensile, genera lote di inspeczioni priorizadas\n4. REENTRENAR: trimesetral con risultatos di inspeczioni\n5. Documenta. Objetivo: tasa di éxito di inspeczione >70%, ROI >3x."
+      }
+    ]
+  },
+  "UC16": {
+    "title": "Sicurezza OT/IT dell\'infrastruttura energetica",
+    "intro": "Pipeline ML di rilevamento minacce in redes OT/IT di infraestructura energetica crítica, analizando tráfico industriale e compertamento di dispositivos SCADA.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per cibersicurezza OT.",
+        "prompt": "Crea la base di dati ENERGIA_CIBER_DB con schema SECURITY e warehouse ENERGIA_WH. Comentarios del progetto di cibersicurezza OT/IT di infraestructura energetica."
+      },
+      {
+        "title": "Creare invenditario di activos OT",
+        "desc": "Catálogo di dispositivos industrialees.",
+        "prompt": "Crea la tabella ACTIVOS_OT con: dispositivo_id, tipo (RTU, PLC, IED, HMI, Switch_Industrial, Gateway, Relé_Proteczione), fabricante, firmware_version, ubicacion, red_segmento (Corperativa, DMZ, Control, Campo), ip_address, protocoi (Modbus, DNP3, IEC61850, IEC60870), criticidad (Critica, Alta, Media, Baja), vulnerabilitàes_conocidas INT, ultimo_parcheo DATE. Genera 500 dispositivos in 20 subestazioni."
+      },
+      {
+        "title": "Generare tráfico di red OT",
+        "desc": "Dati di tráfico normal e anómalo in protocoi industrialees.",
+        "prompt": "Crea la tabella TRAFICO_OT con: fecha_ora TIMESTAMP, dispositivo_origen_id, dispositivo_destino_id, protocolo, tipo_mensaje (Read, Write, Control, Broadcast), bytes INT, duracion_ms INT, es_anomalo BOOLEAN, tipo_anomalia VARCHAR. Genera dati ogni minuto per 3 mesei. 99.5% tráfico normal con pattern mue regulares (RTU→SCADA ogni 5s). 0.5% anómalo: escaneos di red, escrituras non autorizadas, comunicazione inusual."
+      },
+      {
+        "title": "Creare baseline di compertamento",
+        "desc": "Establecer pattern normal per dispositivo.",
+        "prompt": "Crea la vista BASELINE_OT che calcule per dispositivo:\n- comunicaciones_normales: destinos habituales, frequenza, bytes_medio\n- venditana_attività: orario normal di comunicazione\n- protocolos_habituales, tipos_mensaje_habituales\n- volumen_normal: bytes_ora_medio, bytes_ora_p95\n- pareja_comunicacion: lista di dispositivos con i che si comunica normalmente\nGenera baseline con dati di le prime 4 settimanas (periodo limpio)."
+      },
+      {
+        "title": "Rilevare amenazas con ML",
+        "desc": "Modelo di rilevamento di anomalías in tráfico OT.",
+        "prompt": "Usa ML.CLASSIFICATION su dati TRAFICO_OT vs BASELINE_OT per rilevare:\n- exploracion: escaneo di red, descubrimiento di dispositivos\n- intrusion: acceso non autorizado a dispositivo\n- manipulacion: escritura di valoreees in PLC/RTU non autorizada\n- exfiltracion: volumen anormal di dati salientes\n- denegacion: flood di mensajes, interrupzione di comunicazione\nEvalúa: precision >95%, recall >90%, falsos positivos <2%. Genera scoring di rischio per evento."
+      },
+      {
+        "title": "Correlacionar eventos OT/IT",
+        "desc": "Fusionar alert OT con eventos di sicurezza IT.",
+        "prompt": "Crea la tabella EVENTOS_IT con: fecha_ora, tipo_evento (login, acceso_vpn, cambio_firewall, download), utente, ip_origen, risultato. Crea la vista CORRELACION_OT_IT che busque pattern multi-vector:\n- Login VPN sospechoso + attività OT inusual = ataque coordinado\n- Cambio di firewall + nuovo tráfico OT = possibile intrusión\n- Acceso fuera di orario a HMI + escritura in PLC = manipolazione\nAsigna severidad compuesta: critical, high, medium, low."
+      },
+      {
+        "title": "Dashboard SOC industriale",
+        "desc": "Streamlit di centro di operazioni di sicurezza OT.",
+        "prompt": "Genera código Streamlit con:\n1. Panel di alert in tempo reale con severidad e tipo\n2. Mapa di red OT con dispositivos coloreados per rischio\n3. Timeline di eventos correlacionados OT/IT\n4. Detalle di alerta: tráfico anómalo, baseline, deviazione\n5. Metriche: alert/giorno, tempo medio rilevamento, falsos positivos\n6. Estado di parches e vulnerabilitàes per dispositivo"
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Automatizzare rilevamento e respuesta.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_TRAFICO: ogni minuto carga dati di tráfico OT\n2. DETECTAR_ANOMALIAS: ogni 5 min ejecuta modello di rilevamento\n3. CORRELACIONAR: ogni 5 min busca pattern multi-vector\n4. ALERTAR_CRITICO: immediato si severidad critical o high\n5. ACTUALIZAR_BASELINE: settimanale recalcula compertamento normal\n6. Documenta. Conformità NIS2 e ENS per infraestructura crítica."
+      }
+    ]
+  },
+  "UC17": {
+    "title": "Gestione delle Comunità Energetiche e Autoconsumo",
+    "intro": "Motore di gestione delle comunità energetiche che optimiza reparto di energia, calcula excedentes e genera fatturazione detallada per miembro.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per comunidades energeticas.",
+        "prompt": "Crea la base di dati ENERGIA_COMUNIDADES_DB con schema ANALYTICS e warehouse ENERGIA_WH. Comentarios del progetto di gestione di comunidades energeticas e autoconsumo colectivo."
+      },
+      {
+        "title": "Creare comunidades e miembros",
+        "desc": "Generare estructura di comunidades energeticas.",
+        "prompt": "Crea le tabellas:\n1. COMUNIDADES: comunidad_id, nombre, municipio, tipo (Residencial, Mixta, Industrial, Municipal), potenza_installata_kw FLOAT, ha_bateria BOOLEAN, capacità_bateria_kwh FLOAT, num_miembros INT, fecha_constitucion DATE\n2. MIEMBROS: miembro_id, comunidad_id, nombre, tipo_consumatore (Residencial, Comercial), potenza_contratada_kw, coeficiente_reparto_fijo FLOAT, prioridad INT\nGenera 20 comunidades con 10-100 miembros ogni una. Potencias installate 50-500 kW."
+      },
+      {
+        "title": "Cargar generazione e consumo",
+        "desc": "Dati di produzione della installazione e consumo per miembro.",
+        "prompt": "Crea le tabellas:\n1. GENERACION_COMUNIDAD: comunidad_id, fecha_ora TIMESTAMP, produccion_kwh FLOAT, irradianza_wm2 FLOAT\n2. CONSUMO_MIEMBROS: miembro_id, fecha_ora TIMESTAMP, consumo_kwh FLOAT\nGenera dati ogni 15 min per 1 anno. Produczione correlacioniente con irradianza solar. Consumo con pattern per tipo di consumatore. Simulare che il autoconsumo colectivo può cubrir 40-60% del consumo total."
+      },
+      {
+        "title": "Ottimizzare reparto di energia",
+        "desc": "Motor di assegnazione di generazione a miembros.",
+        "prompt": "Crea la vista REPARTO_OPTIMO che per ogni 15 min calcule:\n- generacion_total_kwh, consumo_total_kwh, excedente_kwh\n- Por miembro: consumo_kwh, autoconsumo_asignado_kwh (secondo coeficiente o dinamico), energia_red_kwh, excedente_individual_kwh\n- Coeficientes dinamicos: priorizar miembros con consumo simultáneo a generazione\n- Batería: absorber excedente si SoC < 90%, inyectar si non hae generazione\nComperr reparto fijo vs dinamico in términos di autoconsumo total."
+      },
+      {
+        "title": "Predire generazione e consumo",
+        "desc": "Forecast per miembro per pianificazione.",
+        "prompt": "Usa ML.FORECAST per prevedere:\n1. Generazione della comunidad: ML.FORECAST con irradianza prevista, a 24h e 48h\n2. Consumo per miembro: ML.FORECAST per miembro_id con temperatura e giorno di settimana\n3. Crea la vista PREDICCION_COMUNIDAD che muestre per ora: generacion_prevista, consumo_previsto_total, balance_previsto, recomendacion (aumentare autoconsumo, cargar batería, preperr acquisto red)."
+      },
+      {
+        "title": "Generare fatturazione detallada",
+        "desc": "Cálculo di factura per miembro con desglose di fontes.",
+        "prompt": "Crea la vista FACTURACION_COMUNIDAD che calcule mensilmente per miembro:\n- consumo_total_kwh, autoconsumo_individual_kwh, autoconsumo_compartido_kwh\n- energia_red_kwh, excedentes_vertidos_kwh\n- costo_red_eur (tarifa acceso + energia), risparmio_autoconsumo_eur\n- compensacion_excedentes_eur, cuota_comunidad_eur\n- factura_neta_eur, risparmio_vs_senza_comunidad_pct\nGenera factura detallada comperndo con e senza comunidad."
+      },
+      {
+        "title": "Dashboard di comunidad",
+        "desc": "Streamlit di gestione di comunidad energetica.",
+        "prompt": "Genera código Streamlit con:\n1. Selector di comunidad e periodo\n2. Balance energetico: generazione, consumo, autoconsumo, excedentes\n3. Reparto tra miembros: quién consume qué e quando\n4. Facturazione mensile per miembro con desglose\n5. Previsione di generazione e consumo per prossimas 48h\n6. Simulador: qué pasa si añadimos più pannelli/batería/miembros"
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Automatizzare gestione di la comunidad.",
+        "prompt": "Crea Tasks:\n1. CALCULAR_REPARTO: ogni 15 min asigna generazione a miembros\n2. PREDECIR_COMUNIDAD: ogni 6h genera previsioni\n3. FACTURAR_MENSUAL: primer giorno di mese genera facturas\n4. REPORTE_COMUNIDAD: mensile, genera informe per administrador\n5. Documenta. Objetivo: autoconsumo colectivo >50%."
+      }
+    ]
+  },
+  "UC18": {
+    "title": "Conformità Normativa e reporting ESG",
+    "intro": "Automatiza la consolidamento di dati e generazione di informese normativos e ESG per utilities, verificando consistencia e conformità.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per compliance e ESG.",
+        "prompt": "Crea la base di dati ENERGIA_COMPLIANCE_DB con schema REPORTING e warehouse ENERGIA_WH. Comentarios del progetto di conformità normativo e reporting ESG."
+      },
+      {
+        "title": "Creare fontes di dati normativas",
+        "desc": "Generare dati di qualità di approvvigionamento, emisiones e rinnovabiles.",
+        "prompt": "Crea 4 table fonte:\n1. CALIDAD_SUMINISTRO: zona, fecha, num_interrupzioni, duracion_total_min, clienti_colpiscedos, causa, tiepi_zona_min, niepi_zona (dati mensilees, 2 anni, 50 zone)\n2. EMISIONES: impianto, fecha, co2_toneladas, nox_kg, particulas_kg, tipo_combustible, produccion_mwh\n3. GENERACION_RENOVABLE: impianto, fecha, produccion_mwh, certificados_go INT, tipo_rinnovabile\n4. INVERSION_RED: zona, trimesetre, capex_eur, opex_eur, tipo_inversion (modernizacion, expansion, manutenzione), empleos_directos INT"
+      },
+      {
+        "title": "Calcolare KPIs normativos",
+        "desc": "Generare indicatori per CNMC e EU Taxonomy.",
+        "prompt": "Crea la vista KPIS_REGULATORIOS che calcule:\n- TIEPI per zona e acumulado (obiettivo CNMC <35 min/anno)\n- NIEPI per zona e acumulado\n- Porcentaje di generazione rinnovabile vs total\n- Emisiones CO2 per MWh generado\n- Inversión in modernizazione come % del RAB\n- Indicadores EU Taxonomy: % attivitàes elegibles, % alineadas\n- Conformità: verde (cumple), amarillo (rischio), rojo (incumple)\nPor ogni KPI: valoree_attuale, umbral_normativo, tendenza, forecast_cierre_anno."
+      },
+      {
+        "title": "Generare metriche ESG",
+        "desc": "Indicadores ambientales, sociales e di gobernanza.",
+        "prompt": "Crea la vista METRICAS_ESG che calcule secondo GRI/SASB:\n- Ambiental: emisiones scope 1/2/3, intensidad di carbono, agua consumida, residuos\n- Social: empleados, formazione ore/persona, accidentes laborales, brecha salarial, comunidades beneficiadas\n- Gobernanza: diversidad consejo, indipendencia, políticas anticorrupzione\nGenera dati sintetici coherentes. Calcula variazione interannuale e benchmark sectorial."
+      },
+      {
+        "title": "Verificar consistencia di dati",
+        "desc": "Rilevare inconsistencias tra fontes.",
+        "prompt": "Crea la vista VERIFICACION_CONSISTENCIA che detecte:\n- Discrepancias: TIEPI calculado vs repertado (diferencia >5%)\n- Emisiones: produzione total vs suma per impianto (diferencia >2%)\n- Generazione rinnovabile: certificados vs produzione medida\n- Inversión: suma per zona vs total repertado\nUsa ML per rilevare anomalías in series temporali di KPIs. Genera lista di inconsistencias con severidad e raccomandazione di correczione."
+      },
+      {
+        "title": "Generare narrativas di informe",
+        "desc": "Usar LLM per redactar seczioni del informe.",
+        "prompt": "Crea la funzione GENERAR_NARRATIVA(seccion, periodo) che use CORTEX.COMPLETE per redactar:\n- Resumen ejecutivo del periodo\n- Analisi di qualità di approvvigionamento con causas principalees\n- Progreso in transizione energetica e emisiones\n- Logros sociales e di gobernanza\n- Plan di azione per indicatori a rischio\nFormato: párrafos profesionales in espannol con dati specificos. Demuestra con il informe trimesetral."
+      },
+      {
+        "title": "Dashboard di compliance",
+        "desc": "Streamlit di monitoraggio normativa.",
+        "prompt": "Genera código Streamlit con:\n1. Semáforo di KPIs normativos: cumple/rischio/incumple\n2. Tendencia di TIEPI e NIEPI con obiettivo CNMC\n3. Dashboard ESG: metriche ambientales, sociales, gobernanza\n4. Verifica di consistencia: alert di discrepancias\n5. Generador di informese: selecciona seczioni, periodo, genera PDF\n6. Calendareio normativo: prossimos repertes e deadlines"
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Automatizzare reporting normativo.",
+        "prompt": "Crea Tasks:\n1. CONSOLIDAR_DATOS: giornaliero, attualeiza fontes di dati\n2. CALCULAR_KPIS: settimanale, recalcula indicatori normativos\n3. VERIFICAR_CONSISTENCIA: settimanale, detecta discrepancias\n4. GENERAR_INFORME: secondo calendario normativo (mensile, trimesetral, annuale)\n5. Documenta. Objetivo: ridurre preperzione di reporting 70%."
+      }
+    ]
+  },
+  "UC19": {
+    "title": "Gestione della Ricarica Veicoli Elettrici nella Rete",
+    "intro": "Motore di gestione intelligente della ricarica EV che predice domanda, coordina carga diferida (V1G) e bidireccional (V2G), e optimiza la red esistonote.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per gestione di carga EV.",
+        "prompt": "Crea la base di dati ENERGIA_EV_DB con schema ANALYTICS e warehouse ENERGIA_WH. Comentarios del progetto di gestione di carga di veicolo elettrico in red."
+      },
+      {
+        "title": "Creare parque di EVs e cargadores",
+        "desc": "Generare dati di veicoi elettricos e puntos di carga.",
+        "prompt": "Crea le tabellas:\n1. PARQUE_EV: ev_id, modello, capacità_bateria_kwh, potenza_carga_max_kw, tipo_carga (AC_mono, AC_tri, DC), zona, propietario_tipo (particular, flotta, compartido)\n2. PUNTOS_CARGA: cargador_id, ubicacion, tipo (domesetico_3.7kw, semi_rapido_11kw, semi_rapido_22kw, rapido_50kw, ultra_rapido_150kw), ct_asociado_id, potenza_kw FLOAT\nGenera 10,000 EVs e 2,000 puntos di carga. 60% domésticos, 25% semi-rápidos, 15% rápidos/ultra."
+      },
+      {
+        "title": "Creare sesiones di carga",
+        "desc": "Generare historial di sesiones con pattern temporali.",
+        "prompt": "Crea la tabella SESIONES_CARGA con: sesion_id, ev_id, cargador_id, fecha_ora_inicio TIMESTAMP, fecha_ora_fin TIMESTAMP, energia_kwh FLOAT, potenza_media_kw FLOAT, soc_inicio_pct FLOAT, soc_fin_pct FLOAT, tarifa_eur_kwh FLOAT, tipo_gestion (libre, v1g_diferida, v2g). Genera 500,000 sesiones in 1 anno. Patrones: doméstico pico 19-22h, oficina 9-17h, opertunista aleatorio. 85% libre, 10% V1G, 5% V2G."
+      },
+      {
+        "title": "Valutare impatto in red",
+        "desc": "Calcolare sucarga in transformadores per carga EV.",
+        "prompt": "Crea la vista IMPACTO_RED_EV che per ogni CT e ora calcule:\n- carga_base_kva (consumo senza EV), carga_ev_kva (domanda di cargadores)\n- carga_total_kva, capacità_ct_kva, utilizzacion_pct\n- sucarga_kva (si utilizzazione >100%), duracion_sucarga_h\n- num_ev_cargando, potenza_ev_total_kw\n- clasificacion_rischio: critico (>120%), alto (100-120%), medio (80-100%), bajo (<80%)\nIdentifica i 50 CTs più colpiscedos."
+      },
+      {
+        "title": "Predire domanda di carga EV",
+        "desc": "Forecast della domanda di carga per zona.",
+        "prompt": "Usa ML.FORECAST per prevedere domanda di carga EV per zona a 4h, 12h e 24h vista:\n- Variabili: giorno di settimana, ora, temperatura, eventi speciali, generazione solar local\n- Agregar per CT e per zona\n- Generare vista PREDICCION_CARGA_EV con: zona, ora, domanda_prevista_kw, intervalo_95, rischio_sucarga_pct\n- Identificare venditanas óptimas di carga (ore valle con excedente solar)."
+      },
+      {
+        "title": "Ottimizzare carga V1G/V2G",
+        "desc": "Motor di gestione intelligente di carga.",
+        "prompt": "Crea la vista OPTIMIZACION_V1G_V2G che per ogni cargador gestionable calcule:\n- Para V1G: ora_optima_inicio (mínimo costo, mínimo impatto red), ora_limite (necesidad del utente), risparmio_eur\n- Para V2G: ore_optimas_inyeccion (máximo prezzo, máximo impatto), energia_disponibile_kwh, ricavo_eur\n- Restriczioni: SoC mínimo al uscire (>80%), confort del utente\n- Beneficio_red: sucarga_evitada_kva, inversion_diferida_eur\nComperr scenari: senza gestione, V1G solo, V1G+V2G."
+      },
+      {
+        "title": "Dashboard di gestione EV",
+        "desc": "Streamlit di monitoraggio di carga EV.",
+        "prompt": "Genera código Streamlit con:\n1. Mapa di CTs con impatto di EV (verde/amarillo/rojo)\n2. Previsione di domanda di carga per zona prossimas 24h\n3. Estado di gestione V1G/V2G: sesiones diferidas, inyeczioni\n4. Ahorro di red: sucarga evitada, inversión diferida\n5. Simulador: impatto di +1000, +5000, +10000 EVs nella zona\n6. Metriche: costo medio carga, risparmio V1G, ricavi V2G"
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Automatizzare gestione di carga.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_SESIONES: ogni 15 min carga dati di cargadores\n2. PREDECIR_DEMANDA_EV: ogni ora genera previsioni\n3. OPTIMIZAR_CARGA: ogni 15 min attualeiza segnalees V1G/V2G\n4. EVALUAR_IMPACTO: giornaliero recalcula impatto in red\n5. Documenta. Objetivo: ridurre pico di carga 30% con V1G."
+      }
+    ]
+  },
+  "UC20": {
+    "title": "Rilevamento Anomalie nei Mercati Energetici",
+    "intro": "Sistema ML di vigilanza dei mercati energeticos che detecta anomalías in offerte, prezzi e posizioni per identificare compertamento anticompetitivo.",
+    "steps": [
+      {
+        "title": "Configurare ambiente",
+        "desc": "Creare database per vigilancia di mercatos.",
+        "prompt": "Crea la base di dati ENERGIA_MERCADOS_DB con schema VIGILANCIA e warehouse ENERGIA_WH. Comentarios del progetto di rilevamento di anomalías nel mercatos energeticos."
+      },
+      {
+        "title": "Creare dati di mercato OMIE",
+        "desc": "Generare offerte, prezzi e casazione del mercato elettrico.",
+        "prompt": "Crea le tabellas:\n1. OFERTAS_MERCADO: fecha_ora, agente_id, unidad_generacion, tipo_offerta (vendita, acquisto), prezzo_eur_mwh FLOAT, quantità_mwh FLOAT, mercato (giornaliero, intragiornaliero)\n2. PRECIOS_CASACION: fecha_ora, prezzo_marginal_eur_mwh, energia_casada_mwh, tecnologia_marginal\n3. AGENTES: agente_id, nombre, grupo_aziendareial, cuota_mercato_pct, capacità_installata_mw\nGenera dati orarios per 1 anno, 30 agentes, 200 unidades. Incluir 2% di offerte con pattern manipulativos."
+      },
+      {
+        "title": "Calcolare features di mercato",
+        "desc": "Generare indicatori di compertamento per agente.",
+        "prompt": "Crea la vista FEATURES_MERCADO che calcule per agente e ora:\n- Oferta: prezzo_medio_offertado, spread_vs_marginal, quantità_offertada_vs_capacità\n- Compertamiento: ratio_withholding (capacità non offertada / total), variabilità_prezzo_vs_historico\n- Posizione: cuota_ora, indice_pivotalidad (HHI ajustado), residual_supply_index\n- Patrones: correlacion_offerte_con_altros_agentes, cambio_strategia_vs_settimana_precedente\n- Contexto: escasez_sistema BOOLEAN, prezzo_gas, domanda_vs_capacità"
+      },
+      {
+        "title": "Addestrare modello di rilevamento",
+        "desc": "ML.CLASSIFICATION per rilevare compertamento anómalo.",
+        "prompt": "Usa ML.CLASSIFICATION per clasificar offerte como: normal, sospechosa_leve, sospechosa_grave, manipulacion_probable. Variabili: tuttas le features di mercato. Tipos di anomalía a rilevare:\n- Withholding: retirar capacità per subir prezzo\n- Coordinazione: offerte similares tra agentes aparentemente independientes\n- Price spike artificial: offerte extremas in ore di escasez\n- Pivot player abuse: aprovechar posizione dominante in ore críticas\nEvalúa precision e recall per tipo di anomalía."
+      },
+      {
+        "title": "Correlacionar con eventos del sistema",
+        "desc": "Cruzar anomalías con restrizioni tecnicas e escasez.",
+        "prompt": "Crea la vista CORRELACION_EVENTOS che cruce anomalías di mercato con:\n- Restriczioni tecnicas: congestiones che limitan capacità\n- Indisponibilitàes: perdas di centrales (programadas vs non programadas)\n- Prezzi di gas e CO2: costi di opertunidad legítimos\n- Domanda excepcional: ole di calore/frío, eventi speciali\nPara ogni anomalía determina: ha_justificacion_tecnica BOOLEAN, explicacion_alternativa, confianza_anomalia_ajustada."
+      },
+      {
+        "title": "Generare alert di vigilancia",
+        "desc": "Sistema di alert priorizadas per investigazione.",
+        "prompt": "Crea la vista ALERTAS_MERCADO che per ogni anomalía senza justificazione genere:\n- alerta_id, fecha_ora, agente_id, tipo_anomalia\n- severidad (critica, alta, media, baja)\n- impatto_estimado_eur (diferencia di prezzo × energia colpisceda)\n- evidencia_resumen (generado con CORTEX.COMPLETE)\n- recomendacion_investigacion\nAgrupa alert recurrentes dello stesso agente in patterns."
+      },
+      {
+        "title": "Dashboard di vigilancia",
+        "desc": "Streamlit di vigilancia di mercatos.",
+        "prompt": "Genera código Streamlit con:\n1. Panel di prezzi di mercato con anomalías marognis\n2. Alert activas priorizadas per severidad e impatto\n3. Perfil di agente: offerte, cuota, historial di anomalías\n4. Correlazione di anomalías con eventos del sistema\n5. Metriche: anomalías detectadas, impatto estimado, patterns\n6. Informe generado per CNMC con evidencia estructurada"
+      },
+      {
+        "title": "Pipeline e limpezzo",
+        "desc": "Automatizzare vigilancia di mercatos.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_MERCADO: ogni ora carga dati di OMIE\n2. CALCULAR_FEATURES: ogni ora attualeiza indicatori\n3. DETECTAR_ANOMALIAS: ogni ora ejecuta modello\n4. CORRELACIONAR: ogni ora cruza con eventos del sistema\n5. GENERAR_ALERTAS: giornaliero consolida e prioriza alert\n6. Documenta. Objetivo: rilevare anomalías con <24h di retraso."
+      }
+    ]
+  }
+});
+
+function verGuia(ucId) {
+  const g = GUIAS[ucId];
+  if (!g) return;
+  const html = '<span class="guide-badge">' + ucId + '</span>' +
+    '<h2>' + g.title + '</h2>' +
+    '<p>' + g.contesto + '</p>' +
+    '<h3>Focus</h3><p>' + g.focus + '</p>' +
+    '<h3>Sfida</h3><p>' + g.sfida + '</p>' +
+    '<h3>Obiettivi</h3><ul>' + g.obiettivi.map(function(o){return '<li>' + o + '</li>';}).join('') + '</ul>' +
+    '<h3>Funzionalit\u00e0</h3><ul>' + g.funzionalita.map(function(f){return '<li>' + f + '</li>';}).join('') + '</ul>' +
+    '<h3>Dati</h3><ul>' + g.dati.map(function(d){return '<li>' + d + '</li>';}).join('') + '</ul>' +
+    '<h3>Stratificazione (Clusterizzazione)</h3><ul>' + g.stratificazione.map(function(e){return '<li>' + e + '</li>';}).join('') + '</ul>' +
+    '<h3>Come usare</h3><ul>' + g.come_usare.map(function(c){return '<li>' + c + '</li>';}).join('') + '</ul>' +
+    '<div class="guide-footer">Guida generata da Snowflake Cortex Code</div>';
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function verPrompts(ucId) {
+  const data = PROMPTS[ucId];
+  if (!data) return;
+  const esc = function(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+  let html = '<span class="guide-badge">' + ucId + '</span><h2>' + data.title + '</h2>';
+  html += '<p class="prompt-intro">' + data.intro + '</p>';
+  data.steps.forEach(function(s, i) {
+    html += '<div class="prompt-step">' +
+      '<div class="prompt-step-header"><span class="prompt-step-num">' + (i+1) + '</span><span class="prompt-step-title">' + s.title + '</span></div>' +
+      '<p class="prompt-step-desc">' + s.desc + '</p>' +
+      '<div class="prompt-code"><button class="copy-btn" onclick="copiarPrompt(this)">Copia</button>' + esc(s.prompt) + '</div>' +
+      '</div>';
+  });
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function copiarPrompt(btn) {
+  const code = btn.parentElement.textContent.replace('Copia','').trim();
+  navigator.clipboard.writeText(code).then(function(){btn.textContent='\u2713 Copiato';setTimeout(function(){btn.textContent='Copia';},1500);});
+}
+
+function cerrarModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+</script>
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)cerrarModal();">
+  <div class="modal-box">
+    <button class="modal-close" onclick="cerrarModal()">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+</body>
+</html>

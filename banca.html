@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <title>Snowflake — Soluzioni IA/ML per Banca e Servizi Finanziari</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+
+    /* ── HEADER ──────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #003545, #11567F);
+      color: #fff;
+      padding: 32px 48px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .hero-left { flex: 1; }
+
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .logo-snowflake {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 6px;
+    }
+
+    .hero-tagline {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .stats-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 28px;
+      text-align: center;
+      color: #1a1a1a;
+      min-width: 160px;
+      flex-shrink: 0;
+    }
+
+    .stats-box .stat-number {
+      font-size: 40px;
+      font-weight: 700;
+      color: #29B5E8;
+      line-height: 1;
+    }
+
+    .stats-box .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 14px;
+    }
+
+    .stats-box .stat-time {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1;
+    }
+
+    .stats-box .stat-time-label {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .stats-divider {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 10px 0;
+    }
+
+    /* ── SECTION INTRO ───────────────────────────────────── */
+    .intro {
+      background: #fff;
+      text-align: center;
+      padding: 48px 24px 32px;
+    }
+
+    .intro h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #11567F;
+      margin-bottom: 14px;
+    }
+
+    .intro p {
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    /* ── FILTERS ─────────────────────────────────────────── */
+    .filters-bar {
+      background: #fff;
+      padding: 20px 48px 0;
+      border-bottom: 1px solid #e8e8e8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filters-left {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .filter-btn {
+      padding: 8px 18px;
+      border-radius: 80px;
+      border: 1.5px solid #ccc;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 500;
+      color: #444;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { border-color: #29B5E8; color: #29B5E8; }
+
+    .filter-btn.active {
+      background: #29B5E8;
+      border-color: #29B5E8;
+      color: #fff;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #ccc;
+      border-radius: 80px;
+      padding: 7px 14px;
+      gap: 8px;
+      min-width: 200px;
+      background: #fff;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      font-size: 13px;
+      color: #444;
+      width: 100%;
+      background: transparent;
+    }
+    .search-box input::placeholder { color: #aaa; }
+
+    /* ── RESULTS COUNT ────────────────────────────────────── */
+    .results-count {
+      padding: 14px 48px 8px;
+      font-size: 13px;
+      color: #666;
+      background: #f5f5f5;
+    }
+
+    /* ── CARDS GRID ──────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+      padding: 16px 48px 48px;
+      background: #f5f5f5;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid #e2e2e2;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.1); }
+
+    .card-header {
+      padding: 16px 18px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-badges { display: flex; gap: 6px; align-items: center; }
+
+    .badge-id {
+      font-size: 11px;
+      font-weight: 700;
+      color: #888;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-cat {
+      background: #E0F4FD;
+      color: #11567F;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+    .badge-cat.rischio       { background: #FDE8F0; color: #D45B90; }
+    .badge-cat.cliente      { background: #E0F4FD; color: #11567F; }
+    .badge-cat.operazioné  { background: #EDE6FF; color: #7D44CF; }
+    .badge-cat.inteligencia { background: #FFF5E6; color: #E08520; }
+
+    .card-time {
+      font-size: 12px;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .card-title {
+      padding: 0 18px 12px;
+      font-size: 17px;
+      font-weight: 700;
+      color: #11567F;
+      line-height: 1.3;
+    }
+
+    .pain-point {
+      margin: 0 18px 14px;
+      background: #F0F7FA;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .pain-point-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #29B5E8;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .pain-point p {
+      font-size: 13px;
+      color: #2a2a2a;
+      line-height: 1.55;
+    }
+
+    .card-desc {
+      padding: 0 18px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .card-features {
+      padding: 0 18px 16px;
+      list-style: none;
+    }
+
+    .card-features li {
+      font-size: 13px;
+      color: #444;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .card-features li::before {
+      content: '\2713';
+      color: #29B5E8;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .card-actions {
+      padding: 14px 18px 18px;
+      display: flex;
+      gap: 10px;
+      border-top: 1px solid #f0f0f0;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      flex: 1;
+      padding: 10px;
+      background: #29B5E8;
+      color: #fff;
+      border: none;
+      border-radius: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .btn-secondary:hover { background: #11567F; }
+
+    .btn-tertiary {
+      flex: 1;
+      padding: 10px;
+      background: #003545;
+      color: #29B5E8;
+      border: none;
+      border-radius: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .btn-tertiary:hover { background: #11567F; }
+
+    .prompt-step { margin-bottom: 18px; }
+    .prompt-step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .prompt-step-num { background: #003545; color: #29B5E8; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .prompt-step-title { font-size: 13px; font-weight: 600; color: #333; }
+    .prompt-step-desc { font-size: 12px; color: #666; margin-bottom: 6px; line-height: 1.5; }
+    .prompt-code { position: relative; background: #003545; color: #e0e0e0; border-radius: 8px; padding: 12px 14px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12.5px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .prompt-code .copy-btn { position: absolute; top: 6px; right: 8px; background: rgba(255,255,255,0.1); border: none; color: #aaa; font-size: 11px; padding: 3px 8px; border-radius: 4px; cursor: pointer; }
+    .prompt-code .copy-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .prompt-code .kw { color: #29B5E8; }
+    .modal-box .prompt-intro { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #eee; }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 700px;
+      width: 92%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 32px 28px;
+      position: relative;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #888;
+      line-height: 1;
+    }
+    .modal-close:hover { color: #29B5E8; }
+    .modal-box h2 { color: #11567F; font-size: 20px; margin-bottom: 6px; }
+    .modal-box h3 { font-size: 15px; color: #333; margin: 18px 0 8px; }
+    .modal-box p, .modal-box li { font-size: 13px; line-height: 1.7; color: #444; }
+    .modal-box ul { padding-left: 20px; margin: 6px 0; }
+    .modal-box .guide-badge { display: inline-block; background: #E0F4FD; color: #11567F; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 50px; margin-bottom: 10px; }
+    .modal-box .guide-footer { margin-top: 20px; padding-top: 14px; border-top: 1px solid #eee; font-size: 12px; color: #888; }
+
+    @media (max-width: 700px) {
+      .hero { flex-direction: column; padding: 24px 20px; }
+      .cards-grid { grid-template-columns: 1fr; padding: 16px 16px 48px; }
+      .filters-bar { padding: 16px 16px 0; }
+      .results-count { padding: 12px 16px 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<header class="hero">
+  <div class="hero-left">
+    <div class="logos">
+    </div>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.75);text-decoration:none;margin-bottom:8px;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.75)'"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="12,4 6,10 12,16"/></svg>Torna all'Indice dei Settori</a>
+    <p class="hero-eyebrow">Sector Banca × Snowflake</p>
+    <h1 class="hero-title">Soluzioni IA/ML per Banca</h1>
+    <p class="hero-subtitle">Guide e Prompt di Cortex Code pronti per il deploy nei team di banca e servizi finanziari</p>
+    <p class="hero-tagline">Sviluppato con Snowflake Cortex AI | Impatto immediato</p>
+  </div>
+
+  <div class="stats-box">
+    <div class="stat-number">20</div>
+    <div class="stat-label">Casi d'Uso</div>
+    <hr class="stats-divider"/>
+    <div class="stat-time">8-15 min</div>
+    <div class="stat-time-label">Tempo di Configurazione</div>
+  </div>
+</header>
+
+<!-- ── INTRO ──────────────────────────────────────────────── -->
+<section class="intro">
+  <h2>Accelera la tua Analitica con Soluzioni IA Preconfigurate per Banca</h2>
+  <p>Ogni scheda include i prompt Cortex Code per Snowflake con dati sintetici, guide passo passo
+     e implementazioni SQL-first con Cortex AI/ML. Tutta l'elaborazione avviene in Snowflake,
+     senza dipendenze esterne, ed è pronta per essere adattata ai tuoi dati.</p>
+</section>
+
+<!-- ── FILTERS ───────────────────────────────────────────── -->
+<div class="filters-bar">
+  <div class="filters-left" id="filterBtns">
+    <button class="filter-btn active" data-filter="all">Tutti (20)</button>
+    <button class="filter-btn" data-filter="rischio">Rischio e Compliance (6)</button>
+    <button class="filter-btn" data-filter="cliente">Cliente e Business (7)</button>
+    <button class="filter-btn" data-filter="operaciones">Operazioné e Mercati (4)</button>
+    <button class="filter-btn" data-filter="inteligencia">Intelligenza Avanzata (3)</button>
+  </div>
+  <div class="search-box">
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round">
+      <circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/>
+    </svg>
+    <input id="searchInput" type="text" placeholder="Cerca casi d'uso…" />
+  </div>
+</div>
+
+<!-- ── RESULTS COUNT ─────────────────────────────────────── -->
+<div class="results-count" id="resultsCount">Mostrando 20 di 20 casi d'uso</div>
+
+<!-- ── CARDS ─────────────────────────────────────────────── -->
+<main class="cards-grid" id="cardsGrid"></main>
+
+<!-- ── MODALS ─────────────────────────────────────────────── -->
+<div class="modal-overlay" id="guiaModal"><div class="modal-box" id="guiaModalBox"></div></div>
+<div class="modal-overlay" id="promptsModal"><div class="modal-box" id="promptsModalBox" style="max-width:780px;"></div></div>
+
+<script>
+const USE_CASES = [
+  {
+    id:"UC01", cat:"rischio", catLabel:"Rischio e Compliance", time:"12 min",
+    title:"Rilevamento Frodi nelle Transazioni in Tempo Reale",
+    pain:"Miliardi si perdono annualmente per fraude in transazioné bancarias. La rilevamento manuale apenas copre il 2% di le operazioné in tempo reale.",
+    desc:"ML.CLASSIFICATION il suo 50K transazioné con z-score di importo, dispositivo nuovo, ubicazione anómala e ora. Umbrales differenziati: BLOQUEAR (≥80%), REVISAR (≥50%), APROBAR. Dashboard di monitoraggio in tempo reale.",
+    features:["SNOWFLAKE.ML.CLASSIFICATION","Z-Score per cliente con STDDEV()","GENERATOR() per 50.000 transazioni","Dashboard Streamlit di alert"]
+  },
+  {
+    id:"UC02", cat:"rischio", catLabel:"Rischio e Compliance", time:"14 min",
+    title:"Scoring Dinamico del Rischio di Credito",
+    pain:"Le decisioné creditizie mannuali sono lente, incoerenti e non cumplen con i requisiti normativi di esplicabilità (EBA, GDPR).",
+    desc:"ML.CLASSIFICATION + CORTEX.COMPLETE per scoring creditizio con ratio indebitamento, score bureau, impagos storici. Spiegazione IA di ogni decisión per conformità normativa.",
+    features:["SNOWFLAKE.ML.CLASSIFICATION","CORTEX.COMPLETE() per esplicabilità","NTILE() per fasce di rischio","5.000 richiedenti con storico"]
+  },
+  {
+    id:"UC03", cat:"rischio", catLabel:"Rischio e Compliance", time:"13 min",
+    title:"Rilevamento del Riciclaggio di Denaro (AML)",
+    pain:"I team di compliance ricevono migliaia di falsi allarmi che sovraccaricano la capacità di investigazione. Il blanqueo real passa inosservato tral ruido.",
+    desc:"ML.CLASSIFICATION con pattern di structuring (importi sotto umbral 3.000€), smurfing e reti transazionali. Alert clasificadas per severità: CRÍTICA/ALTA/MEDIA/BAJA.",
+    features:["SNOWFLAKE.ML.CLASSIFICATION","Analisi di structuring e smurfing","80.000 operazioné sintetiche","Alert per severità (6AMLD)"]
+  },
+  {
+    id:"UC04", cat:"rischio", catLabel:"Rischio e Compliance", time:"15 min",
+    title:"Stress Testing e Simulazione di Scenari",
+    pain:"Gli esercizi di stress testing regulatorios richieden settimane di trasotto manuale. Le proiezioné non si aggiornano con la frequenza che esige il regulador.",
+    desc:"ML.FORECAST a 24 mesees con moltiplicatori adverso (1.5x) e severamente adverso (2.2x). Proyeczione per portafoglio: Hipotecas, Consumo, Empresas, Tarjetas. Informe narrativo con IA.",
+    features:["SNOWFLAKE.ML.FORECAST multi-serie","CORTEX.COMPLETE() per report","Scenari Base/Adverso/Severo","Cumplimiento Basilea III/IV"]
+  },
+  {
+    id:"UC05", cat:"rischio", catLabel:"Rischio e Compliance", time:"12 min",
+    title:"Monitoraggio della Compliance Normativa",
+    pain:"Il monitoraggio manuale di decine di normative genera gap di conformità che risultano in sanzioné milionarie e danno reputazionale.",
+    desc:"CORTEX.COMPLETE + CORTEX.SUMMARIZE + CORTEX.SENTIMENT per documenti MiFID II, PSD2, DORA, Basilea, GDPR, AML. Analisi automatica di gap e prioritizzazione di azioni.",
+    features:["CORTEX.COMPLETE() per analisi","CORTEX.SENTIMENT() per urgenza","50 obblighi, 150 controles","Rilevamento di gap automatica"]
+  },
+  {
+    id:"UC06", cat:"rischio", catLabel:"Rischio e Compliance", time:"11 min",
+    title:"Rilevamento Frodi nelle Richieste di Credito",
+    pain:"Le identità sintetiche e i ricavi gonfiati in richieste di crédito generano perdite che si materializzano mesees dopolla aprobazione.",
+    desc:"ML.CLASSIFICATION con segnali digitales: tiempo formulario, ora richiesta, VPN, emails temporales, teléfono prepago. Umbrales: BLOQUEAR (≥75%), INVESTIGAR (≥40%), APROBAR.",
+    features:["SNOWFLAKE.ML.CLASSIFICATION","Segnali di identidad sintética","8.000 richieste con verificazione","Alert antifraude in originazione"]
+  },
+  {
+    id:"UC07", cat:"cliente", catLabel:"Cliente e Business", time:"13 min",
+    title:"Previsione della Fuga Clienti (Churn)",
+    pain:"Il costo di adquirir un cliente è 5-7x maggiore che trattenerelo. Senza segnali predittivi, la fuga si rileva quando il cliente ya si ne è andato.",
+    desc:"ML.CLASSIFICATION con features bancarias: saldo medio, prodotti, NPS, reclami, banca digital, anzianità. Raccomandazioné di fidelizzazione personaleizadas con IA.",
+    features:["SNOWFLAKE.ML.CLASSIFICATION","CORTEX.COMPLETE() per fidelizzazione","Tendenze di attività 6 mesees","5.000 clienti con engagement"]
+  },
+  {
+    id:"UC08", cat:"cliente", catLabel:"Cliente e Business", time:"12 min",
+    title:"Motore Next-Best-Offer Iperpersonaleizzato",
+    pain:"Le campagnas generiche di cross-selling hanno tasas di conversión inferiores al 3%. I clienti ricevono offertas irrilevprima che erodono la relazione.",
+    desc:"ML.CLASSIFICATION propensione a prodotto + CORTEX.COMPLETE per raccomandazione personaleizada per profilo di cliente. Ranking per decili con NTILE(10).",
+    features:["SNOWFLAKE.ML.CLASSIFICATION","CORTEX.COMPLETE() argomentari","NTILE(10) per decili","3.000 clienti con profilo completo"]
+  },
+  {
+    id:"UC09", cat:"cliente", catLabel:"Cliente e Business", time:"14 min",
+    title:"Segmentazione Avanzata e Customer LTV",
+    pain:"La segmentazione statica per prodotto non cattural valor real del cliente. I risorse commerciali si assegnano senza criterio di redditività.",
+    desc:"RFM con NTILE(5) + ML.FORECAST per LTV. Segmenti: Champions, Loyal, At Risk, Regular. Prediczione di ricavi a 12 mesees con profili narrativi per IA.",
+    features:["SNOWFLAKE.ML.FORECAST multi-serie","CORTEX.COMPLETE() per profili","NTILE(5) per quintili RFM","4.000 clienti, 24 mesees di datos"]
+  },
+  {
+    id:"UC10", cat:"cliente", catLabel:"Cliente e Business", time:"10 min",
+    title:"Analisi del Sentiment nelle Reclamazioni",
+    pain:"Miles di reclami si gestiscono con la stessa prioridad. I clienti più insoddisfatti non ricevono atenzione preferente, agravando la situazione.",
+    desc:"CORTEX.SENTIMENT + CORTEX.COMPLETE con LISTAGG per estrazione di temas principalei. Prioritizzazione automatica e generazione di risposte borrador con IA.",
+    features:["CORTEX.SENTIMENT() scoring","CORTEX.COMPLETE() risposte","1.000 reclami in espannol","Prioritizzazione URGENTE/ALTA/MEDIA/BAJA"]
+  },
+  {
+    id:"UC11", cat:"cliente", catLabel:"Cliente e Business", time:"15 min",
+    title:"Chatbot di Intelligenza Finanziaria",
+    pain:"I team di business dipendono del área di datos per interrogaziones basiche. Le richieste di informese ad-hoc saturano la coda di BI.",
+    desc:"Cortex Analyst con modello semantico YAML il suo VENTAS_PRODUCTOS e INDICADORES_RIESGO. Consultas in linguaggio naturale con interfaccia conversacional.",
+    features:["Cortex Analyst NL-to-SQL","Modelli semantici YAML","CORTEX.COMPLETE() contexto","Interfaccia chat Streamlit"]
+  },
+  {
+    id:"UC12", cat:"cliente", catLabel:"Cliente e Business", time:"11 min",
+    title:"Previsione della Domanda di Prodotti",
+    pain:"La pianificazione commerciale si basal suo estimazioni mannuali. I picchi di domanda non anticipados generano colli di bottiglia operativi.",
+    desc:"ML.FORECAST per domanda di mutui, prestiti, carte, fondos, planes, assicurazioni a 12 mesees. Rilevamento automatica di stagionalità.",
+    features:["SNOWFLAKE.ML.FORECAST multi-serie","Stagionalità per prodotto","Intervalli di confidenza","36 mesees storici, 12 proiettati"]
+  },
+  {
+    id:"UC13", cat:"cliente", catLabel:"Cliente e Business", time:"12 min",
+    title:"Ottimizzatore del Pricing dei Prestiti",
+    pain:"Il pricing statico non optimizal balance tra margen e volumen. I concorrenti con pricing dinamico catturano i migliorees clienti.",
+    desc:"GENERATOR() + POWER() per curve di elasticità TAE vs tasa accettazione. Simulazione di 3 strategie di pricing: Aggressivo, Competitivo, Conservatore.",
+    features:["ML.CLASSIFICATION accettazione","POWER() calcolo quota mensile","Simulazione di 3 scenari","10.000 richieste storiche"]
+  },
+  {
+    id:"UC14", cat:"operazioni", catLabel:"Operazioné e Mercati", time:"12 min",
+    title:"Previsione di Morosità Anticipata",
+    pain:"La morosità si rileva quando il impago ya si è verificato. Le accantonamenti si costituiscono in ritardo, impactando nella cuenta di risultati.",
+    desc:"ML.CLASSIFICATION con quotas_impagadas, dias_maggiore_impago, ratio_quota_ingreso per rilevamento pre-mora a 90 giornos. Alert tempranas per livello di rischio.",
+    features:["SNOWFLAKE.ML.CLASSIFICATION","Segnali di 3 primoos mesees","6.000 prestiti recientes","Alert ALTO/MEDIO/BAJO"]
+  },
+  {
+    id:"UC15", cat:"operazioni", catLabel:"Operazioné e Mercati", time:"13 min",
+    title:"Rilevamento Anomalie nelle Operazioné di Mercato",
+    pain:"La manipulazione di mercato (MAR) genera sanzioné milionarie. La supervisión manuale copre menos del 5% del volumen operado.",
+    desc:"Z-score estadístico il suo volumen per trader. Severidad: CRÍTICA (z>3), ALTA (z>2), NORMAL. Rilevamento di market abuse conforme a MAR.",
+    features:["STDDEV(), AVG(), PERCENTILE_CONT()","ML.CLASSIFICATION anomalías","100.000 operazioné in 20 instrumentos","Alert CRÍTICA/ALTA/NORMAL"]
+  },
+  {
+    id:"UC16", cat:"operazioni", catLabel:"Operazioné e Mercati", time:"14 min",
+    title:"Ottimizzazione della Rete di Filiali",
+    pain:"Le reti di filiali sudimensionadas generano costos fijos insostenibili. Il chiusura senza analisi provoca perdita di clienti di alto valor.",
+    desc:"ST_DISTANCE geoespacial + regole di business (pct_digital, visitas_mese). Decisiones: Cerrar/Ampliar/Ottimizzare/Mantener con raccomandazioné IA.",
+    features:["ST_DISTANCE(), ST_MAKEPOINT()","ML.CLASSIFICATION redditività","CORTEX.COMPLETE() raccomandazioni","200 filiali in 10 ciudades"]
+  },
+  {
+    id:"UC17", cat:"operazioni", catLabel:"Operazioné e Mercati", time:"11 min",
+    title:"Automazione dell\'Analisi Documentale",
+    pain:"Il elaborazione manuale di documenti bancarios (contratos, nóminas, DNIs) consuma oras per expediente e genera errorei di trascrizione.",
+    desc:"CORTEX.COMPLETE per estrazione di campos JSON e validazione VALIDO/INCOMPLETO/SOSPECHOSO di documenti bancarios. Resúmenes di pratiche con CORTEX.SUMMARIZE.",
+    features:["CORTEX.COMPLETE() extraczione JSON","CORTEX.SUMMARIZE() riepiloghi","500 pratiche, 1.500 documenti","Validazione automatica cruzada"]
+  },
+  {
+    id:"UC18", cat:"inteligencia", catLabel:"Intelligenza Avanzata", time:"10 min",
+    title:"Monitor del Rischio Reputazionale",
+    pain:"Le crisis reputazionalees in social media escalano in minutos. Senza monitoraggio automatica, la risposta llega demasiado tarde.",
+    desc:"CORTEX.SENTIMENT con umbral alcance > 10.000 per ALERTA_CRISIS. Monitorizazione multi-fuente: Twitter, LinkedIn, Prensa, Foros. Reportes esecutivos automaticos.",
+    features:["CORTEX.SENTIMENT() scoring","CORTEX.COMPLETE() reportes","2.000 menzioni multi-fuente","Alert di crisis in tempo reale"]
+  },
+  {
+    id:"UC19", cat:"inteligencia", catLabel:"Intelligenza Avanzata", time:"12 min",
+    title:"Analisi della Concorrenza Bancaria",
+    pain:"La intelligenza competitiva si raccoglie mannualmente e llega con settimane di retraso. Le decisioné strategiche si prendono senza datos attualeizados.",
+    desc:"CORTEX.COMPLETE con LISTAGG per analisi di minacce per competidor: BBVA, CaixaBank, Sabadell, Bankinter, ING, Revolut. Briefings esecutivos automatizzados.",
+    features:["CORTEX.SENTIMENT() concorrenti","CORTEX.COMPLETE() briefings","8 bancos concorrenti analizzados","500 notizie e menzioni"]
+  },
+  {
+    id:"UC20", cat:"inteligencia", catLabel:"Intelligenza Avanzata", time:"15 min",
+    title:"Assistente RAG per la Normativa Bancaria",
+    pain:"I team di compliance dedicano oras a buscar in cientos di documenti regulatorios. Le risposte incoerenti generano rischio normativo.",
+    desc:"Cortex Search + CORTEX.COMPLETE pattern RAG con LISTAGG il suo normativa: MiFID II, PSD2, Basilea, DORA, AML 6AMLD. Respuestas fundamentadas con citas.",
+    features:["Cortex Search búsqueda semántica","CORTEX.COMPLETE() risposte RAG","100 frammenti normativos","Respuestas con cita di fuente"]
+  }
+];
+
+const TOTAL = 20;
+
+function renderCards(list) {
+  const grid = document.getElementById('cardsGrid');
+  const count = document.getElementById('resultsCount');
+  grid.innerHTML = '';
+  count.textContent = `Mostrando ${list.length} di ${TOTAL} casi d'uso`;
+  list.forEach(uc => {
+    const catClass = uc.cat;
+    grid.innerHTML += `
+      <article class="card">
+        <div class="card-header">
+          <div class="card-badges">
+            <span class="badge-id">${uc.id}</span>
+            <span class="badge-cat ${catClass}">${uc.catLabel}</span>
+          </div>
+          <span class="card-time">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="#aaa" stroke-width="2">
+              <circle cx="10" cy="10" r="8"/><polyline points="10,5 10,10 13,13"/>
+            </svg>
+            ${uc.time}
+          </span>
+        </div>
+        <h3 class="card-title">${uc.title}</h3>
+        <div class="pain-point">
+          <div class="pain-point-label">Problema</div>
+          <p>${uc.pain}</p>
+        </div>
+        <p class="card-desc">${uc.desc}</p>
+        <ul class="card-features">
+          ${uc.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+        <div class="card-actions">
+          <a href="#" class="btn-secondary" onclick="verGuia('${uc.id}');return false;">Vedi Guida</a>
+          <a href="#" class="btn-tertiary" onclick="verPrompts('${uc.id}');return false;">Cortex Code Prompts</a>
+        </div>
+      </article>`;
+  });
+}
+
+let activeFilter = 'all';
+let searchTerm = '';
+
+function applyFilters() {
+  let result = USE_CASES;
+  if (activeFilter !== 'all') result = result.filter(u => u.cat === activeFilter);
+  if (searchTerm) result = result.filter(u =>
+    u.title.toLowerCase().includes(searchTerm) ||
+    u.desc.toLowerCase().includes(searchTerm) ||
+    u.pain.toLowerCase().includes(searchTerm)
+  );
+  renderCards(result);
+}
+
+document.getElementById('filterBtns').addEventListener('click', e => {
+  if (!e.target.matches('.filter-btn')) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  activeFilter = e.target.dataset.filter;
+  applyFilters();
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchTerm = e.target.value.toLowerCase().trim();
+  applyFilters();
+});
+
+renderCards(USE_CASES);
+
+
+const GUIAS = {
+  UC01: {
+    title: 'Rilevamento Frodi nelle Transazioni in Tempo Reale',
+    contexto: 'Questi Cortex Code Prompt demostra la rilevamento di fraude in transazioné bancarias usando Snowflake Cortex ML. Il fraude in transazioné genera perdite di miliardi annuali.',
+    foco: 'Modelo di classificazione binarial suo 50.000 transazioné con features di comportamento: z-score di importo, dispositivo nuovo, ubicazione anómala.',
+    reto: 'Costruire un sistema che detecte fraude con alta precisione minimizzando falsi positivi che bloquean transazioné legítimas.',
+    objetivos: ['Addestrare il modello ML.CLASSIFICATION il suo transazioné etiquetadas','Calcolare z-score per cliente per rilevare importi anómalos','Applicare soglie differenziati: BLOQUEAR (≥80%), REVISAR (≥50%), APROBAR','Dashboard di monitoraggio in tempo reale con Streamlit'],
+    funcionalidades: ['SNOWFLAKE.ML.CLASSIFICATION per modello predictivo','GENERATOR() per 50.000 transazioné sintetiche','STDDEV() e AVG() per calcolo di z-scores','OBJECT_CONSTRUCT per previsione inline','Streamlit per dashboard interattivo'],
+    datos: ['Clientes: 2.000 profili con demografici e prodotti','Transazioni: 50.000 operazioné (5% fraude) con canale, ubicazione, ora','Features: z-score importo, ratio vs media, dispositivo nuovo','Prediczioni: probabilità di fraude con aczione (BLOQUEAR/REVISAR/APROBAR)'],
+    como_usar: ['Eseguire i prompt in sequenza','La configurazione crea database aislada FRAUDE_TRANSACCIONES_DB','I dati sintetici generano 50.000 transazioné automaticamente','Il modello si addestra in 1-2 minutos','La dashboard mostra KPIs e tabla di alert']
+  },
+  UC02: {
+    title: 'Scoring Dinamico del Rischio di Credito',
+    contexto: 'Questi Cortex Code Prompt costruisce un sistema di scoring creditizio con ML e esplicabilità IA. La regulazione bancaria esige decisioné transparentes e trazables.',
+    foco: 'Valutazione automatica di richieste di crédito con classificazione multi-livello (APROBADO/CONDICIONADO/RECHAZADO) e spiegazioné generadas per IA.',
+    reto: 'Automatizzare decisioné creditizie cumpliendo con requisiti normativi (EBA, GDPR) di trasparenza e esplicabilità.',
+    objetivos: ['Addestrare il modello ML.CLASSIFICATION il suo storico crediticio','Calcolare ratios financieros come features predictivas (DTI, storico pagos)','Generaree spiegazioné IA con CORTEX.COMPLETE per ogni decisión','Dashboard di gestión di richieste con Streamlit'],
+    funcionalidades: ['SNOWFLAKE.ML.CLASSIFICATION per modello di rischio','CORTEX.COMPLETE() per esplicabilità in linguaggio naturale','NTILE() per segmentazione in fasce di rischio','5.000 richiedenti con 15.000 record di storico'],
+    datos: ['Richiedenti: 5.000 profili con ricavi, empleo, patrimonio','Storico crediticio: 15.000 record di créditos anteriores','Richieste: 5.000 con importo, plazo, finalidad','Decisiones: APROBADO/CONDICIONADO/RECHAZADO con spiegazione IA'],
+    como_usar: ['Eseguire in sequenza','Il modello valuta molteplici algoritmi automaticamente','Le spiegazioné IA si generano per una mostra di richieste','La dashboard permette filtrare per decisión e ver spiegazioni']
+  },
+  UC03: {
+    title: 'Rilevamento del Riciclaggio di Denaro (AML)',
+    contexto: 'Questi Cortex Code Prompt implementa un sistema di rilevamento di riciclaggio di denaro conforme alla regulazione 6AMLD e SEPBLAC.',
+    foco: 'Rilevamento di structuring (fraccionamiento di operazioné sotto soglie regulatorios di 3.000€ e 10.000€) e pattern di transferencias sospette.',
+    reto: 'Identificare attività sospechosa minimizzando falsi allarmi che sovraccaricano al team di compliance.',
+    objetivos: ['Rilevare pattern di structuring con analisi di soglie','Classificare operazioné per severità (CRÍTICA/ALTA/MEDIA/BAJA)','Analizzare concentrazione di destinos in jurisdiczioni di rischio','Dashboard di investigazione per team di compliance'],
+    funcionalidades: ['SNOWFLAKE.ML.CLASSIFICATION per rilevamento di operazioné sospette','Window functions per analisi di velocidad transazionale','GENERATOR() per 80.000 operazioné bancarias sintetiche','Alert clasificadas per severità'],
+    datos: ['Cuentas: 3.000 cuentas con profilo di titular','Operazioni: 80.000 transazioné (3% sospette)','Beneficiarios: 500 destinos con jurisdiczione e livello di rischio','Alert: clasificadas per severità con probabilità'],
+    como_usar: ['Eseguire in sequenza','I dati includono pattern di structuring realistici','Gli alert si classificano in 4 livelloes di severità','La dashboard permette filtrare per severità e investigar operazioni']
+  },
+  UC04: {
+    title: 'Stress Testing e Simulazione di Scenari',
+    contexto: 'Questi Cortex Code Prompt simulal impatto di scenari macroeconomici adversos nella portafoglio crediticia, conforme a requisiti normativi EBA/BCE.',
+    foco: 'Tres scenari (Base, Adverso, Severamente Adverso) con proiezione di morosità usando ML.FORECAST e generazione di informese narrativos con IA.',
+    reto: 'Cumplir con requisiti normativi di stress testing e anticipar necesidades di capital.',
+    objetivos: ['Proyectar tasas di morosità con SNOWFLAKE.ML.FORECAST','Simular 3 scenari macroeconomici con moltiplicatori di impatto','Calcolare perdite attese e accantonamenti per segmento','Generaree informese narrativos automatizzados con CORTEX.COMPLETE'],
+    funcionalidades: ['SNOWFLAKE.ML.FORECAST per proiezione di serie temporalei','CORTEX.COMPLETE() per report esecutivos','GENERATOR() per datos di portafoglio e series macroeconomiche','CTEs encadenados per calcolos di accantonamenti'],
+    datos: ['Cartera: 10.000 créditos (Hipotecas, Consumo, Empresas, Tarjetas)','Series macro: 36 mesees di PIB, disoccupazione, Euribor, IPC','Morosidad: 36 mesees storici per segmento','Scenari: Base, Adverso (-1.5% PIB), Severo (-4% PIB)'],
+    como_usar: ['Eseguire in sequenza','Il forecast si addestral suo 36 mesees storici','I scenari aplican moltiplicatori differenziati per segmento','Il report IA si genera automaticamente con i risultati']
+  },
+  UC05: {
+    title: 'Monitoraggio della Compliance Normativa',
+    contexto: 'Questi Cortex Code Prompt automatizza la monitoraggio del conformità normativo bancario usando IA per analizzare textos regulatorios e rilevare gap.',
+    foco: 'Analisi automatica di obblighi di BCE, EBA, CNMV, SEPBLAC e BdE con rilevamento di gap di conformità.',
+    reto: 'Ridurre rischio di sanzioné regulatorias automatizzando la monitoraggio continua di compliance.',
+    objetivos: ['Analizzare textos regulatorios con CORTEX.COMPLETE()','Classificare obblighi per tipología e urgenza','Rilevare gap tra obblighi e controles implementados','Dashboard di estado di conformità'],
+    funcionalidades: ['CORTEX.COMPLETE() per analisi e riepilogo di normative','CORTEX.SENTIMENT() per rilevare tono di urgenza','50 obblighi regulatorias con 150 controles asociados','Sistema di prioritizzazione per livello di rischio di gap'],
+    datos: ['Obligazioni: 50 requisiti di 5 regolatori','Controles: 150 controles con risultato e frequenza','Evaluazioni: 200 valutazioné storiche','Gaps: priorizados per severità e proximidad di fecha límite'],
+    como_usar: ['Eseguire in sequenza','L\'analisi IA resume ogni obligazione in 3 líneas','I gap si calcolano cruzando obblighi con controles','La dashboard mostra estado general e gap prioritarios']
+  },
+  UC06: {
+    title: 'Rilevamento Frodi nelle Richieste di Credito',
+    contexto: 'Questi Cortex Code Prompt rileva richieste di crédito fraudolente nella fase di originazione, identificando identidades sintetiche e ricavi gonfiati.',
+    foco: 'Modelo di classificazione il suo discrepancias tra datos declarados per il richiedente e datos verificados per fuentes esternas.',
+    reto: 'Prevenire perdite per aprobazione di créditos fraudulentos (first-party fraud).',
+    objetivos: ['Rilevare discrepancias tra datos declarados e verificados','Addestrare il modello ML.CLASSIFICATION il suo features di fraude','Applicare soglie: BLOQUEAR (≥75%), INVESTIGAR (≥40%), APROBAR','Dashboard di alert antifraude'],
+    funcionalidades: ['SNOWFLAKE.ML.CLASSIFICATION per rilevamento di fraude','ABS() e ratios per calcolo di discrepancias','8.000 richieste con verifiche cruzadas','Sistema di alert con prioritizzazione'],
+    datos: ['Richieste: 8.000 (7% fraudolente)','Verificazioni: ricavi verificados, empresa, direczione, DNI','Features: discrepancia ricavi, score buró, total discrepancias','Alert: BLOQUEAR/INVESTIGAR/APROBAR con probabilità'],
+    como_usar: ['Eseguire in sequenza','I dati includono pattern di fraude documental realistici','Il modello rileva discrepancias tra declarado e verificado','La dashboard mostra alert priorizadas per probabilità']
+  },
+  UC07: {
+    title: 'Previsione della Fuga Clienti (Churn)',
+    contexto: 'Questi Cortex Code Prompt prevede qué clienti bancarios hanno alta probabilità di abandonar il banco in i prossimos 90 giornos.',
+    foco: 'Modelo predictivo basado in tendenze di attività transazionale, engagement digital e uso di prodotti.',
+    reto: 'Trattenere clienti di alto valor prima di che abandonen (el costo di adquisizione è 5-7x il di fidelizzazione).',
+    objetivos: ['Prevedere abandono con ML.CLASSIFICATION','Calcolare tendenze di attività (ultimos 2 mesees vs anteriores)','Generaree raccomandazioné di fidelizzazione con CORTEX.COMPLETE()','Dashboard di fidelizzazione con azioni prioritarie'],
+    funcionalidades: ['SNOWFLAKE.ML.CLASSIFICATION per previsione di churn','CORTEX.COMPLETE() per raccomandazioné personaleizadas','Window functions per tendenze di attività','5.000 clienti con 6 mesees di attività'],
+    datos: ['Clientes: 5.000 con segmento, prodotti, saldos','Actividad: 6 mesees di transazioni, logins, transferencias','Features: tendenza transazionale, caída di saldo, engagement','Raccomandazioni: azioni di fidelizzazione personaleizadas per IA'],
+    como_usar: ['Eseguire in sequenza','I churners mostran caída di attività in ultimos 2 mesees','Le raccomandazioné IA si generano per clienti di alto rischio','La dashboard mostra saldo in rischio e azioni prioritarie']
+  },
+  UC08: {
+    title: 'Motore Next-Best-Offer Iperpersonaleizzato',
+    contexto: 'Questi Cortex Code Prompt costruisce un motor di raccomandazione che suggerisce il migliore prodotto per ogni cliente basándose nel suo propensione di compra.',
+    foco: 'Modelo di propensione per prodotti di investimento con argomentari di venta generados per IA.',
+    reto: 'Incrementare cross-selling e share-of-wallet con offertas rilevprima e personaleizadas.',
+    objetivos: ['Prevedere propensione di compra con ML.CLASSIFICATION','Segmentar clienti per decili di propensione con NTILE()','Generaree argomentari di venta con CORTEX.COMPLETE()','Dashboard di opportunità commerciali'],
+    funcionalidades: ['SNOWFLAKE.ML.CLASSIFICATION per modello di propensione','CORTEX.COMPLETE() per argomentari personaleizados','NTILE(10) per ranking per decili','3.000 clienti con profilo financiero completo'],
+    datos: ['Clientes: 3.000 con edad, segmento, ricavi, prodotti','Features: ratio ahorro/ingreso, livello segmento, prodotti attualees','Propensión: probabilità e decil per prodotto di investimento','Argumentarios: textos di venta personaleizados per IA'],
+    como_usar: ['Eseguire in sequenza','Il modello prevede propensione a contratar investimento','I argomentari si generano per il top 20%','La dashboard mostra opportunità ordenadas per propensione']
+  },
+  UC09: {
+    title: 'Segmentazione Avanzata e Customer LTV',
+    contexto: 'Questi Cortex Code Prompt calcolal Customer Lifetime Value e segmenta clienti per valor usando analisi RFM e proiezioné ML.',
+    foco: 'Segmentazione RFM (Recencia, Frequenza, Monetario) con proiezione di ricavi futuros per segmento.',
+    reto: 'Asignar risorse commerciali di forma ottimale secondo il valor attuale e proyectado di ogni cliente.',
+    objetivos: ['Calcolare LTV storico con SQL avanzado','Segmentar clienti con analisi RFM e NTILE()','Proyectar valor futuro con SNOWFLAKE.ML.FORECAST','Generaree profili di segmento con CORTEX.COMPLETE()'],
+    funcionalidades: ['SNOWFLAKE.ML.FORECAST per proiezione di ricavi','CORTEX.COMPLETE() per profili narrativi di segmento','NTILE(5) per quintili RFM','4.000 clienti con 24 mesees di ricavi'],
+    datos: ['Clientes: 4.000 con fecha alta, segmento, prodotti','Ingresos: 24 mesees di commissioni, intereses, assicurazioni','RFM: scores di recencia, frequenza e valor monetario','Perfiles: descrizioné narrativas per segmento di valor'],
+    como_usar: ['Eseguire in sequenza','Il LTV si calcola agregando 24 mesees di ricavi','I quintili RFM crean 4 segmenti: VIP, Alto Valor, Medio, Bajo','Il forecast proyecta 12 mesees aggiuntive per segmento']
+  },
+  UC10: {
+    title: 'Analisi del Sentiment nelle Reclamazioni',
+    contexto: 'Questi Cortex Code Prompt analizzal sentimiento di reclami bancarias per prioritizzare la atenzione e generare risposte automatizzadas.',
+    foco: 'Scoring di sentimiento, classificazione per categoría e generazione di borradores di risposta con IA.',
+    reto: 'Migliorare tiempos di risposta e soddisfazione del cliente nella gestión di reclami.',
+    objetivos: ['Analizzare sentimiento con CORTEX.SENTIMENT()','Classificare reclami per categoría con CORTEX.COMPLETE()','Prioritizzare per urgenza combinando sentimiento e categoría','Generaree risposte borrador automatizzadas'],
+    funcionalidades: ['CORTEX.SENTIMENT() per scoring di sentimiento (-1 a +1)','CORTEX.COMPLETE() per classificazione e generazione di risposte','1.000 reclami con textos realistici in espannol','Sistema di prioritizzazione: URGENTE/ALTA/MEDIA/BAJA'],
+    datos: ['Reclami: 1.000 textos in espannol per 5 canalei','Sentimiento: score di -1 a +1 con livello (Crisis/Negativo/Neutro/Positivo)','Categorías: Comisiones, Servicio, Digital, Fraude, Otros','Respuestas: borradores generados per IA per ogni prioridad'],
+    como_usar: ['Eseguire in sequenza','Il sentiment si calcola automaticamente per ogni reclamo','La prioritizzazione combina sentimiento + categoría','La dashboard permette filtrare per prioridad e ver risposte IA']
+  },
+  UC11: {
+    title: 'Chatbot di Intelligenza Finanziaria',
+    contexto: 'Questi Cortex Code Prompt costruisce un chatbot conversacional che permette interrogazioner datos financieros bancarios in linguaggio naturale.',
+    foco: 'Modello semantico YAML per Cortex Analyst con interfaccia di chat interattiva.',
+    reto: 'Democratizzare il acceso a datos financieros senza necessità di conocimientos SQL.',
+    objetivos: ['Costruire modello semantico in YAML per Cortex Analyst','Abilitare interrogaziones in linguaggio naturale il suo datos financieros','Creare interfaccia conversacional con CORTEX.COMPLETE()','Desplegar analytics self-service per utenti non técnicos'],
+    funcionalidades: ['Cortex Analyst per traduzione NL-to-SQL','Modelli semantici YAML con metriche bancarias','CORTEX.COMPLETE() per risposte contextualizadas','Streamlit per interfaccia di chat interattiva'],
+    datos: ['Operazioni: 12 mesees di datos giornalieri per prodotto e oficina','Prodotti: Hipotecas, Préstamos, Fondos, Seguros, Tarjetas','Oficinas: 8 filiali principalei in España','Objetivos: targets commerciali per prodotto e oficina'],
+    como_usar: ['Eseguire in sequenza','Il modello semántico definisce dimensioni e metriche','Le domande di ejemplo mostran capacità del sistema','Il chatbot responde domande di business in tempo reale']
+  },
+  UC12: {
+    title: 'Previsione della Domanda di Prodotti',
+    contexto: 'Questi Cortex Code Prompt proyecta la domanda di prodotti bancarios a 12 mesees usando ML.FORECAST multi-serie.',
+    foco: 'Forecast di sottoscrizioné per prodotto con rilevamento automatica di stagionalità (más mutui in primavera, assicurazioni in otoño).',
+    reto: 'Ottimizzare risorse e pianificazione anticipando picchi e avvallamenti di domanda.',
+    objetivos: ['Proyectar domanda con SNOWFLAKE.ML.FORECAST multi-serie','Analizzare stagionalità in sottoscrizioni','Generaree intervalli di confidenza per pianificazione','Dashboard di forecast vs real'],
+    funcionalidades: ['SNOWFLAKE.ML.FORECAST con SERIES_COLNAME per multi-prodotto','GENERATOR() per 36 mesees di dati storici','Stagionalità incorporada per prodotto','Intervalli di confidenza upper/lower bound'],
+    datos: ['Contratazioni: 36 mesees per 6 prodotti e 4 canalei','Prodotti: Hipotecas, Préstamos, Fondos, Seguros, Tarjetas, Cuentas','Canales: Oficina, App, Web, Teléfono','Forecast: 12 mesees proiettati con intervalli di confidenza'],
+    como_usar: ['Eseguire in sequenza','I dati includono stagionalità realistico','Il forecast si genera per ogni prodotto indipendentemente','La dashboard permette confrontare storico vs proiezione per prodotto']
+  },
+  UC13: {
+    title: 'Ottimizzatore del Pricing dei Prestiti',
+    contexto: 'Questi Cortex Code Prompt optimizal tasso di interesse di prestiti balanceando margen vs volumen di sottoscrizione.',
+    foco: 'Modelo di accettazione che prevedella probabilità di che il cliente acepte una offerta dado il tasso di interesse.',
+    reto: 'Massimizzare il margen manteniendo un volumen competitivo di sottoscrizioni.',
+    objetivos: ['Prevedere accettazione con ML.CLASSIFICATION','Simular scenari di pricing (Aggressivo/Competitivo/Conservatore)','Calcolare quota mensile con POWER()','Dashboard di simulazione di pricing'],
+    funcionalidades: ['SNOWFLAKE.ML.CLASSIFICATION per modello di accettazione','Simulazione di 3 strategie di pricing','POWER() per calcolos di TIR e quota mensile','10.000 richieste con tasso di interesse e risultato'],
+    datos: ['Richieste: 10.000 con tasso di interesse e accettazione/rechazo','Segmenti: Premium, Particular, Joven, Empresa','Features: tasso di interesse, DTI, score, quota mensile','Scenari: Aggressivo (-1%), Competitivo (attuale), Conservatore (+1%)'],
+    como_usar: ['Eseguire in sequenza','Il modello aprendella relazione tasso di interesse → accettazione','I scenari mostran trade-off margen vs volumen','La dashboard comper le 3 strategie']
+  },
+  UC14: {
+    title: 'Previsione di Morosità Anticipata',
+    contexto: 'Questi Cortex Code Prompt prevedel rischio di primo impago in i 90 giornos posteriores alla concesión di un crédito.',
+    foco: 'Segnali tempranas di morosità: comportamento di pagos in primoos 3 mesees, uso di tarjeta, evoluzione di saldos.',
+    reto: 'Intervenire prima del primo impago per ridurre accantonamenti e perdite crediticias.',
+    objetivos: ['Prevedere morosità temprana con ML.CLASSIFICATION','Identificare segnali di impago in primoos 90 giornos','Creare sistema di alert per livello di rischio','Dashboard di monitoraggio di portafoglio'],
+    funcionalidades: ['SNOWFLAKE.ML.CLASSIFICATION per previsione di morosità','6.000 prestiti con comportamento di 3 mesees','Features: pagos puntuales, uso tarjeta, saldo cuenta','Alert: ALTO/MEDIO/BAJO rischio'],
+    datos: ['Cartera: 6.000 prestiti recientes (12% morosità)','Comportamiento: pago mese 1/2/3, uso tarjeta, saldo medio','Score concesión: scoring al momento di aprobar il crédito','Alert: probabilità di morosità con livello di rischio'],
+    como_usar: ['Eseguire in sequenza','I dati simulano comportamento di 3 primoos mesees','Il modello identifica pattern previos al primo impago','La dashboard mostra importo in rischio e alert prioritarie']
+  },
+  UC15: {
+    title: 'Rilevamento Anomalie nelle Operazioné di Mercato',
+    contexto: 'Questi Cortex Code Prompt rileva operazioné anomale in mercati finanziari per conformarsi con MAR (Market Abuse Regulation).',
+    foco: 'Analisi estadístico di precio e volumen con z-scores e percentiles per identificareee outliers.',
+    reto: 'Rilevare possibile manipulazione di mercato minimizzando falsas alert che consumano risorse di investigazione.',
+    objetivos: ['Rilevare operazioné anomale con analisi estadístico','Calcolare z-scores di precio e volumen per instrumento','Classificare anomalías per severità con ML.CLASSIFICATION','Dashboard di sorveglianza di mercato'],
+    funcionalidades: ['SNOWFLAKE.ML.CLASSIFICATION per classificazione di anomalías','STDDEV(), AVG(), PERCENTILE_CONT() per analisi estadístico','100.000 operazioné in 20 instrumentos financieros','Alert: CRITICA/ALTA/NORMAL'],
+    datos: ['Operazioni: 100.000 in 20 instrumentos IBEX35','Features: z-score precio, z-score volumen, percentil 95','Traders: 50 traders in 5 meseas di operazioni','Alert: clasificadas per severità con probabilità'],
+    como_usar: ['Eseguire in sequenza','I dati includono 2% di operazioné anomale','L\'analisi estadístico identifica outliers per instrumento','La dashboard mostra alert críticas per investigazione']
+  },
+  UC16: {
+    title: 'Ottimizzazione della Rete di Filiali',
+    contexto: 'Questi Cortex Code Prompt evalúa la redditività e cobertura geografica della red di filiali per prendere decisioné di apertura/chiusura.',
+    foco: 'Analisi geoespacial con ST_DISTANCE per rilevare sovrapposizione e modelo di redditività con ML.',
+    reto: 'Ottimizzare costos di red manteniendo cobertura adecuada di clienti.',
+    objetivos: ['Analizzare cobertura geografica con ST_DISTANCE e ST_MAKEPOINT','Classificare filiali per redditività con ML.CLASSIFICATION','Rilevare sovrapposizione tra filiali vicine (<2km)','Generaree raccomandazioné con CORTEX.COMPLETE()'],
+    funcionalidades: ['ST_DISTANCE(), ST_MAKEPOINT() per analisi geoespacial','SNOWFLAKE.ML.CLASSIFICATION per previsione di redditività','CORTEX.COMPLETE() per raccomandazioné strategiche','200 filiali con coordenadas reales di ciudades espannolas'],
+    datos: ['Oficinas: 200 in 10 ciudades con lat/lon, dipendenti, superficie','Metriche: clienti asignados, transazioni, ricavi, costos','Distancias: matriz di distancias tra filiali di stessa ciudad','Raccomandazioni: Mantener/Redimensionar/Cerrar/Digitalizar'],
+    como_usar: ['Eseguire in sequenza','Le coordinate sono realistici per ciudades espannolas','Il sovrapposizione rileva filiali a menos di 2km','Le raccomandazioné IA consideran ratio ingreso/costo e clienti']
+  },
+  UC17: {
+    title: 'Automazione dell\'Analisi Documentale',
+    contexto: 'Questi Cortex Code Prompt automatizza la extraczione di informazione di documenti bancarios (contratos, DNIs, nóminas) usando IA.',
+    foco: 'Extraczione di datos clave, classificazione per tipo e validazione cruzada tra documenti di un expediente.',
+    reto: 'Ridurre il tiempo di elaborazione documental di oras a minutos.',
+    objetivos: ['Extraer datos clave con CORTEX.COMPLETE()','Classificare documenti per tipo automaticamente','Generaree riepiloghi di pratiche con CORTEX.SUMMARIZE()','Dashboard di elaborazione documental'],
+    funcionalidades: ['CORTEX.COMPLETE() per estrazione e classificazione','CORTEX.SUMMARIZE() per riepiloghi di pratiche','500 pratiche con 3-4 documenti ogni uno','Tipos: Contrato, DNI, Nómina, Extracto, Escritura'],
+    datos: ['Documentos: 1.500 textos in 5 tipos con contenido simulado','Expedientes: 500 agrupazioni di documenti','Extrazioni: datos JSON extraídos per IA (titular, importo, fecha)','Resúmenes: síntesis di expediente completo'],
+    como_usar: ['Eseguire in sequenza','I textos simulan documenti bancarios reales','La extraczione genera JSON estructurado per documento','La dashboard mostra estado di elaborazione e extrazioni']
+  },
+  UC18: {
+    title: 'Monitor del Rischio Reputazionale',
+    contexto: 'Questi Cortex Code Prompt monitoriza menzioni in medios e social media per rilevare crisis reputazionalees bancarias.',
+    foco: 'Analisi di sentimiento di menzioni con rilevamento di picchi negativos e alert di crisis.',
+    reto: 'Rilevare e responder a crisis reputazionalees prima di che escalen.',
+    objetivos: ['Monitorare sentimiento con CORTEX.SENTIMENT()','Rilevare crisis mediante alert di sentimiento negativo','Classificare per fuente, tema e impatto','Generaree reportes esecutivos con CORTEX.COMPLETE()'],
+    funcionalidades: ['CORTEX.SENTIMENT() per scoring di sentimiento','CORTEX.COMPLETE() per report esecutivos','2.000 menzioni di medios e social media','Alert: ALTA/MEDIA/BAJA per alcance e sentimiento'],
+    datos: ['Menzioni: 2.000 textos di Twitter, Prensa, LinkedIn, Foros','Temas: Servicio, Prodotti, Sostenibilidad, Escándalo, Tecnología','Sentimiento: score -1 a +1 con livello (Crisis/Negativo/Neutro/Positivo)','Alert: priorizadas per alcance × sentimiento negativo'],
+    como_usar: ['Eseguire in sequenza','I textos simulan menzioni reales il suo banca','Il sentiment si calcola automaticamente','Il report esecutivo si genera con un riepilogo di i datos']
+  },
+  UC19: {
+    title: 'Analisi della Concorrenza Bancaria',
+    contexto: 'Questi Cortex Code Prompt analizzal posicionamiento competitivo del banco frente a 8 concorrenti nacionales e digitales.',
+    foco: 'Comparativa di prodotti, pricing, quota di mercato e sentimiento in medios di concorrenti.',
+    reto: 'Anticipare movimientos della competenza e ajustar strategia commerciale.',
+    objetivos: ['Confrontare prodotti e pricing tra entidades','Analizzare sentimiento il suo concorrenti con CORTEX.SENTIMENT()','Generaree briefings competitivos con CORTEX.COMPLETE()','Dashboard di benchmarking'],
+    funcionalidades: ['CORTEX.SENTIMENT() per sentimiento il suo concorrenti','CORTEX.COMPLETE() per briefings esecutivos','8 bancos concorrenti con prodotti e metriche','500 notizie/menzioni il suo concorrenti'],
+    datos: ['Concorrenti: Santander, BBVA, CaixaBank, Sabadell, Bankinter, ING, Openbank, Revolut','Prodotti: mutui, cuentas, fondos, carte con precios','Notizie: 500 titulares il suo concorrenti','Benchmarks: quota di mercato, soddisfazione, filiali'],
+    como_usar: ['Eseguire in sequenza','I dati di concorrenti sono rappresentativi del mercato espannol','Il sentiment analizza la percezione pública di ogni banco','Il briefing genera un riepilogo esecutivo per il comité di direczione']
+  },
+  UC20: {
+    title: 'Assistente RAG per la Normativa Bancaria',
+    contexto: 'Questi Cortex Code Prompt costruisce un sistema RAG (Retrieval-Augmented Generation) per interrogazioner normativa bancaria in linguaggio naturale.',
+    foco: 'Indexazione di documenti regulatorios con Cortex Search e risposte fundamentadas con CORTEX.COMPLETE().',
+    reto: 'Fornire acceso instantáneo a normativa rilevante senza revisar mannualmente cientos di documenti.',
+    objetivos: ['Costruire sistema RAG con Cortex Search','Indicizzare 100 frammenti di normativa bancaria','Rispondere domande con contexto documental rilevante','Interfaccia di interrogazione di normativa con Streamlit'],
+    funcionalidades: ['Cortex Search per indicizzazione e búsqueda semántica','CORTEX.COMPLETE() per generazione di risposte con contexto','100 frammenti di CRR III, MiFID II, 6AMLD, GDPR, DORA','Domande di ejemplo il suo regulazione bancaria'],
+    datos: ['Normativa: 100 frammenti di 8 regulazioni (CRR, MiFID, 6AMLD, GDPR, DORA, BdE)','Categorías: Capital, Liquidez, Conducta, PBC/FT, Datos, Digital','Domande: 5 interrogaziones frequenti di compliance','Respuestas: generadas con contexto normativo rilevante'],
+    como_usar: ['Eseguire in sequenza','Il Cortex Search Service indexa la normativa','Le domande buscan frammenti rilevprima automaticamente','Le risposte citan la normativa specifica aplicable']
+  }
+};
+
+function verGuia(ucId) {
+  const g = GUIAS[ucId];
+  if (!g) { alert('Guida non ancora disponibile per ' + ucId); return; }
+  const box = document.getElementById('guiaModalBox');
+  let h = `<button class="modal-close" onclick="cerrarModal('guiaModal')">&times;</button>`;
+  h += `<span class="guide-badge">${ucId}</span>`;
+  h += `<h2>${g.title}</h2>`;
+  h += `<h3>Contesto di Business</h3><p>${g.contexto}</p>`;
+  h += `<p><strong>Focus:</strong> ${g.foco}</p>`;
+  h += `<p><strong>Sfida di business:</strong> ${g.reto}</p>`;
+  h += `<h3>Obiettivi di Apprendimento</h3><ul>${g.objetivos.map(o=>`<li>${o}</li>`).join('')}</ul>`;
+  h += `<h3>Funzionalità Snowflake</h3><ul>${g.funcionalidades.map(f=>`<li>${f}</li>`).join('')}</ul>`;
+  h += `<h3>Dati Generati</h3><ul>${g.datos.map(d=>`<li>${d}</li>`).join('')}</ul>`;
+  h += `<h3>Come Usare il Notebook</h3><ul>${g.como_usar.map(c=>`<li>${c}</li>`).join('')}</ul>`;
+  h += `<p class="guide-footer">Notebook pronto per essere eseguito in Snowflake — include dati sintetici e dashboard</p>`;
+  box.innerHTML = h;
+  document.getElementById('guiaModal').classList.add('active');
+}
+
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('active');
+});
+function cerrarModal(id) { document.getElementById(id).classList.remove('active'); }
+
+const PROMPTS = {
+  UC01: {
+    title: "Rilevamento Frodi nelle Transazioni",
+    intro: 'Apri Cortex Code in Snowsight e esegui questi prompt in sequenza per costruire un detector di fraude in transazioné bancarias con ML.CLASSIFICATION.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Crea la database e warehouse.", prompt: "Crea un database FRAUDE_TRANSACCIONES_DB con schema PUBLIC e un warehouse COMPUTE_WH di dimensione SMALL con auto-suspend di 60 secondi e auto-resume abilitato. Aggiungi un commento descrittivo al proyecto. Impostal contesto di sessione con USE DATABASE, USE SCHEMA e USE WAREHOUSE." },
+      { title: "Generare clienti", desc: "2.000 clienti bancarios con profilo.", prompt: "Genera una tabella CLIENTES con 2.000 record usando GENERATOR(). Colonne: cliente_id (prefijo CLI + 5 cifre con LPAD), edad (tra 22 e 75 annos), genero (M/F casualmente), ciudad (elige tra 10 ciudades espannolas reales), ricavi_annuali (tra 15.000 e 120.000 euros con distribuzione realistico), antiguedad_anos (tra 1 e 20), num_prodotti (tra 1 e 5). Definisci PRIMARY KEY in cliente_id." },
+      { title: "Generare transazioni", desc: "50.000 transazioné con 5% fraude.", prompt: "Genera tabella TRANSACCIONES con 50.000 record con FOREIGN KEY a CLIENTES. Paral 5% di record contrassegnati come fraude (ES_FRAUDE=TRUE): importi altos tra 500 e 15.000 euros, ubicazioni sospette in Lagos, Bucarest o Kiev, ora_local tra 0 e 5 della madrugada, e dispositivo_nuovo=TRUE. Paral 95% legítimo: importi sottos tra 5 e 300 euros, ciudades normali, oras diurnas. Canales: ATM, POS, Online, Transferencia. Usa SQL GENERATOR(ROWCOUNT => 50000) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Feature engineering", desc: "Z-scores e ratios per cliente.", prompt: "Crea tabella FEATURES_FRAUDE con JOIN tra TRANSACCIONES e CLIENTES. Calcula per transazione: importo, ora_local, dispositivo_nuovo (0/1), es_online (0/1), es_atm (0/1), ratio_vs_media (importo dividido per la media del cliente con AVG OVER PARTITION BY cliente_id), zscore_importo ((importo - AVG) / NULLIF(STDDEV,0) per cliente usando funzioné finestra), canalei_distintos e ubicazioni_distintas (COUNT DISTINCT in finestra temporal), edad e antiguedad del cliente. Todos i campos numéricos come FLOAT. La colonna target es_fraude debe ser VARCHAR (no FLOAT) per compatibilidad con ML.CLASSIFICATION." },
+      { title: "Dividere train/test", desc: "Separare 80/20 con anti-join.", prompt: "Crea tabella ENTRENAMIENTO con SAMPLE(80) di FEATURES_FRAUDE usando SYSTEM. Crea tabella TEST con i record restanti usando NOT IN (SELECT transaccion_id FROM ENTRENAMIENTO) o anti-join equivalente. Mostral conteggio di record e tasso reale di fraude di ogni conjunto per validare che la distribuzione è similar." },
+      { title: "Addestrare il modello", desc: "ML.CLASSIFICATION con target ES_FRAUDE.", prompt: "Addestra un modello SNOWFLAKE.ML.CLASSIFICATION chiamato detector_fraude_txn usando la tabla ENTRENAMIENTO. Especifica TARGET_COLNAME = \. Usa evaluate => TRUE per generaree metriche di valutazione.'ES_FRAUDE' e come INPUT_COLNAMES todas le features numéricas excepto il id e la colonna target. Espera a che il addestramiento complete prima di continuar." },
+      { title: "Valutare le performance", desc: "Metriche, matriz di confusión e importancia.", prompt: "Esegui le tres valutazioné del modello detector_fraude_txn: SHOW_EVALUATION_METRICS per vedere precisione, recall e AUC-ROC; SHOW_CONFUSION_MATRIX per vedere veri positivi, falsi negativi e falsi positivi; SHOW_FEATURE_IMPORTANCE per identificareee qué variabili hanno più peso nella rilevamento di fraude." },
+      { title: "Puntuar e classificare", desc: "Prediczioni con tres livelloes di aczione.", prompt: "Crea tabella PREDICCIONES_FRAUDE usando detector_fraude_txn!PREDICT pasando OBJECT_CONSTRUCT(*) il suo la tabla TEST. Extrae la probabilità di fraude del campo di previsione e clasifica ogni transazione en: BLOQUEAR si probabilità ≥ 80%, REVISAR si probabilità tra 50% e 80%, APROBAR si probabilità < 50%. Mostral riepilogo con conteo e percentuale per aczione." },
+      { title: "Dashboard Streamlit", desc: "Pannello di monitoraggio in tempo reale.", prompt: "Crea dashboard Streamlit con: 3 KPIs in colonne (total transazioni, sospette REVISAR+BLOQUEAR, bloqueadas), grafico a barre di transazioné per aczione con colores rojo/naranja/verde, tabella filtrabile di transazioné sospette con colonne cliente_id, importo, canale, ora, probabilità_fraude e aczione, ordinata per probabilità descendente. Aggiungi pulsante di descarga CSV. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia (opzionale)", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera la sentencia DROP DATABASE IF EXISTS FRAUDE_TRANSACCIONES_DB CASCADE escrita come comentario SQL per la pulizia opcional del entorno di pruebas. Aggiungi anche DROP WAREHOUSE IF EXISTS COMPUTE_WH comentado. Includi un avviso che queste operazioné sono irreversibili." }
+    ]
+  },
+  UC02: {
+    title: "Scoring del Rischio di Credito",
+    intro: 'Prompt per costruire un sistema di scoring creditizio con ML.CLASSIFICATION e esplicabilità IA usando CORTEX.COMPLETE.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di scoring.", prompt: "Crea database SCORING_CREDITO_DB con schema PUBLIC e warehouse COMPUTE_WH di dimensione SMALL. Aggiungi un commento descrittivo del proyecto di scoring creditizio con ML. Impostal contesto di sessione." },
+      { title: "Creare tabelle", desc: "Estructura normalizada di datos crediticios.", prompt: "Crea tre tabelle con vincoli: SOLICITANTES (richiedente_id VARCHAR PK, edad INT, ricavi_mensili FLOAT, gastos_mensili FLOAT, deuda_attuale FLOAT, anos_empleo FLOAT, tipo_empleo VARCHAR, estado_civil VARCHAR, dependientes INT, vivienda VARCHAR, antiguedad_bancaria_anos FLOAT), HISTORIAL_CREDITO (credito_id VARCHAR PK, richiedente_id FK REFERENCES SOLICITANTES, tipo_credito VARCHAR, importo FLOAT, fecha_inicio DATE, estado VARCHAR, pagos_a_tiempo_pct FLOAT, impagos_30d INT, impagos_90d INT), SOLICITUDES (richiesta_id VARCHAR PK, richiedente_id FK, fecha DATE, importo_solicitado FLOAT, plazo_mesees INT, finalidad VARCHAR, es_moroso BOOLEAN)." },
+      { title: "Generare dati", desc: "5.000 richiedenti con storico realistico.", prompt: "Genera 5.000 richiedenti con GENERATOR(), 15.000 record di storico crediticio (3 per richiedente) e 5.000 richieste essendo il 20% morosas. Tipos di empleo: Indefinido (40%), Temporal (25%), Autónomo (20%), Funcionario (10%), Desdipendente (5%). I morosos hanno maggiore deuda_attuale, più impagos_90d e menor pagos_a_tiempo_pct." },
+      { title: "Feature engineering", desc: "Variables crediticias standard del sector.", prompt: "Crea tabella FEATURES_CREDITO con JOIN tra SOLICITUDES, SOLICITANTES e HISTORIAL_CREDITO (agregado per richiedente). Calcula: dti_ratio (deuda_attuale / ricavi_mensili*12), estabilidad_empleo (anos_empleo / NULLIF(edad-18,0)), empleo_estable (1 si tipo è Indefinido o Funcionario), pago_medio_historico (AVG pagos_a_tiempo_pct), total_impagos (SUM impagos_90d), antiguedad_bancaria (en annos). Todos i campos come FLOAT, es_moroso come INTEGER 0/1. IMPORTANTE: es_moroso debe ser VARCHAR ('true'/'false') o BOOLEAN, non FLOAT." },
+      { title: "Addestrare il modello", desc: "Clasificador di morosità 80/20.", prompt: "Crea tabella TRAIN_CREDITO con SAMPLE(80) di FEATURES_CREDITO e TEST_CREDITO con i record restanti. Addestra SNOWFLAKE.ML.CLASSIFICATION chiamato scoring_credito usando TRAIN_CREDITO con TARGET_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'ES_MOROSO'. Poi esegui SHOW_EVALUATION_METRICS e SHOW_CONFUSION_MATRIX per vedere le metriche di rendimento del modello." },
+      { title: "Valutare il modello", desc: "Metriche detalladas di rendimento.", prompt: "Esegui SHOW_EVALUATION_METRICS per vedere precisione, recall e AUC del modello scoring_credito. Esegui SHOW_CONFUSION_MATRIX per quantificare falsi positivi (conceder crédito a un moroso) e falsi negativi (rechazar a un buen pagador). Esegui SHOW_FEATURE_IMPORTANCE per identificareee i factores più influyentes. Comenta cuál è il costo di business di ogni tipo di errore." },
+      { title: "Puntuar richieste", desc: "Decisiones crediticias con tres livelloes.", prompt: "Crea tabella DECISIONES_CREDITO usando scoring_credito!PREDICT con OBJECT_CONSTRUCT(*) il suo TEST_CREDITO. Extrae probabilità_morosità e classifica in: RECHAZADO (≥ 60%), CONDICIONADO (30-60%, richiede garantías), APROBADO (< 30%). Mostral riepilogo con conteo, importo total e tasso di approvazione per categoría." },
+      { title: "Esplicabilità IA", desc: "Generazione di spiegazioné in linguaggio naturale.", prompt: "Para le 50 richieste più rilevprima (25 rechazadas + 25 aprobadas), crea tabla EXPLICACIONES_CREDITO usando SNOWFLAKE.CORTEX.COMPLETE('llama3.1-70b', prompt) dove il prompt include i valori reales di dti_ratio, storico di pagos, total_impagos e importo solicitado. Il modello debe generare una spiegazione di 2-3 frases in espannol che justifique la decisión di forma comprensible per il cliente." },
+      { title: "Dashboard", desc: "Pannello di decisioné con spiegazioné IA.", prompt: "Crea dashboard Streamlit con: 4 KPIs (total richieste, aprobadas, rechazadas, tasso di approvazione), grafico a barre per decisión, tabla con richiesta_id, importo, decisión, probabilità_morosità e spiegazione IA. Aggiungi filtro per rango di importo e tipo di decisión. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS SCORING_CREDITO_DB CASCADE commentato per la pulizia opzionale dell\'ambiente di test." }
+    ]
+  },
+  UC03: {
+    title: "Rilevamento del Riciclaggio di Denaro (AML)",
+    intro: 'Prompt per costruire un sistema di rilevamento AML con alert per severità usando ML.CLASSIFICATION e pattern di structuring.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database AML.", prompt: "Crea database AML_DETECCION_DB con schema PUBLIC e warehouse COMPUTE_WH di dimensione SMALL. Aggiungi un commento del progetto di rilevamento di riciclaggio di denaro. Impostal contesto di sessione." },
+      { title: "Creare tabelle", desc: "Estructura di cuentas, operazioné e beneficiarios.", prompt: "Crea tre tabelle: CUENTAS (cuenta_id VARCHAR PK, titular VARCHAR, tipo_cuenta VARCHAR, profilo_rischio VARCHAR con valori BAJO/MEDIO/ALTO, ricavi_declarados FLOAT, pais_residencia VARCHAR), OPERACIONES (operacion_id VARCHAR PK, cuenta_origen VARCHAR FK REFERENCES CUENTAS, cuenta_destino VARCHAR, fecha_ora TIMESTAMP, importo FLOAT, tipo_operacion VARCHAR, canale VARCHAR, pais_destino VARCHAR, es_sospechosa BOOLEAN), BENEFICIARIOS (beneficiario_id VARCHAR PK, nombre VARCHAR, pais VARCHAR, livello_rischio_jurisdiccion VARCHAR con valori BAJO/MEDIO/ALTO/MUY_ALTO)." },
+      { title: "Generare dati", desc: "80.000 operazioné con pattern di structuring.", prompt: "Genera 3.000 cuentas, 500 beneficiarios e 80.000 operazioné usando GENERATOR(). Paral 3% di operazioné sospette include pattern realistici di AML: structuring (importi tra 2.800 e 2.999 euros per evitar il umbral di 3.000), smurfing (molteplici operazioné pequeñas il stesso giorno), destinos in jurisdiczioni di alto rischio (Panamá, Islas Caimán, Emiratos, Bermudas). Cuenta_origen con profilo ALTO ha maggiore probabilità di operazioné sospette." },
+      { title: "Feature engineering", desc: "Indicadores di rischio AML standard.", prompt: "Crea tabella FEATURES_AML con JOIN tra OPERACIONES e CUENTAS. Calcula per operazione: ops_sotto_umbral_3k (COUNT operazioné del stesso cliente tra 2.500-3.000€ in 7 giornos), ops_sotto_umbral_10k (idem per 9.000-10.000€), ops_pais_rischio (booleano si pais_destino è di alto rischio), ratio_vol_ricavi (importo / ricavi_declarados_giornalieri), livello_rischio_cliente (encoding numérico 1-3), beneficiarios_distintos_30d (COUNT DISTINCT beneficiarios in 30 giornos). Todos come FLOAT." },
+      { title: "Addestrare il modello", desc: "Detector di operazioné sospette.", prompt: "Divide FEATURES_AML in TRAIN_AML (80%) e TEST_AML (20%) con SAMPLE. Addestra SNOWFLAKE.ML.CLASSIFICATION chiamato detector_aml usando TRAIN_AML con TARGET_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'ES_SOSPECHOSA'. Valuta con SHOW_EVALUATION_METRICS e SHOW_FEATURE_IMPORTANCE. Presta particolare attenzione al recall (catturar il maggiore número di operazioné sospette reales)." },
+      { title: "Generaree alert", desc: "Classificare per severità in cuatro livelloes.", prompt: "Crea tabella ALERTAS_AML usando detector_aml!PREDICT il suo TEST_AML. Extrae probabilità_sospechosa e classifica in: CRÍTICA (≥ 80%), ALTA (60-80%), MEDIA (40-60%), BAJA (< 40%). Incluye nella alert: cuenta_origen, importo, tipo_operacion, pais_destino, probabilità e livello_alert. Mostra la distribuzione di alert per livello e per pais_destino." },
+      { title: "Dashboard", desc: "Pannello di investigazione per il team di compliance.", prompt: "Crea dashboard Streamlit con: 4 KPIs (total operazioni, alert críticas, alert altas, tasa di rilevamento), grafico di distribuzione di alert per livello di severità, tabella filtrabile per livello con colonne cuenta, importo, pais, probabilità e tipo di operazione. Aggiungi filtro per data e livello di allerta. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS AML_DETECCION_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC04: {
+    title: "Stress Testing e Simulazione",
+    intro: 'Prompt per simulare scenari di estrés macroeconómico il suo la portafoglio crediticia con ML.FORECAST e analisi di impatto in accantonamenti.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di stress testing.", prompt: "Crea database STRESS_TESTING_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento descrittivo il suo il proyecto di stress testing regulatorio di portafoglio crediticia." },
+      { title: "Creare tabelle", desc: "Cartera crediticia e series macroeconomiche.", prompt: "Crea tre tabelle: CARTERA_CREDITOS (credito_id VARCHAR PK, segmento VARCHAR con valori Hipotecas/Consumo/Empresas/Tarjetas, importo_pendiente FLOAT, tipo_interes FLOAT, calificacion VARCHAR con valori AAA/AA/A/BB/B, fecha_vencimiento DATE), SERIES_MACRO (fecha DATE PK, pib_crescita FLOAT, tasa_disoccupazione FLOAT, euribor_12m FLOAT, ipc FLOAT, indice_confidenza FLOAT), MOROSIDAD_HISTORICA (fecha DATE, segmento VARCHAR, tasa_morosità FLOAT, accantonamenti_milioné FLOAT, PRIMARY KEY(fecha, segmento))." },
+      { title: "Generare dati", desc: "10.000 créditos e 36 mesees di datos macro.", prompt: "Genera 10.000 créditos distribuidos in 4 segmenti (Hipotecas 40%, Consumo 30%, Empresas 20%, Tarjetas 10%), 36 mesees di series macroeconomiche con ciclo económico realistico (crescita 2019-2020, caída COVID, recuperazione 2021-2022, normalizazione 2023), e morosità storica per segmento correlata con le variabili macro." },
+      { title: "Forecast morosità", desc: "Proyeczione ML.FORECAST per segmento.", prompt: "Agrega MOROSIDAD_HISTORICA per segmento e fecha. Addestra SNOWFLAKE.ML.FORECAST chiamato forecast_morosità con SERIES_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'SEGMENTO', TIMESTAMP_COLNAME='FECHA', TARGET_COLNAME='TASA_MOROSIDAD'. Proyecta 12 mesees futuros. Guarda risultati in FORECAST_MORA_12M con forecast, lower_bound e upper_bound per segmento." },
+      { title: "Simular scenari", desc: "Tres scenari: Base, Adverso, Severo.", prompt: "Crea tabella ESCENARIOS_STRESS con moltiplicatori differenziati per segmento: Scenario BASE (multiplicador 1.0x, ipotesi macroeconomici normali), ADVERSO (1.5x-2.0x secondo segmento, disoccupazione +3pp, PIB -1.5%), SEVERO (2.5x-3.5x, disoccupazione +6pp, PIB -4%, Euribor +200pb). Para ogni scenario e segmento calcula: mora_proiettata, perdita_esperada (mora × importo × LGD 0.45), accantonamenti_aggiuntive requeridas." },
+      { title: "Informe IA", desc: "Riepilogo esecutivo generado per CORTEX.COMPLETE.", prompt: "Usa SNOWFLAKE.CORTEX.COMPLETE('llama3.1-70b') per generaree un riepilogo esecutivo di stress testing di 5 párrafos che incluya: (1) metodologia utilizada, (2) risultati per segmento in scenario adverso, (3) impatto in accantonamenti totales, (4) segmenti più vulnerables identificados, e (5) raccomandazioné di capital e gestión di rischio. Pasa come contexto i datos reales della simulazione." },
+      { title: "Dashboard", desc: "Confronto visivo di scenari.", prompt: "Crea dashboard Streamlit con: 3 KPIs per scenario (mora proiettata media, perdita esperada total, accantonamenti aggiuntive requeridas), grafico a barre agrupadas confrontando mora per segmento in i 3 scenari, grafico a linee con mora proiettata 12m con intervalli di confidenza, informe IA desplegable. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS STRESS_TESTING_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC05: {
+    title: "Compliance Normativa",
+    intro: 'Prompt per automatizzare la monitoraggio di conformità normativo bancario con analisi IA di obblighi e rilevamento di gap.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di compliance regulatorio.", prompt: "Crea database COMPLIANCE_REG_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di monitoraggio automatizzada di compliance bancario." },
+      { title: "Creare tabelle", desc: "Obligazioni regulatorias, controles e valutazioni.", prompt: "Crea tre tabelle: OBLIGACIONES_REG (obligacion_id VARCHAR PK, regulador VARCHAR, normativa VARCHAR, area VARCHAR, titulo VARCHAR, descripcion TEXT, fecha_limite DATE, severità VARCHAR con valori CRITICA/ALTA/MEDIA/BAJA, estado VARCHAR), CONTROLES (control_id VARCHAR PK, obligacion_id FK, nombre VARCHAR, tipo VARCHAR, responsabile VARCHAR, frequenza VARCHAR, risultato_ultima VARCHAR, fecha_ultimo_control DATE), EVALUACIONES (evaluacion_id VARCHAR PK, obligacion_id FK, fecha DATE, evaluador VARCHAR, risultato VARCHAR con valori CUMPLE/PARCIAL/INCUMPLE, hallazgos TEXT, azioni_correctivas TEXT)." },
+      { title: "Generare dati", desc: "50 obblighi di regolatori europeos e nacionales.", prompt: "Genera 50 obblighi regulatorias de: BCE (12, il suo liquidez e capital), EBA (8, il suo reporting COREP/FINREP), CNMV (7, il suo conducta), SEPBLAC (8, il suo AML), BdE (10, il suo accantonamenti e supervisión), GDPR (5, il suo datos). Genera 150 controles (3 per obligazione promedio) e 200 valutazioné storiche con distribuzione realistico: 60% CUMPLE, 25% PARCIAL, 15% INCUMPLE." },
+      { title: "Analisi IA di obblighi", desc: "Resumir e contextualizar ogni obligazione.", prompt: "Para ogni una di le 50 obblighi, usa SNOWFLAKE.CORTEX.COMPLETE('llama3.1-70b') per generaree un analisi di 3 líneas che incluya: (1) qué si richiede exactamente, (2) cuál è il rischio di inconformità per il banco, e (3) le azioni concretas che il team di compliance debe realizar. Guarda in colonna analisis_ia della tabla OBLIGACIONES_REG." },
+      { title: "Rilevare gap di compliance", desc: "Identificare inconformitàs per livello di rischio.", prompt: "Crea tabella GAPS_COMPLIANCE cruzando OBLIGACIONES_REG con CONTROLES e la ultima EVALUACION per obligazione. Classifica ogni gap en: CRITICO (ultima valutazione INCUMPLE Y fecha_limite in prossimos 30 giornos o severità CRITICA), ALTO (controles con risultato INCUMPLE o valutazione PARCIAL in obligazione ALTA), MEDIO (valutazione PARCIAL in obligazione MEDIA), BAJO (resto). Incluye giornos_para_vencimiento e responsabile del control." },
+      { title: "Dashboard", desc: "Panel esecutivo di compliance.", prompt: "Crea dashboard Streamlit con: 4 KPIs (total obblighi, gap críticos, tasa di conformità global in %), grafico di distribuzione di gap per livello e per regulador, tabla di gap prioritarios con fecha límite, responsabile e analisi IA. Aggiungi filtro per área e regulador. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS COMPLIANCE_REG_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC06: {
+    title: "Frode nelle Richieste di Credito",
+    intro: 'Prompt per rilevare richieste fraudolente nella fase di originazione mediante analisi di discrepancias tra datos declarados e verificados.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di rilevamento di fraude in originazione.", prompt: "Crea database FRAUDE_SOLICITUDES_DB con schema PUBLIC e warehouse COMPUTE_WH di dimensione SMALL. Aggiungi un commento descrittivo del proyecto di rilevamento di fraude in fase di originazione di crédito. Impostal contesto di sessione." },
+      { title: "Creare tabelle", desc: "Richieste, verifiche e listas negras.", prompt: "Crea tre tabelle: SOLICITUDES_CREDITO (richiesta_id VARCHAR PK, cliente_id VARCHAR, fecha DATE, importo_solicitado FLOAT, plazo_mesees INT, finalidad VARCHAR, ricavi_declarados FLOAT, empresa_declarada VARCHAR, dné VARCHAR, score_buro INT, es_fraude BOOLEAN), VERIFICACIONES (verificacion_id VARCHAR PK, richiesta_id FK REFERENCES SOLICITUDES_CREDITO, ricavi_verificados FLOAT, empresa_verificable BOOLEAN, dni_valido BOOLEAN, fuente VARCHAR, fecha_verificacion DATE), LISTAS_NEGRAS (dné VARCHAR PK, nombre VARCHAR, motivo VARCHAR, fecha_inclusion DATE)." },
+      { title: "Generare dati", desc: "8.000 richieste con pattern di fraude realistici.", prompt: "Genera 8.000 richieste con GENERATOR() essendo il 7% fraudolente. Le richieste fraudolente presentan alguna di estas segnali: discrepancia di ricavi superior al 40% tra declarado e verificado, empresa_declarada non verificable, score_buro inferior a 400, o DNI che coincide con LISTAS_NEGRAS. Genera verifiche per il 70% di le richieste e 200 entradas in LISTAS_NEGRAS." },
+      { title: "Features di fraude", desc: "Calcolare discrepancias e segnali di alert.", prompt: "Crea tabella FEATURES_FRAUDE_SOL con JOIN tra SOLICITUDES_CREDITO e VERIFICACIONES. Calcula: discrepancia_ricavi ((ricavi_declarados - ricavi_verificados) / NULLIF(ricavi_declarados,0)), empresa_no_verificada (CASE WHEN NOT empresa_verificable THEN 1 ELSE 0 END), dni_invalido (CASE WHEN NOT dni_valido THEN 1 ELSE 0 END), score_buro normalizado tra 0 e 1, en_lista_negra (JOIN con LISTAS_NEGRAS), total_discrepancias (suma di i cuatro flags anteriores). Todo come FLOAT o INTEGER." },
+      { title: "Addestrare il modello", desc: "Clasificador di fraude in originazione.", prompt: "Divide FEATURES_FRAUDE_SOL in TRAIN_SOL (80% con SAMPLE) e TEST_SOL (20% restante). Addestra SNOWFLAKE.ML.CLASSIFICATION chiamato detector_fraude_sol usando TRAIN_SOL con TARGET_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'ES_FRAUDE'. Valuta con SHOW_EVALUATION_METRICS, SHOW_CONFUSION_MATRIX e SHOW_FEATURE_IMPORTANCE. Identifica cuál è la segnale di fraude più importante." },
+      { title: "Puntuar richieste", desc: "Classificare richieste in tres livelloes di decisión.", prompt: "Crea tabella DECISIONES_SOLICITUDES usando detector_fraude_sol!PREDICT con OBJECT_CONSTRUCT(*) il suo TEST_SOL. Extrae probabilità_fraude e classifica: BLOQUEAR si probabilità ≥ 75% (fraude molto probable), INVESTIGAR si probabilità tra 40% e 75% (revisar mannualmente), APROBAR si probabilità < 40%. Muestra tabla riepilogo con conteo, importo total e percentuale per tipo di decisión." },
+      { title: "Dashboard antifraude", desc: "Pannello di monitoraggio della originazione.", prompt: "Crea dashboard Streamlit con: 4 KPIs (total richieste, bloqueadas automaticamente, in investigazione, tasso di frode rilevado), grafico a barre per tipo di decisión, tabella filtrabile di richieste sospette con colonne richiesta_id, cliente_id, importo, empresa, probabilità_fraude e decisión ordinata per probabilità descendente. Aggiungi pulsante di exportazione CSV. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera sentencia DROP DATABASE IF EXISTS FRAUDE_SOLICITUDES_DB CASCADE escrita come comentario SQL per la pulizia opcional del entorno di pruebas." }
+    ]
+  },
+  UC07: {
+    title: "Previsione di Churn",
+    intro: 'Prompt per predire la fuga di clienti bancarios usando tendenze di attività e generare raccomandazioné di fidelizzazione con CORTEX.COMPLETE.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di previsione di churn.", prompt: "Crea database CHURN_CLIENTES_DB con schema PUBLIC e warehouse COMPUTE_WH di dimensione SMALL. Aggiungi un commento del progetto di previsione di fuga di clienti con ML." },
+      { title: "Generare dati", desc: "5.000 clienti con 6 mesees di attività mensile.", prompt: "Genera tabella CLIENTES_CHURN (cliente_id VARCHAR PK, segmento VARCHAR, antiguedad_anos FLOAT, num_prodotti INT, saldo_medio FLOAT, canale_principale VARCHAR, es_churner BOOLEAN) con 5.000 clienti. Genera ACTIVIDAD_MENSUAL (cliente_id FK, mese DATE, num_transazioné INT, volumen_movimientos FLOAT, transferencias_salientes FLOAT, saldo_final FLOAT) con 6 mesees per cliente. I churners (15%) mostran caída superior al 30% in transazioné e aumento superior al 50% in transferencias salientes in i ultimos 2 mesees respecto a i 4 anteriores. Usa SQL GENERATOR(ROWCOUNT => 5000) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Features di churn", desc: "Calcolare tendenze di attività e segnali di desvinculazione.", prompt: "Crea tabella FEATURES_CHURN con CTEs che separen i ultimos 2 mesees del storico di 4 mesees anteriores. Calcula per cliente: tendenza_txn (promedio ultimos 2 mesees / promedio 4 anteriores - 1), tendenza_volumen (stesso calcolo per volumen), ratio_transferencias_salientes (transferencias / volumen total), variacion_saldo (saldo_mese6 - saldo_mese1) / saldo_mese1, num_prodotti, antiguedad_anos, saldo_medio, es_churner (0/1). Usa PIVOT o CTEs condicionales." },
+      { title: "Addestrare il modello", desc: "Clasificador di churn con validazione di metriche.", prompt: "Divide FEATURES_CHURN in TRAIN_CHURN (80% con SAMPLE) e TEST_CHURN (20% restante). Addestra SNOWFLAKE.ML.CLASSIFICATION chiamato predictor_churn con TARGET_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'ES_CHURNER'. Valuta con SHOW_EVALUATION_METRICS (AUC, precisione, recall) e SHOW_FEATURE_IMPORTANCE per identificareee i migliorees predictores di fuga." },
+      { title: "Puntuar clienti", desc: "Segmentar per livello di rischio di fuga.", prompt: "Crea tabella SCORES_CHURN usando predictor_churn!PREDICT il suo TEST_CHURN. Classifica en: ALTO RIESGO (probabilità ≥ 70%), RIESGO MEDIO (40%-70%), BAJO RIESGO (< 40%). Mostral riepilogo con: clienti per livello, saldo_medio per livello, saldo total in rischio (clienti ALTO RIESGO), e tasa di churn real del test per livello per validare. Usa OBJECT_CONSTRUCT(*) excluyendo la colonna target del input al llamar a !PREDICT." },
+      { title: "Raccomandazioné IA", desc: "Azioni di fidelizzazione personaleizadas con CORTEX.COMPLETE.", prompt: "Para i 50 clienti di ALTO RIESGO con maggiore saldo_medio, usa SNOWFLAKE.CORTEX.COMPLETE('llama3.1-70b') per generaree 3 azioni di fidelizzazione personaleizadas. Il prompt debe includere il segmento del cliente, il suo anzianità, número di prodotti e il suo tendenza di attività. Le azioni deben ser concretas e azionabili per un gestor (ej: offerta di depósito, chiamata proattiva, migliorata di condizioni). Guarda in RECOMENDACIONES_RETENCION." },
+      { title: "Dashboard", desc: "Pannello di gestión di fidelizzazione di clienti.", prompt: "Crea dashboard Streamlit con: KPI di saldo total in rischio di fuga (clienti ALTO RIESGO), distribuzione di clienti per livello di rischio in grafico di donut, tabla di clienti di alto rischio con saldo, tendenza di attività e raccomandazioné IA generadas. Aggiungi filtro per segmento. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS CHURN_CLIENTES_DB CASCADE commentato per la pulizia opzionale dell\'ambiente di test." }
+    ]
+  },
+  UC08: {
+    title: "Next-Best-Offer (NBO)",
+    intro: 'Prompt per costruire un motor di raccomandazione personaleizada di prodotti bancarios basado in propensione ML e argomentari IA.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database del motor NBO.", prompt: "Crea database NBO_MOTOR_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di motor di Next-Best-Offer per venta cruzada di prodotti bancarios." },
+      { title: "Generare dati", desc: "3.000 clienti con profilo financiero e prodotti contratados.", prompt: "Genera tabella CLIENTES_NBO (cliente_id VARCHAR PK, edad INT, ricavi_mensili FLOAT, patrimonio_financiero FLOAT, num_prodotti_attivos INT, segmento VARCHAR con valori Masa/Medio/Alto/Banca_Privada, ha_hipoteca BOOLEAN, ha_seguro_vida BOOLEAN, ha_seguro_hogar BOOLEAN, ha_fondo_inversion BOOLEAN, ha_plan_pensiones BOOLEAN, contrato_prodotto_inversion BOOLEAN) con 3.000 clienti. Il label objetivo è CONTRATO_PRODUCTO_INVERSION (30% con valor TRUE). Usa SQL GENERATOR(ROWCOUNT => 3000) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Features di propensione", desc: "Variables di afinidad al prodotto di investimento.", prompt: "Crea tabella FEATURES_NBO con: ratio_ahorro_ingreso (patrimonio_financiero / NULLIF(ricavi_mensili*12,0)), livello_segmento (1=Masa, 2=Medio, 3=Alto, 4=Banca_Privada), cobertura_assicurazioni (ha_seguro_vida::INT + ha_seguro_hogar::INT), ha_hipoteca (0/1), edad normalizada tra 0 e 1, ricavi_normalizados, contrato_prodotto_inversion (0/1 come label). Todo come FLOAT." },
+      { title: "Addestrare il modello", desc: "Clasificador di propensione a investimento con importancia di variabili.", prompt: "Divide FEATURES_NBO in TRAIN_NBO (80%) e TEST_NBO (20%). Addestra SNOWFLAKE.ML.CLASSIFICATION chiamato modelo_propension_inv con TARGET_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'CONTRATO_PRODUCTO_INVERSION'. Esegui SHOW_EVALUATION_METRICS e SHOW_FEATURE_IMPORTANCE per identificareee qué variabili preveden migliore la propensione a contratar il fondo." },
+      { title: "Ranking e decili", desc: "Ordenar clienti per propensione con NTILE.", prompt: "Crea tabella RANKING_NBO usando modelo_propension_inv!PREDICT il suo TEST_NBO. Extrae probabilità_inversion e añade colonna decil_propension con NTILE(10) OVER (ORDER BY probabilità_inversion DESC). Muestra tabla di lift per decil: tasso di conversione real (es_churner real) vs esperada per validare il poder discriminatorio del modello." },
+      { title: "Argumentarios IA", desc: "Textos di venta personaleizados per il top 20%.", prompt: "Para i clienti in decili 9 e 10 (top 20% per propensione), usa SNOWFLAKE.CORTEX.COMPLETE('llama3.1-70b') per generaree un argumentario commerciale di 3 frases che mencione: il segmento del cliente, il suo ratio di ahorro attuale, e 2 beneficios rilevprima del fondo di investimento (diversificazione, fisqualità, redditività storica). Guarda in ARGUMENTARIOS_NBO con cliente_id e texto." },
+      { title: "Dashboard", desc: "Pannello di opportunità commerciali per gestores.", prompt: "Crea dashboard Streamlit con: KPI di potencial di sottoscrizione estimado (total clienti decili 9-10), grafico di distribuzione di clienti per decil di propensione, tabla di opportunità con cliente_id, segmento, probabilità e argumentario IA generado. Aggiungi filtro per segmento e decil mínimo. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS NBO_MOTOR_DB CASCADE commentato per la pulizia opzionale dell\'ambiente di test." }
+    ]
+  },
+  UC09: {
+    title: "Segmentazione e Customer LTV",
+    intro: 'Prompt per calcolare il valor di vida del cliente (LTV), segmentar per RFM e proyectar ricavi futuros con ML.FORECAST.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di segmentazione e LTV.", prompt: "Crea database SEGMENTACION_LTV_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di Customer Lifetime Value e segmentazione di portafoglio bancaria." },
+      { title: "Generare dati", desc: "4.000 clienti con 24 mesees di ricavi detallados.", prompt: "Genera tabella CLIENTES_LTV (cliente_id VARCHAR PK, segmento VARCHAR, canale_adquisicion VARCHAR, fecha_alta DATE) con 4.000 clienti. Genera INGRESOS_MENSUALES (cliente_id FK, mese DATE, ricavi_commissioné FLOAT, ricavi_intereses FLOAT, ricavi_assicurazioni FLOAT, ricavi_total FLOAT) con 24 mesees per cliente. I segmenti VIP generano 3-5x più ricavi mensili che il segmento Masa. Usa SQL GENERATOR(ROWCOUNT => 4000) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Calcolare LTV e scoring RFM", desc: "Metriche di valor e segmentazione in cuadrprima.", prompt: "Crea tabella LTV_RFM_SCORES con: ltv_historico_24m (SUM ricavi_total 24m), ingreso_medio_mensile, recencia (mesees dal ultimo mese con ricavi > 0), frequenza (número di mesees con ricavi), score_r NTILE(5) OVER (ORDER BY recencia ASC), score_f NTILE(5) OVER (ORDER BY frequenza DESC), score_m NTILE(5) OVER (ORDER BY ltv_historico_24m DESC). Classifica in segmento_ltv: VIP (scores ≥4 in todos), ALTO_VALOR, MEDIO_VALOR, BAJO_VALOR." },
+      { title: "Forecast LTV", desc: "Proyeczione di ricavi 12 mesees per segmento.", prompt: "Agrega INGRESOS_MENSUALES per segmento_ltv e mese. Addestra SNOWFLAKE.ML.FORECAST chiamato forecast_ltv con SERIES_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'SEGMENTO_LTV', TIMESTAMP_COLNAME='MES', TARGET_COLNAME='INGRESO_TOTAL'. Proyecta 12 mesees futuros. Guarda risultati in LTV_FORECAST_12M con forecast, lower_bound e upper_bound per segmento." },
+      { title: "Perfiles narrativos IA", desc: "Descripzione e strategia per ogni segmento.", prompt: "Para ogni uno di i 4 segmenti LTV usa SNOWFLAKE.CORTEX.COMPLETE('llama3.1-70b') per generaree un profilo che incluya: descrizione del cliente tipo (2 frases), principalei palancas di valor, strategia di crescita o fidelizzazione raccomandata, e 3 azioni commerciali concretas. Guarda in tabla PERFILES_SEGMENTO (segmento_ltv, ltv_medio, profilo_narrativo)." },
+      { title: "Dashboard", desc: "Pannello di valor di portafoglio con proiezioni.", prompt: "Crea dashboard Streamlit con: 2 KPIs (LTV total storico 24m e proyectado 12m), grafico a barre di distribuzione di clienti e LTV per segmento, grafico a linee di forecast con banda di confidenza per il segmento seleccionado, tabla di profili narrativi IA per segmento. Añade selector di segmento. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS SEGMENTACION_LTV_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC10: {
+    title: "Analisi del Sentiment nelle Reclamazioni",
+    intro: 'Prompt per analizzare sentimiento in reclami bancarias con CORTEX.SENTIMENT, classificare per urgenza e generare risposte automaticas.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di analisi di reclami.", prompt: "Crea database SENTIMIENTO_RECLAM_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di analisi inteligente di reclami bancarias." },
+      { title: "Generaree reclami", desc: "1.000 textos realistici per 5 canalei bancarios.", prompt: "Genera tabella RECLAMACIONES (reclamacion_id VARCHAR PK, cliente_id VARCHAR, fecha DATE, canale VARCHAR con valori Email/App/Oficina/Telefono/Web, texto_reclamacion TEXT) con 1.000 record. Usa al menos 10 plantillas di texto variadas per canalee che simulen reclami reales su: cobro di commissioné non informadas, fallos in app móvil, errorei di cargo duplicado, tiempos di atenzione excesivos, e operazioné bloqueadas di forma incorrecta. Incluye mezcla di sentimiento molto negativo, negativo e neutro. Usa SQL GENERATOR(ROWCOUNT => 1000) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Analisi di sentimiento e categorizazione", desc: "Scoring automatico con CORTEX.SENTIMENT e classificazione IA.", prompt: "Añade colonne a RECLAMACIONES eseguendo UPDATE o crea RECLAMACIONES_ANALIZADAS: score_sentimiento usando SNOWFLAKE.CORTEX.SENTIMENT(texto_reclamacion) che restituisce valor tra -1 e 1, clasificacion_sentimiento ('Muy negativo' si < -0.5, 'Negativo' si < 0, 'Neutro' si < 0.2, 'Positivo' si ≥ 0.2), categoria_reclamacion classificata con CORTEX.COMPLETE in una de: Comisiones, Servicio_Digital, Atencion_Cliente, Fraude, Errores_Operativos, Otros." },
+      { title: "Prioritizzazione e risposte automaticas", desc: "Asignar urgenza e generare borradores di risposta IA.", prompt: "Crea tabella RECLAMACIONES_PRIORIZADAS con livello_urgenza: URGENTE (score < -0.7 O categoria = Fraude O canale = Oficina con score < -0.5), ALTA (score < -0.4), MEDIA (score < 0), BAJA (resto). Para ogni reclamo URGENTE e ALTA usa CORTEX.COMPLETE per generaree borrador_risposta con: saludo personaleizado, reconocimiento specifico del problema, propuesta di risoluzione in 48h, e disculpa formal." },
+      { title: "Dashboard di qualità", desc: "Pannello di monitoraggio di soddisfazione del cliente.", prompt: "Crea dashboard Streamlit con: KPI di sentimiento medio general (como gauge o metrica), distribuzione di sentimientos per canalee in grafico a barre apiladas, tabla di reclami urgentes e altas con texto original e borrador di risposta IA generado. Aggiungi filtros per canalee, categoría e livello di urgenza. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS SENTIMIENTO_RECLAM_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC11: {
+    title: "Chatbot Finanziario con RAG",
+    intro: 'Prompt per costruire un chatbot di inteligencia financiera con modello semantico per Cortex Analyst e risposte in linguaggio naturale.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database del chatbot financiero.", prompt: "Crea database CHATBOT_FINANCIERO_DB con schema PUBLIC e warehouse COMPUTE_WH. Crea anche un stage interno CHATBOT_STAGE per almacenar il modello semántico YAML. Aggiungi un commento del progetto." },
+      { title: "Creare tabelle", desc: "Operazioné giornalieras e objetivos commerciali.", prompt: "Crea dos tablas: OPERACIONES_DIARIAS (fecha DATE, prodotto VARCHAR, oficina VARCHAR, canale VARCHAR, num_operazioné INT, volumen_euros FLOAT, commissioni_euros FLOAT, PRIMARY KEY(fecha, prodotto, oficina, canale)) e OBJETIVOS_COMERCIALES (mese DATE, prodotto VARCHAR, objetivo_volumen FLOAT, objetivo_commissioné FLOAT, objetivo_num_operazioné INT, PRIMARY KEY(mese, prodotto))." },
+      { title: "Generare dati", desc: "12 mesees di operazioné per prodotto, oficina e canale.", prompt: "Genera 365 giornos × 6 prodotti (Hipotecas, Prestamos_Consumo, Fondos, Seguros, Tarjetas, Cuentas) × 8 filiali (Madrid, Barcelona, Valencia, Sevilla, Bilbao, Zaragoza, Malaga, Lisboa) con stagionalità mensile realistico: mutui con pico in primavera, assicurazioni in otoño, fondos in enero. Genera 72 record di objetivos mensili (12 mesees × 6 prodotti) con objetivos ligeramente superiores alla media storica." },
+      { title: "Modello semantico", desc: "Fichero YAML per Cortex Analyst con dimensiones e metriche.", prompt: "Genera contenido YAML di modello semantico per Cortex Analyst con: tablas OPERACIONES_DIARIAS e OBJETIVOS_COMERCIALES, dimensiones (fecha con time_grain DAY/MONTH/YEAR, prodotto, oficina, canale), metriche calculadas (total_operazioni, volumen_total_eur, commissioni_totales_eur, ratio_conformità_objetivo come volumen / objetivo_volumen). Incluye 5 verified_queries di ejemplo. Guardal YAML nel stage con PUT." },
+      { title: "Consultas in linguaggio naturale", desc: "Domande e risposte con contexto di datos reales.", prompt: "Crea tabella PREGUNTAS_EJEMPLO con 10 domande bancarias in linguaggio naturale (ejemplos: ¿Cuántas mutui si firmaron in Madrid in marzo?, ¿Qué prodotto genera più commissioné in Barcelona?, ¿Cuál è la tendenza di fondi investimento nel ultimo trimesetre?). Para ogni domanda, usa CORTEX.COMPLETE con i datos reales come contexto per generaree risposta estructurada con il número exacto, la tendenza e la comparativa vs objetivo." },
+      { title: "Dashboard chatbot", desc: "Interfaccia conversacional Streamlit con KPIs.", prompt: "Crea Streamlit con: campo di texto libre per domandar il suo i datos, 5 botones di domande di ejemplo che si autocompletan nel input, risposta generada per IA con i datos reales del mese attuale, tabla di KPIs del mese attuale (volumen total, commissioni, conformità di objetivo per prodotto), e grafico di evoluzione mensile del prodotto seleccionado. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera sentencias comentadas: DROP STAGE IF EXISTS CHATBOT_STAGE e DROP DATABASE IF EXISTS CHATBOT_FINANCIERO_DB CASCADE per la pulizia opcional." }
+    ]
+  },
+  UC12: {
+    title: "Previsione della Domanda di Prodotti",
+    intro: 'Prompt per costruire un sistema di forecasting di domanda di prodotti bancarios per canalee usando ML.FORECAST con molteplici series.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di forecasting di domanda.", prompt: "Crea database DEMANDA_PRODUCTOS_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di previsione di domanda di prodotti bancarios per canalee e prodotto." },
+      { title: "Generare dati", desc: "36 mesees di sottoscrizioné con stagionalità per canalee.", prompt: "Genera tabella CONTRATACIONES_MENSUALES (mese DATE, prodotto VARCHAR, canale VARCHAR, num_sottoscrizioné INT, importo_total FLOAT) con 36 mesees × 6 prodotti (Hipotecas, Prestamos_Consumo, Tarjetas, Fondos_Inversion, Seguros, Cuentas) × 4 canalei (Digital, Oficina, Telefonico, Agentes). Incluye stagionalità realistico: mutui con pico in abril-junio, assicurazioni con pico in octubre-noviembre, fondos con captazione alta in enero. Añade tendenza di crescita del canale digital del 15% anual. Usa SQL GENERATOR(ROWCOUNT => 6) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Addestrare il modello di forecast", desc: "ML.FORECAST multi-serie per prodotto.", prompt: "Agrega CONTRATACIONES_MENSUALES per prodotto e mese (SUM num_sottoscrizioni). Addestra SNOWFLAKE.ML.FORECAST chiamato forecast_domanda_prodotti con SERIES_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'PRODUCTO', TIMESTAMP_COLNAME='MES', TARGET_COLNAME='NUM_CONTRATACIONES'. Usa i primoos 30 mesees per addestramiento. Proyecta 12 mesees futuros e guarda in FORECAST_DEMANDA_12M con colonne prodotto, mese, forecast, lower_bound e upper_bound." },
+      { title: "Analizzare risultati", desc: "Confrontare forecasts e identificaree opportunità.", prompt: "Crea tabella RESUMEN_FORECAST_DEMANDA con: prodotto, total_proyectado_12m (SUM forecast), crescita_esperado_pct ((total_proyectado - total_historico_12m) / total_historico_12m * 100), intervalo_confidenza_medio (upper_bound - lower_bound), mese_pico_domanda. Muestra tabla ordinata per crescita_esperado_pct descendente e identifical prodotto con maggiore potencial di crescita." },
+      { title: "Dashboard di pianificazione", desc: "Pannello di forecast interattivo per prodotto.", prompt: "Crea dashboard Streamlit con: selector di prodotto, grafico combinado di barras (storico 36m) + línea con banda sombreada (forecast 12m e i suoi límites), KPI di total sottoscrizioné proiettatas prossimos 12m e crescita esperado, tabla comparativa di todos i prodotti ordinata per crescita proyectado con semáforo di colores. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS DEMANDA_PRODUCTOS_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC13: {
+    title: "Ottimizzazione del Pricing dei Prestiti",
+    intro: 'Prompt per ottimizzare il tasso di interesse di prestiti massimizzando accettazione e margen mediante simulazione di scenari con ML.CLASSIFICATION.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di pricing di prestiti.", prompt: "Crea database PRICING_PRESTAMOS_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di ottimizzazione del pricing di prestiti bancarios mediante ML." },
+      { title: "Generaree dati storici", desc: "10.000 richieste con tipo offertado e risultato di accettazione.", prompt: "Genera tabella SOLICITUDES_PRICING (richiesta_id VARCHAR PK, importo FLOAT, plazo_mesees INT, rating_cliente VARCHAR con valori AAA/AA/A/BB/B, tipo_interes_offertado FLOAT, quota_mensile FLOAT calculada come importo*tipo_interes_offertado/plazo_mesees con POWER, dti_ratio FLOAT, aceptado BOOLEAN). 10.000 record dove la probabilità di aceptar decrece con il tasso di interesse siguiendo una funzione logística. Rating AAA acepta fino a tipo 4.5%, Rating B solo fino a 8.5%. Usa SQL GENERATOR(ROWCOUNT => 10000) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Modelo di accettazione", desc: "ML.CLASSIFICATION per prevedere accettazione secondo tasso di interesse.", prompt: "Crea tabella FEATURES_PRICING con: quota_mensile, ratio_quota_ingreso (quota_mensile*12 / ricavi_annuali si disponible), score_rating (AAA=5, AA=4, A=3, BB=2, B=1), tipo_interes_offertado, plazo_normalizado, aceptado (label 0/1). Divide 80/20. Addestra ML.CLASSIFICATION chiamato modelo_aceptacion con TARGET_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'ACEPTADO'. Valuta con SHOW_EVALUATION_METRICS." },
+      { title: "Simular scenari di pricing", desc: "Confrontare tres strategie: Agresiva, Competitiva, Conservatorea.", prompt: "Crea tabella SIMULACION_PRICING con le 3 strategie per ogni combinazione di importo, plazo e rating nel conjunto TEST: AGRESIVO (tipo reducido -0.5% il suo base), COMPETITIVO (tipo base del mercato), CONSERVADOR (tipo base +0.75%). Para ogni strategia e richiesta usa modelo_aceptacion!PREDICT per estimar probabilità di accettazione. Calcula per strategia: aceptazioni_estimadas, margen_por_operacion, revenue_total_estimado." },
+      { title: "Dashboard di simulazione", desc: "Panel comparativo di scenari di pricing.", prompt: "Crea dashboard Streamlit con: tabla di le 3 strategie con KPIs clave (aceptazioni esperadas, margen total, revenue neto), grafico a barre agrupadas per rating mostrando tasso di accettazione estimada in ogni strategia, selector di importo e plazo per simular una operazione concreta in tempo reale e ver la raccomandazione di pricing ottimale. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS PRICING_PRESTAMOS_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC14: {
+    title: "Rilevamento Anticipato della Morosità",
+    intro: 'Prompt per predire il primo impago in i primoos 90 giornos di vida del prestito usando segnali di comportamento temprano.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di morosità temprana.", prompt: "Crea database MOROSIDAD_TEMPRANA_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di rilevamento temprana di morosità in i primoos 90 giornos di prestiti bancarios." },
+      { title: "Generare dati", desc: "6.000 prestiti recientes con segnali comportamentales tempranas.", prompt: "Genera tabella PRESTAMOS_NUEVOS (prestamo_id VARCHAR PK, cliente_id VARCHAR, importo FLOAT, plazo_mesees INT, tipo_interes FLOAT, score_concesion INT tra 300-850, fecha_concesion DATE, pago_mese1_puntual BOOLEAN, pago_mese2_puntual BOOLEAN, pago_mese3_puntual BOOLEAN, uso_tarjeta_m1 FLOAT, uso_tarjeta_m2 FLOAT, uso_tarjeta_m3 FLOAT tra 0 e 1, saldo_cuenta_m3 FLOAT, es_moroso_90d BOOLEAN) con 6.000 prestiti e 12% di morosità. I morosos mostran al menos 1 impago in 3 mesees, uso di tarjeta creciente superando il 85% e saldo sotto in mese 3." },
+      { title: "Features e modelo di alert temprana", desc: "Variables di comportamento + clasificador.", prompt: "Crea tabella FEATURES_MOROSIDAD con: pagos_puntuales_3m (pago_m1::INT + pago_m2::INT + pago_m3::INT), tendenza_uso_tarjeta (uso_m3 - uso_m1), uso_tarjeta_maximo (GREATEST(uso_m1, uso_m2, uso_m3)), saldo_cuenta_m3, score_concesion normalizado tra 0 e 1, importo_quota (importo * tipo_interes / plazo_mesees), es_moroso_90d (0/1). Divide 80/20 e addestra ML.CLASSIFICATION predictor_morosità con TARGET_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione. Usa OBJECT_CONSTRUCT(*) excluyendo la colonna target del input al llamar a !PREDICT.'ES_MOROSO_90D'. Evalúa metriche." },
+      { title: "Sistema di alert tempranas", desc: "Classificare prestiti in rischio con importo in exposizione.", prompt: "Crea tabella ALERTAS_MOROSIDAD usando predictor_morosità!PREDICT il suo TEST con livelloes: ALTO RIESGO (≥ 60%), RIESGO MEDIO (30%-60%), BAJO RIESGO (< 30%). Calcula importo_en_rischio per livello. Muestra i 20 prestiti di maggiore rischio con: prestamo_id, importo, score_concesion, pagos_puntuales, uso_tarjeta_maximo e probabilità di impago ordenados descendente. Usa OBJECT_CONSTRUCT(*) excluyendo la colonna target del input al llamar a !PREDICT." },
+      { title: "Dashboard di monitoraggio", desc: "Pannello di monitoraggio di portafoglio nuova.", prompt: "Crea dashboard Streamlit con: KPI di importo total in rischio alto e medio (en milioné di euros), distribuzione di alert per livello in grafico di donut, tabla di prestiti di alto rischio con le principalei segnali di alert attivadas, grafico a barre con distribuzione di rischio per mese di concesión. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS MOROSIDAD_TEMPRANA_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC15: {
+    title: "Rilevamento Anomalie nei Mercati",
+    intro: 'Prompt per rilevare operazioné anomale in mercati finanziari usando z-scores estadísticos e ML.CLASSIFICATION il suo il IBEX35.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di sorveglianza di mercatos.", prompt: "Crea database ANOMALIAS_MERCADO_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di sorveglianza e rilevamento di anomalías in operazioné di mercato." },
+      { title: "Generare dati", desc: "100.000 operazioné di mercato in 20 instrumentos.", prompt: "Genera tabella OPERACIONES_MERCADO (operacion_id VARCHAR PK, timesetamp TIMESTAMP, instrumento VARCHAR con 20 azioni reales del IBEX35, tipo_orden VARCHAR tra Compra/Venta, volumen INT, precio FLOAT correlacionado con media storica per instrumento, broker_id VARCHAR, es_anomala BOOLEAN). 100.000 operazioné con 2% anomale. Le anomale hanno volumen superior a 10 veces la media del instrumento, precio fuera di rango di ±5 desviazioni, o broker-instrumento inusual. Usa SQL GENERATOR(ROWCOUNT => 100000) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Analisi estadístico con funzioné finestra", desc: "Calcolare z-scores e percentiles per instrumento.", prompt: "Crea tabella ESTADISTICAS_MERCADO con precio_medio, precio_stddev, volumen_medio e volumen_stddev per instrumento usando AVG() OVER (PARTITION BY instrumento) e STDDEV() OVER (PARTITION BY instrumento). Crea FEATURES_MERCADO con: zscore_precio ((precio - precio_medio) / NULLIF(precio_stddev,0)), zscore_volumen, su_p95_volumen (CASE WHEN volumen > PERCENTILE_CONT(0.95) WITHIN GROUP OVER instrumento THEN 1 ELSE 0 END), ratio_vol_medio." },
+      { title: "Modelo di rilevamento e alert", desc: "ML.CLASSIFICATION + classificazione per severità.", prompt: "Divide FEATURES_MERCADO in TRAIN_MERCADO (80%) e TEST_MERCADO (20%). Addestra ML.CLASSIFICATION chiamato detector_anomalias con TARGET_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione.'ES_ANOMALA'. Crea tabella ALERTAS_MERCADO con PREDICT e livelloes: CRÍTICA (≥ 70%), ALTA (40%-70%), NORMAL (< 40%). Mostra la distribuzione di alert per instrumento e per broker per identificareee pattern." },
+      { title: "Dashboard di sorveglianza", desc: "Pannello di monitoraggio di mercatos in tempo reale.", prompt: "Crea dashboard Streamlit con: KPI di alert críticas attive, grafico a barre con distribuzione di anomalías per instrumento, tabla di operazioné sospette con timesetamp, instrumento, volumen, precio, z-scores e livello di allerta, grafico di evoluzione di precio del instrumento seleccionado con puntos rojos marcando le anomalías. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS ANOMALIAS_MERCADO_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC16: {
+    title: "Ottimizzazione della Rete di Filiali",
+    intro: 'Prompt per analizzare la redditività della red bancaria con analisi geoespacial, ML di classificazione e raccomandazioné strategiche con IA.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di gestión di red di filiali.", prompt: "Crea database RED_OFICINAS_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di ottimizzazione della red di filiali bancarias con analisi geoespacial e ML." },
+      { title: "Generare dati di filiali", desc: "200 filiali in 10 ciudades con coordenadas geograficas.", prompt: "Genera tabella OFICINAS (oficina_id VARCHAR PK, nombre VARCHAR, ciudad VARCHAR con 10 ciudades espannolas, latitud FLOAT e longitud FLOAT con coordenadas reales aproximadas per ciudad, superficie_m2 INT, num_dipendenti INT, num_clienti_attivos INT, ricavi_annuali FLOAT, costos_annuali FLOAT, tipo VARCHAR con valori Premium/Estandar/Digital). 200 filiali con distribuzione realistico per ciudad." },
+      { title: "Analisi geoespacial di sovrapposiziones", desc: "Calcolare distancias tra filiali con ST_DISTANCE.", prompt: "Usa ST_DISTANCE(ST_MAKEPOINT(o1.longitud, o1.latitud), ST_MAKEPOINT(o2.longitud, o2.latitud)) per calcolare distancias in metros tra todos i pares di filiali della stessa ciudad. Crea tabella SOLAPAMIENTOS con pares di filiali a menos di 2.000 metros. Calcula per ogni oficina: num_filiali_vicine (dentro di 2km), distancia_media_vecinas (promedio di distancias a filiali dentro di 5km)." },
+      { title: "Modelo di redditività", desc: "Prevedere si una oficina será rentable a 2 annos.", prompt: "Crea FEATURES_OFICINAS con: ratio_ingreso_costo (ricavi / costos), ricavi_por_cliente (ricavi / num_clienti), clienti_por_dipendente, score_sovrapposizione (1 - num_filiali_vicine/10, mínimo 0), score_tipo (Premium=3, Estandar=2, Digital=1), rentable (1 si ratio_ingreso_costo > 1.15). Addestra ML.CLASSIFICATION predictor_redditività con TARGET_COLNAME=\. Usa evaluate => TRUE per generaree metriche di valutazione. Usa OBJECT_CONSTRUCT(*) excluyendo la colonna target del input al llamar a !PREDICT.'RENTABLE'." },
+      { title: "Raccomandazioné strategiche IA", desc: "Generaree una raccomandazione per oficina con CORTEX.COMPLETE.", prompt: "Para ogni una di le 200 filiali, usa SNOWFLAKE.CORTEX.COMPLETE('llama3.1-70b') con contexto del suo ratio ingreso/costo, num_clienti, tipo, num_filiali_vicine e probabilità_redditività per generaree una raccomandazione di una frase con aczione: MANTENER Y OPTIMIZAR, TRANSFORMAR A DIGITAL, FUSIONAR CON OFICINA VECINA (indicando cuál), o CERRAR con justificazione breve." },
+      { title: "Dashboard di gestión", desc: "Pannello di decisioné strategiche della red.", prompt: "Crea dashboard Streamlit con: distribuzione di raccomandazioné in grafico di donut, KPI di ahorro estimado potencial per chiusuras e fusiones raccomandatas, tabella filtrabile di filiali con ciudad, tipo, ratio I/C, sovrapposizione e raccomandazione IA. Aggiungi filtro per ciudad e tipo di raccomandazione. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS RED_OFICINAS_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC17: {
+    title: "Automazione dell\'Analisi Documentale",
+    intro: 'Prompt per automatizzare il elaborazione di documenti bancarios usando CORTEX.COMPLETE per estrazione di datos e CORTEX.SUMMARIZE per riepiloghi di pratiche.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di elaborazione documental.", prompt: "Crea database ANALISIS_DOCS_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di automazione documental bancaria con IA per pratiche di crédito." },
+      { title: "Generaree corpus documental", desc: "1.500 documenti in 500 pratiche con textos realistici.", prompt: "Genera tabella DOCUMENTOS (doc_id VARCHAR PK, expediente_id VARCHAR, tipo_doc VARCHAR con valori Contrato/DNI/Nomina/Extracto/Escritura, fecha_documento DATE, texto_contenido TEXT) con 1.500 documenti agrupados in 500 pratiche. I textos simulan contenido realistico secondo tipo: contratos con cláusulas, plazos e tassi di interesse; nóminas con importo bruto, neto, empresa e IRPF; extractos con lista di movimientos; DNIs con nombre e número; escrituras con direczione e valorazione. Usa SQL GENERATOR(ROWCOUNT => 1500) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Extraczione estructurada con IA", desc: "Extraer campos clave e rilevare documenti incompletos.", prompt: "Para ogni documento, crea DOCUMENTOS_PROCESADOS añadiendo: datos_extraidos_json usando CORTEX.COMPLETE per extraer JSON estructurado con campos secondo tipo_doc (contrato: {importo, plazo, tasa_interes}; nomina: {importo_neto, empresa, fecha}; DNI: {nombre, dni_numero}), confidenza_clasificacion (0.0-1.0 secondo coincidenza tipo esperado vs rilevado), es_incompleto (TRUE si il texto ha menos di 50 palabras o falta informazione clave)." },
+      { title: "Resúmenes di pratiche", desc: "Síntesis ejecutiva per expediente con CORTEX.SUMMARIZE.", prompt: "Usa LISTAGG per concatenar i textos di todos i documenti del stesso expediente_id ordenados per tipo_doc. Aplica SNOWFLAKE.CORTEX.SUMMARIZE al texto concatenado risultanote per generaree un riepilogo esecutivo di 3-4 frases che describa: il tipo di operazione, il richiedente, il importo principale e il estado di completitud del expediente. Guarda in tabla RESUMENES_EXPEDIENTE (expediente_id, num_documenti, es_completo, riepilogo_ia)." },
+      { title: "Dashboard di elaborazione", desc: "Pannello di gestión del flusso documental.", prompt: "Crea dashboard Streamlit con: KPI di documenti procesados totales e documenti incompletos rilevados, grafico a barre di distribuzione per tipo di documento, tabla di pratiche con número di docs, estado di completitud e riepilogo IA desplegable. Aggiungi filtro per tipo di documento e estado di completitud. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS ANALISIS_DOCS_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC18: {
+    title: "Gestione del Rischio Reputazionale",
+    intro: 'Prompt per monitorare la reputazione bancaria in medios e social media con CORTEX.SENTIMENT e generazione automatica di informese esecutivos.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di monitoraggio reputazionale.", prompt: "Crea database RIESGO_REPUTACIONAL_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di gestión del rischio reputazionale bancario mediante analisi di medios." },
+      { title: "Generaree corpus di menzioni", desc: "2.000 menzioni in medios e social media.", prompt: "Genera tabella MENCIONES_MEDIOS (mencion_id VARCHAR PK, fecha DATE, fuente VARCHAR con valori Twitter/Prensa_Digital/LinkedIn/Foros/YouTube, tema VARCHAR con valori Comisiones/Digitalizacion/Sostenibilidad/Resultados/Atencion_Cliente/Escandalo, titular VARCHAR di 10-15 palabras, texto_completo TEXT di 3-5 frases, alcance_estimado INT) con 2.000 record. Mezcla di menzioni positivas (40%), neutras (30%) e negativas (30%). Le di maggiore alcance includen temas di commissioné e escándalos. Usa SQL GENERATOR(ROWCOUNT => 2000) con UNIFORM() per distribuzioni numéricas." },
+      { title: "Analisi di sentimiento e alert", desc: "Scoring automatico e classificazione per livello di allerta.", prompt: "Añade a MENCIONES_MEDIOS: score_sentimiento usando SNOWFLAKE.CORTEX.SENTIMENT(titular||' '||texto_completo) devolviendo valor -1 a 1, livello_alert calculado como: ALTA si alcance_estimado > 100.000 AND score_sentimiento < -0.5, MEDIA si score_sentimiento < -0.3 OR (alcance_estimado > 50.000 AND score_sentimiento < 0), BAJA in resto di casos. Agrega per tema: total_menzioni, sentimiento_medio, total_alert_altas per tema." },
+      { title: "Informe esecutivo IA", desc: "Reporte di 4 seczioni generado per CORTEX.COMPLETE.", prompt: "Usa SNOWFLAKE.CORTEX.COMPLETE('llama3.1-70b') con contexto di i datos agregados (temas più frequenti, sentimiento medio, alert altas per fuente) per generaree informe esecutivo di monitoraggio di reputazione con 4 seczioni: (1) Riepilogo del periodo con metriche clave, (2) Principales rischios identificados per tema, (3) Fuentes di maggiore impatto negativo, (4) Azioni di comunicazione e relazioni públicas raccomandatas." },
+      { title: "Dashboard di monitoraggio", desc: "Pannello di sorveglianza reputazionale in tempo reale.", prompt: "Crea dashboard Streamlit con: KPI di sentimiento medio general e total di alert altas attive, grafico a barre apiladas di menzioni per fuente e sentimiento, tabla di alert altas con titular, fuente, alcance e score di sentimiento. Añade seczione di informe esecutivo IA desplegable. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS RIESGO_REPUTACIONAL_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC19: {
+    title: "Intelligenza Competitiva Bancaria",
+    intro: 'Prompt per analizzare il posicionamiento competitivo frente a i principalei bancos espannoles con analisi di prodotti, sentimiento in medios e briefing IA.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database di intelligenza competitiva.", prompt: "Crea database COMPETENCIA_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di analisi di posicionamiento competitivo del settore bancario espannol." },
+      { title: "Generare dati di concorrenti", desc: "8 bancos con prodotti, precios e notizie.", prompt: "Genera tres tablas: COMPETIDORES (banco_id VARCHAR PK, nombre VARCHAR con Santander/BBVA/CaixaBank/Bankinter/Sabadell/ING/Openbank/NuestroBanco, quota_mercato_pct FLOAT, dipendenti INT, filiali INT), PRODUCTOS_COMPETENCIA (banco_id FK, tipo_prodotto VARCHAR, tae_offerta FLOAT, comision_mantenimiento FLOAT, requisiti VARCHAR, soddisfazione_cliente FLOAT tra 1-10), NOTICIAS_BANCA (noticia_id VARCHAR PK, banco_id FK, fecha DATE, titular VARCHAR, fuente VARCHAR, alcance_estimado INT). 500 notizie di i ultimos 6 mesees." },
+      { title: "Analisi di sentimiento competitivo", desc: "Scoring di imagen per banco in medios.", prompt: "Aplica SNOWFLAKE.CORTEX.SENTIMENT(titular) a todas le notizie di NOTICIAS_BANCA. Agrega per banco: sentimiento_medio, num_notizie_positivas, num_notizie_negativas, alcance_total. Identifica per ogni banco i 3 temas più frequenti in titulares usando ILIKe con parole chiave (commissioni, digital, sostenibilità, risultati, tecnología). Crea vista RANKING_COMPETITIVO ordinata per sentimiento_medio descendente." },
+      { title: "Briefing estratégico IA", desc: "Informe competitivo di 4 seczioni con CORTEX.COMPLETE.", prompt: "Usa SNOWFLAKE.CORTEX.COMPLETE('llama3.1-70b') con contexto di i datos di competenza (quotas di mercato, TAE promedio per banco, soddisfazione di cliente, sentimiento in medios) per generaree briefing estratégico con: (1) Panorama competitivo attuale del settore bancario espannol, (2) Analisi di minacce per banco competidor, (3) Oportunidades di differenzazione rilevadas in precios e prodotti, (4) Raccomandazioné di prodotto e comunicazione per NuestroBanco." },
+      { title: "Dashboard di benchmarking", desc: "Panel comparativo di concorrenti.", prompt: "Crea dashboard Streamlit con: tabla comparativa di prodotti per banco (TAE, commissioni, soddisfazione) con colores semáforo, grafico a barre di sentimiento in medios per banco, briefing IA estratégico desplegable, ranking di concorrenti per soddisfazione del cliente con posizione di NuestroBanco destacada. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera DROP DATABASE IF EXISTS COMPETENCIA_DB CASCADE commentato per la pulizia opzionale." }
+    ]
+  },
+  UC20: {
+    title: "Assistente RAG per la Normativa",
+    intro: 'Prompt per costruire un asistente di normativa bancaria con búsqueda semántica usando Cortex Search e generazione di risposte fundamentadas con RAG.',
+    steps: [
+      { title: "Configurare l\'ambiente", desc: "Database del asistente normativo RAG.", prompt: "Crea database NORMATIVA_RAG_DB con schema PUBLIC e warehouse COMPUTE_WH. Aggiungi un commento del progetto di asistente di normativa bancaria con Cortex Search e RAG. Impostal contesto di sessione." },
+      { title: "Creare corpus normativo", desc: "100 frammenti di normativa bancaria europea e espannola.", prompt: "Genera tabella NORMATIVA_CHUNKS (chunk_id VARCHAR PK, normativa VARCHAR, categoria VARCHAR, titulo VARCHAR, contenido TEXT) con 100 frammenti cubriendo: CRR III (12 chunks il suo capital, liquidez e solvencia), MiFID II (10 il suo conducta di mercatos e idoneidad), 6AMLD (12 il suo riciclaggio di denaro e debida diligencia), GDPR (10 il suo proteczione di datos e consentimiento), DORA (8 il suo resiliencia digital e ciberincidenti), Circular BdE (15 il suo accantonamenti e reporting), PSD2 (8 il suo pagos e open banking), Basilea IV (10 il suo rischio di crédito e mercato). I contenidos deben ser párrafos técnicos realistici di 4-6 líneas." },
+      { title: "Creare Cortex Search Service", desc: "Índice di búsqueda semántical suo la normativa.", prompt: "Crea un Cortex Search Service chiamato normativa_search_service il suo la tabla NORMATIVA_CHUNKS con: SEARCH_COLUMN = 'CONTENIDO', ATTRIBUTE_COLUMNS = ('NORMATIVA', 'CATEGORIA', 'TITULO'), TARGET_LAG = '1 hour', WAREHOUSE = COMPUTE_WH. Il servizio indexará semánticamente il contenido normativo per permitir búsqueda per significado e non solo per parole chiave." },
+      { title: "Sistema di domande e risposte RAG", desc: "Generaree risposte fundamentadas citando normativa fuente.", prompt: "Crea tabella PREGUNTAS_NORMATIVA con 8 domande reales di compliance bancario (ejemplos: ¿Cuáles sono i requisiti di capital CET1 sotto CRR III?, ¿Qué obblighi impone DORA in gestión di incidenti TIC?, ¿Cómo regula GDPR il trattamento di datos di scoring creditizio?). Para ogni domanda: recupera i 3 chunks più rilevprima con SNOWFLAKE.CORTEX.SEARCH_PREVIEW il suo normativa_search_service, concatenal contexto e genera risposta con CORTEX.COMPLETE citando la normativa fuente. Guarda in RESPUESTAS_RAG." },
+      { title: "Dashboard di interrogazione normativa", desc: "Interfaccia Streamlit di asistente normativo.", prompt: "Crea Streamlit con: campo di texto libre per domandar il suo normativa bancaria, 8 botones di domande di ejemplo che si autocompletan, risposta fundamentada con la normativa fuente citada al final, seczione di estadísticas del corpus con distribuzione per normativa e categoría in grafico a barre. Usa snowflake.connector.connect() per l\'esecuzione locale della dashboard." },
+      { title: "Pulizia", desc: "Elimina tutti gli oggetti del progetto.", prompt: "Genera dos sentencias comentadas per la pulizia opcional: DROP CORTEX SEARCH SERVICE IF EXISTS normativa_search_service e DROP DATABASE IF EXISTS NORMATIVA_RAG_DB CASCADE. Incluye advertencia di che eliminar il servizio di búsqueda richiede re-indexazione completa." }
+    ]
+  }
+};
+
+function verPrompts(ucId) {
+  const data = PROMPTS[ucId];
+  if (!data) { alert('Prompt non ancora disponibili per ' + ucId); return; }
+  const box = document.getElementById('promptsModalBox');
+  let html = `<button class="modal-close" onclick="cerrarModal('promptsModal')">&times;</button>`;
+  html += `<span class="guide-badge">${ucId}</span>`;
+  html += `<h2>${data.title} — Cortex Code Prompts</h2>`;
+  html += `<p class="prompt-intro">${data.intro}</p>`;
+  data.steps.forEach((s, i) => {
+    const escaped = s.prompt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    html += `<div class="prompt-step">`;
+    html += `<div class="prompt-step-header"><span class="prompt-step-num">${i+1}</span><span class="prompt-step-title">${s.title}</span></div>`;
+    html += `<div class="prompt-step-desc">${s.desc}</div>`;
+    html += `<div class="prompt-code" id="prompt_${ucId}_${i}"><button class="copy-btn" onclick="copiarPrompt('prompt_${ucId}_${i}')">Copiar</button>${escaped}</div>`;
+    html += `</div>`;
+  });
+  html += `<p class="guide-footer">Esegui ogni prompt in Cortex Code (Snowsight) in modo sequenziale</p>`;
+  box.innerHTML = html;
+  document.getElementById('promptsModal').classList.add('active');
+}
+
+function copiarPrompt(id) {
+  const il = document.getElementById(id);
+  const btn = el.querySelector('.copy-btn');
+  const text = el.textContent.replace('Copia', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copiato!';
+    setTimeout(() => btn.textContent = 'Copia', 1500);
+  });
+}
+
+renderCards(USE_CASES);
+</script>
+</body>
+</html>

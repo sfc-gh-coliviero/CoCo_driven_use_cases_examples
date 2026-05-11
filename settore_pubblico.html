@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <title>Snowflake — Soluzioni IA/ML per la Pubblica Amministrazione</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+    .hero { background: linear-gradient(135deg, #003545, #11567F); color: #fff; padding: 32px 48px 36px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+    .hero-left { flex: 1; }
+    .logos { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .logo-snowflake { display: flex; align-items: center; gap: 7px; color: #fff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+    .hero-eyebrow { font-size: 11px; letter-spacing: 2px; font-weight: 600; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 8px; }
+    .hero-title { font-size: 42px; font-weight: 700; line-height: 1.1; margin-bottom: 10px; }
+    .hero-subtitle { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); margin-bottom: 6px; }
+    .hero-tagline { font-size: 12px; color: rgba(255,255,255,0.65); }
+    .stats-box { background: #fff; border-radius: 10px; padding: 20px 28px; text-align: center; color: #1a1a1a; min-width: 160px; flex-shrink: 0; }
+    .stats-box .stat-number { font-size: 40px; font-weight: 700; color: #546E7A; line-height: 1; }
+    .stats-box .stat-label { font-size: 12px; color: #666; margin-bottom: 14px; }
+    .stats-box .stat-time { font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1; }
+    .stats-box .stat-time-label { font-size: 12px; color: #666; }
+    .stats-divider { border: none; border-top: 1px solid #e8e8e8; margin: 10px 0; }
+    .intro { background: #fff; text-align: center; padding: 48px 24px 32px; }
+    .intro h2 { font-size: 22px; font-weight: 700; color: #11567F; margin-bottom: 14px; }
+    .intro p { max-width: 600px; margin: 0 auto; font-size: 14px; color: #555; line-height: 1.7; }
+    .filters-bar { background: #fff; padding: 20px 48px 0; border-bottom: 1px solid #e8e8e8; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .filters-left { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+    .filter-btn { padding: 8px 18px; border-radius: 80px; border: 1.5px solid #ccc; background: transparent; font-size: 13px; font-weight: 500; color: #444; cursor: pointer; transition: all 0.15s; }
+    .filter-btn:hover { border-color: #29B5E8; color: #29B5E8; }
+    .filter-btn.active { background: #29B5E8; border-color: #29B5E8; color: #fff; }
+    .search-box { display: flex; align-items: center; border: 1.5px solid #ccc; border-radius: 80px; padding: 7px 14px; gap: 8px; min-width: 200px; background: #fff; }
+    .search-box input { border: none; outline: none; font-size: 13px; color: #444; width: 100%; background: transparent; }
+    .search-box input::placeholder { color: #aaa; }
+    .results-count { padding: 14px 48px 8px; font-size: 13px; color: #666; background: #f5f5f5; }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; padding: 16px 48px 48px; background: #f5f5f5; }
+    .card { background: #fff; border-radius: 10px; border: 1px solid #e2e2e2; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.2s; }
+    .card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.1); }
+    .card-header { padding: 16px 18px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .card-badges { display: flex; gap: 6px; align-items: center; }
+    .badge-id { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.5px; }
+    .badge-cat { background: #E0F4FD; color: #11567F; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+    .badge-cat.cittadino  { background: #E3F2FD; color: #1565C0; }
+    .badge-cat.politiche  { background: #E8F5E9; color: #2E7D32; }
+    .badge-cat.frode     { background: #FFF3E0; color: #E65100; }
+    .badge-cat.efficienza { background: #EDE7F6; color: #5E35B1; }
+    .badge-cat.sicurezza  { background: #FCE4EC; color: #C62828; }
+    .card-time { font-size: 12px; color: #888; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .card-title { padding: 0 18px 12px; font-size: 17px; font-weight: 700; color: #11567F; line-height: 1.3; }
+    .pain-point { margin: 0 18px 14px; background: #ECEFF1; border-radius: 8px; padding: 12px 14px; }
+    .pain-point-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #546E7A; margin-bottom: 6px; text-transform: uppercase; }
+    .pain-point p { font-size: 13px; color: #2a2a2a; line-height: 1.55; }
+    .card-desc { padding: 0 18px 14px; font-size: 13px; color: #555; line-height: 1.65; flex: 1; }
+    .card-features { padding: 0 18px 16px; list-style: none; }
+    .card-features li { font-size: 13px; color: #444; display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+    .card-features li::before { content: '\2713'; color: #29B5E8; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .card-actions { padding: 14px 18px 18px; display: flex; gap: 10px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
+    .btn-secondary {
+      flex: 1;
+      padding: 10px;
+      background: #29B5E8;
+      color: #fff;
+      border: none;
+      border-radius: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .btn-secondary:hover { background: #11567F; }
+    .btn-tertiary {
+      flex: 1;
+      padding: 10px;
+      background: #003545;
+      color: #29B5E8;
+      border: none;
+      border-radius: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .btn-tertiary:hover { background: #11567F; }
+    .prompt-step { margin-bottom: 18px; }
+    .prompt-step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .prompt-step-num { background: #003545; color: #29B5E8; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .prompt-step-title { font-size: 13px; font-weight: 600; color: #333; }
+    .prompt-step-desc { font-size: 12px; color: #666; margin-bottom: 6px; line-height: 1.5; }
+    .prompt-code { position: relative; background: #003545; color: #e0e0e0; border-radius: 8px; padding: 12px 14px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12.5px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .prompt-code .copy-btn { position: absolute; top: 6px; right: 8px; background: rgba(255,255,255,0.1); border: none; color: #aaa; font-size: 11px; padding: 3px 8px; border-radius: 4px; cursor: pointer; }
+    .prompt-code .copy-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .modal-box .prompt-intro { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #eee; }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: #fff; border-radius: 12px; max-width: 700px; width: 92%; max-height: 85vh; overflow-y: auto; padding: 32px 28px; position: relative; box-shadow: 0 8px 40px rgba(0,0,0,0.2); }
+    .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 22px; cursor: pointer; color: #888; line-height: 1; }
+    .modal-close:hover { color: #546E7A; }
+    .modal-box h2 { color: #11567F; font-size: 20px; margin-bottom: 6px; }
+    .modal-box h3 { font-size: 15px; color: #333; margin: 18px 0 8px; }
+    .modal-box p, .modal-box li { font-size: 13px; line-height: 1.7; color: #444; }
+    .modal-box ul { padding-left: 20px; margin: 6px 0; }
+    .modal-box .guide-badge { display: inline-block; background: #E0F4FD; color: #11567F; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 50px; margin-bottom: 10px; }
+    .modal-box .guide-footer { margin-top: 20px; padding-top: 14px; border-top: 1px solid #eee; font-size: 12px; color: #888; }
+    @media (max-width: 700px) {
+      .hero { flex-direction: column; padding: 24px 20px; }
+      .cards-grid { grid-template-columns: 1fr; padding: 16px 16px 48px; }
+      .filters-bar { padding: 16px 16px 0; }
+      .results-count { padding: 12px 16px 6px; }
+    }
+  </style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-left">
+    <div class="logos"></div>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.75);text-decoration:none;margin-bottom:8px;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.75)'"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="12,4 6,10 12,16"/></svg>Torna al catalogo dei settori</a>
+    <p class="hero-eyebrow">Pubblica Amministrazione &times; Snowflake</p>
+    <h1 class="hero-title">Soluzioni IA/ML per la Pubblica Amministrazione</h1>
+    <p class="hero-subtitle">Guide e prompt Cortex Code pronti al deploy nell&apos;amministrazione digitale, politiche pubbliche, controllo fondi e servizi ai cittadini</p>
+    <p class="hero-tagline">Sviluppato con Snowflake Cortex AI | Impatto immediato</p>
+  </div>
+  <div class="stats-box">
+    <div class="stat-number">20</div>
+    <div class="stat-label">Casi d'Uso</div>
+    <hr class="stats-divider"/>
+    <div class="stat-time">8-15 min</div>
+    <div class="stat-time-label">Tempo di Configurazione</div>
+  </div>
+</header>
+<section class="intro">
+  <h2>Accelera l&apos;analitica con soluzioni IA preconfigurate per la Pubblica Amministrazione</h2>
+  <p>Ogni scheda include i prompt Cortex Code per Snowflake con dati sintetici, guide passo passo
+     e implementazioni SQL-first con Cortex AI/ML, Feature Store e Model Registry per il passaggio in produzione.
+     Migliora i servizi ai cittadini, rileva frodi sui contributi, ottimizza le politiche pubbliche
+     e gestisci i fondi europei: tutto in Snowflake, senza dipendenze esterne, pronto per essere adattato ai tuoi dati.</p>
+</section>
+<div class="filters-bar">
+  <div class="filters-left" id="filterBtns">
+    <button class="filter-btn active" data-filter="all">Tutti (20)</button>
+    <button class="filter-btn" data-filter="cittadino">Esperienza Cittadina (4)</button>
+    <button class="filter-btn" data-filter="politiche">Politiche pubbliche (4)</button>
+    <button class="filter-btn" data-filter="frode">Frode e Controllo (4)</button>
+    <button class="filter-btn" data-filter="efficienza">Efficienza Amministrativa (4)</button>
+    <button class="filter-btn" data-filter="sicurezza">Sicurezza e Smart Cities (4)</button>
+  </div>
+  <div class="search-box">
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg>
+    <input id="searchInput" type="text" placeholder="Cerca casi d'uso&hellip;" />
+  </div>
+</div>
+<div class="results-count" id="resultsCount">Mostrando 20 di 20 casi d'uso</div>
+<main class="cards-grid" id="cardsGrid"></main>
+<script>
+const USE_CASES = [
+  {
+    "id": "UC01",
+    "cat": "frode",
+    "catLabel": "Frode e Controllo",
+    "time": "15 min",
+    "title": "Rilevamento Frode nelle Sovvenzioni con Model Registry",
+    "pain": "La frode nelle sovvenzioni pubbliche si stima nel 2-5% del totale erogato, con perdite di 500-2.000 M€/anno in Italia. Le revisioni manuali rilevano solo il 15-20% dei casi irregolari, con mesi di ritardo.",
+    "desc": "Modello ML di rilevamento frodi su richieste ed erogazioni di sovvenzioni pubbliche che analizza pattern di domanda, inconsistenze documentali, reti di beneficiari e rendicontazione. Registrato in Model Registry per uso continuativo in produzione.",
+    "features": [
+      "Rilevamento con ML.CLASSIFICATION + Model Registry",
+      "Analisi di reti di beneficiari e relazioni societarie",
+      "Variabili: tipologia di agevolazione, importi, documentazione, erogazione, sanzioni",
+      "Dashboard Streamlit di controllo delle sovvenzioni"
+    ]
+  },
+  {
+    "id": "UC02",
+    "cat": "cittadino",
+    "catLabel": "Esperienza Cittadina",
+    "time": "13 min",
+    "title": "Chatbot RAG per il Servizio Cittadino Multicanale",
+    "pain": "Gli uffici di assistenza al cittadino gestiscono un 65% di consulti ripetitivi (stato delle pratiche, requisiti, scadenze) con un costo di 8-12 €/interazione. I tempi di attesa superano i 20 minuti e la soddisfazione cittadina è al 55%.",
+    "desc": "Assistente conversazionale RAG con Cortex Search su normativa, procedure, FAQ, requisiti e stato delle pratiche. Risolve i consulti in italiano e nelle lingue regionali, con personalizzazione in base al profilo del cittadino.",
+    "features": [
+      "RAG con Cortex Search + CORTEX.COMPLETE multilingue",
+      "Base di conoscenza: normativa, procedure, FAQ, pratiche",
+      "Integrazione con il registro fascicoli per lo stato in tempo reale",
+      "Dashboard Streamlit del chatbot con escalation al funzionario"
+    ]
+  },
+  {
+    "id": "UC03",
+    "cat": "politiche",
+    "catLabel": "Politiche Pubbliche",
+    "time": "14 min",
+    "title": "Previsione della Domanda di Servizi Sociali con Model Registry",
+    "pain": "I servizi sociali comunali affrontano picchi di domanda imprevedibili che mettono in crisi l'assistenza: liste d'attesa di 3-6 mesi per le prestazioni, risorse assegnate per inerzia storica anziché per fabbisogno reale, e un 30% di richieste duplicate tra amministrazioni.",
+    "desc": "Modello predittivo della domanda di servizi sociali per comune, tipo di prestazione e profilo demografico con ML.FORECAST, registrato in Model Registry per la pianificazione continua delle risorse.",
+    "features": [
+      "Forecast di domanda con ML.FORECAST + Model Registry",
+      "Variabili: demografiche, economiche, occupazione, stagionalità, crisi",
+      "Pianificazione delle risorse per comune e tipo di servizio",
+      "Dashboard Streamlit di pianificazione sociale"
+    ]
+  },
+  {
+    "id": "UC04",
+    "cat": "efficienza",
+    "catLabel": "Efficienza Amministrativa",
+    "time": "12 min",
+    "title": "Automazione della Classificazione dei Fascicoli",
+    "pain": "Le amministrazioni processano 2-5 milioni di fascicoli all'anno. La classificazione manuale assorbe circa il 25% del tempo dei funzionari; un 15% di errori di assegnazione genera ritardi di settimane e duplicazioni.",
+    "desc": "Pipeline NLP che classifica automaticamente i fascicoli amministrativi, estrae le entità chiave, assegna priorità e percorso di trattamento e suggerisce la risoluzione sulla base di casi precedenti simili.",
+    "features": [
+      "Classificazione con CORTEX.COMPLETE + ML.CLASSIFICATION",
+      "Estrazione di entità: documenti di identità, date, importi, riferimenti",
+      "Assegnazione automatica all'unità competente con priorità",
+      "Dashboard Streamlit di gestione dei fascicoli"
+    ]
+  },
+  {
+    "id": "UC05",
+    "cat": "frode",
+    "catLabel": "Frode e Controllo",
+    "time": "14 min",
+    "title": "Controllo dell\'Esecuzione dei Fondi Next Generation EU",
+    "pain": "L'Italia gestisce oltre 140.000 M€ di fondi Next Generation EU con requisiti stringenti di tracciabilità, milestone e rendicontazione verso l'UE. Ritardi di esecuzione, mancanza di tracciabilità ed errori di reporting possono comportare decadenze o revoche di finanziamenti.",
+    "desc": "Sistema di monitoraggio e controllo dell'esecuzione dei fondi europei che segue ogni euro dall'assegnazione all'impatto, rileva ritardi, incongruenze e rischi di mancato raggiungimento delle milestone.",
+    "features": [
+      "Tracciabilità end-to-end con ML per il rilevamento delle anomalie",
+      "Variabili: assegnazione, gara d'appalto, aggiudicazione, esecuzione, milestone",
+      "Alert precoci su ritardi e scostamenti dai KPI",
+      "Dashboard Streamlit di controllo dei fondi europei"
+    ]
+  },
+  {
+    "id": "UC06",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e Smart Cities",
+    "time": "13 min",
+    "title": "Gestione Intelligente della Mobilità Urbana",
+    "pain": "Le città italiane convivono con congestione cronica, con un costo stimato di circa 5.500 M€/anno in tempo perso, inquinamento e incidenti. I semafori a cicli fissi non si adattano alla domanda reale e il trasporto pubblico perde utenti per mancanza di integrazione multimodale.",
+    "desc": "Motore di ottimizzazione della mobilità urbana che prevede la domanda di trasporto, ottimizza i semafori, gestisce la sosta e coordina il trasporto pubblico con dati in tempo reale da sensori IoT.",
+    "features": [
+      "Previsione del traffico con ML.FORECAST per zona e fascia oraria",
+      "Variabili: traffico, trasporto pubblico, eventi, meteo",
+      "Ottimizzazione dei cicli semaforici e dei percorsi degli autobus",
+      "Dashboard Streamlit del centro mobilità"
+    ]
+  },
+  {
+    "id": "UC07",
+    "cat": "politiche",
+    "catLabel": "Politiche Pubbliche",
+    "time": "13 min",
+    "title": "Valutazione dell\'Impatto delle Politiche Pubbliche",
+    "pain": "Le politiche pubbliche si valutano in ex post con 2-3 anni di ritardo, usando indicatori aggregati che non cogono l'impatto differenziato per territorio, profilo del beneficiario o contesto socioeconomico. Le decisioni si appoggiano spesso più all'inerzia che all'evidenza.",
+    "desc": "Motore di valutazione d'impatto che analizza l'effetto di politiche pubbliche (sovvenzioni, regolazione, investimenti) sugli indicatori socioeconomici a livello comunale, con tecniche di inferenza causale e ML.",
+    "features": [
+      "Analisi di impatto con ML.CLASSIFICATION + CORTEX.COMPLETE",
+      "Variabili: indicatori pre/post, gruppo di controllo, contesto",
+      "Valutazione per territorio, profilo del beneficiario e tipo di intervento",
+      "Dashboard Streamlit di valutazione delle politiche"
+    ]
+  },
+  {
+    "id": "UC08",
+    "cat": "cittadino",
+    "catLabel": "Esperienza Cittadina",
+    "time": "15 min",
+    "title": "Feature Store del Profilo Cittadino 360",
+    "pain": "I dati del cittadino sono dispersi in 10-15 sistemi (anagrafe, tributi, servizi sociali, lavoro, istruzione, sanità) senza interoperabilità. Un funzionario deve consultare 4-5 sistemi per gestire una pratica; le duplicazioni generano errori e ritardi.",
+    "desc": "Feature Store centralizzato in Snowflake che consolida le feature del profilo cittadino da più fonti, nel rispetto del GDPR, per personalizzare i servizi, rilevare le necessità e coordinare gli enti.",
+    "features": [
+      "Snowflake Feature Store con Entity e FeatureView",
+      "Feature: demografiche, tributarie, sociali, lavoro, istruzione, canali digitali",
+      "Versionamento automatico e conformità GDPR",
+      "Pipeline di ingestione da anagrafe, tributi, lavoro e altri registri"
+    ]
+  },
+  {
+    "id": "UC09",
+    "cat": "efficienza",
+    "catLabel": "Efficienza Amministrativa",
+    "time": "12 min",
+    "title": "Ottimizzazione degli Appalti Pubblici",
+    "pain": "La spesa pubblica per appalti in Italia supera i 200.000 M€/anno ma il processo medio richiede 6-12 mesi; circa il 30% delle gare resta deserta e la scarsa concorrenza in circa il 40% dei contratti fa lievitare i prezzi del 15-25%.",
+    "desc": "Motore di ottimizzazione degli appalti pubblici che analizza lo storico delle gare, prevede il rischio di gare deserte, raccomanda la suddivisione in lotti e stima i prezzi di mercato per aumentare concorrenza ed efficienza.",
+    "features": [
+      "Previsione di gare a rischio deserte con ML.CLASSIFICATION",
+      "Analisi di concorrenza e concentrazione per settore e territorio",
+      "Stima dei prezzi di mercato con ML e benchmarking",
+      "Dashboard Streamlit di intelligence sugli appalti"
+    ]
+  },
+  {
+    "id": "UC10",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e Smart Cities",
+    "time": "12 min",
+    "title": "Rilevamento Anomalie nel Consumo Energetico degli Edifici Pubblici",
+    "pain": "Gli edifici pubblici italiani consumano circa 3.500 GWh/anno con un potenziale di risparmio del 30-40%. La scarsa supervisione genera sprechi (climatizzazione a locali vuoti, illuminazione H24) e le verifiche energetiche pluriennali sono insufficienti.",
+    "desc": "Sistema ML per il rilevamento delle anomalie e l'ottimizzazione dei consumi negli edifici pubblici: monitoraggio in tempo reale, individuazione degli sprechi e raccomandazioni per l'efficienza energetica.",
+    "features": [
+      "Rilevamento delle anomalie con ML.CLASSIFICATION su dati IoT",
+      "Variabili: consumo elettrico, climatizzazione, occupazione, meteo",
+      "Benchmark tra edifici simili per uso e zona climatica",
+      "Dashboard Streamlit di efficienza energetica degli edifici"
+    ]
+  },
+  {
+    "id": "UC11",
+    "cat": "frode",
+    "catLabel": "Frode e Controllo",
+    "time": "13 min",
+    "title": "Rilevamento Frode Fiscale con Analisi delle Reti",
+    "pain": "L'evasione e l'elusione fiscale in Italia si stimano in 70.000-90.000 M€/anno. I controlli reattivi basati su regole fisse intercettano solo circa il 20% degli schemi complessi e non individuano le reti di imprese collegate usate per l'evasione.",
+    "desc": "Sistema ML di contrasto all'evasione che analizza dichiarazioni, operazioni intragruppo, relazioni societarie e pattern di fatturazione per individuare schemi illeciti e reti fraudolente.",
+    "features": [
+      "ML.CLASSIFICATION su dichiarazioni e operazioni",
+      "Analisi di reti societarie e relazioni tra contribuenti",
+      "Variabili: dichiarazioni, fatturazione, operazioni intracomunitarie",
+      "Dashboard Streamlit di intelligence fiscale"
+    ]
+  },
+  {
+    "id": "UC12",
+    "cat": "cittadino",
+    "catLabel": "Esperienza Cittadina",
+    "time": "12 min",
+    "title": "Personalizzazione dei Servizi Digitali al Cittadino",
+    "pain": "I portali dell'amministrazione digitale offrono oltre 3.000 pratiche ma i cittadini trovano ciò che cercano solo nel 40% dei casi. L'esperienza è generica, senza tenere conto del profilo, dello storico né delle esigenze specifiche del cittadino.",
+    "desc": "Motore di personalizzazione dell'esperienza digitale che raccomanda le pratiche pertinenti, semplifica i moduli precompilando i dati noti e anticipa i bisogni in base agli eventi di vita.",
+    "features": [
+      "Raccomandazione delle pratiche con ML.CLASSIFICATION + Feature Store",
+      "Rilevamento di eventi di vita: nascita, cambio di domicilio, pensionamento",
+      "Precompilazione dei moduli con i dati disponibili",
+      "Dashboard Streamlit dell'esperienza cittadina digitale"
+    ]
+  },
+  {
+    "id": "UC13",
+    "cat": "politiche",
+    "catLabel": "Politiche Pubbliche",
+    "time": "13 min",
+    "title": "Ottimizzazione dell\'Allocazione delle Risorse Sanitarie",
+    "pain": "L'allocazione delle risorse sanitarie (posti letto, personale, attrezzature) si basa spesso su rapporti demografici che non riflettono la morbilità reale, l'invecchiamento differenziato né la stagionalità. Ne derivano saturazione in alcune strutture e sottoutilizzo in altre.",
+    "desc": "Motore di ottimizzazione che prevede la domanda assistenziale per area sanitaria, specialità e profilo della popolazione, per allocare le risorse in modo equo ed efficiente.",
+    "features": [
+      "Previsione della domanda con ML.FORECAST per area e specialità",
+      "Variabili: morbilità, invecchiamento, stagionalità, epidemie",
+      "Ottimizzazione dell'allocazione con vincoli di bilancio",
+      "Dashboard Streamlit di pianificazione sanitaria"
+    ]
+  },
+  {
+    "id": "UC14",
+    "cat": "efficienza",
+    "catLabel": "Efficienza Amministrativa",
+    "time": "15 min",
+    "title": "Feature Store di performance degli enti pubblici",
+    "pain": "I KPI di performance degli enti pubblici (tempi di risoluzione, soddisfazione, produttività) sono spesso calcolati manualmente con 1-3 mesi di ritardo. Manca il confronto tra enti simili e il rilevamento precoce del peggioramento del servizio.",
+    "desc": "Feature Store in Snowflake che consolida le metriche di ogni ente per benchmarking, early warning sul deterioramento e decisioni basate su dati quasi in tempo reale.",
+    "features": [
+      "Snowflake Feature Store con Entity per ente",
+      "FeatureView: risoluzione, soddisfazione, produttività, budget, canali digitali",
+      "Benchmarking tra enti omogenei",
+      "Pipeline automatica di aggiornamento multi-fonte"
+    ]
+  },
+  {
+    "id": "UC15",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e Smart Cities",
+    "time": "13 min",
+    "title": "Sicurezza informatica dell\'infrastruttura digitale pubblica",
+    "pain": "Gli attacchi informatici contro le pubbliche amministrazioni sono aumentati di oltre il 150% nel 2023-2025. Sistemi legacy, monitoraggio poco centralizzato e carenza di personale specializzato espongono i dati di milioni di cittadini.",
+    "desc": "Pipeline ML per il rilevamento delle minacce sull'infrastruttura digitale pubblica: analisi del traffico di rete, comportamento degli utenti, accessi ai sistemi e pattern anomali per individuare attacchi e automatizzare la risposta.",
+    "features": [
+      "ML.CLASSIFICATION su log e traffico di rete",
+      "Baseline del comportamento normale per utente e sistema",
+      "Correlazione degli eventi per rilevamento multi-vettore",
+      "Dashboard Streamlit del SOC pubblico"
+    ]
+  },
+  {
+    "id": "UC16",
+    "cat": "frode",
+    "catLabel": "Frode e Controllo",
+    "time": "12 min",
+    "title": "Controllo delle Incompatibilità e Conflitti di Interesse",
+    "pain": "I conflitti di interesse nella pubblica amministrazione (funzionari con imprese collegate agli appalti, revolving door, incompatibilità) sono difficili da individuare manualmente in un ecosistema di circa 3 milioni di dipendenti pubblici e 200.000 contratti all'anno.",
+    "desc": "Sistema ML che incrocia registri del personale, dichiarazioni patrimoniali, registri delle imprese e dati sugli appalti per individuare conflitti di interesse, incompatibilità e reti di influenza.",
+    "features": [
+      "Incrocio dati con ML.CLASSIFICATION e analisi su grafo",
+      "Variabili: personale pubblico, società, contratti, dichiarazioni",
+      "Rilevamento di pattern di revolving door e favoritismi",
+      "Dashboard Streamlit di integrità pubblica"
+    ]
+  },
+  {
+    "id": "UC17",
+    "cat": "efficienza",
+    "catLabel": "Efficienza Amministrativa",
+    "time": "11 min",
+    "title": "NLP sulla Normativa e Generazione di Riassunti Legali",
+    "pain": "In Italia la Gazzetta Ufficiale e gli atti regionali pubblicano centinaia di migliaia di pagine di normativa all'anno. Servono 2-4 ore per analizzare ogni nuovo provvedimento e valutarne l'impatto sui procedimenti. Spesso manca una versione consolidata per ambito.",
+    "desc": "Pipeline NLP che analizza automaticamente i nuovi atti, produce sintesi esecutive, individua i procedimenti interessati e supporta la consultazione consolidata, con RAG sul corpus normativo vigente.",
+    "features": [
+      "Analisi con CORTEX.COMPLETE sui testi normativi",
+      "RAG con Cortex Search su Gazzetta Ufficiale, BUR e atti locali aggiornati",
+      "Individuazione dei procedimenti impattati dai cambiamenti normativi",
+      "Dashboard Streamlit di intelligence normativa"
+    ]
+  },
+  {
+    "id": "UC18",
+    "cat": "politiche",
+    "catLabel": "Politiche Pubbliche",
+    "time": "12 min",
+    "title": "Analisi predittiva della vulnerabilità sociale",
+    "pain": "L'individuazione della vulnerabilità sociale (povertà energetica, rischio di sfratto, isolamento degli anziani) è spesso reattiva: gli enti intervengono quando la crisi è già manifesta. Indicatori anticipati e dati integrati mancano o sono incompleti, ostacolando la prevenzione.",
+    "desc": "Motore predittivo che integra indicatori socioeconomici, lavoro, abitazione, salute e servizi sociali per individuare persone e zone a rischio prima che la crisi esploda.",
+    "features": [
+      "Scoring di vulnerabilità con ML.CLASSIFICATION multivariato",
+      "Variabili: reddito, occupazione, abitazione, salute, servizi sociali, età",
+      "Mappa del rischio per comune e quartiere con alert precoci",
+      "Dashboard Streamlit di prevenzione sociale"
+    ]
+  },
+  {
+    "id": "UC19",
+    "cat": "cittadino",
+    "catLabel": "Esperienza Cittadina",
+    "time": "11 min",
+    "title": "Analisi del Sentiment nella Partecipazione Cittadina",
+    "pain": "I processi di partecipazione (consultazioni pubbliche, bilanci partecipativi, suggerimenti) producono migliaia di contributi testuali analizzati manualmente con settimane di ritardo. Circa il 70% dei cittadini percepisce che la propria opinione non viene considerata.",
+    "desc": "Pipeline NLP sull'input partecipativo: classifica i contributi, individua i temi emergenti, misura il sentiment e genera sintesi a supporto delle decisioni.",
+    "features": [
+      "Analisi del sentiment con CORTEX.SENTIMENT",
+      "Classificazione tematica con CORTEX.COMPLETE",
+      "Rilevamento dei temi emergenti e clustering delle proposte",
+      "Dashboard Streamlit di partecipazione cittadina"
+    ]
+  },
+  {
+    "id": "UC20",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza e Smart Cities",
+    "time": "11 min",
+    "title": "Gestione Intelligente dei Rifiuti Urbani",
+    "pain": "La raccolta dei rifiuti urbani costa ai comuni italiani circa 2.500 M€/anno. Percorsi fissi generano circa il 30% di viaggi inutili (cassonetti vuoti) e il 15% di trabocchi. Il tasso di riciclo al 35% è lontano dall'obiettivo UE del 55%.",
+    "desc": "Motore di ottimizzazione che prevede il livello di riempimento dei cassonetti, ottimizza i percorsi di raccolta, rileva la contaminazione delle frazioni e stima il comportamento di riciclo per zona.",
+    "features": [
+      "Previsione di riempimento con ML.FORECAST su dati da sensori IoT",
+      "Ottimizzazione dei percorsi con vincoli di tempo e capacità",
+      "Rilevamento della contaminazione delle frazioni con ML.CLASSIFICATION",
+      "Dashboard Streamlit di gestione intelligente dei rifiuti"
+    ]
+  }
+];
+const TOTAL = 20;
+
+function renderCards(list) {
+  const grid = document.getElementById('cardsGrid');
+  const count = document.getElementById('resultsCount');
+  grid.innerHTML = '';
+  count.textContent = 'Mostrando ' + list.length + ' di ' + TOTAL + " casi d\'uso";
+  list.forEach(uc => {
+    const catClass = uc.cat;
+    grid.innerHTML += '<article class="card">' +
+      '<div class="card-header"><div class="card-badges"><span class="badge-id">' + uc.id + '</span><span class="badge-cat ' + catClass + '">' + uc.catLabel + '</span></div><span class="card-time">\u23F1 ' + uc.time + '</span></div>' +
+      '<div class="card-title">' + uc.title + '</div>' +
+      '<div class="pain-point"><div class="pain-point-label">Problema</div><p>' + uc.pain + '</p></div>' +
+      '<div class="card-desc">' + uc.desc + '</div>' +
+      '<ul class="card-features">' + uc.features.map(function(f){return '<li>' + f + '</li>';}).join('') + '</ul>' +
+      '<div class="card-actions"><a href="#" class="btn-secondary" onclick="verGuia(\'' + uc.id + '\');return false;">Vedi Guida</a><a href="#" class="btn-tertiary" onclick="verPrompts(\'' + uc.id + '\');return false;">Cortex Code Prompts</a></div>' +
+      '</article>';
+  });
+}
+
+let currentFilter = 'all';
+let currentSearch = '';
+function applyFilters() {
+  let list = USE_CASES;
+  if (currentFilter !== 'all') list = list.filter(function(u){return u.cat === currentFilter;});
+  if (currentSearch) { const q = currentSearch.toLowerCase(); list = list.filter(function(u){return (u.title + ' ' + u.desc + ' ' + u.id + ' ' + u.catLabel).toLowerCase().indexOf(q) !== -1;}); }
+  renderCards(list);
+}
+
+document.getElementById('filterBtns').addEventListener('click', function(e) {
+  if (!e.target.classList.contains('filter-btn')) return;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  e.target.classList.add('active');
+  currentFilter = e.target.getAttribute('data-filter');
+  applyFilters();
+});
+
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  currentSearch = e.target.value;
+  applyFilters();
+});
+
+renderCards(USE_CASES);
+
+
+const GUIAS = {
+  "UC01": {
+    "title": "Rilevamento Frode nelle Sovvenzioni con Model Registry",
+    "contesto": "La frode in sovvenzioni pubbliche in Italia si estima in un 2-5% del totale erogato. Le revisioni manuali basadas in muestreo aleatorio solo rilevano il 15-20% dei casi irregolari e con mesi di ritardo, lo che permette che i defraudadores repitan schemas.",
+    "focus": "Construir un modello ML di rilevamento frodi in sovvenzioni che analice richieste, esecuzione e reti di beneficiari, registrándolo in Snowflake Model Registry per operazione continua.",
+    "reto": "I schemas di frode evolucionan constdavanti amente: aziendas pantalla, fraccionamiento di richieste, falsificazione documental, e reti di beneficiari vinculados. Il modello debe rilevare pattern nuevos senza generaree exceso di falsos positivos.",
+    "obiettivi": [
+      "Rilevare il 60% del frode in sovvenzioni con <10% di falsos positivos",
+      "Registrar modello in Model Registry con log_model() e versionamento",
+      "Reducir tempo di rilevamento di 6 mesi a 15 giorni",
+      "Priorizar investigazioni per importe e probabilità",
+      "Automatizar retranamiento con nuevos casi confirmados"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION per scoring di rischio di frode",
+      "Snowflake Model Registry: log_model(), get_model(), deploy()",
+      "Analisi di reti di beneficiari e relazioni societarie",
+      "Rilevamento di fraccionamiento, aziendas pantalla e duplicazioni",
+      "Dashboard Streamlit di controllo delle sovvenzioni"
+    ],
+    "dati": [
+      "Solicitudes di sovvenzione: beneficiario, importe, progetto, documentazione",
+      "Ejecuzione di bilancio: pagos, justificazioni, milestone",
+      "Registro mercantil: società, administradores, vinculazioni",
+      "Historial di sanzioni, revocazioni e reintegros",
+      "Declarazioni fiscales: fatturazione, empleados, actividad"
+    ],
+    "stratificazione": [
+      "Por tipo di sovvenzione: inversione, occupazione, I+D, formazione, agrario",
+      "Por importe: alto >500K€, medio 50-500K€, bajo <50K€",
+      "Por livello di rischio: mue alto, alto, medio, bajo",
+      "Por tipo di frode: documental, esecuzione, vinculazione, duplicidad",
+      "Por amministrazione convocdavanti a: estatal, autonómica, local, UE"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Il modello si trana con casi confirmados di frode (mínimo 3 anni)",
+      "Registrar in Model Registry per versionamento e deploy automatico",
+      "Ajustar umbrales di scoring secondo capacità di investigazione",
+      "Retranar trimestralemente con nuevos casi confirmados"
+    ]
+  },
+  "UC02": {
+    "title": "Chatbot RAG per il Servizio Cittadino Multicanale",
+    "contesto": "Gli uffici di assistenza al cittadino gestiscono un 65% di consulti ripetitive con alto costo. La amministrazione electrónica ha reteucido la presencialidad ma la complejidad normativa e la dispersione di informazione manhanno la frustrazione cittadina.",
+    "focus": "Construir un asistente conversacional RAG con Cortex Search indicizzando toda la normativa, procedure e FAQ della amministrazione, con supporto multilingue e personalizzazione per profilo.",
+    "reto": "La normativa pubblica è extrema in volumen e complejidad (BOE, BOCA, BOP, ordenanzas). Le rispostas deben ser jurídicamente correctas, attualeizadas e adaptadas al livello di comprensione del cittadino.",
+    "obiettivi": [
+      "Resolver il 60% di consulti senza intervento di funzionario",
+      "Reducir costo per interazione di 10€ a 0.80€",
+      "Soportar espannol, catalán, euskera, gallego e valenciano",
+      "Mdavanti aner base di conoscenza attualeizada con cambios normativos",
+      "Escalar a funzionario con contesto completo quando sea necessario"
+    ],
+    "funzionalità": [
+      "Cortex Search per indexazione di normativa e procedure",
+      "CORTEX.COMPLETE per generazione di rispostas contextualizadas",
+      "Soporte multilingue con rilevamento automatica di idioma",
+      "Integrazione con registro di fascicoli per consulto di estado",
+      "Dashboard Streamlit di chatbot con metriche di resoluzione"
+    ],
+    "dati": [
+      "Normativa vigente: BOE, boletines autonómicos, ordenanzas comunali",
+      "Procedimientos administrativos: requisiti, scadenze, documentazione",
+      "FAQ: domandas frecuentes per servizio e pratica",
+      "Estado di fascicoli: registro, fase, resoluzione, notifiche",
+      "Perfil cittadino: idioma preferido, pratiche precedentees, comune"
+    ],
+    "stratificazione": [
+      "Por tipo di consulto: pratica, normativa, estado fascicolo, reclamo",
+      "Por canal: web, app, teléfono, presencial",
+      "Por idioma: castellano, catalán, euskera, gallego, valenciano",
+      "Por complejidad: simple (FAQ), media (normativa), compleja (reclamo)",
+      "Por amministrazione: estatal, autonómica, comunale"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Indexar normativa e procedure con Cortex Search",
+      "Configurar supporto multilingue con rilevamento di idioma",
+      "Integrar con sistemi di fascicoli per consulto di estado",
+      "Monitorizar tasso di resoluzione e satisfazione settimanalmente"
+    ]
+  },
+  "UC03": {
+    "title": "Previsione della Domanda di Servizi Sociali con Model Registry",
+    "contesto": "I servizi sociali comunali sperimentano picos impreteecibles vinculados a crisi economiche, migratorias o sanitarias. La pianificazione per inerzia storica genera cole di espera e risorse infrautilizzados simultáneamente.",
+    "focus": "Construir un modello preteittivo di domanda di servizi sociali con ML.FORECAST registrato in Model Registry per pianificazione continua di risorse per comune e tipo di prestazione.",
+    "reto": "La domanda di servizi sociali depende di fattori macro (desoccupazione, inmigrazione, crisi) e micro (envejecimiento local, eventi climáticos). I dati sono dispersos tra amministrazioni e la qualità è variable.",
+    "obiettivi": [
+      "Preteecir domanda di servizi sociali con MAPE <12% a 3 mesi",
+      "Registrar modello in Model Registry con metriche di accuracy",
+      "Reducir elenchi di attesa un 30% misuravanti a pianificazione proactiva",
+      "Optimizar assegnazione di profesionales per territorio e especialidad",
+      "Rilevare incrementos di domanda con 4-8 settimanas di davanti alazione"
+    ],
+    "funzionalità": [
+      "ML.FORECAST per series temporales di domanda per servizio",
+      "Snowflake Model Registry: log_model(), versionamento, deploy()",
+      "Variables exógenas: desoccupazione, inmigrazione, demografía, crisi",
+      "Planificazione di risorse: profesionales, budget, centri",
+      "Dashboard Streamlit di pianificazione socialee"
+    ],
+    "dati": [
+      "Solicitudes di servizi sociali: tipo, profilo, comune, fecha",
+      "Indicadores socioeconómicos: desoccupazione, renta, pobreza per comune",
+      "Demografía: envejecimiento, natalidad, migrazione per zona",
+      "Presupuesto e risorse: profesionales, centri, programas",
+      "Historial di prestazioni: tipo, durazione, resoluzione, satisfazione"
+    ],
+    "stratificazione": [
+      "Por tipo di servizio: dependencia, renta mínima, emergencia, infancia",
+      "Por comune e zona sanitaria",
+      "Por profilo del solicitdavanti a: età, situazione familiar, occupazione",
+      "Por stagionalità e eventi externos",
+      "Por horizonte di previsione: 1 mes, 3 mesi, 6 mesi"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Entrenar con al meno 3 anni di dati di richieste",
+      "Registrar modello in Model Registry per operazione continua",
+      "Ajustar variables exógenas secondo contesto territorial",
+      "Retranar mensilmente con dati attualeizados"
+    ]
+  },
+  "UC04": {
+    "title": "Automazione della Classificazione dei Fascicoli",
+    "contesto": "Le amministrazioni processano milioni di fascicoli con classificazione manualeee che consuma un 25% del tempo dei funzionari. I errori di assegnazione generanoo ritardi e duplicazioni che afectan alla qualità del servizio.",
+    "focus": "Construir un pipeline NLP che clasifique automaticamente fascicoli, extraiga entidades chiave e asigne percorso di trattamento con sugerencia di resoluzione basata il suo precedentes.",
+    "reto": "I fascicoli conhanno texto desstrutturado con jerga administrativa, referencias cruzadas a normativa e formato heterogéneo (papil escaneado, formularios electrónicos, correos). La precisione debe ser mue dimissione per evitar errori con consecuencias legales.",
+    "obiettivi": [
+      "Clasificar automaticamente il 90% di fascicoli con accurace >85%",
+      "Reducir errori di assegnazione del 15% al 3%",
+      "Extraer entidades chiave: fechas, importi, DNI, referencias normativas",
+      "Sugerir resoluzione basata il suo precedentes per il 50% di fascicoli",
+      "Reducir tempo medio di trattamento un 25%"
+    ],
+    "funzionalità": [
+      "CORTEX.COMPLETE per classificazione e estrazione di texto",
+      "ML.CLASSIFICATION per categorizazione automatica",
+      "Cortex Search per búsqueda di precedentes similees",
+      "Asignazione automatica a unità competente con priorità",
+      "Dashboard Streamlit di gestione dei fascicoli"
+    ],
+    "dati": [
+      "Expedientes administrativos: texto, tipo, documentazione adjunta",
+      "Classificazione storica: tipo, materia, unità, resoluzione",
+      "Normativa aplicable: leyes, reglamentos, instruczioni",
+      "Plazos legales per tipo di procedura",
+      "Historial di resoluzioni e precedentes"
+    ],
+    "stratificazione": [
+      "Por tipo di procedura: autorizazione, sanzione, sovvenzione, risorsa",
+      "Por materia: urbanismo, medio ambiente, hacienda, occupazione, educazione",
+      "Por priorità: urgente, ordinario, diferido",
+      "Por complejidad: simple, medio, complejo",
+      "Por unità competente destino"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Alimentar con cartella clinica di fascicoli classificados (mínimo 2 anni)",
+      "Validar classificazione automatica con supervisores",
+      "Enriquecer base di precedentes con nuevas resoluzioni",
+      "Integrar con sistema di gestione di fascicoli"
+    ]
+  },
+  "UC05": {
+    "title": "Controllo dell\'Esecuzione dei Fondi Next Generation EU",
+    "contesto": "Italia gestiona 140.000M€ in fondos Next Gen EU con requisiti stringenti di tracciabilità e conformità di milestone. I ritardi in esecuzione e le inconsistenze in reporting possono risultare in devoluzione di fondos alla UE.",
+    "focus": "Construir un sistema di monitoraggio end-to-end di fondi europei che rastree ogni euro dalla assegnazione fino a il impatto, detecte anomalías e anticipe rischios di non conformità.",
+    "reto": "La cadena di esecuzione involucra molteplici amministrazioni (estatal, autonómica, local), entidades ejecutoras e beneficiari finales. I dati vienen di 50+ sistemi con formatos diversi e la tracciabilità richiede granularidad fino a il ultimo euro.",
+    "obiettivi": [
+      "Monitorizar il 100% dei fondos assegnati con tracciabilità completa",
+      "Rilevare ritardi in esecuzione con 2-3 mesi di davanti alazione",
+      "Identificar inconsistenze e anomalías in reporting",
+      "Generar report di conformità di milestone automatizzatos",
+      "Reducir rischio di devoluzione di fondos per non conformità"
+    ],
+    "funzionalità": [
+      "Trazabilidad end-to-end con ML per rilevamento di anomalías",
+      "ML.FORECAST per previsione di ritmo di esecuzione",
+      "CORTEX.COMPLETE per generazione di report di conformità",
+      "Alert precoci di ritardo e non conformità di KPIs",
+      "Dashboard Streamlit di controllo dei fondi europei"
+    ],
+    "dati": [
+      "Asignazioni di fondos: componente, línea, importe, beneficiario",
+      "Liappuntamentozioni e controttos: fecha, importe, adjudicatario, scadenze",
+      "Ejecuzione di bilancio: pagos, certificazioni, milestone cumplidos",
+      "Hitos e obiettivi: definizione UE, indicatori, scadenze, evidenzas",
+      "Informes di monitoraggio: trimestralees, semestrales, annuali"
+    ],
+    "stratificazione": [
+      "Por componente del Plan di Recuperazione (1-30)",
+      "Por amministrazione ejecutora: estatal, autonómica, local",
+      "Por stato di esecuzione: in scadenza, rischio, ritardo, critico",
+      "Por tipo di gasto: inversione, reforma, transferencia",
+      "Por hito UE: cumplido, in progreso, redopoado, non iniciado"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar con struttura di componentes del Plan di Recuperazione",
+      "Calibrar alert secondo umbrales di ritardo admisibles",
+      "Integrar con sistemi contables e di gestione di controttos",
+      "Generar report di conformità per la Comisione Europea"
+    ]
+  },
+  "UC06": {
+    "title": "Gestione Intelligente della Mobilità Urbana",
+    "contesto": "Le ciudades espannole sufren congestione cronica che cuesta 5.500M€/anno. I sistemi di gestione di tráfico con cici fijos non si adaptan alla domanda reale, e la fdimissione di integrazione tra modos di transporte desenzacentiva alternativas al veicolo privado.",
+    "focus": "Construir un motor di ottimizzazione di movilidad urbana che preteiga domanda di transporte, optimice semáforos e coordine transporte pubblico con dati in tempo reale.",
+    "reto": "La movilidad urbana depende di molteplici variables (eventi, meteorologia, obras, festivos) e richiede coordinazione tra semáforos, transporte pubblico, aparcamiento e zonas di bajas emisiones in tempo reale.",
+    "obiettivi": [
+      "Reducir tempo medio di desplazamiento un 15% in hora punta",
+      "Aumentar uso di transporte pubblico un 10%",
+      "Optimizar cici semafóricos in tempo reale per correteor",
+      "Preteecir congestione con 30-60 minuti di davanti alazione",
+      "Reducir emisiones di tráfico un 12%"
+    ],
+    "funzionalità": [
+      "ML.FORECAST per previsione di tráfico per zona e hora",
+      "Ottimizzazione di cici semafóricos con ML",
+      "Variabili: tráfico, transporte pubblico, eventi, meteorologia, obras",
+      "Recomendazioni di movilidad personalizadas",
+      "Dashboard Streamlit del centro mobilità"
+    ],
+    "dati": [
+      "Tráfico in tempo reale: espiras, cámaras, GPS flottdavanti a",
+      "Transporte pubblico: ocupazione, ritardi, frequenzas, percorsos",
+      "Aparcamiento: ocupazione per zona, rotazione, prezzos",
+      "Eventos: culturales, deportivos, manifestazioni, obras",
+      "Meteorología: temperatura, lluvia, viento per zona"
+    ],
+    "stratificazione": [
+      "Por zona della ciudad: centro, corona, periferia, accessos",
+      "Por modo di transporte: veicolo privado, bus, metro, bici, a pie",
+      "Por franja horaria: punta mañana, valle, punta tarde, noche",
+      "Por tipo di día: laborable, sábado, domingo, festivo, evento",
+      "Por correteor di tráfico principale"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar con dati di sensores di tráfico della ciudad",
+      "Ajustar parámetros di ottimizzazione per correteor",
+      "Integrar con sistemi di gestione semafórica",
+      "Validar con dati reali e ajustar modello mensilmente"
+    ]
+  },
+  "UC07": {
+    "title": "Valutazione dell\'Impatto delle Politiche Pubbliche",
+    "contesto": "Le políticas pubbliche si evalúan ex-post con 2-3 anni di ritardo usando indicatori agregados. La evidenza per toma di decisiones è escasa, lo che perpetúa la assegnazione di risorse per inerzia in lugar di per impatto demostrado.",
+    "focus": "Construir un motor di valutazione di impatto che analice il efecto diferencial di políticas pubbliche il suo indicatori socioeconómicos a livello territorial usando inferencia causal e ML.",
+    "reto": "La valutazione di impatto richiede seperr il efecto della política di altri fattori (ciclo económico, tendenze demografiche). Le tecnicas di inferencia causal necessitano grupos di control adecuados e dati di qualità.",
+    "obiettivi": [
+      "Evaluar impatto di políticas con rigor cuasi-experimental",
+      "Reducir tempo di valutazione di 3 anni a 6 mesi",
+      "Medir impatto diferencial per territorio e profilo di beneficiario",
+      "Generar raccomandazioni basadas in evidenza per reassegnazione",
+      "Automatizar reporting di valutazione per decisores"
+    ],
+    "funzionalità": [
+      "Analisi di impatto con ML.CLASSIFICATION + CORTEX.COMPLETE",
+      "Técnicas cuasi-experimentales: difference-in-differences, matching",
+      "Variabili: indicatori pre/post, grupo di control, contesto",
+      "Generazione di narrativas di valutazione con LLM",
+      "Dashboard Streamlit di valutazione delle politiche"
+    ],
+    "dati": [
+      "Indicadores socioeconómicos comunali: occupazione, renta, educazione, salud",
+      "Registro di políticas: tipo, budget, beneficiari, territorio, periodo",
+      "Dati di esecuzione: gasto reale, actividades, outputs",
+      "Indicadores di risultato: variazione pre/post per territorio",
+      "Dati di control: comunes similees senza intervento"
+    ],
+    "stratificazione": [
+      "Por tipo di política: occupazione, educazione, vivienda, salud, innovazione",
+      "Por livello territorial: comunale, comarcal, autonómico, estatal",
+      "Por profilo di beneficiario: età, género, situazione laboral",
+      "Por periodo di valutazione: corto (1 anno), medio (3 anni), largo (5+ anni)",
+      "Por método di valutazione: experimental, cuasi-experimental, descriptivo"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar con dati della política a valutare e grupo di control",
+      "Seleccionar método di valutazione secondo disponibilidad di dati",
+      "Validar risultatos con evaluadores expertos",
+      "Integrar raccomandazioni in ciclo di pianificazione di bilancio"
+    ]
+  },
+  "UC08": {
+    "title": "Feature Store del Profilo Cittadino 360",
+    "contesto": "I dati del cittadino sono dispersos in 10-15 sistemi senza interoperabilidad. Un funzionario necessita consultore molteplici sistemi per atender una richiesta, e le duplicazioni generanoo errori. La Lee di Interoperabilidad exige coordinazione.",
+    "focus": "Implementar un Feature Store in Snowflake che consolide features del profilo cittadino da molteplici fonti, cumpliendo RGPD, per personalizzazione di servizi e coordinazione inter-administrativa.",
+    "reto": "I dati cittadinos sono dimissionemente sensibles (RGPD, LOPDGDD). La integrazione debe respetar la minimizazione di dati, il consentimiento e la limitazione di finalidad. Ogni amministrazione tiene soberanía il suo i suoi dati.",
+    "obiettivi": [
+      "Consolidar visione 360 del cittadino da 6+ fonti cumpliendo RGPD",
+      "Creare Entite 'citizen' con FeatureViews especializados e enmascaramiento",
+      "Servir features con get_features() per personalizzazione di servizi",
+      "Reducir tempo di assistenza presencial un 40%",
+      "Habilitar features compartidas tra servizi con control di accesso"
+    ],
+    "funzionalità": [
+      "Snowflake Feature Store: Entity('citizen', join_keys=['citizen_id'])",
+      "FeatureView: demographic_profile (padrón, età, domicilio, familia)",
+      "FeatureView: fiscal_status (tributario, deuda, declarazioni)",
+      "FeatureView: sociale_services (prestazioni, richieste, vulnerabilidad)",
+      "FeatureView: employment_profile (occupazione, formazione, desoccupazione)",
+      "FeatureView: digital_engagement (canal preferido, pratiche online, accesibilidad)"
+    ],
+    "dati": [
+      "Padrón comunale: domicilio, composizione familiar, nacionalidad",
+      "Agencia Tributaria: declarazioni, deuda, actividad economica",
+      "Servizi sociali: prestazioni, richieste, valutazione dependencia",
+      "SEPE/INEM: occupazione, desoccupazione, formazione, prestazioni",
+      "Portal di amministrazione electrónica: pratiche, canal, frequenza"
+    ],
+    "stratificazione": [
+      "Por profilo demográfico: età, género, nacionalidad, composizione familiar",
+      "Por situazione socioeconomica: renta, occupazione, prestazioni",
+      "Por livello di digitalizazione: digital nativo, intermedio, brecha digital",
+      "Por necessità di servizi: dimissione frequenza, esporádica, inactivo",
+      "Por territorio: comune, distrito, zona"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar Entite e FeatureViews con políticas di accesso RGPD",
+      "Implementar enmascaramiento di dati secondo finalidad",
+      "Consumir features con fs.get_features() da servizi autorizados",
+      "Auditar accessos e cumplir con minimizazione di dati"
+    ]
+  },
+  "UC09": {
+    "title": "Ottimizzazione degli Appalti Pubblici",
+    "contesto": "La assunzione pubblica in Italia mueve 200.000M€/anno ma è lenta (6-12 mesi), con un 30% di gare d'appalto desiertas e fdimissione di competencia che eleva prezzos. La Lee 9/2017 exige transparencia e efficienza.",
+    "focus": "Construir un motor di inteligencia di assunzione che analice storico, preteiga desiertos, recomiende divisione in lotes e estime prezzos di mercato.",
+    "reto": "I dati di assunzione sono in piattaforme heterogéneas (PLACE, comunitàes, entes locales) con qualità variable. I pliegos sono documentos complejos di 100+ páginas cuyo analisi manualeee limita la competencia di PYMES.",
+    "obiettivi": [
+      "Reducir gare d'appalto desiertas del 30% al 15%",
+      "Aumentar número medio di ofertas per gara d'appalto un 40%",
+      "Estimar prezzos di referencia con error <10%",
+      "Recomendar divisione in lotes per facilitar accesso a PYMES",
+      "Reducir tempo di priparazione di pliegos un 30%"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION per previsione di gare d'appalto desiertas",
+      "Analisi di competencia per sector, territorio e tramo di importe",
+      "Estimazione di prezzos con ML e benchmarking storico",
+      "Raccomandazione di lotes basata il suo mercato e competencia",
+      "Dashboard Streamlit di intelligence degli appalti"
+    ],
+    "dati": [
+      "Liappuntamentozioni storicas: CPV, importe, scadenze, requisiti, risultatos",
+      "Ofertas recibidas: número, prezzos, adjudicatarios, UTEs",
+      "Registro di aziendas: tamanno, sector, esperienza, solvencia",
+      "Ejecuzione di controttos: scadenze, modificados, incidencias, penalidades",
+      "Dati di mercato: prezzos per CPV e territorio"
+    ],
+    "stratificazione": [
+      "Por tipo di controtto: obras, servizi, approvvigionamentos, mixtos",
+      "Por CPV (vocabulario común di assunzione)",
+      "Por importe: minore, simplificado, abierto, restringido",
+      "Por poder adjudicador: AGE, comunitàes, entidades locales, universidades",
+      "Por risultato: adjudicado, desierto, anulado, impugnado"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Alimentar con dati di PLACE e piattaforme autonómicas",
+      "Validar estimazioni di prezzo con unitàes di assunzione",
+      "Integrar raccomandazioni in processo di priparazione di pliegos",
+      "Medir impatto: reteuczione di desiertos, aumento di competencia"
+    ]
+  },
+  "UC10": {
+    "title": "Rilevamento Anomalie nel Consumo Energetico degli Edifici Pubblici",
+    "contesto": "I edificios pubblicos italiani consumano 3.500 GWh/anno con potencial di risparmio del 30-40%. La Directiva di Eficiencia Energética exige auditorías e misuras di risparmio, ma la monitoraggio è escasa.",
+    "focus": "Construir un sistema ML di rilevamento di anomalías e ottimizzazione di consumo energetico in edificios pubblicos con monitoraggio in tempo reale.",
+    "reto": "I edificios pubblicos hanno usos mue heterogéneos (uffici, colegios, ospedali, polideportivos) e horarios variables. Le anomalías deben distinguirse di cambios legítimos di uso.",
+    "obiettivi": [
+      "Rilevare il 80% di anomalías di consumo in <24 ore",
+      "Reducir consumo energetico un 20% in edificios monitorizados",
+      "Generar benchmarking tra edificios similees",
+      "Cumplir requisiti della Directiva di Eficiencia Energética",
+      "Priorizar inversiones in efficienza per ROI"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION per rilevamento di anomalías il suo IoT",
+      "ML.FORECAST per previsione di consumo esperado",
+      "Benchmarking tra edificios per tipo, superficie e zona climática",
+      "Recomendazioni di efficienza con stima di risparmio",
+      "Dashboard Streamlit di efficienza energetica"
+    ],
+    "dati": [
+      "Consumo eléctrico per edificio: horario, per circuito si disponibile",
+      "Climatizazione: temperatura, humedad, setpoints, ore di funzionamento",
+      "Ocupazione: aforo, horarios, eventi, vacazioni",
+      "Meteorología: temperatura exterior, irradiancia, humedad",
+      "Inventario di edificios: tipo, superficie, anzianità, certificazione energetica"
+    ],
+    "stratificazione": [
+      "Por tipo di edificio: ufficio, colegio, ospedale, polideportivo, museo",
+      "Por zona climática e orientazione",
+      "Por livello di consumo: alto, medio, bajo vs benchmark",
+      "Por tipo di anomalía: consumo excesivo, fuori da horario, patrón anómalo",
+      "Por potencial di risparmio: alto >30%, medio 15-30%, bajo <15%"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar con dati di contadores intelligentes e sensores IoT",
+      "Calibrar baseline per edificio con al meno 6 mesi di dati",
+      "Validar anomalías con gestores di strutture",
+      "Priorizar inversiones per ROI e reteuczione di emisiones"
+    ]
+  },
+  "UC11": {
+    "title": "Rilevamento Frode Fiscale con Analisi delle Reti",
+    "contesto": "La frode fiscal in Italia representa 70.000-90.000M€/anno. I schemas complejos usan reti di aziendas, fatturazione ficticia e operazioni intracomunitarias che le inspeczioni traggiuntivoes non rilevano.",
+    "focus": "Construir un sistema ML di rilevamento frodi fiscal che analice declarazioni, reti societarie e pattern di fatturazione per identificare schemas di evasione.",
+    "reto": "I schemas di frode fiscal sono sofisticados: società instrumentales in cadena, prezzos di transferencia, carruseles di IVA, e uso di jurisdiczioni opacas. Il analisi di grafos è esencial ma la escala (milioni di contribuyentes) exige efficienza.",
+    "obiettivi": [
+      "Aumentar rilevamento frodi complejo un 50%",
+      "Identificar reti di società instrumentales usadas per evasione",
+      "Priorizar inspeczioni per importe defraudado estimado",
+      "Rilevare carruseles di IVA intracomunitarios",
+      "Reducir tempo di investigazione di 6 mesi a 6 settimanas"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION il suo declarazioni e operazioni",
+      "Analisi di reti societarie con grafos di vinculazioni",
+      "Rilevamento di fatturazione ficticia e prezzos di transferencia",
+      "Scoring di rischio per contribuyente e rete di aziendas",
+      "Dashboard Streamlit di intelligence fiscale"
+    ],
+    "dati": [
+      "Declarazioni fiscales: IS, IRPF, IVA per contribuyente",
+      "Operazioni intracomunitarias: modello 349, adquisizioni",
+      "Registro mercantil: società, administradores, participazioni",
+      "Facturazione: SII (Suministro Inmediato di Informazione del IVA)",
+      "Historial di inspeczioni: risultatos, actas, sanzioni"
+    ],
+    "stratificazione": [
+      "Por tipo di frode: IVA, IS, IRPF, aduanas, non residentes",
+      "Por schema: fatturazione ficticia, carrusel, prezzos transferencia",
+      "Por tamanno di contribuyente: gran azienda, PYME, autónomo",
+      "Por sector di actividad e rischio sectorial",
+      "Por territorio e jurisdiczione"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Alimentar con dati fiscales anonimizados di al meno 3 anni",
+      "Construir grafos di vinculazioni con registros mercantiles",
+      "Validar risultatos con inspectores prima di actuazioni",
+      "Retranar modello semestralmente con casi resueltos"
+    ]
+  },
+  "UC12": {
+    "title": "Personalizzazione dei Servizi Digitali al Cittadino",
+    "contesto": "I portales di amministrazione electrónica ofrecen 3.000+ pratiche ma la esperienza è genérica. I cittadinos solo encuentran lo che cercan il 40% delle veces, generanoodo frustrazione e visitas presenciales evitables.",
+    "focus": "Construir un motor di personalizzazione della esperienza digital che recomiende pratiche rilevanti, simplifique formularios e anticipe necessitàes basandosi il suo eventi vitales.",
+    "reto": "La personalizzazione in il sector pubblico debe equilibrar utilidad con privacidad. I eventi vitales (nacimiento, cambio di domicilio, jubilazione) desencadenan molteplici pratiche che il cittadino desconoce.",
+    "obiettivi": [
+      "Aumentar tasso di éxito in búsqueda di pratiche del 40% al 75%",
+      "Reducir tempo medio di trattamento online un 30%",
+      "Pre-cumplimentar il 60% di campos in formularios",
+      "Anticipar il 70% di pratiche vinculados a eventi vitales",
+      "Reducir visitas presenciales evitables un 25%"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION per raccomandazione di pratiche rilevanti",
+      "Rilevamento di eventi vitales: nacimiento, domicilio, jubilazione",
+      "Pre-cumplimentazione di formularios con Feature Store (UC08)",
+      "CORTEX.COMPLETE per simplificazione di lenguaje administrativo",
+      "Dashboard Streamlit di esperienza cittadina"
+    ],
+    "dati": [
+      "Catálogo di pratiche: requisiti, documentazione, scadenze, dependencias",
+      "Historial di navegazione e pratiche del cittadino (anonimizado)",
+      "Features del Feature Store UC08: profilo demográfico e fiscal",
+      "Eventos vitales: nacimiento, matrimonio, defunzione, cambio domicilio",
+      "Encuestas di satisfazione e feedback di utentes"
+    ],
+    "stratificazione": [
+      "Por evento vital: nacimiento, cambio domicilio, jubilazione, defunzione",
+      "Por frequenza di uso: utente habitual, ocasional, primerizo",
+      "Por profilo: età, livello digital, idioma, accesibilidad",
+      "Por tipo di pratica: obligatorio, voluntario, recurrente",
+      "Por canal: web, app, sede electrónica"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Integrar con Feature Store UC08 per profilo cittadino",
+      "Configurar eventi vitales e pratiche asociados",
+      "Validar raccomandazioni con utentes piloto",
+      "Medir impatto: tasso di éxito, tempo, satisfazione"
+    ]
+  },
+  "UC13": {
+    "title": "Ottimizzazione dell\'Allocazione delle Risorse Sanitarie",
+    "contesto": "La assegnazione di risorse sanitarios per ratios poblacionales non refleja la realidad: morbilidad, envejecimiento e stagionalità varían drásticamente. Il risultato è saturazione in unos centri e ociosidad in altri.",
+    "focus": "Construir un motor di ottimizzazione di risorse sanitarios che preteiga domanda assistenziale per área, especialidad e profilo per assegnare risorse equitativa e eficientemente.",
+    "reto": "La domanda sanitaria depende di fattori epidemiológicos (gripe, COVID), demográficos (envejecimiento) e stagionali che varían per zona. Le restriczioni di bilancios e di personal limitan la flexibilidad.",
+    "obiettivi": [
+      "Preteecir domanda assistenziale con MAPE <10% a 1 mes",
+      "Reducir tempo di attesa un 20% misuravanti a assegnazione proactiva",
+      "Optimizar distribuzione di personal tra centri",
+      "Anticipar picos epidémicos con 2-4 settimanas di davanti alazione",
+      "Generar evidenza per decisiones di inversione in infrastruttura"
+    ],
+    "funzionalità": [
+      "ML.FORECAST di domanda per área sanitaria e especialidad",
+      "Ottimizzazione di assegnazione con restriczioni di bilancios",
+      "Variabili: morbilidad, envejecimiento, stagionalità, epidemias",
+      "Simulazione di escenarios: pandemia, envejecimiento, nuevos centri",
+      "Dashboard Streamlit di pianificazione sanitaria"
+    ],
+    "dati": [
+      "Actividad assistenziale: consulti, pronto soccorso, ricoveri, chirurgias per centro",
+      "Demografía per zona sanitaria: poblazione, pirámide di età, proyeczioni",
+      "Morbilidad: prevalencia per patologia, zona e grupo di età",
+      "Recursos: posti letto, sale operatorie, personal per centro e especialidad",
+      "Presupuesto: assegnazione per centro, partida e ejercicio"
+    ],
+    "stratificazione": [
+      "Por área sanitaria e centro di salud/ospedale",
+      "Por especialidad medica e tipo di servizio",
+      "Por grupo di età e profilo di morbilidad",
+      "Por stagionalità: gripe, alérgica, verano, navidad",
+      "Por tipo di risorsa: posti letto, personal, attrezzatura, budget"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar con dati di actividad e risorse per centro",
+      "Calibrar modeli epidemiológicos con dati storicos",
+      "Validar con gestores sanitarios prima di implementare cambios",
+      "Integrar con sistemi di gestione ospedalearia"
+    ]
+  },
+  "UC14": {
+    "title": "Feature Store di Performance degli Organismi Pubblici",
+    "contesto": "I KPIs di rendimento di organismos pubblicos si calculan mannualmente con mesi di ritardo. No existe benchmarking tra organismos similees ni rilevamento precoce di deterioro di servizio.",
+    "focus": "Implementar un Feature Store in Snowflake che consolide metriche di rendimento di ogni organismo pubblico per benchmarking, alert e toma di decisiones basata il suo dati.",
+    "reto": "I organismos pubblicos sono heterogéneos (ministerios, agencias, organismos autónomos, entidades locales) con sistemi di informazione diversi. Le metriche deben ser comperbles respetando la diversidad funcional.",
+    "obiettivi": [
+      "Consolidar metriche di rendimento da 5+ fonti per organismo",
+      "Creare Entite per organismo con FeatureViews especializados",
+      "Reducir latenza di KPIs di 3 mesi a near-reale-time",
+      "Habilitar benchmarking tra organismos con funzione simile",
+      "Servir features per alert di deterioro di servizio"
+    ],
+    "funzionalità": [
+      "Snowflake Feature Store: Entite per organismo_id",
+      "FeatureView: resolution_metrics (tempi di resoluzione, backlog, SLA)",
+      "FeatureView: citizen_satisfaction (sondaggi, reclami, NPS)",
+      "FeatureView: productivite (fascicoli/funzionario, costo/pratica)",
+      "FeatureView: budget_execution (esecuzione di bilancio, desviazioni)",
+      "FeatureView: digital_maturite (pratiche online, uso sede electrónica)"
+    ],
+    "dati": [
+      "Gestione di fascicoli: entrada, resoluzione, pendientes, scadenze",
+      "Encuestas di satisfazione cittadina e reclami",
+      "Plantilla e productividad: funzionari, fascicoli, costi",
+      "Ejecuzione di bilancio: créditos, obligazioni, pagos",
+      "Administrazione electrónica: pratiche online, tasa digital, incidencias"
+    ],
+    "stratificazione": [
+      "Por tipo di organismo: ministerio, agencia, organismo autónomo, ente local",
+      "Por ámbito funcional: servizi, regolamentazione, inspeczione, gestione",
+      "Por tamanno: grande >1000 empleados, medio 100-1000, piccolo <100",
+      "Por livello di digitalizazione: avanzato, intermedio, básico",
+      "Por rendimento vs benchmark: excelente, adecuado, a rischio, critico"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar Entite e FeatureViews per organismo",
+      "Le features si attualeizan da sistemi di gestione e sondaggi",
+      "Consumir features con fs.get_features() per dashboards e alert",
+      "Extender con FeatureViews secondo evoluzione di indicatori"
+    ]
+  },
+  "UC15": {
+    "title": "Cybersicurezza dell\'Infrastruttura Pubblica Digitale",
+    "contesto": "I ciberataques a amministrazioni pubbliche aumentaron un 150% in 2023-2025. I sistemi legace e la fdimissione di monitoraggio centralizada exponen dati sensibles di milioni di cittadinos. Il ENS exige misuras di sicurezza proporcionales.",
+    "focus": "Construir un pipeline ML di rilevamento di amenazas in infrastruttura digital pubblica che analice tráfico, comportamento di utentes e accessos per rilevare ataques e automatizzare risposta.",
+    "reto": "La infrastruttura pubblica combina sistemi modernos con legace di 20+ anni. I atacdavanti as explotan esta heterogeneidad. I falsos positivos sono costios perché la risposta puede interrumpir servizi cittadinos.",
+    "obiettivi": [
+      "Rilevare il 90% di amenazas in <10 minuti",
+      "Reducir falsos positivos al <3%",
+      "Correlacionar eventi multi-sistema per rilevare APTs",
+      "Automatizar risposta a incidentes di baja severidad",
+      "Cumplir requisiti ENS e NIS2"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION il suo logs e tráfico di rete",
+      "Baseline di comportamento normal per utente e sistema",
+      "Correlazione multi-sistema per rilevamento di ataques avanzatos",
+      "Scoring di rischio per evento, utente e sistema",
+      "Dashboard Streamlit del SOC pubblico"
+    ],
+    "dati": [
+      "Logs di accesso: sistemi, applicazioni, VPN, Active Directory",
+      "Tráfico di rete: flujos, protocollos, volúmenes, anomalías",
+      "Eventos di sicurezza: firewall, IDS/IPS, antivirus, EDR",
+      "Inventario di sistemi: versiones, parches, vulnerabilidades",
+      "Inteligencia di amenazas: IOCs, TTPs, alert sectoriales"
+    ],
+    "stratificazione": [
+      "Por tipo di amenaza: ransomware, phishing, APT, insider, DDoS",
+      "Por sistema afectado: infrastruttura, applicazioni, dati, comunicazioni",
+      "Por severidad: crítica, dimissione, media, baja, informativa",
+      "Por origen: externo, interno, supply chain, partner",
+      "Por livello di automazione di risposta: automatico, asistido, manualeee"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar baseline con dati di al meno 4 settimanas",
+      "Integrar con strumenti SIEM/SOAR esistonotes",
+      "Validar regle di automazione con apparecchiatura di sicurezza",
+      "Actualizar regle secondo inteligencia di amenazas del CCN-CERT"
+    ]
+  },
+  "UC16": {
+    "title": "Controllo delle Incompatibilità e Conflitti di Interesse",
+    "contesto": "I conflictos di interés nella amministrazione pubblica sono difíciles di rilevare mannualmente in un ecosistema di 3 milioni di empleados pubblicos. La Lee di Transparencia exige misuras activas di rilevamento.",
+    "focus": "Construir un sistema ML di rilevamento di conflictos di interés che cruce registros di personal, declarazioni di bienes, registros mercantiles e assunzione pubblica.",
+    "reto": "Le vinculazioni tra funzionari e aziendas possono ser indirectas (familiares, testaferros, società interpuestas). Il analisi di grafos debe ser exhaustivo ma respetar la presunzione di inocencia.",
+    "obiettivi": [
+      "Rilevare il 70% di conflictos di interés potenciales",
+      "Reducir tempo di investigazione di incompatibilidades un 60%",
+      "Identificar pattern di revolving doors in altos cargos",
+      "Cruzar declarazioni di bienes con registros mercantiles",
+      "Generar alert priorizadas per uffici di conflictos"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION con analisi di grafos di vinculazioni",
+      "Cruce di registros: personal, mercantil, assunzione, bienes",
+      "Rilevamento di pattern: revolving doors, nepotismo, testaferros",
+      "Scoring di rischio per dipendente pubblico e controtto",
+      "Dashboard Streamlit di integrità pubblica"
+    ],
+    "dati": [
+      "Registro di personal pubblico: cargo, organismo, funzioni, cartella clinica",
+      "Declarazioni di bienes e actividades di altos cargos",
+      "Registro mercantil: società, administradores, socios, participazioni",
+      "Contratazione pubblica: adjudicazioni, adjudicatarios, evaluadores",
+      "Registros civiles: relazioni familiares (quando legalmente accesible)"
+    ],
+    "stratificazione": [
+      "Por tipo di conflicto: incompatibilidad, revolving door, nepotismo",
+      "Por livello del cargo: alto cargo, directivo, tecnico, administrativo",
+      "Por rischio: alto, medio, bajo",
+      "Por amministrazione: estatal, autonómica, local",
+      "Por sector di assunzione e volumen económico"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Alimentar con registros di personal e mercantiles",
+      "Construir grafos di vinculazioni con analisi di reti",
+      "Validar alert con uffici di conflictos prima di actuazioni",
+      "Respetar presunzione di inocencia: alert sono indicios, non esami"
+    ]
+  },
+  "UC17": {
+    "title": "NLP sulla Normativa e Generazione di Riassunti Legali",
+    "contesto": "Il BOE publica 300.000+ páginas/anno di normativa. I funzionari dedicano 2-4 ore a analizzare ogni nueva norma. La normativa consolidada non existe in muchos ámbitos, generanoodo insicurezza jurídica.",
+    "focus": "Construir un pipeline NLP che analice normativa automaticamente, genere resúmenes ejecutivos, identifique procedure afectados e cree normativa consolidada.",
+    "reto": "Il lenguaje jurídico è complejo, con referencias cruzadas, derogazioni parciales e remisiones. Un resumen incorrecto puede tener consecuencias legales graves. La precisione è crítica.",
+    "obiettivi": [
+      "Generar resúmenes ejecutivos di nueva normativa in <1 hora",
+      "Identificar automaticamente procedure afectados per cambios",
+      "Creare normativa consolidada attualeizada automaticamente",
+      "Reducir tempo di analisi normativo un 70%",
+      "Alertar di cambios che afectan a ogni unità administrativa"
+    ],
+    "funzionalità": [
+      "CORTEX.COMPLETE per analisi e resumen di textos normativos",
+      "RAG con Cortex Search il suo corpus legal vigente (BOE, BOCA, BOP)",
+      "Identificazione di derogazioni, modificazioni e remisiones",
+      "Generazione di normativa consolidada",
+      "Dashboard Streamlit di intelligence normativa"
+    ],
+    "dati": [
+      "BOE: disposizioni generales, leyes, reali decretos, órdenes",
+      "Boletines autonómicos: normativa di ogni comunità autónoma",
+      "Boletines provinciales: ordenanzas e reglamentos locales",
+      "Jurisprudencia: sentencias relevprima del TC, TS e TSJ",
+      "Procedimientos internos: inventario di pratiche e normativa aplicable"
+    ],
+    "stratificazione": [
+      "Por rango normativo: lee orgánica, ley, RD, orden, resoluzione",
+      "Por ámbito: estatal, autonómico, local, UE",
+      "Por materia: hacienda, occupazione, urbanismo, medio ambiente, educazione",
+      "Por tipo di cambio: nueva, modificazione, derogazione, correczione",
+      "Por impatto: alto (afecta muchos procedure), medio, bajo"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Indexar corpus legal con Cortex Search",
+      "Configurar alert per materia e unità administrativa",
+      "Validar resúmenes con servizi jurídicos",
+      "Actualizar normativa consolidada automaticamente"
+    ]
+  },
+  "UC18": {
+    "title": "Analisi Preteittiva della Vulnerabilità Sociale",
+    "contesto": "La rilevamento di vulnerabilidad sociale è reactiva: le amministrazioni intervienen quando ya hae crisi. La pobreza energetica, il rischio di desahucio e il isolamento di maggiorees richieden intervento preventiva.",
+    "focus": "Construir un motor preteittivo che integre indicatori socioeconómicos per identificare personas e zonas a rischio prima di che si produzca la crisi.",
+    "reto": "La vulnerabilidad è multidimensional (economica, habitacional, sanitaria, sociale) e i dati sono dispersos tra amministrazioni. Il modello debe ser sensible ma non estigmatizdavanti a, e cumplir RGPD.",
+    "obiettivi": [
+      "Identificar il 70% di situazioni di vulnerabilidad 3-6 mesi prima di la crisi",
+      "Creare mapa di rischio per comune e barrio attualeizado mensilmente",
+      "Priorizar intervento per urgenza e impatto",
+      "Coordinar actuazioni tra servizi sociali, occupazione, vivienda e salud",
+      "Reducir cronificazione della vulnerabilidad un 20%"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION per scoring di vulnerabilidad multidimensional",
+      "Variabili: renta, occupazione, vivienda, salud, servizi sociali, età",
+      "Mapa di rischio per zona con indicatori di alerta precoce",
+      "Recomendazioni di intervento per profilo e dimensione",
+      "Dashboard Streamlit di prevenzione socialee"
+    ],
+    "dati": [
+      "Indicadores di renta e occupazione per zona (INE, SEPE, AEAT)",
+      "Servizi sociali: richieste, prestazioni, report sociali",
+      "Vivienda: desahucios, lanzamientos, ayudas al alquiler",
+      "Salud: indicatori di morbilidad, salud mental, dependencia",
+      "Energía: richieste di bono sociale, cortes di approvvigionamento"
+    ],
+    "stratificazione": [
+      "Por dimensione: economica, habitacional, sanitaria, sociale, energetica",
+      "Por profilo: maggiorees solos, familias monoparentales, migrdavanti as, jóvenes",
+      "Por zona: barrio vulnerable, zona rural, dispersione geografica",
+      "Por urgenza: rischio inminente, rischio a 3 mesi, rischio a 6 mesi",
+      "Por livello di intervento: prevenzione, accompagnamento, emergencia"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Integrar dati di molteplici fonti con stringente conformità RGPD",
+      "Validar modello con trabajadores sociali di referencia",
+      "Coordinar alert con apparecchiature di intervento territorial",
+      "Evaluar impatto di interventi preventivas trimestralemente"
+    ]
+  },
+  "UC19": {
+    "title": "Analisi del Sentiment nella Partecipazione Cittadina",
+    "contesto": "I processos di participazione cittadina generanoo migliaia di aportazioni textuales che si analizzan mannualmente. Il 70% dei cittadinos perciben che il suo opinión non si tiene in cuenta per la fdimissione di risposta strutturada.",
+    "focus": "Construir un pipeline NLP di analisi di participazione che clasifique aportazioni, detecte temas emergentes e genere report di síntesis per decisores.",
+    "reto": "Le aportazioni cittadinas sono heterogéneas: da propuestas bien articuladas fino a reclami emocionales. Il analisi dibe ser imparcial, multilingue e capaz di agrupar propuestas similees.",
+    "obiettivi": [
+      "Analizar il 100% di aportazioni in <24 ore (vs settimanas manualeee)",
+      "Clasificar per tema, sentimiento e viabilidad automaticamente",
+      "Rilevare temas emergentes non anticipados nella consulto",
+      "Generar report di síntesis per decisores políticos",
+      "Aumentar percepzione cittadina di che il suo opinión cuenta"
+    ],
+    "funzionalità": [
+      "CORTEX.SENTIMENT per analisi di sentimiento per aportazione",
+      "CORTEX.COMPLETE per classificazione temática e resumen",
+      "Clustering di propuestas similees per consolidazione",
+      "Rilevamento di temas emergentes non previsti",
+      "Dashboard Streamlit di partecipazione cittadina"
+    ],
+    "dati": [
+      "Aportazioni cittadinas: texto, autor (anonimizado), fecha, canal",
+      "Consultas pubbliche: tema, documentos base, periodo, ámbito",
+      "Presupuestos participativos: propuestas, votos, viabilidad",
+      "Sugerencias e reclami: texto, categoría, risposta, resoluzione",
+      "Encuestas di satisfazione con processo participativo"
+    ],
+    "stratificazione": [
+      "Por tipo di processo: consulto pubblica, budget participativo, sugerencia",
+      "Por tema: urbanismo, movilidad, medio ambiente, sociale, cultura",
+      "Por sentimiento: positivo, neutro, negativo, mixto",
+      "Por idioma: castellano, catalán, euskera, gallego, valenciano",
+      "Por viabilidad: viable, viable con modificazioni, non viable"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Indexar aportazioni con metadati di processo e tema",
+      "Configurar classificazione temática adaptada al ámbito della consulto",
+      "Validar analisi di sentimiento con muestra manualeee",
+      "Generar report di síntesis per apparecchiature tecnicos e políticos"
+    ]
+  },
+  "UC20": {
+    "title": "Gestione Intelligente dei Rifiuti Urbani",
+    "contesto": "La recogida di residuos cuesta 2.500M€/anno con un 30% di inefficienza. Le percorsos fijas generanoo viajes innecessarios e desbordamientos. Italia debe raggiunger il 55% di reciclaje in 2025 (attualmente 35%).",
+    "focus": "Construir un motor di ottimizzazione di gestione di residuos che preteiga llenado, optimice percorsos, detecte contaminazione e preteiga comportamento di reciclaje.",
+    "reto": "I contenedores hanno sensores IoT heterogéneos con conectividad intermitente. Le percorsos di recogida deben respetar restriczioni di tráfico, horarios e capacità di veicolos.",
+    "obiettivi": [
+      "Reducir viajes di recogida innecessarios un 25%",
+      "Eliminar il 90% di desbordamientos di contenedores",
+      "Aumentar tasso di reciclaje del 35% al 45%",
+      "Optimizar percorsos reteuciendo kilómetros un 20%",
+      "Rilevare contaminazione di frazioni in contenedores di reciclaje"
+    ],
+    "funzionalità": [
+      "ML.FORECAST per previsione di llenado per contenedor",
+      "Ottimizzazione di percorsos con restriczioni di tempo e capacità",
+      "ML.CLASSIFICATION per rilevamento di contaminazione di frazioni",
+      "Previsione di comportamento di reciclaje per zona",
+      "Dashboard Streamlit di gestione intelligente dei rifiuti"
+    ],
+    "dati": [
+      "Sensores IoT: livello di llenado, temperatura, inclinazione per contenedor",
+      "Rutas di recogida: veicolos, horarios, km, peso recogido",
+      "Contenedores: ubicazione, tipo (orgánica, envases, papel, vidrio, resto)",
+      "Dati demográficos per zona: poblazione, tipo di vivienda, comercios",
+      "Dati di plantas di trattamento: contaminazione per frazione, rechazos"
+    ],
+    "stratificazione": [
+      "Por frazione: orgánica, envases, papel/cartón, vidrio, resto",
+      "Por zona: centro, residencial, comercial, industrial",
+      "Por contenedor: livello di llenado, frequenza, incidencias",
+      "Por percorso: ottimizzada, sonodar, especial (eventi, festivos)",
+      "Por obiettivo: reteuczione di costi, aumento di reciclaje, reteuczione di emisiones"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar con dati di sensores IoT di contenedores",
+      "Calibrar modeli di llenado con al meno 3 mesi di dati",
+      "Integrar con sistema di gestione di flottas per percorsos ottimales",
+      "Medir impatto: costi, reciclaje, desbordamientos, emisiones"
+    ]
+  }
+};
+
+const PROMPTS = {
+  "UC01": {
+    "title": "Rilevamento Frode nelle Sovvenzioni con Model Registry",
+    "intro": "Costruisci un modello ML di rilevamento frodi in sovvenzioni pubbliche e regístralo in Snowflake Model Registry per operazione continua con versionamento e retranamiento.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati e schema per rilevamento frodi in sovvenzioni.",
+        "prompt": "Crea la base di dati SECTOR_PUBLICO_FRAUDE_DB con schema ANALYTICS e warehouse SP_WH (size S). Includi comentarios del progetto di rilevamento frodi in sovvenzioni con Model Registry."
+      },
+      {
+        "title": "Creare registro di sovvenzioni",
+        "desc": "Generar dati senzatéticos di convocatorias e richieste di sovvenzioni.",
+        "prompt": "Crea la tabella SUBVENCIONES con: richiesta_id, convocatoria_id, beneficiario_nif, beneficiario_nombre, tipo_beneficiario (Empresa, Autónomo, Asociazione, Ayuntamiento), importe_soliappuntamentodo_eur FLOAT, importe_concedido_eur FLOAT, finalidad (Inversione, Empleo, I+D, Formazione, Agrario), fecha_richiesta DATE, fecha_resoluzione DATE, estado (Concedida, Denegada, Revoogni, En_Trámite). Genera 100,000 richieste di 5 anni. Il 4% tiene indicios di frode."
+      },
+      {
+        "title": "Creare dati di esecuzione di bilancio",
+        "desc": "Registros di giustificazione e pagos di sovvenzioni concedidas.",
+        "prompt": "Crea la tabella EJECUCION_SUBVENCIONES con: richiesta_id, fecha_justificacion DATE, importe_justificado_eur FLOAT, facturas_presentadas INT, fornitorees_distintos INT, pct_ejecutado FLOAT, observazioni TEXT, tiene_incidencia BOOLEAN, tipo_incidencia VARCHAR. Genera dati per le 60,000 sovvenzioni concedidas. Il 8% tiene incidencias: justificazioni infladas, facturas dupliogni, fornitorees vinculados."
+      },
+      {
+        "title": "Creare rete di beneficiari",
+        "desc": "Generar relazioni societarie e vinculazioni tra beneficiari.",
+        "prompt": "Crea la tabella RED_BENEFICIARIOS con: entidad_a_nif, entidad_b_nif, tipo_relacion (Administrador_Comun, Socio, Familiar, Misma_Direccion, Proveedor_Habitual), fecha_deteccion DATE, confianza FLOAT. Genera 15,000 relazioni tra beneficiari. Il 20% dei frodes involucran reti di beneficiari vinculados che soliappuntamenton sovvenzioni coordinadamente o si facturan tra sí."
+      },
+      {
+        "title": "Calcular features di rilevamento",
+        "desc": "Generar indicatori di rischio per richiesta e beneficiario.",
+        "prompt": "Crea la vista FEATURES_FRAUDE_SUBVENCIONES che calcule per richiesta e beneficiario:\n- Historial: num_richieste_3a, importe_totale_soliappuntamentodo, tasa_concesion, revocazioni_previas\n- Ejecuzione: pct_ejecutado_vs_concedido, facturas_por_eur, fornitorees_vs_importe\n- Red: num_vinculazioni, richieste_rete_stessa_convocatoria, facturacion_intra_rete\n- Documentazione: similitud_textos_con_odopo_richieste, coherencia_budget\n- Temporal: dias_tra_richiesta_y_justificacion, richieste_simultaneas"
+      },
+      {
+        "title": "Entrenar modello di rilevamento frodi",
+        "desc": "ML.CLASSIFICATION per scoring di rischio.",
+        "prompt": "Usa SNOWFLAKE.ML.CLASSIFICATION per classificare richieste como: limpia, sospecha_baja, sospecha_media, sospecha_dimissione. Variabili: tutte le features di FEATURES_FRAUDE_SUBVENCIONES. Entrena con dati etiquetados di gli ultimi 5 anni (frodes confirmados). Evalúa con precision, recall, F1. Objetivo: recall >70% per sospecha_dimissione con precision >60%. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Registrar modello in Model Registry",
+        "desc": "Guardar modello in Snowflake Model Registry con metriche.",
+        "prompt": "Registra il modello di frode in Snowflake Model Registry:\n\nfrom snowflake.ml.registre import Registry\nreg = Registry(session=session, database_name='SECTOR_PUBLICO_FRAUDE_DB', schema_name='ANALYTICS')\nreg.log_model(\n    model=fraud_model,\n    model_name='subsidy_fraud_detector',\n    version_name='v1',\n    metrics={'recall_dimissione': recall_dimissione, 'precision_dimissione': prec_dimissione, 'f1_dimissione': f1_dimissione},\n    comment='Modello di rilevamento frodi in sovvenzioni pubbliche'\n)\nVerifica il registro e lista versiones."
+      },
+      {
+        "title": "Priorizar investigazioni",
+        "desc": "Ranking di casi per probabilità × importe.",
+        "prompt": "Crea la vista PRIORIZAR_INVESTIGACIONES che per ogni richiesta sospechosa calcule: probabilità_frode_pct, importe_en_rischio_eur, tipo_frode_probable, vinculazioni_rilevadas, score_investigacion (probabilità × importe), costo_investigacion_estimado_eur, roi_esperado. Ordena per score descendente. Genera top 100 per campagna di control."
+      },
+      {
+        "title": "Dashboard di control di sovvenzioni",
+        "desc": "Streamlit di monitoraggio di frode.",
+        "prompt": "Genera codice Streamlit con:\n1. Mapa di sospecha per CCAA e tipo di sovvenzione\n2. Lista di investigazioni priorizadas con scoring e ROI\n3. Grafo di rete di beneficiari vinculados per caso seleccionado\n4. Metriche del modello: precision, recall, F1 per versione di Registry\n5. Tendencia di frode rilevado per anno e tipo\n6. Resumen financiero: importe a rischio, recuperado, costo di control. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di retranamiento",
+        "desc": "Automatizar attualeizazione del modello.",
+        "prompt": "Crea Tasks:\n1. SCORING_NUEVAS: settimanal, ejecuta modello Registry il suo nuevas richieste\n2. DETECTAR_REDES: mensile, attualeiza grafos di vinculazioni\n3. REENTRENAR_MODELO: trimestrale, retrana con nuevos casi e registra nueva versione\n4. COMPARAR_VERSIONES: dopo retranamiento, comper accurace e activa la migliore\n5. Documenta pipeline. Objetivo: rilevare 60% del frode con <10% falsos positivos."
+      }
+    ]
+  },
+  "UC02": {
+    "title": "Chatbot RAG per il Servizio Cittadino Multicanale",
+    "intro": "Costruisci un asistente conversacional RAG multilingue per assistenza cittadina con Cortex Search e CORTEX.COMPLETE.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per chatbot RAG.",
+        "prompt": "Crea la base di dati SP_CHATBOT_DB con schema RAG e warehouse SP_WH. Comentarios del progetto di chatbot RAG di assistenza cittadina multicanal."
+      },
+      {
+        "title": "Creare base di conoscenza",
+        "desc": "Generar corpus di normativa, procedure e FAQ.",
+        "prompt": "Crea la tabella CONOCIMIENTO_PUBLICO con: doc_id, categoria (Tramites, Normativa, FAQ, Requisitos, Plazos, Ayudas), titulo, contenuto TEXT, idioma (es, ca, eu, gl, va), administracion (Estatal, Autonomica, Municipal), fecha_attualeizacion DATE, vigente BOOLEAN. Genera 500 documentos cubriendo: pratiche più frecuentes (empadronamiento, DNI, licencias), normativa chiave, FAQ per amministrazione, requisiti di ayudas e sovvenzioni. Usa SQL GENERATOR(ROWCOUNT => 500) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Indexar con Cortex Search",
+        "desc": "Creare servizio di búsqueda il suo base di conoscenza.",
+        "prompt": "Crea un Cortex Search Service il suo CONOCIMIENTO_PUBLICO:\n- Columnas indexadas: titulo, contenuto, categoria\n- Filtros: categoria, idioma, administracion\nDimostra con 5 consulti: '¿Cómo me empadrono?', '¿Qué necesito per il DNI?', '¿Plazo per recurrir una multa?', 'Ajudes per a lloguer' (catalán), '¿Requisitos del bono sociale?'."
+      },
+      {
+        "title": "Creare funzione di chat",
+        "desc": "Funzione RAG con profilo di cittadino.",
+        "prompt": "Crea la funzione CHAT_CIUDADANO(citizen_id, domanda, idioma) che:\n1. Detecta idioma si non si especifica\n2. Cerca documentos rilevanti con Cortex Search (top 5, filtrado per idioma)\n3. Si citizen_id disponibile, consulto profilo del Feature Store UC08\n4. Costruisci prompt con contesto + profilo + domanda\n5. Genera risposta con CORTEX.COMPLETE in il idioma del cittadino\n6. Includi referencias a normativa fonte\nDimostra con 3 conversazioni."
+      },
+      {
+        "title": "Implementar escalado",
+        "desc": "Rilevare quando escalar a funzionario.",
+        "prompt": "Crea la funzione EVALUAR_ESCALADO(domanda, risposta) che use CORTEX.COMPLETE per determinar si escalar: reclamo formal, richiesta di appuntamento, trattamento compleja, sentimiento negativo (CORTEX.SENTIMENT), fuori da ámbito. Retorna: escalar BOOLEAN, motivo, priorità, resumen_per_funzionario."
+      },
+      {
+        "title": "Historial e metriche",
+        "desc": "Almacenar conversazioni e medir qualità.",
+        "prompt": "Crea tabella HISTORIAL_CHAT con: sesion_id, citizen_id, fecha_hora, domanda, risposta, idioma, documentos_usados, fue_util BOOLEAN, fue_escalada BOOLEAN, feedback INT (1-5). Crea vista METRICAS_CHATBOT: tasa_resolucion_pct, satisfaccion_media, tasa_escalado, costo_por_interaccion, top_consulti_no_resueltas. Genera 5,000 conversazioni senzatéticas."
+      },
+      {
+        "title": "Dashboard del chatbot",
+        "desc": "Streamlit di operazione.",
+        "prompt": "Genera codice Streamlit con:\n1. Demo di chat multilingue con profilo di cittadino\n2. Metriche: resoluzione, satisfazione, escalados per idioma\n3. Consultas più frecuentes e non resueltas\n4. Compertiva costo: chatbot vs presencial\n5. Base di conoscenza: búsqueda e gestione\n6. Tendencias per canal e tipo di consulto. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Mdavanti aner chatbot attualeizado.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_CONOCIMIENTO: settimanal, reindeza nuevos documentos\n2. ANALIZAR_GAPS: settimanal, identifica consulti non resueltas\n3. METRICAS_DIARIAS: giornaliero, calcula metriche di rendimento\n4. Documenta. Objetivo: resoluzione >60%, satisfazione >4.0."
+      }
+    ]
+  },
+  "UC03": {
+    "title": "Previsione della Domanda di Servizi Sociali con Model Registry",
+    "intro": "Costruisci un modello di previsione di domanda di servizi sociali con ML.FORECAST e Model Registry per pianificazione proactiva di risorse.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per previsione di domanda sociale.",
+        "prompt": "Crea la base di dati SP_SERVICIOS_SOCIALES_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di previsione di domanda di servizi sociali con Model Registry."
+      },
+      {
+        "title": "Creare dati di richieste",
+        "desc": "Generar cartella clinica di richieste di servizi sociali.",
+        "prompt": "Crea la tabella SOLICITUDES_SOCIALES con: richiesta_id, comune_id, fecha DATE, tipo_servizio (Dependencia, Renta_Minima, Emergencia_Social, Infancia, Vivienda, Mayores), profilo_solicitdavanti a_edad INT, profilo_genero, profilo_situacion_familiar, profilo_occupazione, estado (Aprobada, Denegada, En_Tramite, Desistida), tempo_resolucion_dias INT. Genera 200,000 richieste di 5 anni per 500 comunes."
+      },
+      {
+        "title": "Cargar indicatori socioeconómicos",
+        "desc": "Variables exógenas che influyen nella domanda.",
+        "prompt": "Crea la tabella INDICADORES_SOCIOECONOMICOS con: comune_id, fecha_mes DATE, tasa_desoccupazione_pct FLOAT, renta_media_casa_eur FLOAT, tasa_pobreza_pct FLOAT, indice_envejecimiento FLOAT, saldo_migratorio INT, prezzo_alquiler_m2 FLOAT, tasa_natalidad FLOAT. Genera dati mensilees per 500 comunes × 5 anni. Incluir correlazioni realistas: desoccupazione↑ → richieste↑."
+      },
+      {
+        "title": "Calcular features di domanda",
+        "desc": "Generar indicatori preteittivos.",
+        "prompt": "Crea la vista FEATURES_DEMANDA_SOCIAL che calcule per comune e mes:\n- Demanda: richieste_mes, tendenza_3m, stagionalità, variacion_interanual\n- Contexto: tasa_desoccupazione, variacion_desoccupazione, renta_vs_media, envejecimiento\n- Capacidad: risorse_disponibili, tempo_medio_resolucion, tasa_aprobacion\n- Externo: richieste_comunes_vecinos, indicatori_crisi (desoccupazione >15%)"
+      },
+      {
+        "title": "Entrenar modello di forecast",
+        "desc": "ML.FORECAST di domanda per tipo di servizio.",
+        "prompt": "Usa SNOWFLAKE.ML.FORECAST per prevedere richieste per comune e tipo_servizio. Serie temporal: richieste_mes con timestamp fecha_mes. Variables exógenas: tasa_desoccupazione, renta_media, envejecimiento. Entrena con 4 anni e valida con il 5º. Genera preteiczioni a 1, 3 e 6 mesi. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Registrar in Model Registry",
+        "desc": "Guardar modello con metriche di accuracy.",
+        "prompt": "Registra il modello in Snowflake Model Registry:\n\nfrom snowflake.ml.registre import Registry\nreg = Registry(session=session, database_name='SP_SERVICIOS_SOCIALES_DB', schema_name='ANALYTICS')\nreg.log_model(\n    model=demand_model,\n    model_name='sociale_services_demand',\n    version_name='v1',\n    metrics={'mape_1m': mape_1, 'mape_3m': mape_3, 'mape_6m': mape_6},\n    comment='Modello di previsione di domanda di servizi sociali per comune'\n)\nVerifica registro."
+      },
+      {
+        "title": "Planificazione di risorse",
+        "desc": "Usar preteiczioni per assegnare risorse.",
+        "prompt": "Crea la vista PLAN_RECURSOS_SOCIALES che use preteiczioni per calcolare per comune: domanda_prevista_1m, domanda_prevista_3m, profesionales_necessarios, budget_estimado_eur, gap_risorse (domanda - capacità), priorità_refuerzo, recomendacion (controtar, reteistribuir, externalizar). Genera plan trimestrale di risorse."
+      },
+      {
+        "title": "Dashboard di pianificazione",
+        "desc": "Streamlit di gestione di servizi sociali.",
+        "prompt": "Genera codice Streamlit con:\n1. Mapa di comunes con domanda prevista vs capacità\n2. Previsione per tipo di servizio con bandas di confianza\n3. Plan di risorse: necessitàes vs disponibili\n4. Accurace del modello: MAPE per comune e servizio\n5. Alert di incremento di domanda >20% previsto\n6. Compertiva di versiones in Model Registry. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di attualeizazione",
+        "desc": "Automatizar previsione e retranamiento.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_INDICADORES: mensile, carga dati socioeconómicos\n2. GENERAR_PREDICCION: mensile, ejecuta modello Registry\n3. PLAN_RECURSOS: trimestrale, genera plan di assegnazione\n4. REENTRENAR: semestral, retrana e registra nueva versione\n5. Documenta. Objetivo: MAPE <12% a 3 mesi."
+      }
+    ]
+  },
+  "UC04": {
+    "title": "Automazione della Classificazione dei Fascicoli",
+    "intro": "Pipeline NLP che classifica fascicoli automaticamente, estrae entidades e suggerisce resoluzione basata il suo precedentes.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per classificazione di fascicoli.",
+        "prompt": "Crea la base di dati SP_EXPEDIENTES_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di automazione di classificazione di fascicoli."
+      },
+      {
+        "title": "Creare cartella clinica di fascicoli",
+        "desc": "Generar dati di fascicoli con texto descriptivo.",
+        "prompt": "Crea la tabella EXPEDIENTES con: fascicolo_id, fecha_entrada DATE, texto_richiesta TEXT, tipo_procedura VARCHAR, materia VARCHAR, unità_competente VARCHAR, priorità (Urgente, Ordinario, Diferido), estado (En_Tramite, Resuelto, Archivado), fecha_resolucion DATE, texto_resolucion TEXT, fue_reassegnato BOOLEAN. Genera 100,000 fascicoli con textos realistas in italiano administrativo. Incluir jerga: risorsa di alzada, silencio administrativo, scadenze perentorios."
+      },
+      {
+        "title": "Clasificar con LLM",
+        "desc": "CORTEX.COMPLETE per classificazione automatica.",
+        "prompt": "Crea la vista CLASIFICACION_EXPEDIENTES che use CORTEX.COMPLETE per classificare ogni fascicolo:\n- tipo: autorizacion, sancion, subvencion, risorsa, consulto, queja\n- materia: urbanismo, medio_ambiente, hacienda, occupazione, educacion, sanidad\n- priorità_sugerida: urgente, ordinario, diferido\n- unità_sugerida: basata il suo tipo e materia\n- confianza: 0-1\nComper con classificazione manualeee e mide accuracy."
+      },
+      {
+        "title": "Extraer entidades chiave",
+        "desc": "NER il suo texto administrativo.",
+        "prompt": "Crea la vista ENTIDADES_EXPEDIENTES che use CORTEX.COMPLETE per estrarre:\n- personas_juridicas: aziendas, asociazioni mencionadas\n- referencias_normativas: leyes, artículos, reali decretos\n- importi: cantidades economiche mencionadas\n- fechas_chiave: scadenze, vencimientos, hechos\n- ubicazioni: comunes, direczioni, parcelas\nFormato JSON strutturado per ogni fascicolo."
+      },
+      {
+        "title": "Base di precedentes",
+        "desc": "Indexar resoluzioni per sugerencias.",
+        "prompt": "Crea Cortex Search Service il suo fascicoli resueltos indicizzando: texto_richiesta + texto_resolucion + tipo + materia. Crea funzione SUGERIR_RESOLUCION(texto_fascicolo) che busque 5 fascicoli similees resueltos e use CORTEX.COMPLETE per senzatetizar una sugerencia di resoluzione. Dimostra con 3 esempios."
+      },
+      {
+        "title": "Medir impatto",
+        "desc": "Evaluar qualità di classificazione.",
+        "prompt": "Crea vista METRICAS_CLASIFICACION: accurace per tipo, materia e unità vs manualeee. Tasa di reassegnazione davanti as vs dopo. Tiempo medio di trattamento. Utilidad di sugerencias di resoluzione."
+      },
+      {
+        "title": "Dashboard di fascicoli",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Feed di fascicoli nuevos con classificazione automatica\n2. Sugerencia di resoluzione per fascicolo seleccionado\n3. Metriche: accuracy, reasignazioni, tempo resoluzione\n4. Búsqueda di precedentes similees\n5. Tendencia di fascicoli per tipo e materia\n6. Backlog per unità competente e priorità. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar classificazione.",
+        "prompt": "Crea Tasks:\n1. CLASIFICAR_NUEVOS: ogni hora, classifica fascicoli senza classificare\n2. EXTRAER_ENTIDADES: ogni hora il suo fascicoli nuevos\n3. SUGERIR_RESOLUCIONES: per fascicoli assegnati senza sugerencia\n4. ACTUALIZAR_PRECEDENTES: settimanal, reindeza nuevas resoluzioni\n5. Documenta. Objetivo: accurace >85%, reassegnazione <5%."
+      }
+    ]
+  },
+  "UC05": {
+    "title": "Controllo dell\'Esecuzione dei Fondi Next Generation EU",
+    "intro": "Sistema di monitoraggio end-to-end di fondi europei Next Gen EU con tracciabilità, rilevamento di anomalías e alert di non conformità.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per control di fondos.",
+        "prompt": "Crea la base di dati SP_FONDOS_EU_DB con schema CONTROL e warehouse SP_WH. Comentarios del progetto di control di esecuzione di fondos Next Generation EU."
+      },
+      {
+        "title": "Creare struttura di fondos",
+        "desc": "Generar componentes, líneas e asignazioni.",
+        "prompt": "Crea le tabellas:\n1. COMPONENTES_PRTR con: componente_id (C01-C30), nombre, eje (Transformazione_Digital, Transizione_Verde, Cohesione_Social, Resiliencia), budget_totale_meur FLOAT\n2. ASIGNACIONES con: asignacion_id, componente_id, entidad_ejecutora, tipo_gasto (Inversione, Reforma, Transferencia), importe_meur FLOAT, milestone_vinculados INT\nGenera struttura realista del Plan di Recuperazione espannol con 30 componentes e 200 líneas."
+      },
+      {
+        "title": "Creare dati di esecuzione",
+        "desc": "Liappuntamentozioni, controttos e pagos.",
+        "prompt": "Crea la tabella EJECUCION_FONDOS con: asignacion_id, fecha DATE, fase (Liappuntamentocion, Adjudicacion, Contrato, Pago, Justificacion), importe_eur FLOAT, beneficiario, estado (En_Plazo, Rischio, Redopoo, Critico), dias_ritardo INT, observazioni TEXT. Genera 50,000 registros di esecuzione per 3 anni. Il 25% tiene ritardi di diversa severidad. Usa SQL GENERATOR(ROWCOUNT => 50000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Creare milestone e monitoraggio",
+        "desc": "Milestones della UE con indicatori di conformità.",
+        "prompt": "Crea la tabella HITOS_UE con: hito_id, componente_id, descripcion TEXT, tipo (Hito, Objetivo), indicador, valore_obiettivo FLOAT, fecha_limite DATE, estado (Cumplido, En_Progreso, Redopoado, No_Iniciado), valore_attuale FLOAT, evidenza_disponibile BOOLEAN. Genera 400 milestone vinculados a i 30 componentes."
+      },
+      {
+        "title": "Rilevare anomalías di esecuzione",
+        "desc": "ML per identificare ritardi e rischios.",
+        "prompt": "Crea vista ALERTAS_EJECUCION che use ML.FORECAST per prevedere ritmo di esecuzione e ML.CLASSIFICATION per rilevare anomalías:\n- Redopoos: esecuzione <60% a 80% del scadenza\n- Concentrazione: >50% di pagos in ultimo trimestre\n- Inconsistencias: importi di controtto vs assegnazione >10%\n- Hitos: conformità <80% a 6 mesi di deadline\nAsigna severidad: critico, alto, medio, bajo. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Generar report di conformità",
+        "desc": "Reporting automatico per la UE.",
+        "prompt": "Crea funzione INFORME_CUMPLIMIENTO(componente_id, periodo) che use CORTEX.COMPLETE per generaree:\n- Resumen ejecutivo di esecuzione\n- Estado di milestone con evidenzas\n- Analisi di rischios e misuras correctoras\n- Indicadores financieros: esecuzione vs assegnazione\n- Formato compatible con reporting a Comisione Europea"
+      },
+      {
+        "title": "Dashboard di fondos",
+        "desc": "Streamlit di control di fondi europei.",
+        "prompt": "Genera codice Streamlit con:\n1. Resumen per componente: assegnazione, esecuzione, milestone\n2. Semáforo di milestone: cumplido/en progreso/redopoado/no iniciado\n3. Alert di anomalías priorizadas per severidad\n4. Trazabilidad: drill-down di assegnazione a pago final\n5. Previsione di ritmo di esecuzione vs obiettivo\n6. Generador di report per la Comisione Europea. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar monitoraggio.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_EJECUCION: giornaliero, carga dati contables\n2. DETECTAR_ANOMALIAS: settimanal, ejecuta modeli di rilevamento\n3. EVALUAR_HITOS: mensile, verifica conformità\n4. GENERAR_INFORME: trimestrale, genera report di monitoraggio\n5. Documenta. Objetivo: 0 fondos devueltos per fdimissione di tracciabilità."
+      }
+    ]
+  },
+  "UC06": {
+    "title": "Gestione Intelligente della Mobilità Urbana",
+    "intro": "Motore di ottimizzazione di movilidad urbana che preteice tráfico, ottimizza semáforos e coordina transporte pubblico con dati in tempo reale.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per movilidad.",
+        "prompt": "Crea la base di dati SP_MOVILIDAD_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di gestione intelligente di movilidad urbana."
+      },
+      {
+        "title": "Creare rete viaria e sensores",
+        "desc": "Generar topología di calles e puntos di medizione.",
+        "prompt": "Crea le tabellas:\n1. RED_VIARIA con: tramo_id, nombre_calle, zona (Centro, Corona, Periferia, Acceso), tipo_via (Principal, Secundaria, Residencial), carriles INT, velocidad_max INT, tiene_semaforo BOOLEAN, tiene_sensor BOOLEAN\n2. SENSORES_TRAFICO con: sensor_id, tramo_id, tipo (Espira, Camara, Bluetooth, GPS)\nGenera rete di 2,000 tramos con 500 sensores."
+      },
+      {
+        "title": "Cargar dati di tráfico",
+        "desc": "Dati di flujo vehicular e transporte pubblico.",
+        "prompt": "Crea le tabellas:\n1. FLUJO_TRAFICO con: sensor_id, fecha_hora TIMESTAMP, veicolos_hora INT, velocidad_media_kmh FLOAT, ocupacion_pct FLOAT, nivel_servizio (A-F)\n2. TRANSPORTE_PUBLICO con: linea_id, perda_id, fecha_hora, ocupacion_pct, ritardo_min FLOAT\nGenera dati ogni 15 min per 1 anno. Patrones: punta 8-9h e 18-19h, sábado -40%, domingo -60%."
+      },
+      {
+        "title": "Preteecir congestione",
+        "desc": "ML.FORECAST di tráfico per zona e hora.",
+        "prompt": "Usa ML.FORECAST per prevedere veicolos_hora per tramo a 30min, 1h e 4h vista. Variables exógenas: hora, dia_settimana, lluvia BOOLEAN, evento_cercano BOOLEAN, obras BOOLEAN. Crea vista PREDICCION_TRAFICO con: tramo_id, hora, veicolos_previsti, nivel_servizio_previsto, confianza. Identifica tramos che pasarán a livello E o F. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Optimizar semáforos",
+        "desc": "Motore di ajuste di cici semafóricos.",
+        "prompt": "Crea vista OPTIMIZACION_SEMAFOROS che per ogni interseczione semaforizada calcule: ciclo_attuale_seg, verde_attuale_seg per direczione, domanda_prevista per direczione, ciclo_optimo_seg, verde_optimo_seg, miglioramento_estimada_veicolos_hora. Prioriza correteores principalei. Calculin tempo totale ahorrado per correteor in hora punta."
+      },
+      {
+        "title": "Integrar transporte pubblico",
+        "desc": "Recomendazioni multimodales.",
+        "prompt": "Crea vista ALTERNATIVAS_MOVILIDAD che per ogni correteor congestionado genere: alternativa_bus (línea, frequenza, ocupazione), alternativa_metro, alternativa_bici, tempo_estimado per modo, risparmio_co2, raccomandazione. Usa CORTEX.COMPLETE per generaree messaggio di raccomandazione personalizado."
+      },
+      {
+        "title": "Dashboard di movilidad",
+        "desc": "Streamlit di centro di control.",
+        "prompt": "Genera codice Streamlit con:\n1. Mapa di tráfico in tempo reale con livello di servizio per tramo\n2. Previsione di congestione prossimas 4h\n3. Panel di ottimizzazione semafórica per correteor\n4. Alternativas di transporte per correteores congestionados\n5. Metriche: tempo medio desplazamiento, uso TP, emisiones\n6. Histórico di impatto di ottimizzazioni apliogni. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar gestione di movilidad.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_TRAFICO: ogni 15 min da sensores\n2. PREDECIR_CONGESTION: ogni 30 min genera preteiczioni\n3. OPTIMIZAR_SEMAFOROS: ogni hora recalcula cici ottimales\n4. REPORTE_DIARIO: resumen di movilidad e miglioramentos\n5. Documenta. Objetivo: ridurre tempo desplazamiento 15%."
+      }
+    ]
+  },
+  "UC07": {
+    "title": "Valutazione dell\'Impatto delle Politiche Pubbliche",
+    "intro": "Motore di valutazione che analizza il efecto diferencial di políticas pubbliche il suo indicatori socioeconómicos con inferencia causal e ML.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per valutazione di impatto.",
+        "prompt": "Crea la base di dati SP_EVALUACION_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di valutazione di impatto di políticas pubbliche."
+      },
+      {
+        "title": "Creare registro di políticas",
+        "desc": "Catálogo di interventi pubbliche.",
+        "prompt": "Crea la tabella POLITICAS_PUBLICAS con: politica_id, nombre, tipo (Subvencion, Regulacion, Inversion, Programa, Reforma), ambito (Empleo, Educacion, Vivienda, Salud, Innovacion), budget_meur FLOAT, fecha_inicio DATE, fecha_fin DATE, territorio_obiettivo (Nacional, CCAA, Municipal), beneficiari_previsti INT, indicador_principale. Genera 100 políticas di 5 anni."
+      },
+      {
+        "title": "Cargar indicatori socioeconómicos",
+        "desc": "Dati comunali pre/post intervento.",
+        "prompt": "Crea la tabella INDICADORES_MUNICIPALES con: comune_id, fecha_trimestre DATE, tasa_occupazione_pct, renta_media_eur, tasa_abandono_escolar_pct, esperanza_vida_anos FLOAT, tasa_pobreza_pct, aziendas_creadas INT, inversion_extranjera_meur FLOAT, indice_innovacion FLOAT. Genera dati trimestralees per 500 comunes × 5 anni."
+      },
+      {
+        "title": "Definir grupos di control",
+        "desc": "Matching di comunes tratados e control.",
+        "prompt": "Crea la vista MATCHING_MUNICIPIOS che per ogni política identifique:\n- Municipios tratados: che recibieron la intervento\n- Municipios control: similees in indicatori pre-intervento ma non tratados\n- Variables di matching: poblazione, renta, occupazione, sector productivo, zona\nUsa ML.CLASSIFICATION per calcolare propensite score e seleccionar controles ottimales. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Calcular impatto diferencial",
+        "desc": "Difference-in-differences il suo indicatori.",
+        "prompt": "Crea la vista EVALUACION_IMPACTO che per ogni política calcule:\n- Diferencia pre/post in grupo tratado vs control (DiD)\n- Impacto estimado per indicador (occupazione, renta, etc.)\n- Significancia estadística e intervai di confianza\n- Impacto diferencial per profilo di territorio\n- Coste-efectividad: euros invertidos per punto di miglioramento\nGenera ranking di políticas per impatto e efficienza."
+      },
+      {
+        "title": "Generar narrativa di valutazione",
+        "desc": "LLM per reteactar report.",
+        "prompt": "Crea funzione INFORME_EVALUACION(politica_id) che use CORTEX.COMPLETE per generaree:\n- Resumen ejecutivo del impatto\n- Metodología empleada (DiD, matching)\n- Resultados principalei per indicador\n- Impacto diferencial per territorio\n- Recomendazioni per futuras interventi\nFormato profesional di report di valutazione."
+      },
+      {
+        "title": "Dashboard di valutazione",
+        "desc": "Streamlit di evidenza per decisores.",
+        "prompt": "Genera codice Streamlit con:\n1. Catálogo di políticas evaluadas con impatto resumido\n2. Compertiva pre/post trattamento vs control per indicador\n3. Mapa di impatto diferencial per territorio\n4. Ranking di políticas per costo-efectividad\n5. Generador di report di valutazione\n6. Recomendazioni per pianificazione di bilancio. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar valutazione.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_INDICADORES: trimestrale, carga nuevos dati\n2. RECALCULAR_MATCHING: semestral, ajusta grupos di control\n3. EVALUAR_POLITICAS: anual, ejecuta valutazione completa\n4. GENERAR_INFORMES: secondo calendario di bilancio\n5. Documenta. Objetivo: valutare 80% di políticas con evidenza causal."
+      }
+    ]
+  },
+  "UC08": {
+    "title": "Feature Store del Profilo Cittadino 360",
+    "intro": "Implementa un Feature Store in Snowflake che consolidella visione 360 del cittadino cumpliendo RGPD per personalizzazione di servizi e coordinazione inter-administrativa.",
+    "steps": [
+      {
+        "title": "Configurar Feature Store",
+        "desc": "Creare base di dati e preperr Feature Store.",
+        "prompt": "Crea la base di dati SP_CITIZEN360_DB con schema FEATURE_STORE e warehouse SP_WH. Comenta che este progetto implementa Snowflake Feature Store per Perfil Ciudadano 360 con conformità RGPD."
+      },
+      {
+        "title": "Creare dati fonte",
+        "desc": "Generar dati delle 5 fonti principalei.",
+        "prompt": "Crea 5 table fonte:\n1. RAW_PADRON: citizen_id, comune, fecha_nacimiento, genero, nacionalidad, domicilio, composicion_familiar INT\n2. RAW_TRIBUTARIO: citizen_id, renta_anual_eur FLOAT, tipo_declaracion, deuda_tributaria BOOLEAN, actividad_economica\n3. RAW_SERVICIOS_SOCIALES: citizen_id, prestazioni_activas INT, tipo_prestacion, grado_dependencia, rischio_vulnerabilidad\n4. RAW_EMPLEO: citizen_id, situacion_laboral, antiguedad_occupazione_mesi INT, formacion_reciente BOOLEAN, prestacion_desoccupazione BOOLEAN\n5. RAW_DIGITAL: citizen_id, tramites_online_12m INT, canal_preferido, tiene_certificado_digital BOOLEAN, accesibilidad_necessaria BOOLEAN\nGenera dati per 100,000 cittadinos."
+      },
+      {
+        "title": "Creare Entite del Feature Store",
+        "desc": "Definir Entite 'citizen' con conformità RGPD.",
+        "prompt": "Usando Snowflake Feature Store:\n\nfrom snowflake.ml.feature_store import FeatureStore, Entity, FeatureView\nfs = FeatureStore(session=session, database='SP_CITIZEN360_DB', name='FEATURE_STORE')\n\ncitizen = Entity(\n    name='CITIZEN',\n    join_keys=['CITIZEN_ID'],\n    desc='Ciudadano con profilo 360 - Conformità RGPD'\n)\nfs.register_entity(citizen)\nVerifica registro."
+      },
+      {
+        "title": "Creare FeatureView demográfico",
+        "desc": "Features del padrón e profilo básico.",
+        "prompt": "Crea FeatureView DEMOGRAPHIC_PROFILE da RAW_PADRON:\n- età_grupo (0-17, 18-30, 31-45, 46-65, 65+), genero\n- comune, zona (urbano/rural)\n- composicion_familiar, tiene_minorees BOOLEAN\n- nacionalidad_grupo (Nacional, UE, Extra_UE)\nRegistra con refresh_freq='1 month'. Implementar enmascaramiento: fecha_nacimiento exacta non disponibile, solo grupo di età."
+      },
+      {
+        "title": "Creare FeatureViews fiscal e sociale",
+        "desc": "Features tributarios e di servizi sociali.",
+        "prompt": "Crea 2 FeatureViews:\n1. FISCAL_STATUS da RAW_TRIBUTARIO:\n- tramo_renta (bajo, medio, alto), tiene_deuda BOOLEAN\n- tipo_actividad, es_autonomo BOOLEAN\n\n2. SOCIAL_SERVICES da RAW_SERVICIOS_SOCIALES:\n- tiene_prestazioni BOOLEAN, tipo_prestacion_principale\n- grado_dependencia, rischio_vulnerabilidad_score\n- necessita_atencion_prioritaria BOOLEAN\n\nRefresh mensile. Enmascaramiento: importi exactos non disponibili."
+      },
+      {
+        "title": "Creare FeatureViews occupazione e digital",
+        "desc": "Features di situazione laboral e digitalizazione.",
+        "prompt": "Crea 2 FeatureViews:\n1. EMPLOYMENT_PROFILE da RAW_EMPLEO:\n- situacion_laboral, stabilità_occupazione\n- en_desoccupazione BOOLEAN, formacion_reciente\n- necessita_orientacion_laboral BOOLEAN\n\n2. DIGITAL_ENGAGEMENT da RAW_DIGITAL:\n- nivel_digital (alto, medio, bajo, senza_accesso)\n- canal_preferido, tiene_certificado_digital\n- necessita_accesibilidad BOOLEAN\n- frequenza_uso_sede_electronica\n\nRefresh mensile."
+      },
+      {
+        "title": "Servir features per servizi",
+        "desc": "Demostrare consumo da altri pipelines.",
+        "prompt": "Dimostra consumo di features:\n\n# Para chatbot (UC02)\ndf_chat = fs.get_features(entity=citizen, feature_views=['DEMOGRAPHIC_PROFILE', 'DIGITAL_ENGAGEMENT'], spine_df=cittadino_df)\n\n# Para personalizzazione (UC12)\ndf_personalizacion = fs.get_features(entity=citizen, feature_views=['DEMOGRAPHIC_PROFILE', 'FISCAL_STATUS', 'SOCIAL_SERVICES', 'EMPLOYMENT_PROFILE'], spine_df=cittadinos_activos_df)\n\n# Para vulnerabilidad (UC18)\ndf_vulnerabilidad = fs.get_features(entity=citizen, feature_views=['FISCAL_STATUS', 'SOCIAL_SERVICES', 'EMPLOYMENT_PROFILE'], spine_df=zona_rischio_df)\n\nMuestra DataFrames resultdavanti as."
+      },
+      {
+        "title": "Dashboard del Feature Store",
+        "desc": "Streamlit di monitoraggio.",
+        "prompt": "Genera codice Streamlit con:\n1. Resumen: 5 FeatureViews, features totales, ultimo refresh\n2. Buscador di cittadino con profilo (con enmascaramiento RGPD)\n3. Distribuzione di profili per zona e segmento\n4. Metriche di qualità: completitud, freshness, drift\n5. Audit log di accessos al Feature Store\n6. Conformità RGPD: finalidad, minimizazione, consentimiento. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di manutenzione",
+        "desc": "Automatizar attualeizazione e auditoría.",
+        "prompt": "Crea Tasks:\n1. REFRESH_PADRON: mensile, attualeiza demográfico\n2. REFRESH_TRIBUTARIO: mensile, attualeiza fiscal\n3. REFRESH_SOCIAL: mensile, attualeiza servizi sociali\n4. MONITOR_QUALITY: settimanal, verifica completitud e drift\n5. AUDIT_ACCESOS: giornaliero, registra quién accede e con qué finalidad\n6. Documenta. Conformità stringente RGPD in ogni operazione."
+      }
+    ]
+  },
+  "UC09": {
+    "title": "Ottimizzazione degli Appalti Pubblici",
+    "intro": "Motore di inteligencia di assunzione che preteice gare d'appalto desiertas, estima prezzos di mercato e recomienda divisione in lotes.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per assunzione.",
+        "prompt": "Crea la base di dati SP_CONTRATACION_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di ottimizzazione di assunzione pubblica."
+      },
+      {
+        "title": "Creare dati di gare d'appalto",
+        "desc": "Historial di gare d'appalto con risultatos.",
+        "prompt": "Crea la tabella LICITACIONES con: liappuntamentocion_id, organo_controtacion, cpv_codigo, cpv_descripcion, tipo_controtto (Obras, Servizi, Suministros), procedura (Abierto, Restringido, Negociado, Menor), importe_estimado_eur FLOAT, num_lotes INT, fecha_publicacion DATE, fecha_apertura DATE, risultato (Adjudiogni, Desierta, Anulada), num_ofertas INT, prezzo_adjudicacion_eur FLOAT, adjudicatario. Genera 50,000 gare d'appalto di 5 anni. 25% desiertas."
+      },
+      {
+        "title": "Creare dati di aziendas liappuntamentodoras",
+        "desc": "Registro di aziendas che participan in assunzione.",
+        "prompt": "Crea la tabella EMPRESAS_LICITADORAS con: azienda_nif, nombre, tamanno (Gran_Empresa, PYME, Microazienda), sector_principale_cpv, num_gare d'appalto_participadas_3a INT, num_adjudicazioni_3a INT, tasa_exito_pct FLOAT, importe_adjudicado_3a_eur FLOAT, classificacion_aziendarial BOOLEAN, solvencia_economica BOOLEAN. Genera 10,000 aziendas."
+      },
+      {
+        "title": "Calcular features predittivi",
+        "desc": "Indicadores di rischio di desierto.",
+        "prompt": "Crea la vista FEATURES_CONTRATACION che per gara d'appalto calcule:\n- Mercado: num_aziendas_habilitadas_cpv, concentracion_hhi, tasa_desierto_historica_cpv\n- Pliego: importe_vs_mercato_ratio, scadenza_ejecucion_vs_medio, requisiti_solvencia_nivel\n- Competencia: aziendas_potenciales, ofertas_historicas_similees\n- Temporal: dias_publicacion_a_apertura, trimestre, fin_ejercicio\n- Territorial: provincia, num_aziendas_locales_sector"
+      },
+      {
+        "title": "Preteecir gare d'appalto desiertas",
+        "desc": "ML.CLASSIFICATION per rischio di desierto.",
+        "prompt": "Usa ML.CLASSIFICATION per prevedere risultato: adjudiogni vs desierta. Variabili: tutte le features. Evalúa precision, recall, F1. Para gare d'appalto con rischio_desierto >60% genera raccomandazioni: ampliar scadenza, ridurre requisiti solvencia, dividir in lotes, ajustar prezzo. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Estimar prezzos di referencia",
+        "desc": "Benchmarking di prezzos per CPV.",
+        "prompt": "Crea vista PRECIOS_REFERENCIA che per CPV e territorio calcule: prezzo_medio_eur, prezzo_mediana, prezzo_p25, prezzo_p75, num_controttos_base, tendenza_prezzo_12m. Crea funzione ESTIMAR_PRECIO(cpv, importe, territorio) che compare con benchmark e alerte si desvío >15%."
+      },
+      {
+        "title": "Recomendar lotes",
+        "desc": "Divisione ottimale per aumentar competencia.",
+        "prompt": "Crea funzione RECOMENDAR_LOTES(liappuntamentocion_id) che use CORTEX.COMPLETE per analizzare il pliego e recomendar: num_lotes_optimo, descripcion_por_lote, importe_por_lote, beneficio_esperado (più ofertas, minore prezzo, accesso PYME). Basado in analisi di competencia per segmento del CPV."
+      },
+      {
+        "title": "Dashboard di assunzione",
+        "desc": "Streamlit di inteligencia.",
+        "prompt": "Genera codice Streamlit con:\n1. Previsione di rischio di desierto per gare d'appalto activas\n2. Recomendazioni di miglioramento: lotes, prezzos, scadenze\n3. Benchmarking di prezzos per CPV e territorio\n4. Metriche: tasso di desierto, competencia media, risparmio estimado\n5. Analisi di concentrazione per sector\n6. Compertiva PYME vs gran azienda per tipo di controtto. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar analisi di assunzione.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_LICITACIONES: giornaliero, carga nuevas gare d'appalto di PLACE\n2. SCORING_DESIERTO: settimanal, ejecuta modello il suo gare d'appalto activas\n3. ACTUALIZAR_PRECIOS: mensile, recalcula benchmarks\n4. REENTRENAR: semestral con risultatos di nuevas gare d'appalto\n5. Documenta. Objetivo: ridurre desiertas del 25% al 15%."
+      }
+    ]
+  },
+  "UC10": {
+    "title": "Rilevamento Anomalie nel Consumo Energetico degli Edifici Pubblici",
+    "intro": "Sistema ML di rilevamento di anomalías e ottimizzazione di consumo energetico in edificios pubblicos con monitoraggio in tempo reale.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per efficienza energetica.",
+        "prompt": "Crea la base di dati SP_ENERGIA_EDIFICIOS_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di efficienza energetica di edificios pubblicos."
+      },
+      {
+        "title": "Creare inventario di edificios",
+        "desc": "Catálogo di edificios pubblicos.",
+        "prompt": "Crea la tabella EDIFICIOS_PUBLICOS con: edificio_id, nombre, tipo (Oficina, Colegio, Hospital, Polideportivo, Museo, Biblioteca), administracion, comune, zona_climatica (A-E), superficie_m2 INT, antiguedad_anos INT, certificacion_energetica (A-G), potencia_controtada_kw FLOAT, tiene_climatizacion BOOLEAN, tiene_iot BOOLEAN. Genera 500 edificios."
+      },
+      {
+        "title": "Cargar dati di consumo",
+        "desc": "Consumo eléctrico e climatizazione.",
+        "prompt": "Crea la tabella CONSUMO_EDIFICIOS con: edificio_id, fecha_hora TIMESTAMP, consumo_kwh FLOAT, potencia_kw FLOAT, temperatura_interior_c FLOAT, temperatura_exterior_c FLOAT, ocupacion_pct FLOAT, climatizacion_activa BOOLEAN, iluminacion_activa BOOLEAN. Genera dati horarios per 2 anni. Patrones: uffici L-V 8-18h, colegios L-V 8-15h, ospedali 24/7."
+      },
+      {
+        "title": "Calcular baseline e features",
+        "desc": "Consumo esperado e desviazioni.",
+        "prompt": "Crea vista BASELINE_EDIFICIOS che per edificio calcule consumo esperado secondo: tipo, superficie, zona_climatica, temperatura_exterior, hora, dia_settimana, ocupacion. Luego FEATURES_ANOMALIAS: consumo_vs_baseline_ratio, consumo_fuera_horario_pct, climatizacion_senza_ocupacion_ore, consumo_vs_similees_percentil, tendenza_consumo_3m."
+      },
+      {
+        "title": "Rilevare anomalías",
+        "desc": "ML.CLASSIFICATION per consumos anómalos.",
+        "prompt": "Usa ML.CLASSIFICATION per classificare periodos como: normal, anomalia_leve, anomalia_grave. Variabili: tutte le features. Tipos di anomalía: consumo excesivo, consumo fuori da horario, climatizazione senza ocupazione, incremento gradual senza explicazione. Evalúa precision e recall. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Generar raccomandazioni",
+        "desc": "Aczioni di efficienza per edificio.",
+        "prompt": "Crea vista RECOMENDACIONES_EFICIENCIA che per edificio genere:\n- anomalias_rilevadas, risparmio_estimado_kwh, risparmio_estimado_eur\n- top_3_azioni: [{accion, risparmio_kwh, risparmio_eur, inversion_eur, payback_mesi}]\n- Aczioni: ajustar horarios climatizazione, instalar sensores presencia, sustituir iluminazione, migliorare isolamento\n- Benchmark vs edificios similees con ranking"
+      },
+      {
+        "title": "Dashboard di efficienza",
+        "desc": "Streamlit di gestione energetica.",
+        "prompt": "Genera codice Streamlit con:\n1. Mapa di edificios coloreados per efficienza vs benchmark\n2. Consumo reale vs baseline con anomalías marogni\n3. Ranking di edificios per potencial di risparmio\n4. Recomendazioni priorizadas per ROI\n5. Metriche: anomalías rilevadas, risparmio conseguido, emisiones evitadas\n6. Compertiva tra edificios dello stesso tipo. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar monitoraggio.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_CONSUMO: ogni hora da contadores intelligentes\n2. DETECTAR_ANOMALIAS: giornaliero, ejecuta modello di rilevamento\n3. GENERAR_ALERTAS: giornaliero, notifica anomalías graves\n4. REPORTE_MENSUAL: resumen di risparmio e raccomandazioni\n5. Documenta. Objetivo: ridurre consumo 20% in edificios monitorizados."
+      }
+    ]
+  }
+};
+
+Object.assign(PROMPTS, {
+  "UC11": {
+    "title": "Rilevamento Frode Fiscale con Analisi delle Reti",
+    "intro": "Sistema ML di rilevamento frodi fiscal che analizza declarazioni, reti societarie e pattern di fatturazione per identificare schemas di evasione.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per frode fiscal.",
+        "prompt": "Crea la base di dati SP_FRAUDE_FISCAL_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di rilevamento frodi fiscal con analisi di reti."
+      },
+      {
+        "title": "Creare dati di declarazioni",
+        "desc": "Declarazioni fiscales senzatéticas.",
+        "prompt": "Crea la tabella DECLARACIONES_FISCALES con: contribuyente_nif, tipo_declaracion (IS, IRPF, IVA), ejercicio INT, periodo, base_imponible_eur FLOAT, cuota_integra_eur FLOAT, deduczioni_eur FLOAT, cuota_liquida_eur FLOAT, risultato (A_Ingresar, A_Devolver, Compensar), sector_actividad. Genera 200,000 declarazioni di 5 anni per 50,000 contribuyentes. Il 5% tiene pattern anómalos."
+      },
+      {
+        "title": "Creare rete societaria",
+        "desc": "Vinculazioni tra contribuyentes.",
+        "prompt": "Crea la tabella RED_SOCIETARIA con: entidad_a, entidad_b, tipo_vinculacion (Administrador, Socio_Mayoritario, Socio_Minoritario, Familiar_1er_Grado, Proveedor_Principal, Misma_Direccion_Fiscal), participacion_pct FLOAT, fecha_inicio DATE. Genera 30,000 vinculazioni. Incluir clústeres di aziendas che simulan reti di frode: cadenas di fatturazione circular, società interpuestas, testaferros."
+      },
+      {
+        "title": "Calcular features di rischio",
+        "desc": "Indicadores di anomalía fiscal.",
+        "prompt": "Crea vista FEATURES_FRAUDE_FISCAL che per contribuyente calcule:\n- Declarazioni: base_imponible_vs_sector, variabilidad_interanual, deduczioni_vs_media\n- IVA: ratio_IVA_soportado_vs_repercutido, operazioni_intracomunitarias_pct\n- Red: num_vinculazioni, profundidad_rete, concentracion_facturacion_en_rete\n- Comportamiento: cambios_forma_juridica, dimissione_baja_frecuentes\n- Sector: rischio_sectorial, desviacion_vs_peers"
+      },
+      {
+        "title": "Entrenar modello di rilevamento",
+        "desc": "ML.CLASSIFICATION il suo features di rischio.",
+        "prompt": "Usa ML.CLASSIFICATION per scoring di rischio fiscal: bajo, medio, alto, muy_alto. Variabili: tutte le features. Evalúa precision e recall per categoría. Para ogni contribuyente di rischio alto/muy_alto, genera profilo_rischio: tipo_frode_probable, importe_estimado_defraudado, rete_vinculada."
+      },
+      {
+        "title": "Rilevare reti di frode",
+        "desc": "Analisi di clústeres di rischio.",
+        "prompt": "Crea vista REDES_FRAUDE che identifique clústeres di contribuyentes vinculados con rischio alto: rete_id, contribuyentes_involucrados INT, importe_totale_en_rischio_eur, tipo_schema (Facturacion_Ficticia, Carrusel_IVA, Precios_Transferencia, Sociedades_Pantalla), priorità_investigacion. Genera top 20 reti con maggiore importe."
+      },
+      {
+        "title": "Dashboard di inteligencia fiscal",
+        "desc": "Streamlit di SOC fiscal.",
+        "prompt": "Genera codice Streamlit con:\n1. Mapa di rischio fiscal per provincia e sector\n2. Top contribuyentes per rischio con profilo detallado\n3. Visualizazione di reti societarie con nodos di rischio\n4. Metriche del modello: precision, recall, compertiva anual\n5. Estimazione di importe defraudado rilevado\n6. Búsqueda di contribuyente con analisi di vinculazioni"
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar rilevamento.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_DECLARACIONES: mensile con nuevas presentazioni\n2. ACTUALIZAR_RED: trimestrale con cambios mercantiles\n3. SCORING_RIESGO: trimestrale il suo tutti i contribuyentes\n4. DETECTAR_REDES: semestral, recalcula clústeres\n5. Documenta. Objetivo: aumentar rilevamento 50%."
+      }
+    ]
+  },
+  "UC12": {
+    "title": "Personalizzazione dei Servizi Digitali al Cittadino",
+    "intro": "Motore di personalizzazione di esperienza digital che recomienda pratiche, simplifica formularios e anticipa necessitàes basandosi il suo eventi vitales.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per personalizzazione.",
+        "prompt": "Crea la base di dati SP_PERSONALIZACION_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di personalizzazione di servizi digitales al cittadino."
+      },
+      {
+        "title": "Creare catálogo di pratiche",
+        "desc": "Inventario di pratiche digitales.",
+        "prompt": "Crea la tabella CATALOGO_TRAMITES con: tramite_id, nombre, administracion, materia, requisiti TEXT, documentacion_necessaria TEXT, scadenza_resolucion_dias INT, es_obligatorio BOOLEAN, evento_vital_asociado VARCHAR, frequenza (Unico, Anual, Recurrente), nivel_dificultad (Facil, Medio, Complejo), tasa_eur FLOAT. Genera 500 pratiche cubriendo: empadronamiento, DNI, licencias, ayudas, impuestos, certificados."
+      },
+      {
+        "title": "Creare cartella clinica di interazioni",
+        "desc": "Registrar navegazione e pratiche.",
+        "prompt": "Crea la tabella INTERACCIONES_CIUDADANO con: citizen_id, fecha_hora TIMESTAMP, tipo_interaccion (Busqueda, Visualizacion, Inicio_Tramite, Completado, Abandono), tramite_id, consulto_busqueda TEXT, tempo_en_pagina_seg INT, fue_exitosa BOOLEAN. Genera 500,000 interazioni per 50,000 cittadinos."
+      },
+      {
+        "title": "Rilevare eventi vitales",
+        "desc": "Identificar cambios che desencadenan pratiche.",
+        "prompt": "Crea vista EVENTOS_VITALES che use Feature Store UC08 per rilevare cambios recientes: nacimiento (nuevo minore in familia), cambio_domicilio, jubilacion, defuncion_familiar, matrimonio, cambio_occupazione. Para ogni evento, listar pratiche asociados pendientes. Usa CORTEX.COMPLETE per priorizar: urgenza, scadenze, dependencias tra pratiche."
+      },
+      {
+        "title": "Recomendar pratiche",
+        "desc": "ML.CLASSIFICATION per personalizzazione.",
+        "prompt": "Usa ML.CLASSIFICATION per prevedere prossimo pratica del cittadino basato su: profilo_feature_store, cartella clinica_interazioni, evento_vital_rilevado, pratiche_completados, época_del_anno. Crea vista RECOMENDACIONES con: citizen_id, tramite_recomendado, probabilità, motivo, urgenza. Top 5 pratiche per cittadino."
+      },
+      {
+        "title": "Simplificar formularios",
+        "desc": "Pre-cumplimentazione e lenguaje claro.",
+        "prompt": "Crea funzione FORMULARIO_SIMPLIFICADO(citizen_id, tramite_id) che:\n1. Consulte Feature Store per dati pre-rellenables\n2. Identifique campos ya disponibili (no pedir di nuevo)\n3. Use CORTEX.COMPLETE per simplificar lenguaje administrativo\n4. Retorne: campos_pre_rellenados, campos_pendientes, texto_simplificado, documentos_necessarios\nDimostra con 3 pratiche comunes."
+      },
+      {
+        "title": "Dashboard cittadino",
+        "desc": "Streamlit di esperienza digital.",
+        "prompt": "Genera codice Streamlit con:\n1. Portal personalizado: pratiche recomendados per cittadino\n2. Eventos vitales rilevados con pratiche asociados\n3. Formulario simplificado con pre-cumplimentazione\n4. Metriche: tasa éxito, tempo pratica, satisfazione\n5. Compertiva davanti as/dopo personalizzazione\n6. Top búsquedas fallidas e pratiche abandonados"
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar personalizzazione.",
+        "prompt": "Crea Tasks:\n1. DETECTAR_EVENTOS: giornaliero, identifica cambios di profilo\n2. ACTUALIZAR_RECOMENDACIONES: giornaliero, recalcula per cittadinos activos\n3. ANALIZAR_ABANDONOS: settimanal, identifica pratiche problemáticos\n4. REENTRENAR: mensile con nuevas interazioni\n5. Documenta. Objetivo: tasa éxito 75%, satisfazione >4.0."
+      }
+    ]
+  },
+  "UC13": {
+    "title": "Ottimizzazione dell\'Allocazione delle Risorse Sanitarie",
+    "intro": "Motore di ottimizzazione che preteice domanda assistenziale per área sanitaria e especialidad per assegnare risorse equitativa e eficientemente.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per risorse sanitarios.",
+        "prompt": "Crea la base di dati SP_SALUD_RECURSOS_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di ottimizzazione di assegnazione di risorse sanitarios."
+      },
+      {
+        "title": "Creare dati di actividad assistenziale",
+        "desc": "Historial di consulti, pronto soccorso e ricoveri.",
+        "prompt": "Crea la tabella ACTIVIDAD_SANITARIA con: centro_id, area_sanitaria, especialidad, fecha DATE, consulti_programmatas INT, consulti_urgenti INT, ricoveri INT, cirugias INT, degenza_media_dias FLOAT, lista_espera_dias INT. Genera dati giornalieros per 200 centri × 3 anni. Patrones stagionali: gripe dic-feb, alérgica mar-may."
+      },
+      {
+        "title": "Cargar dati di risorse",
+        "desc": "Inventario di risorse per centro.",
+        "prompt": "Crea la tabella RECURSOS_SANITARIOS con: centro_id, tipo_centro (Hospital, Centro_Salud, Consultorio), area_sanitaria, especialidad, posti letto INT, consultorios INT, quirofanos INT, medici INT, enfermeros INT, budget_anual_eur FLOAT. Crea tabella POBLACION_ZONA: area_sanitaria, poblacion_totale INT, pob_maggiore_65_pct FLOAT, indice_morbilidad FLOAT."
+      },
+      {
+        "title": "Preteecir domanda",
+        "desc": "ML.FORECAST per centro e especialidad.",
+        "prompt": "Usa ML.FORECAST per prevedere: consulti_totales, ricoveri, cirugias per centro e especialidad a 1, 4, 12 settimanas vista. Variables exógenas: stagionalità, pob_maggiore_65, indice_morbilidad, alert_epidemicas BOOLEAN, festivos. Evalúa MAPE per centro e especialidad."
+      },
+      {
+        "title": "Optimizar assegnazione",
+        "desc": "Distribuir risorse secondo domanda prevista.",
+        "prompt": "Crea vista OPTIMIZACION_RECURSOS che calcule per centro: domanda_prevista, capacità_attuale, gap (domanda - capacità), propuesta_reteistribucion: profesionales a mover, di qué centro a cuál, impatto in lista di attesa. Restriczioni: budget totale fijo, mínimos per centro. Usa CORTEX.COMPLETE per explicar propuestas."
+      },
+      {
+        "title": "Simular escenarios",
+        "desc": "What-if di pianificazione.",
+        "prompt": "Crea funzione SIMULAR_ESCENARIO(escenario) dove escenario puede ser: pandemia (domanda ×3 in pronto soccorso), envejecimiento_10a (proyeczione +15% maggiorees), nuevo_centro (capacità aggiuntivo), recorte_di bilancio (-10%). Retorna: impatto in elenchi di attesa, reteistribuzione necessaria, costo. Dimostra 3 escenarios."
+      },
+      {
+        "title": "Dashboard sanitario",
+        "desc": "Streamlit di pianificazione.",
+        "prompt": "Genera codice Streamlit con:\n1. Mapa di centri con domanda vs capacità\n2. Previsione di domanda per centro e especialidad\n3. Propuestas di reteistribuzione con impatto estimado\n4. Simulador di escenarios interactivo\n5. Lista di espera per centro e tendenza\n6. Metriche: MAPE del modello, risparmio in reteistribuzione"
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar pianificazione.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_ACTIVIDAD: giornaliero, carga dati di actividad\n2. PREDECIR_DEMANDA: settimanal, genera preteiczioni a 4 settimanas\n3. OPTIMIZAR_ASIGNACION: mensile, genera propuestas di reteistribuzione\n4. ALERTA_EPIDEMIA: giornaliero, rileva incrementos anómalos\n5. Documenta. Objetivo: MAPE <10%, reteuczione espera 20%."
+      }
+    ]
+  },
+  "UC14": {
+    "title": "Feature Store di Performance degli Organismi Pubblici",
+    "intro": "Implementa un Feature Store in Snowflake che consolide metriche di rendimento di organismos pubblicos per benchmarking e alert di deterioro.",
+    "steps": [
+      {
+        "title": "Configurar Feature Store",
+        "desc": "Creare base di dati e preperr Feature Store.",
+        "prompt": "Crea la base di dati SP_PERFORMANCE_DB con schema FEATURE_STORE e warehouse SP_WH. Comenta che este progetto implementa Snowflake Feature Store per Performance di Organismos Públicos."
+      },
+      {
+        "title": "Creare dati fonte",
+        "desc": "Generar metriche di organismos da molteplici fonti.",
+        "prompt": "Crea 5 table fonte:\n1. RAW_EXPEDIENTES_ORG: organismo_id, mes DATE, fascicoli_entrada INT, fascicoli_resueltos INT, pendientes INT, tempo_medio_resolucion_dias FLOAT, conformità_scadenza_pct FLOAT\n2. RAW_SATISFACCION: organismo_id, mes, sondaggi_respondidas INT, satisfaccion_media FLOAT, reclami INT, nps_score FLOAT\n3. RAW_PRODUCTIVIDAD: organismo_id, mes, funzionari_fte FLOAT, fascicoli_por_fte FLOAT, costo_por_tramite_eur FLOAT, absentismo_pct FLOAT\n4. RAW_PRESUPUESTO: organismo_id, mes, creteito_totale_eur FLOAT, obligazioni_eur FLOAT, pagos_eur FLOAT, ejecucion_pct FLOAT\n5. RAW_DIGITAL: organismo_id, mes, tramites_online_pct FLOAT, disponibilidad_sede_pct FLOAT, incidencias_ti INT\nGenera dati per 200 organismos × 3 anni."
+      },
+      {
+        "title": "Creare Entity",
+        "desc": "Definir Entite 'organismo' in Feature Store.",
+        "prompt": "Usando Snowflake Feature Store:\n\nfrom snowflake.ml.feature_store import FeatureStore, Entity, FeatureView\nfs = FeatureStore(session=session, database='SP_PERFORMANCE_DB', name='FEATURE_STORE')\n\norganismo = Entity(\n    name='ORGANISMO',\n    join_keys=['ORGANISMO_ID'],\n    desc='Organismo pubblico con metriche di rendimento'\n)\nfs.register_entity(organismo)\nVerifica registro."
+      },
+      {
+        "title": "Creare FeatureViews di rendimento",
+        "desc": "Features di resoluzione e satisfazione.",
+        "prompt": "Crea 2 FeatureViews:\n1. RESOLUTION_METRICS da RAW_EXPEDIENTES_ORG:\n- tempo_medio_resolucion, tendenza_resolucion_3m\n- conformità_scadenza_pct, backlog_vs_media\n- tasa_resolucion_mensile, variabilidad\n\n2. CITIZEN_SATISFACTION da RAW_SATISFACCION:\n- satisfaccion_media, tendenza_satisfaccion_3m\n- nps_score, reclami_por_1000_tramites\n- satisfaccion_vs_media_simile\n\nRefresh mensile."
+      },
+      {
+        "title": "Creare FeatureViews di productividad e budget",
+        "desc": "Features operativas e financieras.",
+        "prompt": "Crea 2 FeatureViews:\n1. PRODUCTIVITY da RAW_PRODUCTIVIDAD:\n- fascicoli_por_fte, costo_por_tramite\n- productividad_vs_simile, tendenza_productividad_3m\n- absentismo_vs_media\n\n2. BUDGET_EXECUTION da RAW_PRESUPUESTO:\n- ejecucion_di bilancio_pct, ritmo_ejecucion_vs_obiettivo\n- desviacion_pagos_vs_obligazioni\n- ejecucion_vs_simile\n\nRefresh mensile."
+      },
+      {
+        "title": "Creare FeatureView di madurez digital",
+        "desc": "Features di digitalizazione.",
+        "prompt": "Crea FeatureView DIGITAL_MATURITY da RAW_DIGITAL:\n- tramites_online_pct, tendenza_digitalizacion_6m\n- disponibilidad_sede_pct, incidencias_por_1000_tramites\n- nivel_madurez_digital (avanzato, intermedio, basico)\n- gap_vs_obiettivo_digital\n\nRefresh mensile. Dimostra consumo di tutte le features per un organismo con fs.get_features()."
+      },
+      {
+        "title": "Dashboard di performance",
+        "desc": "Streamlit di benchmarking.",
+        "prompt": "Genera codice Streamlit con:\n1. Ranking di organismos per performance global\n2. Scorecard per organismo: 5 dimensiones con semáforo\n3. Benchmarking: compertiva con organismos similees\n4. Alert di deterioro: tendenze negativas >10%\n5. Drill-down per dimensione con series temporales\n6. Informe automatico per director di organismo"
+      },
+      {
+        "title": "Pipeline di manutenzione",
+        "desc": "Automatizar attualeizazione.",
+        "prompt": "Crea Tasks:\n1. REFRESH_EXPEDIENTES: mensile da sistemi di gestione\n2. REFRESH_SATISFACCION: mensile da sondaggi\n3. REFRESH_PRODUCTIVIDAD: mensile da RRHH\n4. REFRESH_PRESUPUESTO: mensile da contabilidad\n5. ALERTAR_DETERIORO: settimanal, rileva tendenze negativas\n6. Documenta. Feature Store permette desacoplar fonti di consumidores."
+      }
+    ]
+  },
+  "UC15": {
+    "title": "Cybersicurezza dell\'Infrastruttura Pubblica Digitale",
+    "intro": "Pipeline ML di rilevamento di amenazas in infrastruttura digital pubblica con correlazione multi-sistema e automazione di risposta.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per cibersicurezza.",
+        "prompt": "Crea la base di dati SP_CIBERSEGURIDAD_DB con schema SOC e warehouse SP_WH. Comentarios del progetto di cibersicurezza di infrastruttura pubblica digital. Requisitos: ENS, NIS2."
+      },
+      {
+        "title": "Creare dati di logs",
+        "desc": "Generar eventi di sicurezza.",
+        "prompt": "Crea la tabella LOGS_SEGURIDAD con: evento_id, fecha_hora TIMESTAMP, sistema_origen, tipo_evento (Login, Acceso_Dati, Ejecucion, Red, Firewall, Email), utente, ip_origen, ip_destino, accion, risultato (Exito, Fallo, Bloqueado), severidad_base (Info, Low, Medium, High, Critical), payload_size_bytes INT. Genera 5,000,000 eventi di 6 mesi. Il 0.1% sono amenazas reali."
+      },
+      {
+        "title": "Calcular baseline di comportamento",
+        "desc": "Perfil normal per utente e sistema.",
+        "prompt": "Crea vista BASELINE_USUARIOS che per utente calcule: hora_login_habitual, sistemi_habituales, volumen_dati_giornaliero_medio, ip_habituales, patron_settimanal. Crea vista BASELINE_SISTEMAS: trafico_normal_por_hora, accessos_por_dia, errori_normales_pct. Cualquier desviazione >2σ è candidata a anomalía."
+      },
+      {
+        "title": "Rilevare amenazas",
+        "desc": "ML.CLASSIFICATION il suo eventi.",
+        "prompt": "Usa ML.CLASSIFICATION per classificare eventi como: normal, sospechoso, amenaza. Variabili: hora_vs_habitual, sistema_vs_habitual, volumen_vs_normal, ip_reputacion, fallos_consecutivos, patron_sequenziale. Tipos di amenaza: fuerza_bpercorso, exfiltrazione, lateral_movement, privilege_escalation, malware_C2."
+      },
+      {
+        "title": "Correlacionar eventi",
+        "desc": "Rilevamento di ataques multi-fase.",
+        "prompt": "Crea vista INCIDENTES_CORRELACIONADOS che agrupe eventi sospechosos por: ventana_temporal (30 min), utente o IP, secuencia di azioni. Rilevare pattern di ataque multi-fase: reconoscenza → accesso_inicial → movimiento_lateral → exfiltrazione. Asigna severidad al incidente."
+      },
+      {
+        "title": "Automatizar risposta",
+        "desc": "Playbooks di risposta a incidentes.",
+        "prompt": "Crea funzione RESPUESTA_INCIDENTE(incidente_id) che secondo tipo e severidad genere: azioni_automaticas (bloquear_ip, deshabilitar_cuenta, aislar_sistema), azioni_manuali, escalado_necessario, evidenzas_a_pprenotazioner, comunicazioni (CCN-CERT si aplica). Usa CORTEX.COMPLETE per generaree report del incidente."
+      },
+      {
+        "title": "Dashboard di SOC",
+        "desc": "Streamlit di centro di operazioni.",
+        "prompt": "Genera codice Streamlit con:\n1. Feed di eventi in tempo reale con scoring di amenaza\n2. Incidentes correlacionados con timeline di ataque\n3. Mapa di sistemi con stato di sicurezza\n4. Metriche: amenazas rilevadas, falsos positivos, MTTD, MTTR\n5. Baseline di utentes: desviazioni attualees\n6. Conformità ENS/NIS2: stato di controles"
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar rilevamento.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_LOGS: ogni 5 min da SIEM\n2. SCORING_EVENTOS: ogni 15 min, classifica nuevos eventi\n3. CORRELACIONAR: ogni 30 min, agrupa in incidentes\n4. ACTUALIZAR_BASELINE: settimanal, recalcula profili normales\n5. Documenta. Objetivo: MTTD <10 min, falsos positivos <3%."
+      }
+    ]
+  },
+  "UC16": {
+    "title": "Controllo delle Incompatibilità e Conflitti di Interesse",
+    "intro": "Sistema ML di rilevamento di conflictos di interés cruzando registros di personal, mercantiles e assunzione pubblica.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per integridad.",
+        "prompt": "Crea la base di dati SP_INTEGRIDAD_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di control di incompatibilidades e conflictos di interés."
+      },
+      {
+        "title": "Creare dati di personal pubblico",
+        "desc": "Registro di empleados e cargos.",
+        "prompt": "Crea la tabella PERSONAL_PUBLICO con: empleado_id, nombre_hash, cargo, organismo, livello (Alto_Cargo, Directivo, Tecnico, Administrativo), fecha_dimissione DATE, fecha_baja DATE, funzioni TEXT, tiene_declaracion_bienes BOOLEAN, participa_en_controtacion BOOLEAN. Genera 50,000 empleados pubblicos."
+      },
+      {
+        "title": "Creare registros mercantiles",
+        "desc": "Sociedades e administradores.",
+        "prompt": "Crea la tabella REGISTRO_MERCANTIL con: sociedad_nif, nombre_sociedad, administrador_hash, cargo_societario (Administrador, Consejero, Socio_Mayoritario, Apoderado), participacion_pct FLOAT, fecha_nombramiento DATE, sector_actividad, cifra_negocio_eur FLOAT. Genera 100,000 registros. Incluir cruces con personal pubblico (5% tiene vinculazione societaria)."
+      },
+      {
+        "title": "Cruzar dati e rilevare conflictos",
+        "desc": "ML.CLASSIFICATION per scoring di rischio.",
+        "prompt": "Crea vista CONFLICTOS_DETECTADOS che cruce PERSONAL_PUBLICO con REGISTRO_MERCANTIL e LICITACIONES (de UC09). Tipos di conflicto:\n- incompatibilidad: empleado pubblico con cargo societario activo\n- revolving_door: exfunzionario in azienda che controtó con il suo organismo (<2 anni)\n- controtacion_vinculada: azienda del familiar adjudicataria\n- nepotismo: familiares in cadena di mando\nScoring: rischio_alto, rischio_medio, rischio_bajo."
+      },
+      {
+        "title": "Analizar reti di influencia",
+        "desc": "Grafos di vinculazioni.",
+        "prompt": "Crea vista REDES_INFLUENCIA che construya grafos: nodos = empleados + società, aristas = vinculazioni (societaria, familiar, controttuale). Identifica clústeres di influencia: grupo di empleados vinculados a aziendas che liappuntamenton con i suoi organismos. Calcula centralidad e betweenness di ogni nodo."
+      },
+      {
+        "title": "Generar alert priorizadas",
+        "desc": "Lista di casi per investigar.",
+        "prompt": "Crea vista ALERTAS_INTEGRIDAD con: empleado_id, tipo_conflicto, severidad, descripcion TEXT, importe_controttos_vinculados_eur, evidenza TEXT, recomendacion TEXT. Ordena per severidad × importe. Genera top 50 alert per la ufficio di conflictos."
+      },
+      {
+        "title": "Dashboard di integridad",
+        "desc": "Streamlit di control.",
+        "prompt": "Genera codice Streamlit con:\n1. Alert priorizadas con detalle di ogni conflicto\n2. Grafo di vinculazioni per caso seleccionado\n3. Metriche: conflictos rilevados per tipo, importe vinculado\n4. Evoluzione di revolving doors per organismo\n5. Estado di declarazioni di bienes: conformità\n6. Búsqueda di empleado con analisi di vinculazioni"
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar rilevamento.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_PERSONAL: mensile con dimissioni/bajas\n2. ACTUALIZAR_MERCANTIL: trimestrale con registros mercantiles\n3. CRUCE_CONFLICTOS: trimestrale, ejecuta rilevamento\n4. ALERTAR_NUEVOS: settimanal, rileva nuevas vinculazioni\n5. Documenta. Nota: alert sono indicios, non esami. Presunzione di inocencia."
+      }
+    ]
+  },
+  "UC17": {
+    "title": "NLP sulla Normativa e Generazione di Riassunti Legali",
+    "intro": "Pipeline NLP che analizza normativa automaticamente, genera resúmenes ejecutivos e crea normativa consolidada usando RAG.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per inteligencia normativa.",
+        "prompt": "Crea la base di dati SP_NORMATIVA_DB con schema RAG e warehouse SP_WH. Comentarios del progetto di NLP il suo normativa e generazione di resúmenes legales."
+      },
+      {
+        "title": "Creare corpus normativo",
+        "desc": "Generar base di normativa vigente.",
+        "prompt": "Crea la tabella NORMATIVA con: norma_id, tipo (Ley_Organica, Ley, Real_Decreto, Orden, Resolucion, Directiva_UE), titulo, preambulo TEXT, articulado TEXT, disposizioni_aggiuntivoes TEXT, fecha_publicacion DATE, boe_referencia, materia, ambito (Estatal, Autonomico, Local), vigente BOOLEAN, modifica_norma_id, deroga_norma_id. Genera 2,000 normas con textos realistas in castellano jurídico."
+      },
+      {
+        "title": "Indexar con Cortex Search",
+        "desc": "Creare servizio di búsqueda il suo normativa.",
+        "prompt": "Crea un Cortex Search Service il suo NORMATIVA indicizzando: titulo + preambulo + articulado + disposizioni. Filtros: tipo, materia, ambito, vigente. Dimostra con consulti: '¿qué dice la lee di transparencia il suo accesso a informazione?', 'regolamentazione di controttos minorees', 'protezione di dati in amministrazioni pubbliche'."
+      },
+      {
+        "title": "Generar resúmenes di nueva normativa",
+        "desc": "LLM per síntesis ejecutiva.",
+        "prompt": "Crea funzione RESUMIR_NORMA(norma_id) che use CORTEX.COMPLETE per generaree:\n- Resumen ejecutivo (200 palabras)\n- Principales novedades e cambios\n- Normas che modifica o deroga\n- Procedimientos administrativos afectados\n- Plazos di entrada in vigor e transitoriedad\nDimostra con 3 normas complejas."
+      },
+      {
+        "title": "Identificar impatto in procedure",
+        "desc": "Cruzar cambios normativos con processos.",
+        "prompt": "Crea tabella PROCEDIMIENTOS_ADMIN con: procedura_id, nombre, normativa_base, organismo_responsable. Crea funzione IMPACTO_NORMATIVO(norma_id) che use RAG per identificare qué procedure si ven afectados per la nueva norma, qué cambios richieden e scadenza di adaptazione."
+      },
+      {
+        "title": "Creare normativa consolidada",
+        "desc": "Integrar modificazioni in texto único.",
+        "prompt": "Crea funzione CONSOLIDAR_NORMA(norma_id) che use CORTEX.COMPLETE + Cortex Search per generaree texto consolidato incorporando tutte le modificazioni posteriores. Marcar: [modificado per X], [derogado per Y], [añadido per Z]. Dimostra con 2 normas frecuentemente modifiogni."
+      },
+      {
+        "title": "Dashboard di inteligencia normativa",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Feed di nueva normativa con resúmenes automaticos\n2. Buscador RAG il suo corpus legal vigente\n3. Analisi di impatto: procedure afectados per norma\n4. Normativa consolidada con tracking di cambios\n5. Alert per materia e unità administrativa\n6. Metriche: normas analizzadas, impattos rilevados, tempo ahorrado"
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar analisi normativo.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_BOE: giornaliero, carga nuevas disposizioni\n2. RESUMIR_NUEVAS: giornaliero, genera resúmenes automaticos\n3. ANALIZAR_IMPACTO: giornaliero, cruza con procedure\n4. CONSOLIDAR: settimanal, attualeiza textos consolidatos\n5. Documenta. Objetivo: analisi <1h vs 4h manualeee."
+      }
+    ]
+  },
+  "UC18": {
+    "title": "Analisi Preteittiva della Vulnerabilità Sociale",
+    "intro": "Motor preteittivo che integra indicatori socioeconómicos per identificare personas e zonas a rischio di vulnerabilidad prima di la crisi.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per vulnerabilidad sociale.",
+        "prompt": "Crea la base di dati SP_VULNERABILIDAD_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di analisi preteittivo di vulnerabilidad sociale."
+      },
+      {
+        "title": "Creare indicatori per zona",
+        "desc": "Dati socioeconómicos e di servizi.",
+        "prompt": "Crea la tabella INDICADORES_ZONA con: zona_id (barrio/comune), fecha_mes DATE, tasa_desoccupazione_pct FLOAT, renta_media_eur FLOAT, prezzo_alquiler_m2 FLOAT, desahucios_mes INT, richieste_bono_sociale INT, cortes_approvvigionamento INT, richieste_servizi_sociali INT, indice_envejecimiento FLOAT, pob_inmigrdavanti a_pct FLOAT, denuncias_violencia INT. Genera dati mensilees per 500 zonas × 3 anni."
+      },
+      {
+        "title": "Creare profili individualei",
+        "desc": "Indicadores a livello di persona (anonimizado).",
+        "prompt": "Crea la tabella PERFILES_RIESGO con: citizen_id_hash, zona_id, età_grupo, genero, situacion_laboral, mesi_desoccupazione INT, prestacion_activa BOOLEAN, tipo_prestacion, renta_grupo, tipo_vivienda (Propiedad, Alquiler, Social, Sin_Hogar), composicion_familiar, indicador_salud_cronico BOOLEAN, accesso_digital BOOLEAN. Genera 200,000 profili. Il 8% in situazione di vulnerabilidad reale."
+      },
+      {
+        "title": "Calcular scoring di vulnerabilidad",
+        "desc": "ML.CLASSIFICATION multidimensional.",
+        "prompt": "Usa ML.CLASSIFICATION per scoring di vulnerabilidad in 5 dimensiones:\n- Económica: renta, desoccupazione, deudas\n- Habitacional: rischio desahucio, vivienda inadecuada\n- Sanitaria: enfermedad cronica, salud mental, dependencia\n- Social: isolamento, violencia, discriminazione\n- Energética: pobreza energetica, cortes di approvvigionamento\nScoring global: senza_rischio, rischio_bajo, rischio_medio, rischio_alto, rischio_critico."
+      },
+      {
+        "title": "Creare mapa di rischio",
+        "desc": "Visualizazione territorial di vulnerabilidad.",
+        "prompt": "Crea vista MAPA_VULNERABILIDAD per zona con: indice_vulnerabilidad_global, vulnerabilidad_economica, habitacional, sanitaria, sociale, energetica, personas_rischio_alto INT, personas_rischio_critico INT, tendenza_3m (miglioramentondo, stabile, empeggioreando), alerta_precoce TEXT. Identificar zonas con deterioro acelerado."
+      },
+      {
+        "title": "Generar raccomandazioni di intervento",
+        "desc": "Priorizar actuazioni per profilo.",
+        "prompt": "Crea vista PLAN_INTERVENCION che per persona a rischio alto/critico genere: dimension_principale, actuazioni_recomendadas (servizio sociale, occupazione, vivienda, salud), urgenza, servizio_responsable, costo_estimado_intervencion_eur, probabilità_cronificacion_senza_intervencion. Usa CORTEX.COMPLETE per personalizzare raccomandazione."
+      },
+      {
+        "title": "Dashboard di prevenzione sociale",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Mapa di vulnerabilidad per zona con semáforo\n2. Perfil di rischio per persona (anonimizado) con scoring\n3. Plan di intervento priorizado\n4. Tendencias: zonas che empeggiorean con alert\n5. Metriche: personas a rischio, interventi, éxito preventivo\n6. Compertiva di zonas e evoluzione temporal"
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar prevenzione.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_INDICADORES: mensile, carga dati socioeconómicos\n2. SCORING_VULNERABILIDAD: mensile, recalcula rischio\n3. ALERTAS_DETERIORO: settimanal, rileva empeggioreamiento rápido\n4. PLAN_INTERVENCION: mensile, genera raccomandazioni\n5. Documenta. Conformità RGPD stringente. Objetivo: prevenir 70% di crisi."
+      }
+    ]
+  },
+  "UC19": {
+    "title": "Analisi del Sentiment nella Partecipazione Cittadina",
+    "intro": "Pipeline NLP di analisi di participazione cittadina che classifica aportazioni, rileva temas emergentes e genera report per decisores.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per participazione.",
+        "prompt": "Crea la base di dati SP_PARTICIPACION_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di analisi di sentimiento in participazione cittadina."
+      },
+      {
+        "title": "Creare dati di participazione",
+        "desc": "Aportazioni cittadinas senzatéticas.",
+        "prompt": "Crea la tabella APORTACIONES con: aportacion_id, processo_id, tipo_processo (Consulta_Publica, Presupuesto_Participativo, Sugerencia, Queja, Pleno_Abierto), titulo TEXT, texto TEXT, autor_hash, fecha TIMESTAMP, idioma (es, ca, eu, gl), canal (Web, App, Presencial, Email), distrito, tema_declarado. Genera 50,000 aportazioni per 100 processos. Temas: movilidad, zonas verdes, sicurezza, cultura, limpieza, vivienda."
+      },
+      {
+        "title": "Analizar sentimiento",
+        "desc": "CORTEX.SENTIMENT il suo aportazioni.",
+        "prompt": "Crea la vista SENTIMIENTO_PARTICIPACION che use CORTEX.SENTIMENT il suo ogni aportazione per estrarre: sentimiento_score (-1 a 1), sentimiento_labil (Positivo, Neutro, Negativo). Agrega per processo: sentimiento_medio, distribucion (% pos/neu/neg), evoluzione temporal. Identifica processos con sentimiento maggioreitariamente negativo."
+      },
+      {
+        "title": "Clasificar per tema",
+        "desc": "CORTEX.COMPLETE per categorizazione.",
+        "prompt": "Crea la vista CLASIFICACION_TEMATICA che use CORTEX.COMPLETE per classificare ogni aportazione en: tema_principale (movilidad, zonas_verdes, sicurezza, cultura, limpieza, vivienda, educacion, salud, economia, altro), subtema, es_propuesta BOOLEAN, es_queja BOOLEAN, es_domanda BOOLEAN, viabilidad_estimada (dimissione, media, baja, no_aplica)."
+      },
+      {
+        "title": "Rilevare temas emergentes",
+        "desc": "Clustering di propuestas similees.",
+        "prompt": "Crea vista TEMAS_EMERGENTES che agrupe aportazioni similees: cluster_id, tema_comun, num_aportazioni, sentimiento_medio, esempio_representativo, es_tema_nuevo BOOLEAN (no previsto nella consulto), tendenza (creciente, stabile, decreciente). Identificar temas che emergen espontáneamente."
+      },
+      {
+        "title": "Generar report di síntesis",
+        "desc": "LLM per consolidare risultatos.",
+        "prompt": "Crea funzione INFORME_PARTICIPACION(processo_id) che use CORTEX.COMPLETE per generaree:\n- Resumen ejecutivo: participazione, sentimiento general\n- Top 5 temas con sentimiento e propuestas principalei\n- Temas emergentes non anticipados\n- Propuestas più viables e più apoyadas\n- Recomendazioni per decisores\nFormato profesional per presentar al pleno comunale."
+      },
+      {
+        "title": "Dashboard di participazione",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Resumen di processo: participazione, sentimiento, temas\n2. Nube di temas con sentimiento per color\n3. Timeline di aportazioni con evoluzione di sentimiento\n4. Propuestas agrupadas per tema e viabilidad\n5. Compertiva tra processos participativos\n6. Generador di report per pleno comunale"
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar analisi.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_APORTACIONES: continuo durdavanti a processos abiertos\n2. ANALIZAR_SENTIMIENTO: giornaliero durdavanti a processo\n3. CLASIFICAR_TEMAS: giornaliero\n4. DETECTAR_EMERGENTES: settimanal\n5. Documenta. Objetivo: analisi <24h vs settimanas manualeee."
+      }
+    ]
+  },
+  "UC20": {
+    "title": "Gestione Intelligente dei Rifiuti Urbani",
+    "intro": "Motore di ottimizzazione di residuos che preteice llenado, ottimizza percorsos, rileva contaminazione e preteice comportamento di reciclaje.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per residuos.",
+        "prompt": "Crea la base di dati SP_RESIDUOS_DB con schema ANALYTICS e warehouse SP_WH. Comentarios del progetto di gestione intelligente di residuos urbanos."
+      },
+      {
+        "title": "Creare inventario di contenedores",
+        "desc": "Catálogo di contenedores con sensores.",
+        "prompt": "Crea la tabella CONTENEDORES con: contenedor_id, ubicacion_lat FLOAT, ubicacion_lng FLOAT, zona (Centro, Residencial, Comercial, Industrial), fraccion (Organica, Envases, Papel, Vidrio, Resto), capacità_litros INT, tiene_sensor BOOLEAN, fecha_instalacion DATE. Genera 10,000 contenedores in una ciudad tipo. Il 40% tiene sensor IoT."
+      },
+      {
+        "title": "Cargar dati di sensores",
+        "desc": "Lecturas di livello di llenado.",
+        "prompt": "Crea la tabella LECTURAS_SENSOR con: contenedor_id, fecha_hora TIMESTAMP, nivel_pct FLOAT, temperatura_c FLOAT, inclinacion_grados FLOAT, bateria_pct FLOAT. Genera lecturas ogni 4h per contenedores con sensor × 1 anno. Patrones: orgánica llenado rápido, vidrio lento, comercial più rápido che residencial."
+      },
+      {
+        "title": "Preteecir llenado",
+        "desc": "ML.FORECAST per ogni contenedor.",
+        "prompt": "Usa ML.FORECAST per prevedere nivel_pct per contenedor a 24h, 48h e 72h vista. Variabili: zona, fraccion, dia_settimana, festivo, eventi_cercanos. Crea vista PREDICCION_LLENADO: contenedor_id, hora_prevista_lleno, priorità_recogida (urgente >90%, dimissione 75-90%, normal 50-75%, baja <50%)."
+      },
+      {
+        "title": "Optimizar percorsos",
+        "desc": "Generar percorsos di recogida eficientes.",
+        "prompt": "Crea vista RUTAS_OPTIMIZADAS che agrupe contenedores a recoger por: veicolo, orden di recogida, km_estimados, tempo_estimado_min, contenedores_en_percorso INT. Restriczioni: capacità veicolo, horario permitido per zona, frequenza mínima per frazione. Calcula risparmio_km vs percorso fija."
+      },
+      {
+        "title": "Rilevare contaminazione",
+        "desc": "ML.CLASSIFICATION il suo frazioni.",
+        "prompt": "Usa ML.CLASSIFICATION il suo dati di planta di trattamento per rilevare contaminazione di frazioni: contenedor con >30% di material incorrecto. Variabili: zona, tipo_vivienda, cartella clinica_contaminacion, campagnas_informativas. Genera lista di zonas con dimissione contaminazione per campagnas educativas."
+      },
+      {
+        "title": "Dashboard di residuos",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Mapa di contenedores con livello attuale e previsione\n2. Rutas ottimizzadas del giorno con risparmio estimado\n3. Alert di desbordamiento prossimo\n4. Metriche: tasa reciclaje per zona, contaminazione, km ahorrados\n5. Compertiva percorsos ottimizzadas vs fijas\n6. Evoluzione di reciclaje per zona e frazione"
+      },
+      {
+        "title": "Pipeline e limpieza",
+        "desc": "Automatizar gestione.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_SENSORES: ogni 4h, carga lecturas IoT\n2. PREDECIR_LLENADO: ogni 6h, genera preteiczioni\n3. OPTIMIZAR_RUTAS: giornaliero a le 4:00, genera percorsos del giorno\n4. DETECTAR_CONTAMINACION: settimanal, analizza plantas di trattamento\n5. Documenta. Objetivo: ridurre viajes 25%, desbordamientos 90%."
+      }
+    ]
+  }
+});
+
+function verGuia(ucId) {
+  var g = GUIAS[ucId];
+  if (!g) return;
+  var html = '<span class="guide-badge">' + ucId + '</span>';
+  html += '<h2>' + g.title + '</h2>';
+  html += '<h3>Contesto del settore pubblico</h3><p>' + g.contesto + '</p>';
+  html += '<h3>Focus della soluzione</h3><p>' + g.focus + '</p>';
+  html += '<h3>Sfida tecnica</h3><p>' + g.reto + '</p>';
+  html += '<h3>Obiettivi</h3><ul>' + g.obiettivi.map(function(o){return '<li>' + o + '</li>';}).join('') + '</ul>';
+  html += '<h3>Funzionalit\u00e0 principali</h3><ul>' + g.funzionalità.map(function(f){return '<li>' + f + '</li>';}).join('') + '</ul>';
+  html += '<h3>Dati necessari</h3><ul>' + g.dati.map(function(d){return '<li>' + d + '</li>';}).join('') + '</ul>';
+  html += '<h3>Stratificazione</h3><ul>' + g.stratificazione.map(function(s){return '<li>' + s + '</li>';}).join('') + '</ul>';
+  html += '<h3>Come usare</h3><ul>' + g.como_usar.map(function(c){return '<li>' + c + '</li>';}).join('') + '</ul>';
+  html += '<div class="guide-footer">Guida generata per l&apos;implementazione con Snowflake Cortex AI/ML</div>';
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function verPrompts(ucId) {
+  var data = PROMPTS[ucId];
+  if (!data) return;
+  var esc = function(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+  var html = '<span class="guide-badge">' + ucId + '</span>';
+  html += '<h2>' + data.title + '</h2>';
+  html += '<p class="prompt-intro">' + data.intro + '</p>';
+  data.steps.forEach(function(st, i) {
+    html += '<div class="prompt-step">';
+    html += '<div class="prompt-step-header"><span class="prompt-step-num">' + (i+1) + '</span><span class="prompt-step-title">' + st.title + '</span></div>';
+    html += '<p class="prompt-step-desc">' + st.desc + '</p>';
+    html += '<div class="prompt-code"><button class="copy-btn" onclick="copiarPrompt(this)">Copia</button>' + esc(st.prompt) + '</div>';
+    html += '</div>';
+  });
+  html += '<div class="guide-footer">Esegui i prompt in sequenza in Cortex Code</div>';
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function copiarPrompt(btn) {
+  var code = btn.parentElement.textContent.replace('Copia','').trim();
+  navigator.clipboard.writeText(code).then(function(){btn.textContent='\u2713 Copiato';setTimeout(function(){btn.textContent='Copia';},1500);});
+}
+
+function cerrarModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+</script>
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)cerrarModal();">
+  <div class="modal-box">
+    <button class="modal-close" onclick="cerrarModal()">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+</body>
+</html>

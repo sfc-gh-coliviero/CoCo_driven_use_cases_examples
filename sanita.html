@@ -1,0 +1,2346 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <title>Snowflake — Soluzioni IA/ML per Sanità e Ospedali</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+    .hero { background: linear-gradient(135deg, #003545, #11567F); color: #fff; padding: 32px 48px 36px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+    .hero-left { flex: 1; }
+    .logos { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .logo-snowflake { display: flex; align-items: center; gap: 7px; color: #fff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+    .hero-eyebrow { font-size: 11px; letter-spacing: 2px; font-weight: 600; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 8px; }
+    .hero-title { font-size: 42px; font-weight: 700; line-height: 1.1; margin-bottom: 10px; }
+    .hero-subtitle { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); margin-bottom: 6px; }
+    .hero-tagline { font-size: 12px; color: rgba(255,255,255,0.65); }
+    .stats-box { background: #fff; border-radius: 10px; padding: 20px 28px; text-align: center; color: #1a1a1a; min-width: 160px; flex-shrink: 0; }
+    .stats-box .stat-number { font-size: 40px; font-weight: 700; color: #0D7C8F; line-height: 1; }
+    .stats-box .stat-label { font-size: 12px; color: #666; margin-bottom: 14px; }
+    .stats-box .stat-time { font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1; }
+    .stats-box .stat-time-label { font-size: 12px; color: #666; }
+    .stats-divider { border: none; border-top: 1px solid #e8e8e8; margin: 10px 0; }
+    .intro { background: #fff; text-align: center; padding: 48px 24px 32px; }
+    .intro h2 { font-size: 22px; font-weight: 700; color: #11567F; margin-bottom: 14px; }
+    .intro p { max-width: 600px; margin: 0 auto; font-size: 14px; color: #555; line-height: 1.7; }
+    .filters-bar { background: #fff; padding: 20px 48px 0; border-bottom: 1px solid #e8e8e8; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .filters-left { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+    .filter-btn { padding: 8px 18px; border-radius: 80px; border: 1.5px solid #ccc; background: transparent; font-size: 13px; font-weight: 500; color: #444; cursor: pointer; transition: all 0.15s; }
+    .filter-btn:hover { border-color: #29B5E8; color: #29B5E8; }
+    .filter-btn.active { background: #29B5E8; border-color: #29B5E8; color: #fff; }
+    .search-box { display: flex; align-items: center; border: 1.5px solid #ccc; border-radius: 80px; padding: 7px 14px; gap: 8px; min-width: 200px; background: #fff; }
+    .search-box input { border: none; outline: none; font-size: 13px; color: #444; width: 100%; background: transparent; }
+    .search-box input::placeholder { color: #aaa; }
+    .results-count { padding: 14px 48px 8px; font-size: 13px; color: #666; background: #f5f5f5; }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; padding: 16px 48px 48px; background: #f5f5f5; }
+    .card { background: #fff; border-radius: 10px; border: 1px solid #e2e2e2; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.2s; }
+    .card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.1); }
+    .card-header { padding: 16px 18px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .card-badges { display: flex; gap: 6px; align-items: center; }
+    .badge-id { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.5px; }
+    .badge-cat { background: #E0F4FD; color: #11567F; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+    .badge-cat.paziente   { background: #E3F2FD; color: #1565C0; }
+    .badge-cat.clinico    { background: #E8F5E9; color: #2E7D32; }
+    .badge-cat.operazioni{ background: #EDE7F6; color: #5E35B1; }
+    .badge-cat.cronico    { background: #FFF3E0; color: #E65100; }
+    .badge-cat.sicurezza  { background: #FCE4EC; color: #C62828; }
+    .card-time { font-size: 12px; color: #888; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .card-title { padding: 0 18px 12px; font-size: 17px; font-weight: 700; color: #11567F; line-height: 1.3; }
+    .pain-point { margin: 0 18px 14px; background: #E0F4FD; border-radius: 8px; padding: 12px 14px; }
+    .pain-point-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #0D7C8F; margin-bottom: 6px; text-transform: uppercase; }
+    .pain-point p { font-size: 13px; color: #2a2a2a; line-height: 1.55; }
+    .card-desc { padding: 0 18px 14px; font-size: 13px; color: #555; line-height: 1.65; flex: 1; }
+    .card-features { padding: 0 18px 16px; list-style: none; }
+    .card-features li { font-size: 13px; color: #444; display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+    .card-features li::before { content: '\2713'; color: #29B5E8; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .card-actions { padding: 14px 18px 18px; display: flex; gap: 10px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
+    .btn-secondary {
+      flex: 1;
+      padding: 10px;
+      background: #29B5E8;
+      color: #fff;
+      border: none;
+      border-radius: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .btn-secondary:hover { background: #11567F; }
+    .btn-tertiary {
+      flex: 1;
+      padding: 10px;
+      background: #003545;
+      color: #29B5E8;
+      border: none;
+      border-radius: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+    .btn-tertiary:hover { background: #11567F; }
+    .prompt-step { margin-bottom: 18px; }
+    .prompt-step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .prompt-step-num { background: #003545; color: #29B5E8; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .prompt-step-title { font-size: 13px; font-weight: 600; color: #333; }
+    .prompt-step-desc { font-size: 12px; color: #666; margin-bottom: 6px; line-height: 1.5; }
+    .prompt-code { position: relative; background: #003545; color: #e0e0e0; border-radius: 8px; padding: 12px 14px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12.5px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+    .prompt-code .copy-btn { position: absolute; top: 6px; right: 8px; background: rgba(255,255,255,0.1); border: none; color: #aaa; font-size: 11px; padding: 3px 8px; border-radius: 4px; cursor: pointer; }
+    .prompt-code .copy-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+    .modal-box .prompt-intro { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #eee; }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: #fff; border-radius: 12px; max-width: 700px; width: 92%; max-height: 85vh; overflow-y: auto; padding: 32px 28px; position: relative; box-shadow: 0 8px 40px rgba(0,0,0,0.2); }
+    .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 22px; cursor: pointer; color: #888; line-height: 1; }
+    .modal-close:hover { color: #0D7C8F; }
+    .modal-box h2 { color: #11567F; font-size: 20px; margin-bottom: 6px; }
+    .modal-box h3 { font-size: 15px; color: #333; margin: 18px 0 8px; }
+    .modal-box p, .modal-box li { font-size: 13px; line-height: 1.7; color: #444; }
+    .modal-box ul { padding-left: 20px; margin: 6px 0; }
+    .modal-box .guide-badge { display: inline-block; background: #E0F4FD; color: #11567F; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 50px; margin-bottom: 10px; }
+    .modal-box .guide-footer { margin-top: 20px; padding-top: 14px; border-top: 1px solid #eee; font-size: 12px; color: #888; }
+    @media (max-width: 700px) {
+      .hero { flex-direction: column; padding: 24px 20px; }
+      .cards-grid { grid-template-columns: 1fr; padding: 16px 16px 48px; }
+      .filters-bar { padding: 16px 16px 0; }
+      .results-count { padding: 12px 16px 6px; }
+    }
+  </style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-left">
+    <div class="logos"></div>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.75);text-decoration:none;margin-bottom:8px;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.75)'"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="12,4 6,10 12,16"/></svg>Torna al catalogo dei settori</a>
+    <p class="hero-eyebrow">Sanità e Ospedali &times; Snowflake</p>
+    <h1 class="hero-title">Soluzioni IA/ML per Sanità e Ospedali</h1>
+    <p class="hero-subtitle">Guide e prompt Cortex Code pronti al deploy in assistenza al paziente, operazioni ospedaliere, gestione clinica e medicina basata sui dati</p>
+    <p class="hero-tagline">Sviluppato con Snowflake Cortex AI | Impatto immediato</p>
+  </div>
+  <div class="stats-box">
+    <div class="stat-number">20</div>
+    <div class="stat-label">Casi d'Uso</div>
+    <hr class="stats-divider"/>
+    <div class="stat-time">8-15 min</div>
+    <div class="stat-time-label">Tempo di Configurazione</div>
+  </div>
+</header>
+<section class="intro">
+  <h2>Accelera l&apos;analitica con soluzioni IA preconfigurate per la sanità</h2>
+  <p>Ogni scheda include i prompt Cortex Code per Snowflake con dati sintetici, guide passo passo
+     e implementazioni SQL-first con Cortex AI/ML, Feature Store e Model Registry per il passaggio in produzione.
+     Prevedi riammissioni, ottimizza le risorse ospedaliere, personalizza i trattamenti
+     e gestisci i pazienti cronici: tutto in Snowflake, senza dipendenze esterne, pronto per essere adattato ai tuoi dati.</p>
+</section>
+<div class="filters-bar">
+  <div class="filters-left" id="filterBtns">
+    <button class="filter-btn active" data-filter="all">Tutti (20)</button>
+    <button class="filter-btn" data-filter="paziente">Assistenza al Paziente (4)</button>
+    <button class="filter-btn" data-filter="clinico">Dati Clinici (4)</button>
+    <button class="filter-btn" data-filter="operazioni">Operazioni (4)</button>
+    <button class="filter-btn" data-filter="cronico">Cronici (4)</button>
+    <button class="filter-btn" data-filter="sicurezza">Sicurezza (4)</button>
+  </div>
+  <div class="search-box">
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/></svg>
+    <input id="searchInput" type="text" placeholder="Cerca casi d'uso&hellip;" />
+  </div>
+</div>
+<div class="results-count" id="resultsCount">Mostrando 20 di 20 casi d'uso</div>
+<main class="cards-grid" id="cardsGrid"></main>
+<script>
+const USE_CASES = [
+  {
+    "id": "UC01",
+    "cat": "clinico",
+    "catLabel": "Dati Clinici",
+    "time": "15 min",
+    "title": "Previsione delle Riammissioni Ospedaliere con Model Registry",
+    "pain": "Il 15-20% dei pazienti ospedalizzati vengono riammessi entro i 30 giorni dopo il dimissione, con un costo aggiuntivo di 3.000-8.000€ per riammissione. Gli ospedali italiani mancano di strumenti predittivi per identificare pazienti a rischio prima del dimissione.",
+    "desc": "Modello ML di previsione di riammissioni non pianificati a 30 giorni che analizza diagnosi, procedure, comorbidità e fattori sociali. Viene registrato in Snowflake Model Registry per operazione continua e versionamento.",
+    "features": [
+      "ML.CLASSIFICATION + Model Registry con log_model() e versionamento",
+      "Variabili: diagnosi, comorbidità, degenza, procedure, età",
+      "Scoring al dimissione per intervento preventiva",
+      "Dashboard Streamlit di gestione delle riammissioni"
+    ]
+  },
+  {
+    "id": "UC02",
+    "cat": "paziente",
+    "catLabel": "Assistenza al Paziente",
+    "time": "13 min",
+    "title": "Chatbot RAG per l\'Assistenza al Paziente e Appuntamenti",
+    "pain": "I call center ospedalieri gestiscono un 60% di consulti ripetitive (appuntamenti, priparazione di esami, risultatos) con costo di 6-10€/chiamata e tempi di attesa di 15-30 minuti. La insatisfazione del paziente raggiunge il 40%.",
+    "desc": "Assistente conversazionale RAG con Cortex Search indicizzando protocolli clinici, preperzioni di esami, FAQ, informazione di servizi e stato di appuntamenti per assistenza multicanal 24/7.",
+    "features": [
+      "RAG con Cortex Search + CORTEX.COMPLETE",
+      "Base di conoscenza: protocollos, preperzioni, FAQ, servizi",
+      "Integrazione con sistema di appuntamenti per gestione in tempo reale",
+      "Dashboard Streamlit di chatbot con metriche di risoluzione"
+    ]
+  },
+  {
+    "id": "UC03",
+    "cat": "operazioni",
+    "catLabel": "Operazioni",
+    "time": "14 min",
+    "title": "Previsione della Domanda Assistenziale con Model Registry",
+    "pain": "Gli ospedali pianificano risorse con 6-12 mesi di davanti alazione basandosi il suo storicos agregados. I picos stagionali (gripe, ole di calore) e eventi imprevisti mandano in tilt pronto soccorso e generanoo cancellazioni di chirurgia programmata.",
+    "desc": "Modello di previsione di domanda assistenziale per servizio, especialidad e franja horaria con ML.FORECAST registrato in Model Registry per pianificazione operativa continua.",
+    "features": [
+      "ML.FORECAST + Model Registry con metriche di accuracy",
+      "Variabili: stagionalità, epidemiologia, demografía, meteorologia",
+      "Planificazione di posti letto, sale operatorie e personal per servizio",
+      "Dashboard Streamlit di pianificazione ospedaliera"
+    ]
+  },
+  {
+    "id": "UC04",
+    "cat": "cronico",
+    "catLabel": "Cronici",
+    "time": "12 min",
+    "title": "Stratificazione dei Pazienti Cronici per Rischio",
+    "pain": "I pazienti cronici (diabetes, EPOC, insuficiencia cardíaca) rappresentano il 80% del gasto sanitario. Sin estratificazione efficace, i risorse si distribuiscono in modo uniforme indipendentemente del rischio di scompenso.",
+    "desc": "Motore di estratificazione di pazienti cronici per rischio di scompenso, ricovero urgente e deterioro funcional usando ML.CLASSIFICATION il suo dati clinici e di monitoraggio.",
+    "features": [
+      "ML.CLASSIFICATION con scoring di rischio multidimensional",
+      "Variabili: HbA1c, FEV1, FEVI, aderenza, comorbidità, ricoveri precedenti",
+      "Segmentazione: alto rischio, rischio moderato, stabile, controllato",
+      "Dashboard Streamlit di gestione dei cronici"
+    ]
+  },
+  {
+    "id": "UC05",
+    "cat": "operazioni",
+    "catLabel": "Operazioni",
+    "time": "13 min",
+    "title": "Manutenzione Preteittiva delle Apparecchiature Mediche",
+    "pain": "Le guasti non previstas di apparecchiature critici (TAC, resonancia, laboratorio) generanoo cancellazioni di esami, trasferimenti a altri centri e costi di riparazione urgente un 40% superiori al manutenzione pianificato.",
+    "desc": "Sistema ML di previsione di fali in attrezzatura medico che analizza dati di uso, sensores, manutenziones precedenti e vita utile per anticipare guasti e ottimizzare controttos di servizio.",
+    "features": [
+      "ML.CLASSIFICATION il suo dati di uso e sensores di apparecchiature",
+      "Variabili: ore di uso, ciclos, temperaturas, errori, anzianità",
+      "Planificazione di manutenzione per criticità del apparecchiatura",
+      "Dashboard Streamlit di gestione delle apparecchiature"
+    ]
+  },
+  {
+    "id": "UC06",
+    "cat": "clinico",
+    "catLabel": "Dati Clinici",
+    "time": "14 min",
+    "title": "NLP sulle Cartelle Cliniche ed Estrazione di Entità",
+    "pain": "Il 80% della informazione clinica rilevante está in testo libero (report di dimissione, note di evoluzione, report di esami). I medici dedicano 2-3 ore/día a documentazione e la informazione chiave si perde tra migliaia di note.",
+    "desc": "Pipeline NLP che analizza cartelle cliniche clinici per estrarre diagnosi, farmaci, allergie, procedure e referti rilevanti, strutturando la informazione per supporto alla decisione clinica.",
+    "features": [
+      "CORTEX.COMPLETE per estrazione di entidades cliniche",
+      "Cortex Search per búsqueda semántica in cartelle cliniche",
+      "Estructurazione automatica: CIE-10, ATC, procedure SNOMED",
+      "Dashboard Streamlit di intelligenza clinica"
+    ]
+  },
+  {
+    "id": "UC07",
+    "cat": "paziente",
+    "catLabel": "Assistenza al Paziente",
+    "time": "12 min",
+    "title": "Analisi dell\'Esperienza del Paziente e Soddisfazione",
+    "pain": "Le sondaggi di satisfazione post-dimissione hanno una tasso di risposta del 15-25% e si analizzan trimestralemente. Le reclami e reclami si gestiscono individualemente senza rilevare pattern sistémicos.",
+    "desc": "Motore NLP di analisi di esperienza del paziente che processa sondaggi, reclami, recensioni e reti sociali per identificare aree di miglioramento, tendenze e alert di qualità assistenziale.",
+    "features": [
+      "CORTEX.SENTIMENT + CORTEX.COMPLETE per analisi di feedback",
+      "Classificazione temática: espera, trato, informazione, strutture",
+      "Rilevamento di alert di qualità assistenziale in tempo reale",
+      "Dashboard Streamlit dell\'esperienza del paziente"
+    ]
+  },
+  {
+    "id": "UC08",
+    "cat": "paziente",
+    "catLabel": "Assistenza al Paziente",
+    "time": "15 min",
+    "title": "Feature Store del Profilo Paziente 360",
+    "pain": "I dati del paziente sono dispersos in 8-12 sistemi (HCE, laboratorio, farmacia, radiología, pronto soccorso, consulti). Un medico necessita consultore 3-5 sistemi per tener una visione completa, perdiendo 15-20 minuti per paziente.",
+    "desc": "Feature Store centralizzato in Snowflake che consolida features del profilo di paziente da molteplici fonti cliniche, cumpliendo RGPD e regolamentazione sanitaria, per supporto alla decisione clinica e personalizzazione della assistenza.",
+    "features": [
+      "Snowflake Feature Store con Entite e FeatureView",
+      "Features: demográfico, diagnosi, terapia farmacologica, laboratorio, ricoveri",
+      "Versionado automatico e conformità RGPD/LOPD sanitaria",
+      "Pipeline di ingesta da HCE, laboratorio, farmacia, radiología"
+    ]
+  },
+  {
+    "id": "UC09",
+    "cat": "operazioni",
+    "catLabel": "Operazioni",
+    "time": "12 min",
+    "title": "Ottimizzazione della Programmazione Chirurgica",
+    "pain": "La sottoutilizzazione di sale operatorie oscilla tra il 20-35% per cancellazioni, ritardi e cattiva stima di tempi. Il costo di un sala operatoria vacío è di 1.200-2.500€/hora e le elenchi di attesa chirurgica superano i 120 giorni di media.",
+    "desc": "Motore di ottimizzazione di programazione chirurgica che preteice durazione reale, estima probabilità di cancellazione, e ottimizza la secuencia di interventi per massimizzare uso di sale operatorie.",
+    "features": [
+      "ML.FORECAST per previsione di durazione chirurgica",
+      "ML.CLASSIFICATION per rischio di cancellazione",
+      "Ottimizzazione di secuencia con restriczioni di personal e apparecchiatura",
+      "Dashboard Streamlit di programmazione chirurgica"
+    ]
+  },
+  {
+    "id": "UC10",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza",
+    "time": "13 min",
+    "title": "Rilevamento Frode nella Fatturazione Sanitaria",
+    "pain": "La frode in fatturazione sanitaria (seguros, mutuas, conciertos pubblico-privados) si estima in un 3-8% del gasto totale. La fatturazione per acto senza control genera su-codificazione, servizi ficticios e duplicazioni che non vengono rilevati mannualmente.",
+    "desc": "Sistema ML di rilevamento di anomalías in fatturazione sanitaria che analizza pattern di codificazione, frequenzas di procedure, degenzas e trasferimenti per identificare frode e abuso.",
+    "features": [
+      "ML.CLASSIFICATION il suo pattern di fatturazione",
+      "Variabili: GRD, degenza, procedure, trasferimenti, costi",
+      "Rilevamento di su-codificazione e servizi ficticios",
+      "Dashboard Streamlit di controllo della fatturazione"
+    ]
+  },
+  {
+    "id": "UC11",
+    "cat": "cronico",
+    "catLabel": "Cronici",
+    "time": "14 min",
+    "title": "Monitoraggio Remoto dei Pazienti con IoT e Allerte ML",
+    "pain": "I pazienti cronici tra visitas non hanno monitoraggio continuo. Il 30% dei ricoveri urgenti di cronici podría evitarse con rilevamento precoce di scompenso. La telemonitoraggio genera migliaia di dati che non si analizzan in tempo reale.",
+    "desc": "Pipeline ML di monitoraggio di pazienti cronici che analizza dati di dispositivos conectados (tensione, glucosa, saturazione, peso, actividad) per rilevare descompensazioni prima di che requieran ricovero.",
+    "features": [
+      "ML.CLASSIFICATION il suo series temporales di dispositivos IoT",
+      "Baseline personalizado per paziente e patologia",
+      "Alert multinivel: informativa, richiede chiamata, urgente",
+      "Dashboard Streamlit di telemonitoraggio"
+    ]
+  },
+  {
+    "id": "UC12",
+    "cat": "clinico",
+    "catLabel": "Dati Clinici",
+    "time": "13 min",
+    "title": "Supporto alla Decisione Clinica con RAG",
+    "pain": "I protocolli clinici si attualeizan constdavanti amente (nuevas guías, alert farmacológicas, ensayos clinici) e i medici non possono mdavanti anerse al giorno. Un 30% delle decisiones cliniche non siguen la migliore evidenza disponibile.",
+    "desc": "Sistema RAG di supporto alla decisione clinica che indexa guías di práctica clinica, protocolli ospedalieri, alert farmacológicas e evidenza científica per asistir al medico in tempo reale.",
+    "features": [
+      "Cortex Search il suo corpus di guías cliniche e protocollos",
+      "CORTEX.COMPLETE per generazione di raccomandazioni contextualizadas",
+      "Alert di interazioni farmacológicas e controindicazioni",
+      "Dashboard Streamlit di supporto clinico"
+    ]
+  },
+  {
+    "id": "UC13",
+    "cat": "operazioni",
+    "catLabel": "Operazioni",
+    "time": "12 min",
+    "title": "Ottimizzazione della Gestione Letti e Flusso Pazienti",
+    "pain": "La gestione di posti letto è un cuello di botella: ocupazione al 90-95% genera bloqueos in pronto soccorso (pazienti esperando posto letto 8-24h), cancellazioni di chirurgia programmata e trasferimenti a altri centri con costo di 500-1.500€/dopolado.",
+    "desc": "Motore di previsione e ottimizzazione del flujo di pazienti che preteice dimissioni, estima domanda di posti letto per servizio e ottimizza asignazioni per ridurre tempi di attesa e bloqueos.",
+    "features": [
+      "ML.FORECAST di dimissioni e domanda di posti letto per servizio",
+      "Previsione di degenza media per GRD e profilo del paziente",
+      "Optimizazione in tempo reale di assegnazione di posti letto",
+      "Dashboard Streamlit di gestione letti"
+    ]
+  },
+  {
+    "id": "UC14",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza",
+    "time": "15 min",
+    "title": "Feature Store di Performance Ospedaliera",
+    "pain": "I indicatori di rendimento ospedaleario (mortalidad ajustada, tasas di infeczione, degenzas medias, rericoveri) si calculan con 3-6 mesi di ritardo. No existe benchmarking tra servizi ni alert precoci di deterioro di qualità.",
+    "desc": "Feature Store in Snowflake che consolida metriche di rendimento per servizio e ospedale per benchmarking, alert di qualità e acreteitazione, integrando dati di actividad, risultatos e satisfazione.",
+    "features": [
+      "Snowflake Feature Store con Entite per servizio/ospedale",
+      "FeatureViews: actividad, risultatos clinici, satisfazione, efficienza",
+      "Benchmarking tra servizi e ospedali dello stesso grupo",
+      "Pipeline automatico di attualeizazione multi-fonte"
+    ]
+  },
+  {
+    "id": "UC15",
+    "cat": "cronico",
+    "catLabel": "Cronici",
+    "time": "13 min",
+    "title": "Previsione dell\'Aderenza al Trattamento",
+    "pain": "La non aderenza a trattamento afecta al 50% dei pazienti cronici, causando il 10% delle ospedaleizazioni e un sucosto di 1.250€/paziente/anno. La rilevamento di non aderenza è tardía (en la seguente visita o ricovero).",
+    "desc": "Modelo preteittivo di aderenza a trattamento che analizza profilo del paziente, complejidad terapéutica, cartella clinica di dispensazioni e fattori socioeconómicos per intervento preventiva.",
+    "features": [
+      "ML.CLASSIFICATION per scoring di rischio di non aderenza",
+      "Variabili: complejidad régimen, dispensazioni, età, comorbidità",
+      "Recomendazioni di intervento: simplificazione, recordatorios, educazione",
+      "Dashboard Streamlit di aderenza terapeutica"
+    ]
+  },
+  {
+    "id": "UC16",
+    "cat": "clinico",
+    "catLabel": "Dati Clinici",
+    "time": "14 min",
+    "title": "Rilevamento Precoce della Sepsi con ML in Tempo Reale",
+    "pain": "La sepsis è la primera causa di muerte ospedalearia evitable. Ogni hora di ritardo in il trattamento aumenta la mortalidad un 8%. I scores traggiuntivoes (qSOFA, SIRS) hanno baja sensibilidad (50-60%) e generanoo fatiga di alert.",
+    "desc": "Sistema ML di rilevamento precoce di sepsis che analizza constdavanti as vitales, analitiche e dati clinici in tempo reale per identificare pazienti a rischio 4-12 ore prima di i criterios clásicos.",
+    "features": [
+      "ML.CLASSIFICATION il suo constdavanti as vitales e analitiche in streaming",
+      "Variabili: temperatura, FC, FR, leucocitos, lactato, PCR, procalcitonina",
+      "Alerta precoz 4-12h prima di criterios clásicos di sepsis",
+      "Dashboard Streamlit di allerta sepsi"
+    ]
+  },
+  {
+    "id": "UC17",
+    "cat": "paziente",
+    "catLabel": "Assistenza al Paziente",
+    "time": "11 min",
+    "title": "Personalizzazione dei Piani di Dimissione e Follow-up",
+    "pain": "I report di dimissione sono genéricos e un 40% dei pazienti non comprenden le instruczioni. Il 25% non acude a le appuntamenti di monitoraggio e un 15% non recoge la terapia farmacologica prescrita, aumentando le riammissioni.",
+    "desc": "Motore di personalizzazione di planes di dimissione che adapta instruczioni al livello di comprensione del paziente, programa monitoraggio proactivo e coordina cuidados post-dimissione con assistenza premioria.",
+    "features": [
+      "CORTEX.COMPLETE per simplificazione di lenguaje medico",
+      "Personalizzazione per profilo: età, alfabetizazione sanitaria, idioma",
+      "Coordinazione automatica con assistenza premioria e farmacia",
+      "Dashboard Streamlit di gestione post-dimissione"
+    ]
+  },
+  {
+    "id": "UC18",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza",
+    "time": "12 min",
+    "title": "Rilevamento degli Eventi Avversi e Sicurezza del Paziente",
+    "pain": "I eventi adversos ospedalieri afectan al 8-12% dei pazienti ingresados, ma solo il 10-20% si reportan voluntariamente. La rilevamento è reactiva e il analisi di causas tarda settimanas o mesi.",
+    "desc": "Pipeline ML di rilevamento automatica di eventi adversos che analizza cartelle cliniche, terapia farmacologica, analitiche e dati di enfermería per identificare caídas, infeczioni, errori di terapia farmacologica e complicazioni chirurgicas.",
+    "features": [
+      "ML.CLASSIFICATION il suo dati clinici e di enfermería",
+      "NLP con CORTEX.COMPLETE il suo note cliniche per rilevamento",
+      "Variabili: terapia farmacologica, analitiche, constdavanti as, movilidad, alert",
+      "Dashboard Streamlit di sicurezza del paziente"
+    ]
+  },
+  {
+    "id": "UC19",
+    "cat": "cronico",
+    "catLabel": "Cronici",
+    "time": "12 min",
+    "title": "Previsione del Deterioramento Funzionale nei Pazienti Geriatrici",
+    "pain": "I pazienti geriátricos ospedalizzati perden un 2-5% di capacità funcional per giorno di ricovero. Il deterioro funcional non si rileva fino a che è severo, complicando la recuperazione e aumentando la dependencia post-dimissione.",
+    "desc": "Modelo preteittivo di deterioro funcional che integra movilidad, nutrizione, cognizione, polifarmacia e contesto sociale per identificare pazienti geriátricos a rischio e attivare intervento precoz.",
+    "features": [
+      "ML.CLASSIFICATION con scoring di rischio di deterioro funcional",
+      "Variabili: Barthel, MNA, MMSE, polifarmacia, degenza, movilidad",
+      "Alert per attivare fisioterapia, nutrizione e geriatría precoz",
+      "Dashboard Streamlit di gestione geriatrica"
+    ]
+  },
+  {
+    "id": "UC20",
+    "cat": "sicurezza",
+    "catLabel": "Sicurezza",
+    "time": "12 min",
+    "title": "Anonimizzazione Intelligente dei Dati Clinici per la Ricerca",
+    "pain": "Il uso secundario di dati clinici per investigazione e miglioramento di qualità está limitado per la regolamentazione di protezione di dati (RGPD, LOPD sanitaria). La anonimizazione manualeee è lenta, inconsistente e puede perder utilidad analitica.",
+    "desc": "Pipeline di anonimizazione intelligente che aplica tecnicas di k-anonimato, l-diversidad e ruido diferencial il suo datasets clinici, pprenotazionendo la utilidad estadística per investigazione.",
+    "features": [
+      "CORTEX.COMPLETE per rilevamento di identificadores in testo libero",
+      "Técnicas di k-anonimato e l-diversidad il suo dati strutturados",
+      "Valutazione automatica di rischio di re-identificazione",
+      "Dashboard Streamlit di gestione dati per la ricerca"
+    ]
+  }
+];
+const TOTAL = 20;
+
+function renderCards(list) {
+  var grid = document.getElementById('cardsGrid');
+  var count = document.getElementById('resultsCount');
+  grid.innerHTML = '';
+  count.textContent = 'Mostrando ' + list.length + ' di ' + TOTAL + " casi d\'uso";
+  list.forEach(function(uc) {
+    var catClass = uc.cat;
+    grid.innerHTML += '<article class="card">' +
+      '<div class="card-header"><div class="card-badges"><span class="badge-id">' + uc.id + '</span><span class="badge-cat ' + catClass + '">' + uc.catLabel + '</span></div><span class="card-time">\u23F1 ' + uc.time + '</span></div>' +
+      '<div class="card-title">' + uc.title + '</div>' +
+      '<div class="pain-point"><div class="pain-point-label">Problema</div><p>' + uc.pain + '</p></div>' +
+      '<div class="card-desc">' + uc.desc + '</div>' +
+      '<ul class="card-features">' + uc.features.map(function(f){return '<li>' + f + '</li>';}).join('') + '</ul>' +
+      '<div class="card-actions"><a href="#" class="btn-secondary" onclick="verGuia(\'' + uc.id + '\');return false;">Vedi Guida</a><a href="#" class="btn-tertiary" onclick="verPrompts(\'' + uc.id + '\');return false;">Cortex Code Prompts</a></div>' +
+      '</article>';
+  });
+}
+
+var currentFilter = 'all';
+var currentSearch = '';
+function applyFilters() {
+  var list = USE_CASES;
+  if (currentFilter !== 'all') list = list.filter(function(u){return u.cat === currentFilter;});
+  if (currentSearch) { var q = currentSearch.toLowerCase(); list = list.filter(function(u){return (u.title + ' ' + u.desc + ' ' + u.id + ' ' + u.catLabel).toLowerCase().indexOf(q) !== -1;}); }
+  renderCards(list);
+}
+
+document.getElementById('filterBtns').addEventListener('click', function(e) {
+  if (!e.target.classList.contains('filter-btn')) return;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  e.target.classList.add('active');
+  currentFilter = e.target.getAttribute('data-filter');
+  applyFilters();
+});
+
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  currentSearch = e.target.value;
+  applyFilters();
+});
+
+renderCards(USE_CASES);
+
+
+const GUIAS = {
+  "UC01": {
+    "title": "Previsione delle Riammissioni Ospedaliere con Model Registry",
+    "contesto": "Il 15-20% di pazienti vengono riammessi in 30 giorni con un costo di 3.000-8.000€ per riammissione. Gli ospedali italiani mancano di strumenti predittivi per intervento pre-dimissione.",
+    "focus": "Construir un modello ML di previsione di riammissioni a 30 giorni registrato in Snowflake Model Registry per scoring automatico al dimissione ospedalearia.",
+    "reto": "I fattori di riammissione sono multidimensionales: clinici (comorbidità, severidad), assistenzialees (qualità del dimissione, monitoraggio) e sociali (apoyo familiar, accesso). Il modello debe ser explicable per che i clinici confíen in i suoi preteiczioni.",
+    "obiettivi": [
+      "Preteecir riammissioni a 30 giorni con AUC >0.75",
+      "Registrar modello in Model Registry con log_model() e versionamento",
+      "Reducir riammissioni evitables un 25% misuravanti a intervento pre-dimissione",
+      "Identificar fattori modificables per planes di dimissione personalizados",
+      "Automatizar scoring al dimissione con modello desplegado"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION per scoring di rischio di riammissione",
+      "Snowflake Model Registry: log_model(), get_model(), deploy()",
+      "Variabili: diagnosi principale, Charlson, degenza, procedure, età, ricoveri precedenti",
+      "Scoring explicable con importancia di features",
+      "Dashboard Streamlit di gestione delle riammissioni"
+    ],
+    "dati": [
+      "Episodios di ospedaleizazione: diagnosi GRD, degenza, procedure",
+      "Comorbilidades: índice di Charlson, pluripatologia",
+      "Dati di dimissione: destino, terapia farmacologica, monitoraggio programmato",
+      "Historial: ricoveri precedenti 12 mesi, pronto soccorso, consulti",
+      "Perfil del paziente: età, género, codice postal, livello socioeconómico"
+    ],
+    "stratificazione": [
+      "Por servizio: medicina interna, cardiología, neumología, chirurgia",
+      "Por GRD e complejidad del caso",
+      "Por livello di rischio: alto >40%, moderato 20-40%, bajo <20%",
+      "Por causa di riammissione: stessa patologia, complicazione, nueva patologia",
+      "Por fattore modificable: terapia farmacologica, monitoraggio, educazione, sociale"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Il modello si trana con episodios di al meno 3 anni",
+      "Registrar in Model Registry per versionamento e despliegue automatico",
+      "Ajustar umbral di scoring secondo capacità di intervento",
+      "Retranar semestralmente con nuevos episodios"
+    ]
+  },
+  "UC02": {
+    "title": "Chatbot RAG per l\'Assistenza al Paziente e Appuntamenti",
+    "contesto": "I call center ospedalieri gestiscono un 60% di consulti ripetitive con alto costo. La digitalizazione sanitaria acelerada per COVID ha aumentado le expectativas dei pazienti in canali digitales.",
+    "focus": "Construir un asistente conversacional RAG multicanal per assistenza al paziente con Cortex Search indicizzando protocollos, preperzioni e FAQ ospedalearias.",
+    "reto": "La informazione sanitaria debe ser precisa e attualeizada. Un error in priparazione di esame puede invalidar il estudio. Il chatbot debe conocer i suoi límites e escalar a profesional quando sea necessario.",
+    "obiettivi": [
+      "Resolver il 55% di consulti senza intervento humana",
+      "Reducir costo per interazione di 8€ a 0.60€",
+      "Gestionar appuntamenti, preperzioni e consulti 24/7",
+      "Escalar a profesional con contesto completo quando sea necessario",
+      "Soportar castellano e catalán come mínimo"
+    ],
+    "funzionalità": [
+      "Cortex Search per indexazione di protocolli e FAQ",
+      "CORTEX.COMPLETE per generazione di rispostas personalizadas",
+      "Integrazione con sistema di appuntamenti HIS",
+      "Escalado intelligente con resumen per il profesional",
+      "Dashboard Streamlit con metriche di resoluzione"
+    ],
+    "dati": [
+      "Protocoi di priparazione di esami: ayuno, terapia farmacologica, condopote",
+      "FAQ per servizio e tipo di consulto",
+      "Informazione di servizi: horarios, ubicazione, contacto",
+      "Estado di appuntamenti: programmatas, pendientes, risultatos disponibili",
+      "Historial di interazioni del paziente"
+    ],
+    "stratificazione": [
+      "Por tipo di consulto: appuntamento, priparazione, risultato, informazione, reclamo",
+      "Por canal: web, app, teléfono, WhatsApp",
+      "Por servizio ospedaleario e especialidad",
+      "Por complejidad: simple (FAQ), media (appuntamento), compleja (reclamo)",
+      "Por idioma: castellano, catalán, euskera"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Indexar protocolli e FAQ con Cortex Search",
+      "Integrar con API del sistema di appuntamenti del ospedale",
+      "Validar rispostas con apparecchiatura di assistenza al paziente",
+      "Monitorizar tasso di resoluzione e satisfazione"
+    ]
+  },
+  "UC03": {
+    "title": "Previsione della Domanda Assistenziale con Model Registry",
+    "contesto": "Gli ospedali pianificano risorse con mesi di davanti alazione. I picos stagionali e eventi imprevisti mandano in tilt pronto soccorso e generanoo cancellazioni chirurgicas.",
+    "focus": "Construir un modello di previsione di domanda assistenziale con ML.FORECAST registrato in Model Registry per pianificazione operativa continua.",
+    "reto": "La domanda sanitaria depende di fattori epidemiológicos, stagionali, demográficos e eventi externos. La precisione debe ser suficiente per decisiones operativas con 1-4 settimanas di davanti alazione.",
+    "obiettivi": [
+      "Preteecir domanda assistenziale con MAPE <10% a 1 settimana",
+      "Registrar modello in Model Registry con metriche di accuracy",
+      "Reducir cancellazioni di chirurgia programmata un 30%",
+      "Optimizar assegnazione di personal di guardia",
+      "Anticipar picos epidémicos con 2-3 settimanas di davanti alazione"
+    ],
+    "funzionalità": [
+      "ML.FORECAST con series temporales per servizio e especialidad",
+      "Snowflake Model Registry: log_model(), versionamento, deploy()",
+      "Variables exógenas: gripe, calor, polen, festivos, eventi",
+      "Planificazione di posti letto, sale operatorie e personal",
+      "Dashboard Streamlit di pianificazione ospedaliera"
+    ],
+    "dati": [
+      "Actividad assistenziale: pronto soccorso, ricoveri, consulti, chirurgias per giorno",
+      "Epidemiología: vigilancia di gripe, COVID, gastroenteritis per zona",
+      "Demografía: poblazione asignada, pirámide di età, turismo",
+      "Meteorología: temperatura, ole di calore/frío, precipitazione",
+      "Calendario: festivos, vacazioni escolares, eventi deportivos"
+    ],
+    "stratificazione": [
+      "Por servizio: pronto soccorso, medicina interna, UCI, chirurgia, pediatría",
+      "Por tipo di domanda: urgente, programmata, ambulatoria",
+      "Por horizonte: 24h (operativo), 1 settimana, 1 mes (pianificazione)",
+      "Por profilo: pediátrico, adulto, geriátrico",
+      "Por stagionalità: gripe, calor, alérgica, vacacional"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Entrenar con al meno 3 anni di dati di actividad",
+      "Registrar modello in Model Registry per operazione continua",
+      "Calibrar con variables exógenas del territorio",
+      "Retranar mensilmente con dati attualeizados"
+    ]
+  },
+  "UC04": {
+    "title": "Stratificazione dei Pazienti Cronici per Rischio",
+    "contesto": "I pazienti cronici rappresentano il 80% del gasto sanitario. Sin estratificazione efficace, i risorse si distribuiscono uniformemente in lugar di priorizarse per rischio di scompenso.",
+    "focus": "Construir un motor di estratificazione di cronici che clasifique pazienti per rischio di scompenso e tipo di intervento necessaria.",
+    "reto": "La pluripatologia complica la estratificazione: un paziente con diabetes, EPOC e insuficiencia cardíaca tiene interazioni tra patologias che un modello unidimensional non captura. Se necessita una visione integral.",
+    "obiettivi": [
+      "Estratificar il 100% di cronici in 4 niveles di rischio",
+      "Identificar il 70% di descompensazioni con 4-8 settimanas di davanti alazione",
+      "Reducir ricoveri urgenti di cronici un 20%",
+      "Personalizar planes di monitoraggio per livello di rischio",
+      "Optimizar risorse di enfermería gestora di casi"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION con scoring multidimensional per patologia",
+      "Variabili: HbA1c, FEV1, FEVI, NT-proBNP, aderenza, ricoveri precedenti",
+      "Segmentazione: alto rischio, rischio moderato, stabile, controllato",
+      "Recomendazioni di intervento per nivel",
+      "Dashboard Streamlit di gestione dei cronici"
+    ],
+    "dati": [
+      "Registro di cronici: patologia principale, comorbidità, Charlson",
+      "Analíticas: HbA1c, creatinina, FEV1, NT-proBNP, hemoglobina",
+      "Medicazione: fármacos activos, aderenza, cambios recientes",
+      "Actividad: ricoveri, pronto soccorso, consulti ultimos 12 mesi",
+      "Funcionalidad: Barthel, escala di fragilidad, caídas"
+    ],
+    "stratificazione": [
+      "Por patologia: diabetes, EPOC, ICC, IRC, pluripatológico",
+      "Por livello di rischio: alto, moderato, stabile, controllato",
+      "Por tipo di scompenso: metabólica, respiratoria, cardíaca",
+      "Por aderenza: buena, irregolare, mala",
+      "Por livello di intervento: ospedaleizazione domiciliaria, enfermería, premioria"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Integrar con registros di cronici del ospedale/area di salud",
+      "Validar estratificazione con clinici di referencia",
+      "Ajustar umbrales secondo risorse disponibili",
+      "Revalutare estratificazione trimestralemente"
+    ]
+  },
+  "UC05": {
+    "title": "Manutenzione Preteittiva delle Apparecchiature Mediche",
+    "contesto": "Le guasti di apparecchiature critici (TAC, resonancia, laboratorio) causan cancellazioni di esami e trasferimenti costias. Il manutenzione correctivo cuesta un 40% più che il preventivo.",
+    "focus": "Construir un sistema di manutenzione preteittivo che analice dati di uso, sensores e manutenziones per anticipare fali in apparecchiature medici critici.",
+    "reto": "I apparecchiatura medici sono heterogéneos in tecnologia, fabricdavanti a e anzianità. I dati di sensores varían secondo apparecchiatura e la criticità depende del servizio (un TAC in pronto soccorso è più critico che in consulti).",
+    "obiettivi": [
+      "Preteecir il 75% delle guasti con 2-4 settimanas di davanti alazione",
+      "Reducir guasti non pianificati un 40%",
+      "Optimizar controttos di manutenzione con dati obiettivi",
+      "Reducir costo di manutenzione totale un 15%",
+      "Priorizar interventi per criticità del apparecchiatura"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION il suo dati di uso e sensores",
+      "Variabili: ore di uso, ciclos, temperaturas, errori, voltaje, anzianità",
+      "Scoring di rischio di guasto per apparecchiatura e componente",
+      "Planificazione di manutenzione per criticità",
+      "Dashboard Streamlit di gestione delle apparecchiature"
+    ],
+    "dati": [
+      "Inventario di apparecchiature: tipo, marca, modello, anzianità, criticità",
+      "Dati di uso: ore, ciclos, estudios realizados",
+      "Sensores: temperatura, voltaje, errori di software, calibrazione",
+      "Historial di manutenzione: preventivo, correctivo, piezas, costo",
+      "Incidencias: guasto, impatto (cancellazioni, trasferimenti)"
+    ],
+    "stratificazione": [
+      "Por tipo di apparecchiatura: imagen (TAC, RM, RX), laboratorio, monitoraggio",
+      "Por criticità: vital (UCI), dimissione (pronto soccorso), media, baja",
+      "Por estado: ottimale, assistenza requerida, rischio, critico",
+      "Por tipo di fallo: mecánico, eléctrico, software, calibrazione",
+      "Por anzianità e ciclo di vita utile restdavanti a"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar con inventario e dati di apparecchiature del ospedale",
+      "Calibrar modello con al meno 2 anni di cartella clinica di guasti",
+      "Validar preteiczioni con servizio di electromedicina",
+      "Integrar con sistema di gestione di manutenzione (GMAO)"
+    ]
+  },
+  "UC06": {
+    "title": "NLP sulle Cartelle Cliniche ed Estrazione di Entità",
+    "contesto": "Il 80% della informazione clinica rilevante está in testo libero. I medici dedicano ore a documentazione e la informazione chiave si perde tra migliaia di note cliniche.",
+    "focus": "Construir un pipeline NLP che extraiga automaticamente diagnosi, farmaci, allergie e referti di cartelle cliniche clinici per supporto alla decisione clinica.",
+    "reto": "Il lenguaje clinico espannol include abreviaturas (Tto=trattamento, Dx=diagnosi), terminología especializada, negazioni contextuales ('no presenta fiebre') e variabilidad tra profesionales. La estrazione debe ser mue precisa per uso clinico.",
+    "obiettivi": [
+      "Extraer entidades cliniche con F1 >85%",
+      "Codificar automaticamente diagnosi a CIE-10",
+      "Rilevare allergie e interazioni farmacológicas in testo libero",
+      "Reducir tempo di codificazione manualeee un 60%",
+      "Creare base di conoscenza clinico strutturada per investigazione"
+    ],
+    "funzionalità": [
+      "CORTEX.COMPLETE per estrazione di entidades (NER clinico)",
+      "Cortex Search per búsqueda semántica in cartelle cliniche",
+      "Codificazione automatica: CIE-10, ATC, SNOMED-CT",
+      "Rilevamento di negazioni e modificadores contextuales",
+      "Dashboard Streamlit di intelligenza clinica"
+    ],
+    "dati": [
+      "Informes di dimissione: diagnosi, trattamento, evoluzione",
+      "Notas di evoluzione di enfermería e medici",
+      "Informes di esami: laboratorio, imagen, anatomía patológica",
+      "Hojas di prescrizione e terapia farmacologica activa",
+      "Registros di allergie e reazioni adversas"
+    ],
+    "stratificazione": [
+      "Por tipo di documento: dimissione, evoluzione, interconsulto, esame",
+      "Por especialidad e servizio",
+      "Por tipo di entidad: diagnosi, medicamento, alergia, procedura",
+      "Por confianza di estrazione: dimissione, media, richiede revisione",
+      "Por idioma: castellano, catalán"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Alimentar con corpus di cartelle cliniche clinici anonimizados",
+      "Validar estrazione con documentalistas clinici",
+      "Integrar con codificadores di GRD e CMBD",
+      "Cumplir estrictamente RGPD e normativa sanitaria"
+    ]
+  },
+  "UC07": {
+    "title": "Analisi dell\'Esperienza del Paziente e Soddisfazione",
+    "contesto": "Le sondaggi post-dimissione hanno baja risposta e analisi lento. Le reclami si gestiscono individualemente senza rilevare pattern sistémicos di miglioramento.",
+    "focus": "Construir un motor NLP di analisi di esperienza del paziente che procese molteplici fonti di feedback per identificare aree di miglioramento e alert di qualità.",
+    "reto": "Il feedback del paziente viene in molteplici formatos e tonos: da sondaggi strutturadas fino a reclami emocionales. Il analisi dibe ser obiettivo e processable per i gestores sanitarios.",
+    "obiettivi": [
+      "Analizar il 100% del feedback in <24 ore",
+      "Clasificar per tema e sentimiento automaticamente",
+      "Rilevare alert di qualità assistenziale in tempo reale",
+      "Aumentar azioni di miglioramento un 40% basadas in evidenza",
+      "Correlacionar satisfazione con indicatori clinici"
+    ],
+    "funzionalità": [
+      "CORTEX.SENTIMENT + CORTEX.COMPLETE per analisi di feedback",
+      "Classificazione temática: espera, trato, informazione, strutture, dolor",
+      "Correlazione con indicatori: servizio, medico, turno, patologia",
+      "Rilevamento di alert: patrón negativo sostenido, incidente puntual",
+      "Dashboard Streamlit dell\'esperienza del paziente"
+    ],
+    "dati": [
+      "Encuestas di satisfazione post-dimissione e post-consulto",
+      "Reclamazioni e sugerencias formales",
+      "Reseñas in Google Maps e portales di salud",
+      "Redes sociali: menzioni del ospedale",
+      "Indicadores clinici asociados: servizio, degenza, complicazioni"
+    ],
+    "stratificazione": [
+      "Por fonte: sondaggio, reclamo, reseña, rete sociale",
+      "Por tema: espera, trato, informazione, dolor, strutture, comida",
+      "Por sentimiento: positivo, neutro, negativo, mixto",
+      "Por servizio e profesional",
+      "Por urgenza: alerta (richiede azione inmediata), miglioramento, informativo"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Indexar feedback di tutte le fonti disponibili",
+      "Validar classificazione temática con qualità assistenziale",
+      "Integrar alert con comité di qualità",
+      "Generar report mensilees per direczione"
+    ]
+  },
+  "UC08": {
+    "title": "Feature Store del Profilo Paziente 360",
+    "contesto": "I dati del paziente sono dispersos in 8-12 sistemi senza interoperabilidad reale. La visione fragmentada ralentiza la asistencia e genera errori per fdimissione di contesto.",
+    "focus": "Implementar un Feature Store in Snowflake che consolide features del profilo di paziente da molteplici fonti cliniche cumpliendo RGPD e regolamentazione sanitaria.",
+    "reto": "I dati clinici sono dimissionemente sensibles (RGPD, LOPD sanitaria, Lee di Autonomía del Paciente). La integrazione debe respetar la minimizazione di dati, il consentimiento e la segregazione per finalidad. Ogni sistema tiene formatos e sonodares diversi.",
+    "obiettivi": [
+      "Consolidar visione 360 del paziente da 6+ fonti cumpliendo RGPD",
+      "Creare Entite 'patient' con FeatureViews especializados",
+      "Servir features con get_features() per supporto clinico e operativo",
+      "Reducir tempo di consulto di cartella clinica un 60%",
+      "Habilitar features compartidas tra servizi con control di accesso"
+    ],
+    "funzionalità": [
+      "Snowflake Feature Store: Entity('patient', join_keys=['patient_id'])",
+      "FeatureView: demographics (edad, género, direczione, contacto)",
+      "FeatureView: clinical_histore (diagnosi activos, Charlson, allergie)",
+      "FeatureView: medications (terapia farmacologica activa, aderenza, interazioni)",
+      "FeatureView: lab_results (ultimas analitiche, tendenze, alert)",
+      "FeatureView: activite (ricoveri, pronto soccorso, consulti, interventi)"
+    ],
+    "dati": [
+      "HCE: diagnosi, davanti acedentes, allergie, note cliniche",
+      "Laboratorio: analitiche, microbiología, hemogramas",
+      "Farmacia: terapia farmacologica activa, dispensazioni, aderenza",
+      "Radiología: esami di imagen, report",
+      "Admisione: episodios, degenzas, trasferimenti, appuntamenti"
+    ],
+    "stratificazione": [
+      "Por profilo clinico: cronico, agudo, quirúrgico, pediátrico, geriátrico",
+      "Por livello di actividad: frecuentador, regular, esporádico",
+      "Por rischio: alto rischio clinico, moderato, bajo",
+      "Por complejidad: pluripatológico, monoclonal, sano",
+      "Por servizio consumidor: pronto soccorso, planta, consulti, investigazione"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar Entite e FeatureViews con políticas di accesso RGPD",
+      "Implementar enmascaramiento di dati secondo finalidad assistenziale",
+      "Consumir features con fs.get_features() da servizi autorizados",
+      "Auditar accessos e cumplir con minimizazione di dati"
+    ]
+  },
+  "UC09": {
+    "title": "Ottimizzazione della Programmazione Chirurgica",
+    "contesto": "La sottoutilizzazione di sale operatorie (20-35%) convive con elenchi di attesa superiori a 120 giorni. Le cancellazioni, ritardi e cattiva stima di tempi sono le causas principalei.",
+    "focus": "Construir un motor di ottimizzazione che preteiga durazione chirurgica, estime cancellazioni e optimice la secuencia di interventi.",
+    "reto": "La durazione chirurgica depende della tecnica, il cirujano, la complejidad del caso e le complicazioni intraoperatorias. Le cancellazioni dependen di fattori clinici (il paziente si pone enfermo) e organizativos (fdimissione di posto letto UCI).",
+    "obiettivi": [
+      "Aumentar utilizzazione di sale operatorie del 70% al 85%",
+      "Preteecir durazione chirurgica con error <15%",
+      "Reducir cancellazioni del 15% al 8%",
+      "Reducir lista di attesa un 20% con stessos risorse",
+      "Optimizar secuencia per disponibilidad di apparecchiatura e personal"
+    ],
+    "funzionalità": [
+      "ML.FORECAST per previsione di durazione per tipo di chirurgia",
+      "ML.CLASSIFICATION per rischio di cancellazione",
+      "Ottimizzazione di secuencia con restriczioni molteplici",
+      "Simulazione di escenarios: qué pasa si...",
+      "Dashboard Streamlit di programmazione chirurgica"
+    ],
+    "dati": [
+      "Historial quirúrgico: procedura, durazione, cirujano, complicazioni",
+      "Dati del paziente: ASA, comorbidità, anticoagulazione, allergie",
+      "Cancelazioni: motivo, momento, impatto",
+      "Recursos: sale operatorie, anestesistas, instrumental, posti letto UCI",
+      "Lista di espera: procedura, priorità, tempo di attesa"
+    ],
+    "stratificazione": [
+      "Por especialidad chirurgica: traumatología, digestivo, cardíaco, ORL",
+      "Por complejidad: ambulatoria, corta degenza, maggiore ambulatoria, compleja",
+      "Por rischio di cancellazione: alto, medio, bajo",
+      "Por risorsa limitdavanti a: posto letto UCI, instrumental specifico, apparecchiatura",
+      "Por urgenza: electiva, preferente, urgente diferida"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Alimentar con cartella clinica di al meno 2 anni di actividad chirurgica",
+      "Calibrar modello di durazione per especialidad e cirujano",
+      "Validar programazione con jefe di bloque quirúrgico",
+      "Medir impatto: utilizzazione, cancellazioni, lista di attesa"
+    ]
+  },
+  "UC10": {
+    "title": "Rilevamento Frode nella Fatturazione Sanitaria",
+    "contesto": "La frode in fatturazione sanitaria (seguros, mutuas, conciertos) si estima in un 3-8% del gasto totale. La fatturazione per GRD senza control automatizzato facilita su-codificazione e abuso.",
+    "focus": "Construir un sistema ML di rilevamento di anomalías in fatturazione sanitaria che identifique pattern di frode in codificazione, degenzas e trasferimenti.",
+    "reto": "Distinguir variabilidad clinica legítima (pazienti più complejos) di su-codificazione intencionada. Il modello debe ser sensible a pattern sutiles ma non generaree excesivos falsos positivos che perlicen la fatturazione.",
+    "obiettivi": [
+      "Rilevare il 60% delle anomalías di fatturazione con <8% di falsos positivos",
+      "Identificar pattern di su-codificazione per servizio e profesional",
+      "Estimar importe di fatturazione anómala in euros",
+      "Reducir la tasso di frodi un 40%",
+      "Automatizar auditoría continua di fatturazione"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION il suo pattern di fatturazione",
+      "Variabili: GRD, degenza media, procedure, complicazioni, trasferimenti",
+      "Benchmark per ospedale, servizio e patologia",
+      "Rilevamento di outliers: degenzas extremas, codificazione atípica",
+      "Dashboard Streamlit di controllo della fatturazione"
+    ],
+    "dati": [
+      "Facturazione ospedalearia: GRD, degenza, procedure, importe",
+      "CMBD: diagnosi, procedure, severidad, mortalidad",
+      "Benchmark nacional: degenzas medias per GRD, costo per GRD",
+      "Historial di auditorías: risultatos, referti, ajustes",
+      "Perfiles di codificazione per servizio e ospedale"
+    ],
+    "stratificazione": [
+      "Por tipo di anomalía: su-codificazione, degenza excesiva, servizio ficticio",
+      "Por pagador: SNS, mutua, compagnia assicurativa privada, accidente laboral",
+      "Por servizio e especialidad",
+      "Por severidad del hallazgo: alto impatto, moderato, bajo",
+      "Por patrón: puntual, recurrente, sistémico"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Alimentar con dati di fatturazione e CMBD di al meno 3 anni",
+      "Calibrar benchmarks con dati nacionales (CMBD nacional)",
+      "Validar referti con codificadores e auditores",
+      "Integrar con processo di auditoría interna"
+    ]
+  },
+  "UC11": {
+    "title": "Monitoraggio Remoto dei Pazienti con IoT e Allerte ML",
+    "contesto": "I pazienti cronici tra visitas mancano di monitoraggio continuo. La telemonitoraggio post-COVID ha crecido ma la maggioreía dei dati di dispositivos non si analizzan in tempo reale.",
+    "focus": "Construir un pipeline ML di monitoraggio di pazienti cronici che analice dati di dispositivos IoT per rilevare descompensazioni prima del ricovero urgente.",
+    "reto": "I dispositivos IoT di pazienti generanoo dati heterogéneos con ruido (mal uso, batería, conectividad). Il modello debe distinguir tra una lectura incorrecta e una scompenso reale. I falsos positivos generanoo fatiga di alert.",
+    "obiettivi": [
+      "Rilevare il 75% di descompensazioni 24-72h prima di ricovero urgente",
+      "Reducir ricoveri urgenti di cronici monitorizados un 25%",
+      "Mdavanti aner falsos positivos <10% per evitar fatiga di alert",
+      "Personalizar baselines per paziente e patologia",
+      "Automatizar escalado per livello di alerta"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION il suo series temporales di IoT",
+      "Baseline personalizado per paziente: normal, alerta, urgente",
+      "Correlazione multi-segnale: tensione + peso + glucosa + actividad",
+      "Alert multilivello con escalado automatico",
+      "Dashboard Streamlit di telemonitoraggio"
+    ],
+    "dati": [
+      "Tensione arterial: sistólica, diastólica, frequenza cardíaca",
+      "Glucemia: preprandial, postprandial, HbA1c estimada",
+      "Saturazione di oxígeno: SpO2 continua o puntual",
+      "Peso giornaliero: tendenza, variazione aguda (fidelizzazione líquidos ICC)",
+      "Actividad: pasos, tempo sentado, qualità del sueño"
+    ],
+    "stratificazione": [
+      "Por patologia: ICC, EPOC, diabetes, HTA, pluripatológico",
+      "Por livello di alerta: verde (normal), amarillo (assistenza), rojo (urgente)",
+      "Por tipo di scompenso: cardíaca, respiratoria, metabólica",
+      "Por aderenza a monitoraggio: buena, irregolare, abandonada",
+      "Por complejidad: monitoraggio simple, multiparámetro, intensiva"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar con dati di dispositivos IoT del programa di telemonitoraggio",
+      "Calibrar baselines con al meno 4 settimanas di dati per paziente",
+      "Validar alert con apparecchiatura di enfermería gestora di casi",
+      "Ajustar sensibilidad secondo capacità di risposta del apparecchiatura"
+    ]
+  },
+  "UC12": {
+    "title": "Supporto alla Decisione Clinica con RAG",
+    "contesto": "I protocolli clinici si attualeizan constdavanti amente e i medici non possono seguir il ritmo. Un 30% delle decisiones cliniche non siguen la migliore evidenza disponibile.",
+    "focus": "Construir un sistema RAG di supporto alla decisione che indexe guías cliniche, protocolli e evidenza per asistir al medico in tempo reale.",
+    "reto": "La informazione medica è enormemente vasta e contextual. La risposta correcta depende del paziente concreto (edad, comorbidità, allergie). Il sistema non puede 'inventar' ni recomendar fuori dalla evidenza indexada.",
+    "obiettivi": [
+      "Proporcionar raccomandazioni basadas in evidenza in <5 segundos",
+      "Cubrir il 80% delle consulti cliniche frecuentes",
+      "Rilevare interazioni farmacológicas non identifiogni un 40% più",
+      "Reducir variabilidad clinica non justifiogni un 20%",
+      "Mdavanti aner base di conoscenza attualeizada settimanalmente"
+    ],
+    "funzionalità": [
+      "Cortex Search il suo guías di práctica clinica e Cochrane",
+      "CORTEX.COMPLETE per rispostas contextualizadas al paziente",
+      "Alert di interazioni farmacológicas e controindicazioni",
+      "Referencias a evidenza fonte con livello di evidenza",
+      "Dashboard Streamlit di supporto clinico"
+    ],
+    "dati": [
+      "Guías di práctica clinica: SNS, società medicas, NICE, Cochrane",
+      "Protocoi ospedalieri per servizio e patologia",
+      "Fichas tecnicas di farmaci: CIMA/AEMPS",
+      "Alert farmacológicas: interazioni, controindicazioni, efectos adversos",
+      "Artícui di revisione e meta-analisi seleccionados"
+    ],
+    "stratificazione": [
+      "Por especialidad e patologia",
+      "Por tipo di consulto: diagnosi, trattamento, monitoraggio, emergencia",
+      "Por livello di evidenza: A (dimissione), B (moderada), C (baja), consenso",
+      "Por urgenza: emergencia (segundos), consulto (minuti), pianificazione",
+      "Por profilo del paziente: pediátrico, adulto, geriátrico, embarazo"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Indexar guías cliniche del ospedale e società di referencia",
+      "Actualizar settimanalmente con nuevas publicazioni e alert",
+      "Validar rispostas con comité di farmacoterapia",
+      "Formar a clinici in uso efficace del sistema"
+    ]
+  },
+  "UC13": {
+    "title": "Ottimizzazione della Gestione Letti e Flusso Pazienti",
+    "contesto": "La gestione di posti letto al 90-95% di ocupazione genera bloqueos in pronto soccorso (8-24h esperando posto letto), cancellazioni chirurgicas e trasferimenti costias.",
+    "focus": "Construir un motor di previsione e ottimizzazione del flujo di pazienti che preteiga dimissioni, estime domanda e optimice asignazioni di posti letto in tempo reale.",
+    "reto": "Il flujo di pazienti depende di decisiones cliniche (dimissione medica) e organizativas (limpieza, dopolado, posto letto disponibile). La previsione di dimissioni debe respetar la decisione clinica senza presionar per dimissioni precoci inseguras.",
+    "obiettivi": [
+      "Preteecir il 80% delle dimissioni con <12h di davanti alazione",
+      "Reducir tempo di attesa di posto letto in pronto soccorso un 30%",
+      "Reducir cancellazioni chirurgicas per fdimissione di posto letto un 50%",
+      "Optimizar assegnazione per servizio e profilo del paziente",
+      "Eliminar trasferimenti intraospedalieri innecessarios"
+    ],
+    "funzionalità": [
+      "ML.FORECAST di dimissioni e domanda di posti letto per servizio",
+      "Previsione di degenza media residual per paziente e GRD",
+      "Optimizazione in tempo reale di assegnazione di posti letto",
+      "Alert di tensione: rischio di bloqueo per servizio",
+      "Dashboard Streamlit di bed management"
+    ],
+    "dati": [
+      "Censo ospedaleario in tempo reale: ocupazione per servizio e posto letto",
+      "Altas: hora prevista, reale, tipo (domicilio, dopolado, éxitus)",
+      "Ingresos: programmatos (chirurgia, trattamento) e urgenti",
+      "Estancias medias per GRD, servizio e profilo del paziente",
+      "Tiempo di giro: dimissione → limpieza → disponibile → ocupada"
+    ],
+    "stratificazione": [
+      "Por servizio: medicina interna, chirurgia, UCI, pediatría, maternidad",
+      "Por tipo di posto letto: isolamento, monitorizzata, sonodar",
+      "Por urgenza: electivo, urgente, UCI, quirúrgico",
+      "Por previsione di dimissione: hoy, mañana, >48h, senza fecha estimada",
+      "Por livello di tensione: normal, alerta, saturazione, crisi"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Integrar con censo ospedaleario in tempo reale",
+      "Calibrar previsione di dimissioni con dati reali di ogni servizio",
+      "Validar con supervisoras di planta e admisione",
+      "Medir impatto: tempo di attesa, cancellazioni, trasferimenti"
+    ]
+  },
+  "UC14": {
+    "title": "Feature Store di Performance Ospedaliera",
+    "contesto": "I indicatori di rendimento ospedaleario si calculan con 3-6 mesi di ritardo. No existe benchmarking tra servizi ni alert precoci di deterioro di qualità.",
+    "focus": "Implementar un Feature Store in Snowflake che consolide metriche di rendimento ospedaleario per benchmarking, alert di qualità e supporto a acreteitazione.",
+    "reto": "Gli ospedali sono organizazioni complejas con metriche dispares tra servizi. I indicatori deben ser comperbles respetando il case-mix (complejidad dei pazienti di ogni servizio). Requiere ajustar per complejidad prima di comperr.",
+    "obiettivi": [
+      "Consolidar metriche di rendimento da 5+ fonti per servizio",
+      "Creare Entite per servizio/ospedale con FeatureViews especializados",
+      "Reducir latenza di indicatori di 3 mesi a near-reale-time",
+      "Habilitar benchmarking ajustado per case-mix tra servizi",
+      "Servir features per alert di deterioro di qualità"
+    ],
+    "funzionalità": [
+      "Snowflake Feature Store: Entite per servizio_id e ospedale_id",
+      "FeatureView: clinical_outcomes (mortalidad ajustada, riammissioni, infeczioni)",
+      "FeatureView: efficience (degenza media, uso sala operatoria, rotazione di posti letto)",
+      "FeatureView: patient_satisfaction (sondaggi, reclami, NPS)",
+      "FeatureView: safete (eventi adversos, caídas, errori di terapia farmacologica)",
+      "FeatureView: activite (ricoveri, chirurgias, consulti, pronto soccorso)"
+    ],
+    "dati": [
+      "CMBD: diagnosi, procedure, degenzas, mortalidad per servizio",
+      "Indicadores di qualità: infeczioni nosocomiales, rericoveri, caídas",
+      "Actividad: ricoveri, chirurgias, consulti externas, pronto soccorso",
+      "Satisfazione: sondaggi, reclami, tempo di attesa",
+      "Recursos: plantilla, posti letto, sale operatorie, budget per servizio"
+    ],
+    "stratificazione": [
+      "Por servizio ospedaleario e especialidad",
+      "Por tipo di ospedale: universitario, comarcal, dimissione complejidad, monográfico",
+      "Por indicador: risultato clinico, efficienza, satisfazione, sicurezza",
+      "Por benchmark: percentil vs similees, tendenza temporal",
+      "Por alerta: excelente, adecuado, a rischio, critico"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar Entite e FeatureViews per servizio",
+      "Le features si attualeizan da CMBD, qualità e admisione",
+      "Consumir con fs.get_features() per dashboards e alert",
+      "Extender con nuevos FeatureViews secondo indicatori di acreteitazione"
+    ]
+  },
+  "UC15": {
+    "title": "Previsione dell\'Aderenza al Trattamento",
+    "contesto": "La non aderenza a trattamento afecta al 50% di cronici, causando il 10% di ospedaleizazioni. La rilevamento è tardía e reactiva.",
+    "focus": "Construir un modello preteittivo di aderenza che identifique pazienti a rischio di abandono per intervento preventiva (simplificazione, educazione, recordatorios).",
+    "reto": "La aderenza depende di fattori clinici (complejidad del régimen, efectos secundarios), psicológicos (percepzione di enfermedad), socioeconómicos e cognitivos. Il modello debe ser sensible ma non invasivo.",
+    "obiettivi": [
+      "Preteecir non aderenza con AUC >0.72",
+      "Identificar il 60% di non adherentes prima del successivo evento adverso",
+      "Reducir ospedaleizazioni per non aderenza un 20%",
+      "Personalizar intervento: simplificazione, educazione, recordatorios",
+      "Integrar con farmacia ospedalearia e comunitaria"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION per scoring di rischio di non aderenza",
+      "Variabili: complejidad régimen, dispensazioni, età, comorbidità, politerapia farmacologica",
+      "Segmentazione: adherente, rischio leve, rischio moderato, rischio alto",
+      "Recomendazioni di intervento personalizadas",
+      "Dashboard Streamlit di aderenza terapeutica"
+    ],
+    "dati": [
+      "Dispensazioni di farmacia: terapia farmacologica, frequenza, gaps",
+      "Prescripzioni: fármacos activos, cambios, complejidad del régimen",
+      "Perfil del paziente: età, politerapia farmacologica, deterioro cognitivo",
+      "Historial: ricoveri per scompenso, visitas a pronto soccorso",
+      "Indicadores: HbA1c, INR, niveles di fármacos monitorizados"
+    ],
+    "stratificazione": [
+      "Por patologia: diabetes, anticoagulazione, EPOC, HTA, VIH",
+      "Por rischio: alto, moderato, bajo",
+      "Por causa: complejidad, efectos secundarios, olvido, costo, creencias",
+      "Por intervento: simplificazione, SPD, recordatorios, educazione",
+      "Por livello di monitoraggio: intensiva, sonodar, mínima"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Integrar con dati di dispensazione di farmacia",
+      "Validar preteiczioni con farmaceuticos clinici",
+      "Coordinar interventi con enfermería e assistenza premioria",
+      "Medir impatto: aderenza, ricoveri, qualità di vida"
+    ]
+  },
+  "UC16": {
+    "title": "Rilevamento Precoce della Sepsi con ML in Tempo Reale",
+    "contesto": "La sepsis è la primera causa di muerte ospedalearia evitable. Ogni hora di ritardo aumenta la mortalidad un 8%. I scores clásicos hanno baja sensibilidad e generanoo fatiga di alert.",
+    "focus": "Construir un sistema ML di rilevamento precoce di sepsis che analice constdavanti as e analitiche in tempo reale per alertar 4-12 ore prima di i criterios clásicos.",
+    "reto": "La sepsis si manifiesta di forma variable secondo il focus, il paziente e le comorbidità. I modeli deben ser sensibles senza generaree excesivos falsos positivos che desensibilicen al apparecchiatura. Il timing della alerta è critico.",
+    "obiettivi": [
+      "Rilevare il 80% di sepsis con 4-12h di davanti alazione vs qSOFA/SIRS",
+      "Reducir mortalidad per sepsis un 15% misuravanti a trattamento precoz",
+      "Mdavanti aner falsos positivos <15%",
+      "Alcanzar AUC >0.82 in validazione interna",
+      "Integrar con protocollo di Código Sepsis del ospedale"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION il suo constdavanti as vitales e analitiche in streaming",
+      "Variabili: temperatura, FC, FR, TA, leucocitos, lactato, PCR, procalcitonina",
+      "Baseline per paziente ajustado a patologia base",
+      "Alerta con explicabilidad: per qué este paziente, qué ha cambiado",
+      "Dashboard Streamlit di allerta sepsi"
+    ],
+    "dati": [
+      "Constdavanti as vitales horarias: temperatura, FC, FR, TA, SpO2",
+      "Analíticas: hemograma, PCR, procalcitonina, lactato, coagulazione",
+      "Dati clinici: diagnosi di ricovero, interventi, catéteres",
+      "Microbiología: hemocultivos, urocultivos, risultatos precedenti",
+      "Historial: sepsis previa, inmunosupresione, comorbidità"
+    ],
+    "stratificazione": [
+      "Por ubicazione: planta, UCI, pronto soccorso, chirurgia",
+      "Por focus sospechado: urinario, respiratorio, abdominal, catéter",
+      "Por severidad: sospecha, sepsis confirmada, shock séptico",
+      "Por profilo: post-quirúrgico, inmunodeprimido, geriátrico, neonatal",
+      "Por rischio basal: alto (UCI), medio (planta), bajo (ambulatorio)"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Integrar con flujo di constdavanti as vitales e analitiche del ospedale",
+      "Calibrar modello con al meno 1 anno di casi di sepsis confirmada",
+      "Validar con apparecchiatura di medicina intensiva e pronto soccorso",
+      "Integrar alert con protocollo di Código Sepsis"
+    ]
+  },
+  "UC17": {
+    "title": "Personalizzazione dei Piani di Dimissione e Follow-up",
+    "contesto": "I report di dimissione sono genéricos e un 40% di pazienti non comprenden le instruczioni. Il 25% non acude a monitoraggio e un 15% non recoge terapia farmacologica, aumentando riammissioni.",
+    "focus": "Construir un motor di personalizzazione di planes di dimissione che adapte instruczioni, programe monitoraggio proactivo e coordine cuidados post-dimissione.",
+    "reto": "I planes di dimissione deben equilibrar completitud clinica con comprensibilidad per il paziente. Pacientes con baja alfabetizazione sanitaria, ancianos o inmigrdavanti as necessitano formatos e contenutos adaptados.",
+    "obiettivi": [
+      "Personalizar il 100% di planes di dimissione al profilo del paziente",
+      "Aumentar comprensione di instruczioni del 60% al 85%",
+      "Reducir non asistencia a monitoraggio del 25% al 12%",
+      "Coordinar automaticamente con premioria e farmacia",
+      "Reducir riammissioni per mala transizione un 20%"
+    ],
+    "funzionalità": [
+      "CORTEX.COMPLETE per simplificazione di lenguaje medico",
+      "Personalizzazione per profilo: età, idioma, alfabetizazione, autonomía",
+      "Coordinazione automatica con premioria: report + appuntamento",
+      "Recordatorios: terapia farmacologica, appuntamenti, signos di alarma",
+      "Dashboard Streamlit di gestione post-dimissione"
+    ],
+    "dati": [
+      "Informe di dimissione: diagnosi, trattamento, raccomandazioni, monitoraggio",
+      "Perfil del paziente: età, idioma, livello educativo, apoyo familiar",
+      "Medicazione al dimissione: nuevos fármacos, cambios, suspensiones",
+      "Citas di monitoraggio programmatas e realizadas",
+      "Feedback: comprensione, aderenza post-dimissione, contactos di emergencia"
+    ],
+    "stratificazione": [
+      "Por complejidad del dimissione: simple, moderada, compleja, paliativa",
+      "Por profilo del paziente: autónomo, dependiente, barrera idiomática",
+      "Por rischio di riammissione: alto, moderato, bajo",
+      "Por tipo di monitoraggio: presencial, telefónico, telemedicina",
+      "Por coordinazione: solo premioria, premioria + especialista, compleja"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Integrar con sistema di report di dimissione del ospedale",
+      "Validar simplificazione con pazienti piloto",
+      "Coordinar con centri di salud di referencia",
+      "Medir comprensione, aderenza e riammissione post-dimissione"
+    ]
+  },
+  "UC18": {
+    "title": "Rilevamento degli Eventi Avversi e Sicurezza del Paziente",
+    "contesto": "I eventi adversos afectan al 8-12% di pazienti ospedalizzati ma solo il 10-20% si reportan voluntariamente. La rilevamento è reactiva e il analisi lento.",
+    "focus": "Construir un pipeline ML di rilevamento automatica di eventi adversos che analice molteplici fonti di dati per identificare incidentes in tempo casi reale.",
+    "reto": "I eventi adversos sono heterogéneos: caídas, infeczioni, errori di terapia farmacologica, complicazioni chirurgicas. Ogni tipo tiene indicatori diversi e la rilevamento debe ser sensible senza generaree fatiga di alert.",
+    "obiettivi": [
+      "Rilevare automaticamente il 70% di eventi adversos",
+      "Reducir tempo di rilevamento di giorni a ore",
+      "Identificar fattori di rischio modificables per evento",
+      "Aumentar reporting di eventi un 50%",
+      "Generar analisi di causas raíz asistido per IA"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION il suo dati clinici e di enfermería",
+      "NLP con CORTEX.COMPLETE il suo note cliniche",
+      "Rilevamento: caídas, infeczioni nosocomiales, errori di terapia farmacologica",
+      "Analisi di causas raíz asistido con LLM",
+      "Dashboard Streamlit di sicurezza del paziente"
+    ],
+    "dati": [
+      "Notas di enfermería: evoluzione, incidencias, movilidad",
+      "Medicazione: prescrizione, dispensazione, amministrazione, errori",
+      "Analíticas: leucocitos, PCR (infeczione), hemoglobina (sangrado)",
+      "Constdavanti as vitales: cambios bruscos post-procedura",
+      "Registros: caídas reportadas, úlceras, catéteres, dispositivos"
+    ],
+    "stratificazione": [
+      "Por tipo di evento: caída, infeczione, terapia farmacologica, quirúrgico, diagnosi",
+      "Por severidad: centinela, grave, moderato, leve, near-miss",
+      "Por servizio e unità",
+      "Por fattore contribuyente: sistema, persona, apparecchiatura, comunicazione",
+      "Por evitabilidad: evitable, potencialmente evitable, non evitable"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Integrar con dati clinici e di enfermería del ospedale",
+      "Validar alert con servizio di qualità e sicurezza del paziente",
+      "Integrar con sistema di notifica di eventi (SiNASP)",
+      "Generar report per comité di sicurezza"
+    ]
+  },
+  "UC19": {
+    "title": "Previsione del Deterioramento Funzionale nei Pazienti Geriatrici",
+    "contesto": "I pazienti geriátricos perden un 2-5% di capacità funcional per giorno di ricovero. Il deterioro funcional non si rileva fino a che è severo, complicando la recuperazione.",
+    "focus": "Construir un modello preteittivo di deterioro funcional che identifique pazienti geriátricos a rischio per attivare intervento precoz multidisciplinar.",
+    "reto": "Il deterioro funcional è multifattoreial: inmovilidad, desnutrizione, polifarmacia, delirium, dolor, isolamento sociale. Il modello debe integrar molteplici dominios e ser lo suficientemente temprano per che la intervento sea efficace.",
+    "obiettivi": [
+      "Identificar il 75% di pazienti a rischio di deterioro in <48h di ricovero",
+      "Reducir deterioro funcional ospedaleario un 25%",
+      "Activar intervento precoz: fisioterapia, nutrizione, geriatría",
+      "Reducir degenza media in geriátricos un 15%",
+      "Mejorar destino al dimissione: domicilio vs institucionalizazione"
+    ],
+    "funzionalità": [
+      "ML.CLASSIFICATION con scoring di rischio di deterioro funcional",
+      "Variabili: Barthel, MNA, MMSE, polifarmacia, degenza, movilidad, dolor",
+      "Alert per attivare apparecchiatura multidisciplinar precoz",
+      "Seguimiento di trayectoria funcional durdavanti a ricovero",
+      "Dashboard Streamlit di gestione geriatrica"
+    ],
+    "dati": [
+      "Valorazione geriátrica: Barthel, Lawton, MNA, MMSE, Pfeiffer",
+      "Medicazione: número di fármacos, psicaltropos, anticolinérgicos",
+      "Movilidad: registros di enfermería, fisioterapia, caídas",
+      "Nutrizione: MNA, albúmina, ingesta, suplementos",
+      "Dati clinici: diagnosi, comorbidità, interventi"
+    ],
+    "stratificazione": [
+      "Por rischio di deterioro: alto, moderato, bajo",
+      "Por dominio afectado: movilidad, nutrizione, cognizione, ánimo",
+      "Por situazione basal: independiente, parcial, dependiente",
+      "Por tipo di ricovero: medico, quirúrgico, traumatológico",
+      "Por plan di intervento: intensivo, sonodar, observazione"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Integrar con valutazione geriátrica integral del ospedale",
+      "Validar preteiczioni con apparecchiatura di geriatría",
+      "Activar protocolli di intervento precoz per dominio",
+      "Medir impatto: Barthil al dimissione vs previo al ricovero"
+    ]
+  },
+  "UC20": {
+    "title": "Anonimizzazione Intelligente dei Dati Clinici per la Ricerca",
+    "contesto": "Il uso secundario di dati clinici per investigazione está limitado per RGPD e normativa sanitaria. La anonimizazione manualeee è lenta e inconsistente.",
+    "focus": "Construir un pipeline di anonimizazione intelligente che aplique tecnicas avanzatas il suo datasets clinici pprenotazionendo la utilidad estadística per investigazione.",
+    "reto": "La anonimizazione di dati clinici è especialmente difícil: le enfermedades raras, le fechas exactas e le combinazioni di variables possono permitir la re-identificazione. Il equilibrio tra privacidad e utilidad analitica è critico.",
+    "obiettivi": [
+      "Anonimizar datasets clinici cumpliendo k=5 anonimato mínimo",
+      "Pprenotazioner utilidad estadística >90% per investigazione",
+      "Rilevare e enmascarar identificadores in testo libero clinico",
+      "Evaluar automaticamente rischio di re-identificazione",
+      "Reducir tempo di priparazione di datasets del 80%"
+    ],
+    "funzionalità": [
+      "CORTEX.COMPLETE per rilevamento di identificadores in testo libero",
+      "Técnicas di k-anonimato e l-diversidad il suo dati strutturados",
+      "Generalizazione intelligente: fechas, ubicazioni, diagnosi raros",
+      "Valutazione automatica di rischio di re-identificazione",
+      "Dashboard Streamlit di gestione dati per la ricerca"
+    ],
+    "dati": [
+      "Dati clinici strutturados: diagnosi, analitiche, procedure",
+      "Texto libre: report di dimissione, note cliniche, report di esami",
+      "Dati demográficos: età exacta, codice postal, nacionalidad",
+      "Fechas: ricovero, dimissione, procedure, analitiche",
+      "Variables cuasi-identificadoras: combinazioni únicas di diagnosi"
+    ],
+    "stratificazione": [
+      "Por tipo di dato: strutturado, testo libero, imagen",
+      "Por sensibilidad: identificador directo, cuasi-identificador, dato sensible",
+      "Por tecnica: supresione, generalizazione, perturbazione, síntesis",
+      "Por livello di anonimizazione: pseudonimizazione, anonimizazione, dati senzatéticos",
+      "Por destino: investigazione interna, multicéntrica, publicazione, open data"
+    ],
+    "como_usar": [
+      "Esegui i prompt in sequenza in Cortex Code",
+      "Configurar con dataset clinico e política di anonimizazione",
+      "Validar con delegado di protezione di dati e comité ético",
+      "Evaluar utilidad post-anonimizazione per il investigador",
+      "Documentar processo per tracciabilità normativa"
+    ]
+  }
+};
+
+const PROMPTS = {
+  "UC01": {
+    "title": "Previsione delle Riammissioni Ospedaliere con Model Registry",
+    "intro": "Costruisci un modello ML di previsione di riammissioni a 30 giorni e regístralo in Snowflake Model Registry per scoring automatico al dimissione ospedalearia.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati e schema per riammissioni.",
+        "prompt": "Crea la base di dati SALUD_READMISIONES_DB con schema ANALYTICS e warehouse SALUD_WH (size S). Includi comentarios del progetto di previsione di riammissioni ospedalearias con Model Registry."
+      },
+      {
+        "title": "Creare episodios di ospedaleizazione",
+        "desc": "Generar dati senzatéticos di ricoveri e dimissioni.",
+        "prompt": "Crea la tabella EPISODIOS_HOSPITALIZACION con: episodio_id, patient_id, fecha_ricovero DATE, fecha_dimissione DATE, servizio (Medicina_Interna, Cardiologia, Neumologia, Cirugia_General, Traumatologia, Neurologia), grd_codigo VARCHAR, grd_descripcion, diagnostico_principale_cie10, degenza_dias INT, tipo_dimissione (Domicilio, Traslado, Voluntaria, Exitus), num_procedure INT, indice_charlson INT, età INT, genero. Genera 150,000 episodios di 5 anni. Il 17% tiene riammissione a 30 giorni."
+      },
+      {
+        "title": "Creare dati di comorbidità",
+        "desc": "Historial di patologias croniche del paziente.",
+        "prompt": "Crea la tabella COMORBILIDADES_PACIENTE con: patient_id, cie10_codigo, cie10_descripcion, tipo_comorbilidad (Diabetes, EPOC, ICC, IRC, HTA, Demencia, Cancer, Hepatopatia, VIH), fecha_diagnostico DATE, activa BOOLEAN, severidad (Leve, Moderada, Grave). Genera comorbidità per i 50,000 pazienti. I pazienti con Charlson >3 hanno 2.5x più riammissioni. Usa SQL GENERATOR(ROWCOUNT => 50000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Creare dati del dimissione",
+        "desc": "Informazione specifica del momento del dimissione.",
+        "prompt": "Crea la tabella DATOS_ALTA con: episodio_id, farmaci_al_dimissione INT, cambios_medicacion BOOLEAN, monitoraggio_programmato BOOLEAN, dias_fino a_monitoraggio INT, educacion_paziente BOOLEAN, coordinacion_premioria BOOLEAN, cuidador_disponibile BOOLEAN, nivel_autonomia (Independiente, Parcial, Dependiente). I pazienti senza monitoraggio programmato hanno 1.8x più riammissioni."
+      },
+      {
+        "title": "Calcular features predittivi",
+        "desc": "Generar indicatori di rischio al dimissione.",
+        "prompt": "Crea la vista FEATURES_READMISION che per episodio calcule:\n- Clínicas: charlson, num_diagnosticos, num_procedure, degenza_dias, servizio\n- Historial: ricoveri_12m, pronto soccorso_12m, riammissioni_previas\n- Alta: farmaci_dimissione, cambios_medicacion, monitoraggio_programmato, educacion\n- Social: età, vive_solo_estimado, nivel_autonomia, cuidador\n- Temporal: dia_settimana_dimissione, mes, dimissione_viernes_tarde BOOLEAN"
+      },
+      {
+        "title": "Entrenar modello di riammissione",
+        "desc": "ML.CLASSIFICATION per scoring di rischio.",
+        "prompt": "Usa SNOWFLAKE.ML.CLASSIFICATION per prevedere readmision_30d: si/no. Variabili: tutte le features di FEATURES_READMISION. Entrena con 4 anni e valida con il 5º. Evalúa AUC, precision, recall. Objetivo: AUC >0.75, recall >0.65 per intervento eficiente. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Registrar in Model Registry",
+        "desc": "Guardar modello con metriche per operazione continua.",
+        "prompt": "Registra il modello in Snowflake Model Registry:\n\nfrom snowflake.ml.registre import Registry\nreg = Registry(session=session, database_name='SALUD_READMISIONES_DB', schema_name='ANALYTICS')\nreg.log_model(\n    model=readmission_model,\n    model_name='ospedale_readmission_preteictor',\n    version_name='v1',\n    metrics={'auc': auc_score, 'recall': recall, 'precision': precision, 'f1': f1},\n    comment='Modello di previsione di riammissioni ospedalearias a 30 giorni'\n)\nVerifica registro e lista versiones."
+      },
+      {
+        "title": "Scoring al dimissione e plan di intervento",
+        "desc": "Eseguire il modello sui pazienti in dimissione.",
+        "prompt": "Crea vista SCORING_AL_ALTA che per ogni paziente dado di dimissione ejecute il modello Registry e genere: rischio_readmision_pct, nivel_rischio (Alto >40%, Moderado 20-40%, Bajo <20%), fattori_principalei (top 3 variables), plan_intervencion_sugerido (monitoraggio temprano, coordinazione premioria, ajuste terapia farmacologica, educazione). Genera plan per top 50 pazienti di alto rischio."
+      },
+      {
+        "title": "Dashboard di riammissioni",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Lista di pazienti al dimissione con scoring di rischio\n2. Factores di rischio modificables per intervento\n3. Metriche del modello: AUC, precision, recall per versione di Registry\n4. Tendencia di riammissioni per servizio e mes\n5. Impacto di interventi: riammissioni evitadas\n6. Compertiva di versiones del modello in Registry. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di retranamiento",
+        "desc": "Automatizar scoring e attualeizazione.",
+        "prompt": "Crea Tasks:\n1. SCORING_DIARIO: ejecuta modello Registry il suo dimissioni del giorno\n2. EVALUAR_READMISIONES: mensile, verifica preteiczioni vs realidad\n3. REENTRENAR_MODELO: semestral, retrana con nuevos dati e registra versione\n4. COMPARAR_VERSIONES: dopo retranamiento, activa la migliore\n5. Documenta pipeline. Objetivo: AUC >0.75, ridurre riammissioni evitables 25%."
+      }
+    ]
+  },
+  "UC02": {
+    "title": "Chatbot RAG per l\'Assistenza al Paziente e Appuntamenti",
+    "intro": "Costruisci un asistente conversacional RAG multicanal per assistenza al paziente con Cortex Search il suo protocollos, preperzioni e FAQ ospedalearias.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per chatbot RAG.",
+        "prompt": "Crea la base di dati SALUD_CHATBOT_DB con schema RAG e warehouse SALUD_WH. Comentarios del progetto di chatbot RAG di assistenza al paziente."
+      },
+      {
+        "title": "Creare base di conoscenza",
+        "desc": "Generar corpus di protocollos, preperzioni e FAQ.",
+        "prompt": "Crea la tabella CONOCIMIENTO_HOSPITALARIO con: doc_id, categoria (Prepercion_Prueba, FAQ_Servicio, Informacion_General, Citas, Urgencias, Farmacia), titulo, contenuto TEXT, servizio VARCHAR, fecha_attualeizacion DATE, vigente BOOLEAN. Genera 400 documentos cubriendo: priparazione di esami (ayuno, condopote, terapia farmacologica), FAQ per servizio, informazione di horarios, parking, accompagnamento, risultatos. Usa SQL GENERATOR(ROWCOUNT => 400) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Indexar con Cortex Search",
+        "desc": "Creare servizio di búsqueda semántica.",
+        "prompt": "Crea un Cortex Search Service il suo CONOCIMIENTO_HOSPITALARIO:\n- Columnas indexadas: titulo, contenuto, categoria\n- Filtros: categoria, servizio\nDimostra con 5 consulti: '¿Necesito ir in ayunas per la analitica?', '¿Cómo preperrme per una colonoscopia?', '¿Dónde aparco in il ospedale?', '¿Cuándo recibiré i risultatos della biopsia?', '¿Puedo cambiar mi appuntamento di traumatología?'."
+      },
+      {
+        "title": "Creare funzione di chat",
+        "desc": "Funzione RAG con contesto del paziente.",
+        "prompt": "Crea la funzione CHAT_PACIENTE(patient_id, domanda) che:\n1. Cerca documentos rilevanti con Cortex Search (top 5)\n2. Si patient_id disponibile, consulto appuntamenti programmatas e profilo\n3. Costruisci prompt con contesto + profilo + domanda\n4. Genera risposta con CORTEX.COMPLETE empática e clara\n5. Includi referencias al protocollo fonte\nDimostra con 3 conversazioni di diversi profili."
+      },
+      {
+        "title": "Gestione di appuntamenti",
+        "desc": "Integrar con sistema di appuntamenti.",
+        "prompt": "Crea la tabella CITAS_PACIENTE con: appuntamento_id, patient_id, servizio, especialista, fecha_hora TIMESTAMP, tipo (Primera, Revisione, Prueba), estado (Confirmada, Pendiente, Cancelada), prepercion_necessaria TEXT. Crea funzione GESTIONAR_CITA(patient_id, accion, permetros) che permita: consultore prossimas appuntamenti, soliappuntamentor cambio, confirmar asistencia, consultore priparazione."
+      },
+      {
+        "title": "Escalado intelligente",
+        "desc": "Rilevare quando escalar a profesional.",
+        "prompt": "Crea funzione EVALUAR_ESCALADO(domanda, risposta) che use CORTEX.COMPLETE per determinar si escalar: urgenza medica, reclamo formal, tema fuori da ámbito, sentimiento negativo persistente. Retorna: escalar BOOLEAN, motivo, priorità, resumen_per_profesional, canal_recomendado (enfermería, admisione, qualità)."
+      },
+      {
+        "title": "Metriche e satisfazione",
+        "desc": "Medir qualità del chatbot.",
+        "prompt": "Crea tabella HISTORIAL_CHAT_SALUD con: sesion_id, patient_id, fecha_hora, domanda, risposta, fue_util BOOLEAN, fue_escalada BOOLEAN, feedback INT. Crea vista METRICAS_CHATBOT: tasa_resolucion, satisfaccion, escalados per tipo, costo/interazione, top_consulti_no_resueltas. Genera 8,000 conversazioni senzatéticas."
+      },
+      {
+        "title": "Dashboard del chatbot",
+        "desc": "Streamlit di operazione.",
+        "prompt": "Genera codice Streamlit con:\n1. Demo di chat con profilo di paziente e appuntamenti\n2. Metriche: resoluzione, satisfazione, escalados\n3. Base di conoscenza: búsqueda e gestione\n4. Top consulti frecuentes e non resueltas\n5. Compertiva costo: chatbot vs call center\n6. Gestione di appuntamenti integrada. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di manutenzione",
+        "desc": "Mdavanti aner chatbot attualeizado.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_CONOCIMIENTO: settimanal, reindeza nuevos protocollos\n2. ANALIZAR_GAPS: settimanal, identifica consulti senza risposta\n3. METRICAS_DIARIAS: calcula metriche di rendimento\n4. SINCRONIZAR_CITAS: giornaliero, attualeiza stato di appuntamenti\n5. Documenta. Objetivo: resoluzione >55%, satisfazione >4.0."
+      }
+    ]
+  },
+  "UC03": {
+    "title": "Previsione della Domanda Assistenziale con Model Registry",
+    "intro": "Costruisci un modello di previsione di domanda assistenziale con ML.FORECAST e Model Registry per pianificazione operativa ospedalearia.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per previsione di domanda.",
+        "prompt": "Crea la base di dati SALUD_DEMANDA_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di previsione di domanda assistenziale con Model Registry."
+      },
+      {
+        "title": "Creare dati di actividad assistenziale",
+        "desc": "Historial di pronto soccorso, ricoveri e consulti.",
+        "prompt": "Crea la tabella ACTIVIDAD_HOSPITALARIA con: fecha DATE, servizio (Urgencias, Medicina_Interna, Cardiologia, Neumologia, Cirugia, Traumatologia, Pediatria, UCI, Ginecologia), pronto soccorso_atendidas INT, ricoveri_urgenti INT, ricoveri_programmatos INT, consulti_externas INT, cirugias_programmatas INT, cirugias_urgenti INT, dimissioni INT. Genera dati giornalieros per 4 anni con pattern stagionali realistas: pico gripe dic-feb, calor jul-ago, alérgica mar-may."
+      },
+      {
+        "title": "Cargar variables exógenas",
+        "desc": "Factores che influyen nella domanda.",
+        "prompt": "Crea la tabella VARIABLES_EXOGENAS con: fecha DATE, tasa_gripe_100k FLOAT, temperatura_max_c FLOAT, humedad_pct FLOAT, polen_indice FLOAT, es_festivo BOOLEAN, es_vacazioni_escolares BOOLEAN, evento_deportivo BOOLEAN, turismo_pct FLOAT. Genera dati giornalieros per 4 anni. Correlazioni: gripe↑ → pronto soccorso/neumología↑, calor↑ → pronto soccorso/cardiología↑."
+      },
+      {
+        "title": "Calcular features di domanda",
+        "desc": "Indicadores per il modello preteittivo.",
+        "prompt": "Crea la vista FEATURES_DEMANDA che per servizio e día calcule:\n- Demanda: media_movil_7d, tendenza_28d, variacion_interanual, dia_settimana_efecto\n- Estacionalidad: componente_settimanal, mensile, anual\n- Exógenas: gripe, temperatura, polen, festivos\n- Capacidad: ocupacion_attuale_pct, lista_espera_cirugia, personal_disponibile"
+      },
+      {
+        "title": "Entrenar modello di forecast",
+        "desc": "ML.FORECAST per servizio.",
+        "prompt": "Usa SNOWFLAKE.ML.FORECAST per prevedere pronto soccorso_atendidas e ricoveri_urgenti per servizio. Serie temporal con timestamp fecha. Variables exógenas: tasa_gripe, temperatura_max, es_festivo, es_vacazioni. Entrena con 3 anni e valida con il 4º. Genera preteiczioni a 1, 7 e 28 giorni. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Registrar in Model Registry",
+        "desc": "Guardar modello con metriche.",
+        "prompt": "Registra il modello in Snowflake Model Registry:\n\nfrom snowflake.ml.registre import Registry\nreg = Registry(session=session, database_name='SALUD_DEMANDA_DB', schema_name='ANALYTICS')\nreg.log_model(\n    model=demand_model,\n    model_name='ospedale_demand_forecast',\n    version_name='v1',\n    metrics={'mape_1d': mape_1, 'mape_7d': mape_7, 'mape_28d': mape_28},\n    comment='Modello di previsione di domanda assistenziale ospedalearia'\n)\nVerifica registro."
+      },
+      {
+        "title": "Planificazione di risorse",
+        "desc": "Usar preteiczioni per assegnare risorse.",
+        "prompt": "Crea vista PLAN_RECURSOS_HOSPITALARIOS che use preteiczioni per calcolare per servizio e día: domanda_prevista, posti letto_necessarias, personal_guardia_recomendado, quirofanos_necessarios, gap_vs_disponibile, alerta (Holgura, Normal, Tensione, Saturazione). Genera plan per prossimas 4 settimanas."
+      },
+      {
+        "title": "Dashboard di pianificazione",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Previsione di domanda per servizio con bandas di confianza\n2. Plan di risorse: necessitàes vs disponibili con alert\n3. Impacto di variables exógenas: gripe, calor, festivos\n4. Accurace del modello: MAPE per servizio e horizonte\n5. Simulador: ¿qué pasa si hae brote di gripe severo?\n6. Compertiva di versiones in Model Registry. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di attualeizazione",
+        "desc": "Automatizar previsione.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_ACTIVIDAD: giornaliero, carga dati di actividad\n2. ACTUALIZAR_EXOGENAS: giornaliero, carga vigilancia epidemiológica e meteo\n3. GENERAR_PREDICCION: giornaliero, ejecuta modello Registry\n4. PLAN_SEMANAL: lunes, genera plan di risorse 7 giorni\n5. REENTRENAR: trimestrale, retrana con nuevos dati\n6. Documenta. Objetivo: MAPE <10% a 1 settimana."
+      }
+    ]
+  },
+  "UC04": {
+    "title": "Stratificazione dei Pazienti Cronici per Rischio",
+    "intro": "Motore di estratificazione di pazienti cronici che classifica per rischio di scompenso per personalizzare monitoraggio e intervento.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per cronici.",
+        "prompt": "Crea la base di dati SALUD_CRONICOS_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di estratificazione di pazienti cronici."
+      },
+      {
+        "title": "Creare registro di cronici",
+        "desc": "Generar dati di pazienti con patologias croniche.",
+        "prompt": "Crea la tabella REGISTRO_CRONICOS con: patient_id, patologia_principale (Diabetes_T2, EPOC, ICC, IRC, HTA, Pluripatologico), patologias_secundarias TEXT, indice_charlson INT, fecha_diagnostico DATE, trattamento_attuale TEXT, centro_salud VARCHAR, medico_referencia. Genera 30,000 pazienti cronici. Usa SQL GENERATOR(ROWCOUNT => 30000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Creare dati clinici di monitoraggio",
+        "desc": "Analíticas e constprima di monitoraggio.",
+        "prompt": "Crea la tabella SEGUIMIENTO_CRONICOS con: patient_id, fecha DATE, hba1c FLOAT, fev1_pct FLOAT, fevi_pct FLOAT, nt_probnp FLOAT, creatinina FLOAT, tas_mmhg INT, tad_mmhg INT, peso_kg FLOAT, saturacion_pct FLOAT, frequenza_cardiaca INT, aderenza_medicacion_pct FLOAT, barthil INT. Genera dati trimestralees per 3 anni. Pacientes con aderenza <70% hanno 2x più descompensazioni."
+      },
+      {
+        "title": "Calcular features di rischio",
+        "desc": "Indicadores di scompenso.",
+        "prompt": "Crea vista FEATURES_RIESGO_CRONICO che per paziente calcule:\n- Control: hba1c_ultimo, fev1_tendenza, fevi_tendenza, creatinina_tendenza\n- Actividad: ricoveri_urgenti_12m, pronto soccorso_12m, descompensazioni_12m\n- Adherencia: aderenza_media, gaps_dispensacion, complejidad_regimen\n- Funcional: barthel_ultimo, barthel_tendenza, caidas_12m\n- Comorbilidad: charlson, num_patologias, polimedicacion (>5 farmacos)"
+      },
+      {
+        "title": "Estratificar con ML.CLASSIFICATION",
+        "desc": "Clasificar in niveles di rischio.",
+        "prompt": "Usa ML.CLASSIFICATION per estratificar: alto_rischio, rischio_moderato, stabile, controllato. Variabili: tutte le features. Evalúa accuracy, recall per categoría. I pazienti di alto rischio deben tener >70% di captura di descompensazioni futuras. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Generar plan di monitoraggio",
+        "desc": "Personalizar intervento per nivel.",
+        "prompt": "Crea vista PLAN_SEGUIMIENTO_CRONICOS con: patient_id, nivel_rischio, patologia, fattori_principalei, plan (Alto: enfermería gestora settimanal + telemedicina; Moderado: mensile + telemonitoraggio; Estable: trimestrale; Controlado: semestral), interventi_recomendadas, medicacion_a_revisar."
+      },
+      {
+        "title": "Dashboard di cronici",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Pirámide di estratificazione: distribuzione di pazienti per nivel\n2. Ficha di paziente con trayectoria di indicatori\n3. Plan di monitoraggio personalizado\n4. Alert: pazienti che cambian di livello di rischio\n5. Metriche: ricoveri evitados, aderenza, descompensazioni\n6. Mapa di cronici per centro di salud. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di monitoraggio",
+        "desc": "Automatizar estratificazione.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_CLINICOS: mensile, carga nuevas analitiche e constdavanti as\n2. RE_ESTRATIFICAR: trimestrale, recalcula niveles di rischio\n3. ALERTAS_CAMBIO: settimanal, rileva pazienti che empeggiorean\n4. ADHERENCIA: mensile, attualeiza dati di dispensazione\n5. Documenta. Objetivo: ridurre ricoveri urgenti cronici 20%."
+      }
+    ]
+  },
+  "UC05": {
+    "title": "Manutenzione Preteittiva delle Apparecchiature Mediche",
+    "intro": "Sistema ML di previsione di fali in attrezzatura medico che anticipa guasti per ottimizzare manutenzione e evitar cancellazioni di esami.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per attrezzatura.",
+        "prompt": "Crea la base di dati SALUD_EQUIPAMIENTO_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di manutenzione preteittivo di attrezzatura medico."
+      },
+      {
+        "title": "Creare inventario di apparecchiature",
+        "desc": "Catálogo di attrezzatura medico.",
+        "prompt": "Crea la tabella EQUIPOS_MEDICOS con: apparecchiatura_id, tipo (TAC, Resonancia, RX, Ecografo, Laboratorio_Analizador, Monitor_UCI, Ventilador, Electrobisturi), marca, modello, servizio, ubicacion, fecha_instalacion DATE, vida_util_anos INT, criticità (Vital, Alta, Media, Baja), controtto_manutenzione BOOLEAN, costo_apparecchiatura_eur FLOAT. Genera 500 apparecchiature. Usa SQL GENERATOR(ROWCOUNT => 500) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Cargar dati di uso e sensores",
+        "desc": "Telemetría di apparecchiature.",
+        "prompt": "Crea la tabella TELEMETRIA_EQUIPOS con: apparecchiatura_id, fecha_hora TIMESTAMP, ore_uso_acumuladas FLOAT, ciclos_dia INT, temperatura_c FLOAT, voltaje_v FLOAT, errori_software INT, calibracion_ok BOOLEAN, estudios_realizados INT, tempo_calentamiento_min FLOAT. Genera dati giornalieros per 3 anni. I apparecchiatura prima di guasto muestran: incremento di errori, temperatura elevada, tempo di calentamiento maggiore."
+      },
+      {
+        "title": "Creare cartella clinica di manutenzione",
+        "desc": "Registro di interventi e guasti.",
+        "prompt": "Crea la tabella HISTORIAL_MANTENIMIENTO con: apparecchiatura_id, fecha DATE, tipo (Preventivo, Correctivo_Urgente, Correctivo_Programado, Calibracion), descripcion TEXT, pieza_sustituida, costo_eur FLOAT, tempo_inactivo_ore FLOAT, esami_canceladas INT, trasferimenti_generadas INT. Genera 5,000 registros di manutenzione. Le guasti urgenti cuestan 40% più e cancelan 3-10 esami. Usa SQL GENERATOR(ROWCOUNT => 5000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Calcular features predittivi",
+        "desc": "Indicadores di rischio di guasto.",
+        "prompt": "Crea vista FEATURES_EQUIPOS che per apparecchiatura calcule:\n- Uso: ore_totales, ciclos_mes, carga_vs_capacità_pct\n- Sensores: temperatura_media_7d, temperatura_tendenza, errori_7d, calibracion_ratio\n- Historial: dias_desde_ultimo_preventivo, averias_12m, costo_manutenzione_12m\n- Edad: anos_en_servizio, pct_vida_util_consumida\n- Impacto: esami_dia_promedio, criticità_servizio"
+      },
+      {
+        "title": "Entrenar modello preteittivo",
+        "desc": "ML.CLASSIFICATION per rischio di guasto.",
+        "prompt": "Usa ML.CLASSIFICATION per classificare estado: optimo, atencion_requerida, rischio_averia, critico. Variabili: tutte le features. Evalúa precision e recall. Para apparecchiature a rischio_averia/critico, estimar: probabilità_averia_30d, tipo_fallo_probable, impatto_cancellazioni. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Dashboard di attrezzatura",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Panel di apparecchiature con semáforo di estado\n2. Previsione di guasto per apparecchiatura con timeline\n3. Plan di manutenzione preventivo priorizado\n4. Impacto di guasti: cancellazioni, trasferimenti, costo\n5. Metriche: preteiczioni acertadas, risparmio, disponibilidad\n6. Analisi di ciclo di vida e reposizione. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di monitoraggio",
+        "desc": "Automatizar previsione.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_TELEMETRIA: giornaliero, carga dati di apparecchiature\n2. SCORING_EQUIPOS: settimanal, ejecuta modello di rischio\n3. ALERTAS_CRITICAS: giornaliero, notifica apparecchiature a rischio\n4. PLAN_PREVENTIVO: mensile, genera calendario di manutenzione\n5. Documenta. Objetivo: prevedere 75% guasti, ridurre urgenti 40%."
+      }
+    ]
+  },
+  "UC06": {
+    "title": "NLP sulle Cartelle Cliniche ed Estrazione di Entità",
+    "intro": "Pipeline NLP che estrae diagnosi, farmaci, allergie e referti di cartelle cliniche clinici per strutturare informazione clinica.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per NLP clinico.",
+        "prompt": "Crea la base di dati SALUD_NLP_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di NLP il suo cartelle cliniche clinici."
+      },
+      {
+        "title": "Creare corpus di cartelle cliniche",
+        "desc": "Generar report clinici senzatéticos.",
+        "prompt": "Crea la tabella HISTORIALES_CLINICOS con: documento_id, patient_id, tipo_documento (Informe_Alta, Nota_Evolucion, Interconsulto, Informe_Prueba), servizio, fecha DATE, texto TEXT, medico_hash. Genera 50,000 documentos con texto clinico realista in italiano: abreviaturas (Tto, Dx, Rx, Hx), terminología medica, negazioni (. Usa SQL GENERATOR(ROWCOUNT => 50000) con UNIFORM() per distribuzioni numéricas.'no fiebre'), e struttura típica (MC, AP, EA, EF, Juicio Clínico, Plan)."
+      },
+      {
+        "title": "Extraer entidades cliniche",
+        "desc": "NER il suo texto clinico.",
+        "prompt": "Crea la vista ENTIDADES_CLINICAS che use CORTEX.COMPLETE per estrarre di ogni documento in formato JSON:\n- diagnosticos: [{cie10, descripcion, tipo: principale/secundario}]\n- farmaci: [{nombre, dosis, via, frequenza, codigo_atc}]\n- allergie: [{sustancia, tipo_reaccion}]\n- procedure: [{nombre, codigo_snomed, fecha}]\n- referti: [{hallazgo, normal/anormal, valore}]\nDimostra con 5 documentos di diversi tipos."
+      },
+      {
+        "title": "Codificazione automatica CIE-10",
+        "desc": "Mapear diagnosi a codices.",
+        "prompt": "Crea la tabella CODIGOS_CIE10 con i 2,000 diagnosi più frecuentes. Crea funzione CODIFICAR_DIAGNOSTICO(texto_diagnostico) che use CORTEX.COMPLETE + Cortex Search il suo CODIGOS_CIE10 per assegnare codice CIE-10 con confianza. Evalúa accurace comperndo con codificazione manualeee."
+      },
+      {
+        "title": "Búsqueda semántica in cartelle cliniche",
+        "desc": "Cortex Search il suo corpus clinico.",
+        "prompt": "Crea Cortex Search Service il suo HISTORIALES_CLINICOS indicizzando texto + tipo_documento + servizio. Dimostra búsquedas: 'pazienti con diabetes e nefropatía', 'reazioni adversas a amoxicilina', 'report di dimissione con EPOC reagudizada', 'interconsulti di cardiología per fibrilazione auricular'."
+      },
+      {
+        "title": "Rilevare interazioni farmacológicas",
+        "desc": "Alert di sicurezza in prescrizione.",
+        "prompt": "Crea la tabella INTERACCIONES_FARMACOLOGICAS con pares di fármacos e interazioni conocidas. Crea funzione DETECTAR_INTERACCIONES(patient_id) che cruce terapia farmacologica activa con interazioni e use CORTEX.COMPLETE per explicar rischio clinico e alternativas."
+      },
+      {
+        "title": "Dashboard di inteligencia clinica",
+        "desc": "Streamlit di NLP clinico.",
+        "prompt": "Genera codice Streamlit con:\n1. Visor di cartella clinica con entidades extraídas resdimissionedas\n2. Búsqueda semántica in cartelle cliniche\n3. Codificazione CIE-10 automatica con revisione\n4. Alert di interazioni farmacológicas\n5. Estadísticas: diagnosi frecuentes, terapia farmacologica, procedure\n6. Metriche di estrazione: precision, recall, F1. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di processamiento",
+        "desc": "Automatizar estrazione.",
+        "prompt": "Crea Tasks:\n1. EXTRAER_ENTIDADES: ogni hora il suo nuevos documentos\n2. CODIFICAR_DIAGNOSTICOS: giornaliero il suo entidades extraídas\n3. VERIFICAR_INTERACCIONES: continuo il suo nuevas prescripzioni\n4. ACTUALIZAR_INDICE: giornaliero, reindeza nuevos cartelle cliniche\n5. Documenta. Objetivo: F1 >85% in estrazione di entidades."
+      }
+    ]
+  },
+  "UC07": {
+    "title": "Analisi dell\'Esperienza del Paziente e Soddisfazione",
+    "intro": "Motore NLP di analisi di esperienza del paziente che processa sondaggi, reclami e recensioni per identificare aree di miglioramento.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per esperienza.",
+        "prompt": "Crea la base di dati SALUD_EXPERIENCIA_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di analisi di esperienza del paziente."
+      },
+      {
+        "title": "Creare dati di feedback",
+        "desc": "Generar molteplici fonti di opinión.",
+        "prompt": "Crea la tabella FEEDBACK_PACIENTE con: feedback_id, patient_id_hash, fonte (Encuesta_Alta, Encuesta_Consulta, Reclamacion, Google_Reviews, Portal_Salud), servizio, fecha DATE, texto TEXT, puntuacion INT (1-5), tipo (Elogio, Sugerencia, Queja, Reclamacion_Formal). Genera 30,000 feedbacks di 3 anni. Distribuzione realista: 30% positivo, 40% neutro, 30% negativo."
+      },
+      {
+        "title": "Analizar sentimiento",
+        "desc": "CORTEX.SENTIMENT il suo feedback.",
+        "prompt": "Crea vista SENTIMIENTO_FEEDBACK che use CORTEX.SENTIMENT il suo ogni feedback per: sentimiento_score (-1 a 1), sentimiento_labil (Positivo, Neutro, Negativo). Agrega per servizio e periodo: media, distribuzione, tendenza. Identifica servizi con sentimiento negativo persistente."
+      },
+      {
+        "title": "Clasificar per tema",
+        "desc": "Categorizazione automatica di feedback.",
+        "prompt": "Crea vista CLASIFICACION_TEMATICA che use CORTEX.COMPLETE per classificare: tema_principale (Espera, Trato, Informacion, Dolor, Instalazioni, Comida, Limpieza, Privacidad, Coordinacion), es_accionable BOOLEAN, urgenza (Inmediata, Alta, Normal, Informativa). Dimostra con 10 esempios."
+      },
+      {
+        "title": "Rilevare alert di qualità",
+        "desc": "Alert automaticas di problemas.",
+        "prompt": "Crea vista ALERTAS_CALIDAD_PACIENTE che detecte: sentimiento negativo sostenido >3 settimanas in un servizio, cluster di reclami dello stesso tema in <7 giorni, reclami formales repetidas il suo stesso profesional, caída súbita di punteggio. Genera alerta con contesto, impatto e raccomandazione."
+      },
+      {
+        "title": "Correlacionar con indicatori clinici",
+        "desc": "Vincular satisfazione con risultatos.",
+        "prompt": "Crea vista CORRELACION_SATISFACCION_CLINICA che per servizio cruce satisfazione con: degenza media, riammissioni, complicazioni, ratio enfermera/paziente, tempo di attesa. Identifica correlazioni significativas."
+      },
+      {
+        "title": "Dashboard di esperienza",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Resumen di satisfazione per servizio con semáforo\n2. Análisis temático: principalei reclami e elogios\n3. Alert di qualità activas con raccomandazioni\n4. Tendencia di sentimiento per servizio e mes\n5. Correlazione satisfazione - indicatori clinici\n6. Compertiva tra servizi e periodos. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di analisi",
+        "desc": "Automatizar processamiento.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_FEEDBACK: giornaliero, carga nuevas sondaggi e recensioni\n2. ANALIZAR_SENTIMIENTO: giornaliero il suo nuevo feedback\n3. CLASIFICAR_TEMAS: giornaliero\n4. DETECTAR_ALERTAS: settimanal\n5. Documenta. Objetivo: analisi <24h, aumentar miglioramentos basadas in evidenza 40%."
+      }
+    ]
+  },
+  "UC08": {
+    "title": "Feature Store del Profilo Paziente 360",
+    "intro": "Implementa un Feature Store in Snowflake che consolidella visione 360 del paziente da molteplici fonti cliniche cumpliendo RGPD e regolamentazione sanitaria.",
+    "steps": [
+      {
+        "title": "Configurar Feature Store",
+        "desc": "Creare base di dati e preperr Feature Store.",
+        "prompt": "Crea la base di dati SALUD_PATIENT360_DB con schema FEATURE_STORE e warehouse SALUD_WH. Comenta che este progetto implementa Snowflake Feature Store per Perfil di Paciente 360 con conformità RGPD e normativa sanitaria."
+      },
+      {
+        "title": "Creare dati fonte",
+        "desc": "Generar dati delle 5 fonti cliniche principalei.",
+        "prompt": "Crea 5 table fonte:\n1. RAW_DEMOGRAPHICS: patient_id, fecha_nacimiento, genero, codigo_postal, telefono_hash, centro_salud, medico_familia\n2. RAW_CLINICAL_HISTORY: patient_id, diagnosticos_activos_json, indice_charlson INT, allergie_json, grupo_sanguineo, davanti acedentes_quirurgicos\n3. RAW_MEDICATIONS: patient_id, medicacion_activa_json, num_farmacos INT, aderenza_pct FLOAT, interazioni_rilevadas INT, ultima_revision_fecha DATE\n4. RAW_LAB_RESULTS: patient_id, fecha DATE, hemoglobina FLOAT, glucosa FLOAT, creatinina FLOAT, colesterol FLOAT, hba1c FLOAT, leucocitos FLOAT, pcr FLOAT\n5. RAW_ACTIVITY: patient_id, ricoveri_12m INT, pronto soccorso_12m INT, consulti_12m INT, interventi_12m INT, ultima_visita_fecha DATE\nGenera dati per 80,000 pazienti. Usa SQL GENERATOR(ROWCOUNT => 80000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Creare Entite del Feature Store",
+        "desc": "Definir Entite 'patient' con conformità RGPD.",
+        "prompt": "Usando Snowflake Feature Store:\n\nfrom snowflake.ml.feature_store import FeatureStore, Entity, FeatureView\nfs = FeatureStore(session=session, database='SALUD_PATIENT360_DB', name='FEATURE_STORE')\n\npatient = Entity(\n    name='PATIENT',\n    join_keys=['PATIENT_ID'],\n    desc='Paciente con profilo clinico 360 - Conformità RGPD e normativa sanitaria'\n)\nfs.register_entity(patient)\nVerifica registro."
+      },
+      {
+        "title": "Creare FeatureView demográfico e clinico",
+        "desc": "Features del profilo básico e cartella clinica clinico.",
+        "prompt": "Crea 2 FeatureViews:\n1. DEMOGRAPHICS da RAW_DEMOGRAPHICS:\n- età_grupo (0-17, 18-45, 46-65, 66-80, 80+), genero\n- zona_sanitaria, centro_salud_referencia\n\n2. CLINICAL_HISTORY da RAW_CLINICAL_HISTORY:\n- num_diagnosticos_activos, charlson_grupo (0-1, 2-3, 4+)\n- tiene_allergie BOOLEAN, tiene_davanti acedentes_quirurgicos\n- es_pluripatologico BOOLEAN, es_cronico BOOLEAN\n\nRefresh settimanal. Enmascaramiento: fecha_nacimiento non disponibile, solo grupo di età."
+      },
+      {
+        "title": "Creare FeatureViews terapia farmacologica e laboratorio",
+        "desc": "Features farmacológicas e analitiche.",
+        "prompt": "Crea 2 FeatureViews:\n1. MEDICATIONS da RAW_MEDICATIONS:\n- num_farmacos_activos, es_polimedicado BOOLEAN (>5)\n- aderenza_grupo (buena >80%, regular 50-80%, mala <50%)\n- tiene_interazioni BOOLEAN, complejidad_regimen\n\n2. LAB_RESULTS da RAW_LAB_RESULTS:\n- hba1c_ultimo, hba1c_tendenza_6m\n- funcion_renal_grupo (normal, leve, moderada, severa)\n- anemia BOOLEAN, inflamacion_activa BOOLEAN\n\nRefresh settimanal."
+      },
+      {
+        "title": "Creare FeatureView di actividad",
+        "desc": "Features di uso di servizi sanitarios.",
+        "prompt": "Crea FeatureView ACTIVITY da RAW_ACTIVITY:\n- ricoveri_12m, pronto soccorso_12m, consulti_12m\n- es_frecuentador BOOLEAN (pronto soccorso >4/anno)\n- ultima_visita_dias, complejidad_assistenziale\n- tendenza_actividad (creciente, stabile, decreciente)\n\nRefresh settimanal. Dimostra consumo di features per un paziente con fs.get_features()."
+      },
+      {
+        "title": "Servir features per casi di uso",
+        "desc": "Demostrare consumo da altri pipelines.",
+        "prompt": "Dimostra consumo di features:\n\n# Para riammissioni (UC01)\ndf_readmision = fs.get_features(entity=patient, feature_views=['CLINICAL_HISTORY', 'MEDICATIONS', 'ACTIVITY'], spine_df=dimissioni_hoy_df)\n\n# Para cronici (UC04)\ndf_cronicos = fs.get_features(entity=patient, feature_views=['CLINICAL_HISTORY', 'MEDICATIONS', 'LAB_RESULTS'], spine_df=cronicos_df)\n\n# Para sepsis (UC16)\ndf_sepsis = fs.get_features(entity=patient, feature_views=['DEMOGRAPHICS', 'CLINICAL_HISTORY', 'LAB_RESULTS'], spine_df=pazienti_planta_df)\n\nMuestra DataFrames resultdavanti as."
+      },
+      {
+        "title": "Dashboard del Feature Store",
+        "desc": "Streamlit di monitoraggio.",
+        "prompt": "Genera codice Streamlit con:\n1. Resumen: 5 FeatureViews, features totales, ultimo refresh\n2. Buscador di paziente con profilo 360 (con enmascaramiento RGPD)\n3. Distribuzione di profili clinici e di rischio\n4. Metriche di qualità: completitud, freshness, drift\n5. Audit log di accessos al Feature Store\n6. Conformità RGPD: finalidad, minimizazione, consentimiento. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di manutenzione",
+        "desc": "Automatizar attualeizazione e auditoría.",
+        "prompt": "Crea Tasks:\n1. REFRESH_DEMOGRAPHICS: mensile da sistemi di admisione\n2. REFRESH_CLINICAL: settimanal da HCE\n3. REFRESH_MEDICATIONS: settimanal da farmacia\n4. REFRESH_LAB: giornaliero dallaboratorio\n5. MONITOR_QUALITY: settimanal, verifica completitud e drift\n6. AUDIT_ACCESOS: giornaliero, registra quién accede e con qué finalidad\n7. Documenta. Conformità stringente RGPD e normativa sanitaria."
+      }
+    ]
+  },
+  "UC09": {
+    "title": "Ottimizzazione della Programmazione Chirurgica",
+    "intro": "Motore di ottimizzazione che preteice durazione chirurgica, estima cancellazioni e ottimizza secuencia di interventi per massimizzare uso di sale operatorie.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per bloque quirúrgico.",
+        "prompt": "Crea la base di dati SALUD_QUIROFANO_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di ottimizzazione di programazione chirurgica."
+      },
+      {
+        "title": "Creare cartella clinica quirúrgico",
+        "desc": "Registro di interventi.",
+        "prompt": "Crea la tabella HISTORIAL_QUIRURGICO con: intervencion_id, patient_id, fecha DATE, quirofano_id, especialidad, procedura_principale, asa_score INT (1-5), cirujano_hash, duracion_reale_min INT, duracion_estimada_min INT, cancelada BOOLEAN, motivo_cancelacion, complicacion_intraoperatoria BOOLEAN, necesito_uci BOOLEAN. Genera 40,000 interventi di 4 anni. 12% canceladas, durazione reale varía ±25% vs estimada."
+      },
+      {
+        "title": "Creare dati di risorse",
+        "desc": "Quirófanos, personal e instrumental.",
+        "prompt": "Crea le tabellas:\n1. QUIROFANOS con: quirofano_id, tipo (General, Cardiaco, Oftalmologico, Ambulatorio), attrezzatura TEXT, horario_disponibile, costo_hora_eur FLOAT\n2. LISTA_ESPERA_QUIRURGICA con: patient_id, procedura, especialidad, priorità (Urgente, Preferente, Normal), fecha_inclusion DATE, dias_espera INT, asa_score, necessita_uci BOOLEAN, instrumental_especial BOOLEAN\nGenera 10 sale operatorie e 3,000 pazienti in lista di attesa. Usa SQL GENERATOR(ROWCOUNT => 3000) con UNIFORM() per distribuzioni numéricas."
+      },
+      {
+        "title": "Preteecir durazione chirurgica",
+        "desc": "ML.FORECAST per tipo di chirurgia.",
+        "prompt": "Usa ML.FORECAST per prevedere duracion_reale_min por: procedura, especialidad, asa_score, cirujano, età, comorbidità. Crea vista PREDICCION_DURACION: intervencion_id, duracion_estimada_ml_min, intervalo_confianza_min, fattori_que_alargan. Evalúa MAE per especialidad. Objetivo: error <15%. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Preteecir rischio di cancellazione",
+        "desc": "ML.CLASSIFICATION per cancellazioni.",
+        "prompt": "Usa ML.CLASSIFICATION per prevedere cancelacion: si/no. Variabili: asa_score, età, comorbidità, anticoagulazione, necessita_uci, dia_settimana, distancia_domicilio, appuntamenti_previas_canceladas. Para alto rischio: generaree azioni preventivas (confirmar teléfono, asegurar posto letto UCI, protocollo anticoagulazione). Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Optimizar programazione settimanal",
+        "desc": "Secuenciar interventi ottimalemente.",
+        "prompt": "Crea funzione OPTIMIZAR_PROGRAMA_SEMANAL() che asigne interventi della lista di attesa a sale operatorie e slots considerando: durazione estimada ML, rischio cancellazione, priorità clinica, disponibilidad UCI, instrumental, cirujano. Maximizar: utilizzazione sala operatoria >85%, minimizar: ritardi in lista di attesa. Generar programa della settimana."
+      },
+      {
+        "title": "Dashboard quirúrgico",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Programa quirúrgico settimanal con estimazioni ML\n2. Rischio di cancellazione per intervento con azioni preventivas\n3. Utilizazione di sale operatorie: reale vs ottimale\n4. Lista di espera: priorità, giorni espera, programazione estimada\n5. Metriche: utilizzazione, cancellazioni, precisione di durazione\n6. Simulador: impatto di añadir/quitar un sala operatoria. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di ottimizzazione",
+        "desc": "Automatizar programazione.",
+        "prompt": "Cra Tasks:\n1. ACTUALIZAR_LISTA: giornaliero, senzacroniza lista di attesa\n2. ESTIMAR_DURACIONES: settimanal, ejecuta modello il suo programmatos\n3. SCORING_CANCELACION: settimanal, calcula rischio\n4. PROGRAMA_SEMANAL: viernes, genera programa della settimana successivo\n5. Documenta. Objetivo: utilizzazione >85%, cancellazioni <8%."
+      }
+    ]
+  },
+  "UC10": {
+    "title": "Rilevamento Frode nella Fatturazione Sanitaria",
+    "intro": "Sistema ML di rilevamento di anomalías in fatturazione sanitaria che identifica su-codificazione, servizi ficticios e duplicazioni.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per frode sanitario.",
+        "prompt": "Crea la base di dati SALUD_FRAUDE_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di rilevamento frodi in fatturazione sanitaria."
+      },
+      {
+        "title": "Creare dati di fatturazione",
+        "desc": "Generar fatturazione ospedalearia senzatética.",
+        "prompt": "Crea la tabella FACTURACION_HOSPITALARIA con: factura_id, episodio_id, patient_id, grd_codigo, grd_peso FLOAT, degenza_dias INT, procedure_facturados INT, diagnostico_principale, diagnosticos_secundarios INT, costo_totale_eur FLOAT, pagador (SNS, Mutua, Aseguradora, Accidente_Laboral), servizio, ospedale_id. Genera 200,000 facturas di 4 anni. Il 5% tiene pattern anómalos: GRD su-codificado, degenzas excesivas, procedure injustificados."
+      },
+      {
+        "title": "Creare benchmarks nacionales",
+        "desc": "Estándares di referencia per GRD.",
+        "prompt": "Crea la tabella BENCHMARK_GRD con: grd_codigo, grd_descripcion, degenza_media_nacional FLOAT, peso_medio FLOAT, procedure_tipicos INT, costo_medio_eur FLOAT, percentil_90_degenza FLOAT, percentil_90_costo FLOAT. Genera 500 GRDs con estadísticas nacionales."
+      },
+      {
+        "title": "Calcular features di anomalía",
+        "desc": "Indicadores di desviazione.",
+        "prompt": "Crea vista FEATURES_FRAUDE_FACTURACION che per factura calcule:\n- Codificazione: grd_peso_vs_benchmark, diagnosticos_secundarios_vs_media, complejidad_vs_degenza\n- Estancia: dias_vs_media_grd, dias_vs_p90, ratio_degenza_procedure\n- Costes: costo_vs_benchmark, costo_vs_p90, procedure_vs_tipicos\n- Patrones: stesso_grd_frequenza_servizio, paziente_frecuentador, servizio_outlier\n- Temporal: facturacion_fin_de_mes, concentracion_pagador"
+      },
+      {
+        "title": "Entrenar modello di rilevamento",
+        "desc": "ML.CLASSIFICATION per anomalías.",
+        "prompt": "Usa ML.CLASSIFICATION per classificare: normal, anomalia_leve, anomalia_moderada, anomalia_grave. Variabili: tutte le features. Evalúa precision e recall. Para anomalías graves: generaree profilo detallado con tipo di irregolareidad e importe estimado. Usa evaluate => TRUE per generaree metriche di valutazione."
+      },
+      {
+        "title": "Generar alert di auditoría",
+        "desc": "Priorizar casi per revisione.",
+        "prompt": "Cra vista ALERTAS_FACTURACION con: factura_id, tipo_anomalia (su_codificacion, degenza_excesiva, servizio_ficticio, duplicidad), severidad, importe_en_cuestion_eur, score_rischio, detalles TEXT. Ordena per importe × probabilità. Genera top 100 per auditoría."
+      },
+      {
+        "title": "Dashboard di control",
+        "desc": "Streamlit di auditoría.",
+        "prompt": "Genera codice Streamlit con:\n1. Alert priorizadas con detalle di anomalía\n2. Benchmarking: servizio vs nacional per GRD\n3. Perfiles di codificazione per servizio e profesional\n4. Metriche: anomalías rilevadas, importe recuperable, tendenza\n5. Análisis per pagador: SNS, mutuas, compagnia assicurativas\n6. Evoluzione di peso medio di GRD per servizio. Usa snowflake.connector.connect() per esecuzione local del dashboard."
+      },
+      {
+        "title": "Pipeline di auditoría",
+        "desc": "Automatizar rilevamento.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_FACTURACION: mensile con nuevas facturas\n2. SCORING_ANOMALIAS: mensile il suo nueva fatturazione\n3. GENERAR_ALERTAS: mensile, prioriza casi\n4. ACTUALIZAR_BENCHMARKS: anual con dati nacionales\n5. Documenta. Objetivo: rilevare 60% anomalías, <8% falsos positivos."
+      }
+    ]
+  }
+};
+
+Object.assign(PROMPTS, {
+  "UC11": {
+    "title": "Monitoraggio Remoto dei Pazienti con IoT e Allerte ML",
+    "intro": "Pipeline ML di monitoraggio di pazienti cronici che analizza dati di dispositivos IoT per rilevare descompensazioni prima del ricovero urgente.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per telemonitoraggio.",
+        "prompt": "Crea la base di dati SALUD_TELEMONITORIZACION_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di monitoraggio remota di pazienti con IoT."
+      },
+      {
+        "title": "Creare dati di dispositivos IoT",
+        "desc": "Lecturas di sensores di pazienti.",
+        "prompt": "Crea la tabella LECTURAS_IOT con: patient_id, dispositivo_tipo (Tensiometro, Glucometro, Pulsioximetro, Bascula, Actividad), fecha_hora TIMESTAMP, valore FLOAT, unità VARCHAR, bateria_pct FLOAT, qualità_lectura (Buena, Aceptable, Dudosa). Genera lecturas per 5,000 pazienti monitorizados × 1 anno. Frecuencia: glucosa 3/día, tensione 2/día, peso 1/día, actividad continua. Incluir pattern pre-scompenso: peso ICC +2kg/3giorni, glucosa diabetes >250 sostenida, SpO2 EPOC <90%."
+      },
+      {
+        "title": "Calcular baseline personalizado",
+        "desc": "Perfil normal per paziente e patologia.",
+        "prompt": "Crea vista BASELINE_PACIENTE che per patient_id e dispositivo calcule: media_7d, media_30d, desviacion_estandar, rango_normal_inferior, rango_normal_superior, tendenza_7d (stabile, ascendente, descendente), patron_circadiano. Un paziente ICC con peso +1.5kg in 3 giorni está fuori da il suo baseline."
+      },
+      {
+        "title": "Rilevare descompensazioni",
+        "desc": "ML.CLASSIFICATION il suo series temporales.",
+        "prompt": "Usa ML.CLASSIFICATION per classificare stato del paziente: normal, alerta_leve, alerta_moderada, alerta_grave. Variabili: desviazione di baseline per segnale, tendenza multi-segnale, velocidad di cambio, aderenza a medizioni, ultima visita. Correlazione multi-segnale: peso↑ + disnea↑ + SpO2↓ = ICC descompensada."
+      },
+      {
+        "title": "Configurar alert multinivel",
+        "desc": "Escalado automatico per severidad.",
+        "prompt": "Crea vista ALERTAS_TELEMONITORIZACION con: patient_id, fecha_hora, nivel_alerta (Verde, Amarillo, Naranja, Rojo), segnalees_anormales, descripcion, accion_recomendada. Verde: informativa. Amarillo: chiamata di enfermería in 24h. Naranja: contacto medico in 4h. Rojo: derivar a pronto soccorso. Genera alert della ultima settimana."
+      },
+      {
+        "title": "Medir impatto clinico",
+        "desc": "Evaluar efectividad della monitoraggio.",
+        "prompt": "Crea vista IMPACTO_TELEMONITORIZACION: pazienti monitorizados vs non monitorizados (control). Metriche: ricoveri_urgenti_12m, pronto soccorso_12m, mortalidad, qualità_vida, costo_totale. Calcular NNT (número necessario a tratar/monitorare per evitar 1 ricovero)."
+      },
+      {
+        "title": "Dashboard di telemonitoraggio",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Panel di pazienti con semáforo di estado attuale\n2. Gráficas di tendenza per segnale per paziente seleccionado\n3. Alert activas con cartella clinica e azioni tomadas\n4. Metriche: sensibilidad, especificidad, falsos positivos\n5. Impacto clinico: ricoveri evitados, costo ahorrado\n6. Adherencia a medizioni per paziente"
+      },
+      {
+        "title": "Pipeline di monitoraggio",
+        "desc": "Automatizar alert.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_IOT: ogni hora, carga lecturas di dispositivos\n2. ACTUALIZAR_BASELINE: settimanal, recalcula profili normales\n3. DETECTAR_ALERTAS: ogni 4 ore, ejecuta modello di classificazione\n4. NOTIFICAR: continuo, envía alert secondo nivel\n5. Documenta. Objetivo: rilevare 75% descompensazioni, <10% falsos positivos."
+      }
+    ]
+  },
+  "UC12": {
+    "title": "Supporto alla Decisione Clinica con RAG",
+    "intro": "Sistema RAG di supporto alla decisione che indexa guías cliniche, protocolli e evidenza per asistir al medico in tempo reale.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per supporto clinico.",
+        "prompt": "Crea la base di dati SALUD_SOPORTE_CLINICO_DB con schema RAG e warehouse SALUD_WH. Comentarios del progetto di supporto alla decisione clinica con RAG."
+      },
+      {
+        "title": "Creare corpus di guías cliniche",
+        "desc": "Base di conoscenza medico.",
+        "prompt": "Crea la tabella GUIAS_CLINICAS con: guia_id, titulo, tipo (Guia_Practica_Clinica, Protocolo_Hospitalario, Alerta_Farmacologica, Revision_Cochrane, Consenso_Expertos), especialidad, patologia, contenuto TEXT, nivel_evidenza (A, B, C, D, Consenso), fecha_publicacion DATE, fonte (SNS, NICE, Cochrane, Sociedad_Medica, Hospital), vigente BOOLEAN. Genera 500 guías cubriendo le patologias più frecuentes."
+      },
+      {
+        "title": "Creare base di farmacología",
+        "desc": "Fichas tecnicas e alert.",
+        "prompt": "Crea la tabella FARMACOLOGIA con: principio_activo, codigo_atc, indicazioni TEXT, controindicazioni TEXT, interazioni TEXT, ajuste_renal TEXT, ajuste_hepatico TEXT, embarazo_lactancia TEXT, efectos_adversos_frecuentes TEXT, dosis_habitual TEXT. Genera 300 fármacos più utilizzados. Crea tabella INTERACCIONES con pares di fármacos e livello di interazione."
+      },
+      {
+        "title": "Indexar con Cortex Search",
+        "desc": "Creare servizio di búsqueda il suo evidenza.",
+        "prompt": "Crea Cortex Search Service indicizzando GUIAS_CLINICAS + FARMACOLOGIA:\n- Columnas: titulo, contenuto, especialidad, patologia\n- Filtros: tipo, especialidad, nivel_evidenza\nDemuestra: '¿Cuál è il trattamento di primera línea per la ICC con FEVI reteucida?', 'Interazioni di metformina in paziente con IRC', 'Protocolo di profilaxis di TEP in chirurgia di cadera'."
+      },
+      {
+        "title": "Creare funzione di consulto clinica",
+        "desc": "RAG contextualizado al paziente.",
+        "prompt": "Crea funzione CONSULTA_CLINICA(patient_id, domanda_clinica) che:\n1. Cerca evidenza rilevante con Cortex Search (top 5)\n2. Si patient_id: consulto Feature Store UC08 (comorbidità, terapia farmacologica)\n3. Contestualizza risposta al paziente concreto (allergie, IR, età)\n4. Genera risposta con CORTEX.COMPLETE con livello di evidenza\n5. Includi alert di controindicazioni/interazioni\nDimostra con 3 consulti cliniche reali."
+      },
+      {
+        "title": "Rilevare interazioni in prescrizione",
+        "desc": "Alert in tempo di prescrizione.",
+        "prompt": "Crea funzione VERIFICAR_PRESCRIPCION(patient_id, nuevo_farmaco, dosis) che: cruce con terapia farmacologica activa del Feature Store, detecte interazioni e controindicazioni, ajuste dosis per funzione renal/hepática, alerte si hae allergie. Use CORTEX.COMPLETE per explicar rischio e sugerir alternativa."
+      },
+      {
+        "title": "Dashboard di supporto clinico",
+        "desc": "Streamlit di consulto.",
+        "prompt": "Genera codice Streamlit con:\n1. Buscador di consulti cliniche con RAG e livello di evidenza\n2. Verificador di prescripzioni con alert\n3. Perfil di paziente con terapia farmacologica e interazioni\n4. Base di guías: búsqueda per patologia e especialidad\n5. Alert farmacológicas recientes\n6. Metriche: consulti, interazioni rilevadas, utilidad"
+      },
+      {
+        "title": "Pipeline di attualeizazione",
+        "desc": "Mdavanti aner evidenza attualeizada.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_GUIAS: settimanal, incorpora nuevas publicazioni\n2. ACTUALIZAR_FARMA: mensile, attualeiza fichas tecnicas e alert\n3. VERIFICAR_PRESCRIPCIONES: continuo con ogni nueva prescrizione\n4. METRICAS: settimanal, calcula uso e utilidad\n5. Documenta. Objetivo: cubrir 80% di consulti, rilevare 40% più interazioni."
+      }
+    ]
+  },
+  "UC13": {
+    "title": "Ottimizzazione della Gestione Letti e Flusso Pazienti",
+    "intro": "Motore di previsione e ottimizzazione del flujo di pazienti che preteice dimissioni, estima domanda di posti letto e ottimizza asignazioni in tempo reale.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per bed management.",
+        "prompt": "Crea la base di dati SALUD_BED_MANAGEMENT_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di ottimizzazione di gestione di posti letto."
+      },
+      {
+        "title": "Creare censo ospedaleario",
+        "desc": "Dati di ocupazione in tempo reale.",
+        "prompt": "Crea la tabella CENSO_HOSPITALARIO con: fecha_hora TIMESTAMP, posto letto_id, servizio, tipo_posto letto (Aislamiento, Monitorizada, Estandar, Pediatrica), estado (Ocupada, Libre, Limpieza, Bloqueada, Manutenzione), patient_id, fecha_ricovero, grd_estimado, degenza_prevista_dias INT, degenza_reale_dias INT, dimissione_prevista_fecha DATE, tipo_dimissione_prevista. Genera dati horarios per 400 posti letto × 1 anno."
+      },
+      {
+        "title": "Creare dati di domanda",
+        "desc": "Ingresos programmatos e urgenti.",
+        "prompt": "Crea la tabella DEMANDA_CAMAS con: fecha DATE, servizio, ricoveri_programmatos INT, ricoveri_urgenti INT, dimissioni_reali INT, trasferimenti_entrada INT, trasferimenti_salida INT, trasferimenti_externas INT, tempo_espera_posto letto_min INT. Genera dati giornalieros per 1 anno. I viernes e festivos: meno dimissioni, più pronto soccorso → tensione."
+      },
+      {
+        "title": "Preteecir dimissioni",
+        "desc": "ML.FORECAST di dimissioni per servizio.",
+        "prompt": "Usa ML.FORECAST per prevedere dimissioni giornalieras per servizio. Variabili: degenzas attualees, GRDs, dia_settimana, festivo, ocupazione_attuale. Crea vista PREDICCION_ALTAS: servizio, fecha, dimissioni_previstas, confianza, posti letto_que_se_liberan. Complementar con stima individuale: probabilità_dimissione_hoe per paziente."
+      },
+      {
+        "title": "Optimizar assegnazione",
+        "desc": "Assegnare posti letto in tempo reale.",
+        "prompt": "Crea funzione ASIGNAR_CAMA(patient_id, servizio_destino, priorità) che: elenchi posti letto disponibili per servizio, consideri tipo necessario (isolamento, monitorizzata), minimizzi trasferimenti intraospedalieri, dia priorità secondo urgenza. Genera raccomandazione di posto letto ottimale con giustificazione."
+      },
+      {
+        "title": "Rilevare tensione",
+        "desc": "Alert di saturazione.",
+        "prompt": "Crea vista ALERTAS_TENSION_CAMAS che per servizio calcule: ocupacion_attuale_pct, dimissioni_previstas_24h, ricoveri_previsti_24h, balance_neto, nivel_tension (Holgura <80%, Normal 80-90%, Tensione 90-95%, Saturazione >95%). Generar azioni: acelerar dimissioni seguras, abrir posti letto aggiuntivoes, attivare protocollo di derivazione."
+      },
+      {
+        "title": "Dashboard di bed management",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Mapa di posti letto in tempo reale con colores per estado\n2. Previsione di dimissioni e domanda prossimas 24-48h\n3. Alert di tensione per servizio con azioni\n4. Tiempo di espera di posto letto da pronto soccorso\n5. Metriche: ocupazione, giro di posto letto, bloqueos, trasferimenti\n6. Tendencia di flujo di pazienti per servizio"
+      },
+      {
+        "title": "Pipeline di gestione",
+        "desc": "Automatizar bed management.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_CENSO: ogni hora, senzacroniza stato di posti letto\n2. PREDECIR_ALTAS: ogni 6 ore, genera preteiczioni\n3. EVALUAR_TENSION: ogni 4 ore, calcula niveles\n4. REPORTE_DIARIO: resumen di flujo e tensione\n5. Documenta. Objetivo: ridurre espera di posto letto 30%, cancellazioni 50%."
+      }
+    ]
+  },
+  "UC14": {
+    "title": "Feature Store di Performance Ospedaliera",
+    "intro": "Implementa un Feature Store in Snowflake che consolide metriche di rendimento ospedaleario per benchmarking, alert di qualità e acreteitazione.",
+    "steps": [
+      {
+        "title": "Configurar Feature Store",
+        "desc": "Creare base di dati e preperr Feature Store.",
+        "prompt": "Crea la base di dati SALUD_PERFORMANCE_DB con schema FEATURE_STORE e warehouse SALUD_WH. Comenta che este progetto implementa Snowflake Feature Store per Performance Hospitalaria."
+      },
+      {
+        "title": "Creare dati fonte",
+        "desc": "Generar metriche di servizi da molteplici fonti.",
+        "prompt": "Crea 5 table fonte:\n1. RAW_CLINICAL_OUTCOMES: servizio_id, mes DATE, mortalidad_ajustada_pct FLOAT, riammissioni_30d_pct FLOAT, infeczioni_nosocomiales_1000d FLOAT, complicazioni_pct FLOAT\n2. RAW_EFFICIENCY: servizio_id, mes, degenza_media_dias FLOAT, uso_quirofano_pct FLOAT, rotacion_posti letto FLOAT, cancellazioni_cirugia_pct FLOAT\n3. RAW_PATIENT_SATISFACTION: servizio_id, mes, satisfaccion_media FLOAT, reclami_1000_dimissioni FLOAT, nps_score FLOAT, tempo_espera_min FLOAT\n4. RAW_SAFETY: servizio_id, mes, eventi_adversos_1000d FLOAT, caidas_1000d FLOAT, errori_medicacion_1000d FLOAT, infeccion_quirurgica_pct FLOAT\n5. RAW_ACTIVITY_METRICS: servizio_id, mes, ricoveri INT, cirugias INT, consulti INT, pronto soccorso INT, personal_fte FLOAT\nGenera dati per 30 servizi × 3 anni."
+      },
+      {
+        "title": "Creare Entity",
+        "desc": "Definir Entite 'servizio' in Feature Store.",
+        "prompt": "Usando Snowflake Feature Store:\n\nfrom snowflake.ml.feature_store import FeatureStore, Entity, FeatureView\nfs = FeatureStore(session=session, database='SALUD_PERFORMANCE_DB', name='FEATURE_STORE')\n\nservizio = Entity(\n    name='SERVICIO_HOSPITALARIO',\n    join_keys=['SERVICIO_ID'],\n    desc='Servicio ospedaleario con metriche di rendimento'\n)\nfs.register_entity(servizio)\nVerifica registro."
+      },
+      {
+        "title": "Creare FeatureViews di risultatos e efficienza",
+        "desc": "Features cliniche e operativas.",
+        "prompt": "Crea 2 FeatureViews:\n1. CLINICAL_OUTCOMES da RAW_CLINICAL_OUTCOMES:\n- mortalidad_ajustada, tendenza_mortalidad_6m\n- riammissioni_30d, riammissioni_vs_media\n- infeczioni_nosocomiales, infeczioni_vs_benchmark\n\n2. EFFICIENCY da RAW_EFFICIENCY:\n- degenza_media, degenza_vs_benchmark\n- uso_quirofano, cancellazioni_cirugia\n- rotacion_posti letto, productividad_per_fte\n\nRefresh mensile."
+      },
+      {
+        "title": "Creare FeatureViews di satisfazione e sicurezza",
+        "desc": "Features di qualità percibida e eventi adversos.",
+        "prompt": "Crea 2 FeatureViews:\n1. PATIENT_SATISFACTION da RAW_PATIENT_SATISFACTION:\n- satisfaccion_media, tendenza_6m\n- reclami_tasa, nps_score\n- tempo_espera_vs_obiettivo\n\n2. SAFETY da RAW_SAFETY:\n- eventi_adversos_tasa, tendenza_6m\n- caidas_tasa, errori_medicacion_tasa\n- infeccion_quirurgica_vs_benchmark\n\nRefresh mensile."
+      },
+      {
+        "title": "Creare FeatureView di actividad",
+        "desc": "Features di volumen e risorse.",
+        "prompt": "Crea FeatureView ACTIVITY_METRICS da RAW_ACTIVITY_METRICS:\n- ricoveri_mes, tendenza_actividad_6m\n- cirugias_mes, consulti_mes\n- ratio_personal_actividad, carga_trabajo\n\nRefresh mensile. Dimostra consumo completo con fs.get_features() per un servizio."
+      },
+      {
+        "title": "Dashboard di performance",
+        "desc": "Streamlit di benchmarking.",
+        "prompt": "Genera codice Streamlit con:\n1. Ranking di servizi per performance global (composite score)\n2. Scorecard per servizio: 5 dimensiones con semáforo\n3. Benchmarking: compertiva tra servizi similees\n4. Alert di deterioro: tendenze negativas >10%\n5. Drill-down per dimensione con series temporales\n6. Informe automatico per direczione di servizio"
+      },
+      {
+        "title": "Pipeline di manutenzione",
+        "desc": "Automatizar attualeizazione.",
+        "prompt": "Crea Tasks:\n1. REFRESH_OUTCOMES: mensile da CMBD\n2. REFRESH_EFFICIENCY: mensile da admisione e sala operatoria\n3. REFRESH_SATISFACTION: mensile da sondaggi\n4. REFRESH_SAFETY: mensile da qualità\n5. ALERTAR_DETERIORO: settimanal, rileva tendenze negativas\n6. Documenta. Feature Store permette benchmarking near-reale-time."
+      }
+    ]
+  },
+  "UC15": {
+    "title": "Previsione dell\'Aderenza al Trattamento",
+    "intro": "Modelo preteittivo di aderenza che identifica pazienti a rischio di abandono terapéutico per intervento preventiva.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per aderenza.",
+        "prompt": "Crea la base di dati SALUD_ADHERENCIA_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di previsione di aderenza a trattamento."
+      },
+      {
+        "title": "Creare dati di dispensazione",
+        "desc": "Historial di retirada di terapia farmacologica.",
+        "prompt": "Crea la tabella DISPENSACIONES con: patient_id, principio_activo, codigo_atc, fecha_dispensacion DATE, cantidad, dias_copertura INT, farmacia_id, es_primera_dispensacion BOOLEAN, gap_desde_precedente_dias INT. Genera 500,000 dispensazioni per 20,000 pazienti cronici × 3 anni. Il 45% tiene gaps >10 giorni (indicador di non aderenza)."
+      },
+      {
+        "title": "Creare profilo di paziente",
+        "desc": "Factores che influyen in aderenza.",
+        "prompt": "Crea la tabella PERFIL_ADHERENCIA con: patient_id, età INT, genero, num_farmacos_activos INT, complejidad_regimen (Simple, Moderada, Compleja), deterioro_cognitivo BOOLEAN, vive_solo BOOLEAN, nivel_educativo, distancia_farmacia_km FLOAT, copago BOOLEAN, patologia_principale. Generar per i 20,000 pazienti."
+      },
+      {
+        "title": "Calcular features di aderenza",
+        "desc": "Indicadores preteittivos.",
+        "prompt": "Crea vista FEATURES_ADHERENCIA che per paziente e fármaco calcule:\n- Dispensazione: MPR (Medication Possession Ratio), gaps_medios, num_gaps_3m\n- Régimen: num_farmacos, num_tomas_dia, cambios_recientes\n- Paciente: età, deterioro_cognitivo, vive_solo, copago\n- Historial: aderenza_previa_6m, ricoveri_por_descompensacion\n- Temporal: stagionalità (verano peggiore), tempo_desde_diagnostico"
+      },
+      {
+        "title": "Entrenar modello preteittivo",
+        "desc": "ML.CLASSIFICATION per rischio di non aderenza.",
+        "prompt": "Usa ML.CLASSIFICATION per prevedere: adherente, rischio_leve, rischio_moderato, rischio_alto. Variabili: tutte le features. Evalúa AUC, precision, recall. Identificar fattori principalei di non aderenza per ogni paziente."
+      },
+      {
+        "title": "Generar interventi personalizadas",
+        "desc": "Aczioni per profilo di rischio.",
+        "prompt": "Crea vista INTERVENCIONES_ADHERENCIA con: patient_id, farmaco, rischio, causa_principale, intervencion_recomendada:\n- Complejidad: simplificar régimen, SPD (sistema personalizado di dosificazione)\n- Olvido: app recordatorio, blíster settimanal\n- Efectos secundarios: revisar con medico, ajustar dosis\n- Coste: soliappuntamentor genérico, revisar copago\nUsa CORTEX.COMPLETE per personalizzare messaggio."
+      },
+      {
+        "title": "Dashboard di aderenza",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Lista di pazienti per rischio di non aderenza\n2. Perfil di aderenza individuale: MPR, gaps, tendenza\n3. Intervenzioni recomendadas per paziente\n4. Metriche: aderenza global, per patologia, impatto interventi\n5. Correlazione: aderenza vs ricoveri e pronto soccorso\n6. Top fármacos con peggiore aderenza"
+      },
+      {
+        "title": "Pipeline di monitoraggio",
+        "desc": "Automatizar rilevamento.",
+        "prompt": "Crea Tasks:\n1. ACTUALIZAR_DISPENSACIONES: settimanal da farmacia\n2. SCORING_ADHERENCIA: mensile, recalcula rischio\n3. GENERAR_INTERVENCIONES: mensile, genera raccomandazioni\n4. EVALUAR_IMPACTO: trimestrale, mide efecto di interventi\n5. Documenta. Objetivo: ridurre ospedaleizazioni per non aderenza 20%."
+      }
+    ]
+  },
+  "UC16": {
+    "title": "Rilevamento Precoce della Sepsi con ML in Tempo Reale",
+    "intro": "Sistema ML di rilevamento precoce di sepsis che analizza constdavanti as e analitiche in tempo reale per alertar 4-12 ore prima di i criterios clásicos.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per sepsis.",
+        "prompt": "Crea la base di dati SALUD_SEPSIS_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di rilevamento precoce di sepsis con ML."
+      },
+      {
+        "title": "Creare dati di constdavanti as vitales",
+        "desc": "Monitoraggio horaria di pazienti.",
+        "prompt": "Crea la tabella CONSTANTES_VITALES con: patient_id, fecha_hora TIMESTAMP, temperatura_c FLOAT, frequenza_cardiaca INT, frequenza_respiratoria INT, tas_mmhg INT, tad_mmhg INT, spo2_pct FLOAT, nivel_consciencia (Alerta, Verbal, Dolor, No_Responde). Genera dati horarios per 10,000 pazienti × 1 anno. Il 3% desarrolla sepsis con patrón progresivo 12-24h davanti as: taquicardia→fiebre→hipotensione."
+      },
+      {
+        "title": "Creare dati di analitiche",
+        "desc": "Resultados dellaboratorio rilevanti.",
+        "prompt": "Crea la tabella ANALITICAS_SEPSIS con: patient_id, fecha_hora TIMESTAMP, leucocitos FLOAT, neutrofilos_pct FLOAT, pcr FLOAT, procalcitonina FLOAT, lactato FLOAT, plaquetas FLOAT, creatinina FLOAT, bilirrubina FLOAT, inr FLOAT. Genera analitiche ogni 6-12h per pazienti ingresados. En sepsis: leucocitos e PCR suben 6-12h prima di diagnosi clinico."
+      },
+      {
+        "title": "Calcular features di sepsis",
+        "desc": "Indicadores di alarma precoce.",
+        "prompt": "Crea vista FEATURES_SEPSIS che per paziente e hora calcule:\n- Constdavanti as: qSOFA_score, SIRS_criterios, NEWS_score\n- Tendencia: variacion_FC_4h, variacion_TA_4h, variacion_temperatura_4h\n- Laboratorio: leucocitos_vs_baseline, pcr_tendenza, lactato_tendenza\n- Contexto: post_quirurgico BOOLEAN, tiene_cateter, inmunodeprimido, età\n- Compuesto: score_alerta_precoz (combinazione ponderada)"
+      },
+      {
+        "title": "Entrenar modello di rilevamento",
+        "desc": "ML.CLASSIFICATION per sepsis precoce.",
+        "prompt": "Usa ML.CLASSIFICATION per classificare: senza_rischio, vigilancia, sospecha_sepsis, sepsis_probable. Variabili: tutte le features. Objetivo: rilevare sepsis 4-12h prima di diagnosi clinico. Evalúa AUC >0.82, sensibilidad >80%, especificidad >85%."
+      },
+      {
+        "title": "Configurar alert di Código Sepsis",
+        "desc": "Integrar con protocollo ospedaleario.",
+        "prompt": "Crea vista ALERTAS_SEPSIS con: patient_id, fecha_hora, livello (Vigilancia, Sospecha, Código_Sepsis), score, fattori_principalei, recomendacion (repetir analitica, hemocultivos, iniciar antibiótico empírico, valorear UCI). Para Código_Sepsis: generaree bundle di azioni con CORTEX.COMPLETE."
+      },
+      {
+        "title": "Dashboard di sepsis",
+        "desc": "Streamlit di alerta.",
+        "prompt": "Genera codice Streamlit con:\n1. Panel di pazienti con scoring di sepsis in tempo reale\n2. Timeline di evoluzione di constdavanti as e analitiche\n3. Alert activas con bundle di azioni recomendado\n4. Metriche: sensibilidad, especificidad, tempo di anticipazione\n5. Mortalidad: con alerta precoz vs senza alerta\n6. Analisi di falsos positivos per ajuste"
+      },
+      {
+        "title": "Pipeline di rilevamento",
+        "desc": "Automatizar alert.",
+        "prompt": "Crea Tasks:\n1. INGESTAR_CONSTANTES: ogni hora da monitores\n2. INGESTAR_ANALITICAS: con ogni risultato dellaboratorio\n3. SCORING_SEPSIS: ogni 2 ore il suo pazienti ingresados\n4. ALERTAR_CODIGO: inmediato si score > umbral\n5. Documenta. Objetivo: rilevare 80% sepsis con 4-12h anticipazione, mortalidad -15%."
+      }
+    ]
+  },
+  "UC17": {
+    "title": "Personalizzazione dei Piani di Dimissione e Follow-up",
+    "intro": "Motore di personalizzazione di planes di dimissione che adapta instruczioni al paziente, programa monitoraggio proactivo e coordina cuidados post-dimissione.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per gestione post-dimissione.",
+        "prompt": "Crea la base di dati SALUD_POST_ALTA_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di personalizzazione di planes di dimissione."
+      },
+      {
+        "title": "Creare dati di report di dimissione",
+        "desc": "Generar report tipo.",
+        "prompt": "Crea la tabella INFORMES_ALTA con: episodio_id, patient_id, fecha_dimissione DATE, servizio, diagnostico_principale, diagnosticos_secundarios TEXT, trattamento_al_dimissione TEXT, raccomandazioni TEXT, signos_alarma TEXT, monitoraggio TEXT, medico_responsable. Genera 20,000 report con lenguaje medico tecnico."
+      },
+      {
+        "title": "Creare profili di paziente",
+        "desc": "Factores di comprensione e autonomía.",
+        "prompt": "Crea la tabella PERFIL_COMPRENSION con: patient_id, età INT, idioma_principale (Castellano, Catalan, Arabe, Rumano, Chino), nivel_educativo (Primaria, Secundaria, Superior), alfabetizacion_sanitaria (Alta, Media, Baja), deterioro_cognitivo BOOLEAN, vive_solo BOOLEAN, cuidador_principale, tiene_movil_smartphone BOOLEAN. Genera profili per i 20,000 pazienti."
+      },
+      {
+        "title": "Simplificar report di dimissione",
+        "desc": "LLM per lenguaje accesible.",
+        "prompt": "Crea funzione SIMPLIFICAR_ALTA(episodio_id) che use CORTEX.COMPLETE per generaree versione simplifiogni del report:\n- Adaptar al livello di alfabetizazione sanitaria del paziente\n- Traducir terminología medica a lenguaje cotidiano\n- Resdimissioner: terapia farmacologica nueva, signos di alarma, quando volver a pronto soccorso\n- Si idioma ≠ castellano: generaree resumen bilingüe\nDimostra con 3 profili diversi."
+      },
+      {
+        "title": "Programar monitoraggio proactivo",
+        "desc": "Coordinar cuidados post-dimissione.",
+        "prompt": "Crea vista PLAN_SEGUIMIENTO_ALTA che per episodio genere: appuntamento_premioria_sugerida (entro 72h-7d secondo rischio), chiamata_enfermeria (24-48h si alto rischio), appuntamento_especialista, analitica_control, terapia farmacologica_a_recoger. Priorizar per rischio di riammissione (UC01). Generar comunicazione a centro di salud con resumen."
+      },
+      {
+        "title": "Generar recordatorios",
+        "desc": "Mensajes personalizados post-dimissione.",
+        "prompt": "Crea funzione RECORDATORIOS_POST_ALTA(patient_id) che genere secuencia di messaggios: día 1 (terapia farmacologica + signos alarma), día 3 (appuntamento premioria + terapia farmacologica), día 7 (monitoraggio + dudas), día 14 (revisione). Adaptar canal: SMS si non smartphone, app si smartphone, chiamata si deterioro cognitivo."
+      },
+      {
+        "title": "Dashboard post-dimissione",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Lista di pazienti dados di dimissione con plan personalizado\n2. Informe simplificado per paziente seleccionado\n3. Seguimiento: appuntamenti programmatas, confirmadas, realizadas\n4. Metriche: comprensione, asistencia a monitoraggio, recogida terapia farmacologica\n5. Impacto: riammissioni con vs senza plan personalizado\n6. Coordinazione con premioria: report enviados e confirmados"
+      },
+      {
+        "title": "Pipeline post-dimissione",
+        "desc": "Automatizar gestione.",
+        "prompt": "Crea Tasks:\n1. GENERAR_PLAN: con ogni dimissione, genera plan personalizado\n2. SIMPLIFICAR_INFORME: con ogni dimissione\n3. COORDINAR_PRIMARIA: giornaliero, envía report a centri di salud\n4. ENVIAR_RECORDATORIOS: secondo calendario di ogni paziente\n5. Documenta. Objetivo: comprensione 85%, monitoraggio 88%, riammissione -20%."
+      }
+    ]
+  },
+  "UC18": {
+    "title": "Rilevamento degli Eventi Avversi e Sicurezza del Paziente",
+    "intro": "Pipeline ML di rilevamento automatica di eventi adversos che analizza molteplici fonti cliniche per identificare incidentes in tempo casi reale.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per sicurezza.",
+        "prompt": "Crea la base di dati SALUD_SEGURIDAD_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di rilevamento di eventi adversos."
+      },
+      {
+        "title": "Creare dati clinici multimodal",
+        "desc": "Notas, terapia farmacologica e constdavanti as.",
+        "prompt": "Crea le tabellas:\n1. NOTAS_ENFERMERIA con: patient_id, fecha_hora TIMESTAMP, tipo_nota (Evolucion, Incidencia, Turno, Movilidad), texto TEXT\n2. ADMINISTRACION_MEDICACION con: patient_id, fecha_hora, farmaco, dosis, via, administrado_por, incidencia BOOLEAN, tipo_incidencia\n3. EVENTOS_REPORTADOS con: evento_id, patient_id, fecha, tipo (Caida, Infeccion, Error_Medicacion, UPP, Complicacion_Quirurgica), severidad, reportado_voluntariamente BOOLEAN\nGenera dati per 10,000 pazienti × 1 anno. Solo 15% di eventi si reportan voluntariamente."
+      },
+      {
+        "title": "Rilevare eventi in testo libero",
+        "desc": "NLP il suo note cliniche.",
+        "prompt": "Crea vista EVENTOS_DETECTADOS_NLP che use CORTEX.COMPLETE per analizzare NOTAS_ENFERMERIA e identificare: caídas mencionadas ('se ha caído', 'encontrodo in il suelo'), infeczioni ('fiebre', 'herida infectada', 'supurazione'), errori di terapia farmacologica ('medicamento equivocado', 'dosis incorrecta'), dolor non controllato. Comper con EVENTOS_REPORTADOS per identificare sub-reporte."
+      },
+      {
+        "title": "Rilevare eventi in dati strutturados",
+        "desc": "ML.CLASSIFICATION il suo analitiche e constdavanti as.",
+        "prompt": "Usa ML.CLASSIFICATION per rilevare: infeczione nosocomial (leucocitos↑ + fiebre post-48h ricovero), sangrado post-quirúrgico (hemoglobina↓ post-chirurgia), deterioro renal (creatinina↑ in paziente con fármacos nefrotóxicos). Clasificar: evento_probable, posible, descartado."
+      },
+      {
+        "title": "Correlacionar e priorizar",
+        "desc": "Unificar deteczioni e priorizar.",
+        "prompt": "Crea vista EVENTOS_ADVERSOS_CONSOLIDADOS che unifique deteczioni di NLP e dati strutturados: evento_id, patient_id, tipo, fonte_deteccion, severidad, confianza, fattori_contribuyentes, accion_recomendada. Priorizar per severidad × confianza."
+      },
+      {
+        "title": "Analisi di causas raíz",
+        "desc": "LLM per investigar causas.",
+        "prompt": "Crea funzione ANALISIS_CAUSA_RAIZ(evento_id) che use CORTEX.COMPLETE per generaree analisi: cronología del evento, fattori contribuyentes (sistema, persona, comunicazione, apparecchiatura), cadena causal, raccomandazioni di miglioramento, precedentes similees (Cortex Search). Formato compatible con SiNASP."
+      },
+      {
+        "title": "Dashboard di sicurezza",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Feed di eventi adversos rilevados con severidad\n2. Analisi di causas raíz per evento seleccionado\n3. Metriche: eventi per tipo, severidad, servizio, tendenza\n4. Sub-reporte: eventi rilevados vs reportados voluntariamente\n5. Factores contribuyentes più frecuentes\n6. Aczioni di miglioramento implementadas e il suo impatto"
+      },
+      {
+        "title": "Pipeline di rilevamento",
+        "desc": "Automatizar vigilancia.",
+        "prompt": "Crea Tasks:\n1. ANALIZAR_NOTAS: ogni 4 ore, NLP il suo nuevas note\n2. DETECTAR_ESTRUCTURADOS: ogni 6 ore il suo analitiche\n3. CONSOLIDAR_EVENTOS: giornaliero, unifica e prioriza\n4. GENERAR_ALERTAS: inmediato per centinela\n5. Documenta. Objetivo: rilevare 70% eventi, ridurre tempo rilevamento a ore."
+      }
+    ]
+  },
+  "UC19": {
+    "title": "Previsione del Deterioramento Funzionale nei Pazienti Geriatrici",
+    "intro": "Modelo preteittivo di deterioro funcional che identifica pazienti geriátricos a rischio per attivare intervento precoz multidisciplinar.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per geriatría.",
+        "prompt": "Crea la base di dati SALUD_GERIATRIA_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di previsione di deterioro funcional geriátrico."
+      },
+      {
+        "title": "Creare valutazione geriátrica",
+        "desc": "Dati di escale funcionales.",
+        "prompt": "Crea la tabella VALORACION_GERIATRICA con: patient_id, fecha DATE, momento (Ingreso, Dia3, Dia7, Alta), barthel_totale INT, barthel_alimentacion INT, barthel_bano INT, barthel_vestido INT, barthel_movilidad INT, lawton INT, mna_score FLOAT, mmse INT, pfeiffer_errori INT, gds_depresion INT, tinetti_marcha INT, escala_fragilidad INT. Genera valoreazioni per 8,000 pazienti geriátricos (>70 anni) × 2 anni."
+      },
+      {
+        "title": "Creare dati complementarios",
+        "desc": "Medicazione, movilidad e nutrizione.",
+        "prompt": "Crea la tabella DATOS_COMPLEMENTARIOS_GERIATRIA con: patient_id, fecha DATE, num_farmacos INT, psicaltropos BOOLEAN, anticolinergicos BOOLEAN, albumina FLOAT, ingesta_calorica_pct FLOAT, deambulacion (Independiente, Con_Ayuda, Silla_Ruedas, Enposto lettodo), sujeccion_mecanica BOOLEAN, delirium BOOLEAN, dolor_eva INT, ore_movilizacion FLOAT. Generar dati giornalieros durdavanti a ricovero. Il 35% di >70 anni perde ≥10 puntos di Barthil durdavanti a ricovero."
+      },
+      {
+        "title": "Calcular features di rischio",
+        "desc": "Indicadores di deterioro.",
+        "prompt": "Crea vista FEATURES_DETERIORO_FUNCIONAL che per paziente calcule:\n- Funcional: barthel_ricovero, barthel_previo_estimado, delta_barthel, tendenza_barthel\n- Nutrizione: mna_score, albumina, ingesta, peso_perdido_pct\n- Cognizione: mmse, pfeiffer, delirium_activo\n- Movilidad: ore_movilizacion_dia, tinetti, caidas_previas\n- Farmacológico: num_farmacos, psicaltropos, anticolinergicos\n- Clínico: charlson, degenza_attuale, tipo_ricovero, dolor_medio"
+      },
+      {
+        "title": "Entrenar modello preteittivo",
+        "desc": "ML.CLASSIFICATION per deterioro.",
+        "prompt": "Usa ML.CLASSIFICATION per prevedere deterioro_funcional_al_dimissione: senza_deterioro, deterioro_leve (-5 a -10 Barthel), deterioro_moderato (-10 a -20), deterioro_grave (>-20). Variabili: features al ricovero + día 3. Evalúa accurace e recall. Il modello debe rilevare >75% di deterioro grave in <48h."
+      },
+      {
+        "title": "Generar plan di intervento precoz",
+        "desc": "Aczioni multidisciplinares.",
+        "prompt": "Crea vista PLAN_INTERVENCION_GERIATRICA che per paziente a rischio genere:\n- Movilidad: prescrizione di fisioterapia, ore/día obiettivo, deambulazione precoz\n- Nutrizione: suplementos, valutazione nutricional, adaptazione dieta\n- Cognizione: estimulazione, reorientazione, prevenzione delirium\n- Farmacología: revisione di psicaltropos e anticolinérgicos\n- Social: valutazione trabajo sociale, pianificazione dimissione\nUsa CORTEX.COMPLETE per personalizzare per profilo."
+      },
+      {
+        "title": "Dashboard geriátrico",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Lista di pazienti geriátricos con scoring di rischio\n2. Trayectoria funcional durdavanti a ricovero (Barthil temporal)\n3. Plan di intervento multidisciplinar\n4. Metriche: deterioro al dimissione, degenza, destino al dimissione\n5. Impacto di intervento precoz vs sonodar\n6. Distribuzione per tipo e severidad di deterioro"
+      },
+      {
+        "title": "Pipeline geriátrico",
+        "desc": "Automatizar vigilancia.",
+        "prompt": "Crea Tasks:\n1. VALORAR_INGRESO: con ogni ricovero di >70 anni\n2. SCORING_DIA3: a le 72h del ricovero\n3. ACTIVAR_INTERVENCION: automatico si alto rischio\n4. SEGUIMIENTO_FUNCIONAL: settimanal durdavanti a ricovero\n5. Documenta. Objetivo: rilevare 75% deterioro in <48h, ridurre deterioro 25%."
+      }
+    ]
+  },
+  "UC20": {
+    "title": "Anonimizzazione Intelligente dei Dati Clinici per la Ricerca",
+    "intro": "Pipeline di anonimizazione che aplica tecnicas avanzatas il suo datasets clinici pprenotazionendo utilidad estadística per investigazione.",
+    "steps": [
+      {
+        "title": "Configurar ambiente",
+        "desc": "Creare base di dati per anonimizazione.",
+        "prompt": "Crea la base di dati SALUD_ANONIMIZACION_DB con schema ANALYTICS e warehouse SALUD_WH. Comentarios del progetto di anonimizazione intelligente di dati clinici."
+      },
+      {
+        "title": "Creare dataset clinico di esempio",
+        "desc": "Dati per anonimizar.",
+        "prompt": "Cra la tabella DATASET_CLINICO_ORIGINAL con: patient_id, nombre_hash, fecha_nacimiento DATE, codigo_postal, genero, diagnostico_cie10, diagnostico_texto TEXT, medicacion TEXT, analiticas_json TEXT, fechas_episodios TEXT, report_dimissione TEXT. Genera 20,000 registros con dati realistas includendo enfermedades raras (<1:10,000), combinazioni únicas di diagnosi, e testo libero con nombres e referencias identificativas."
+      },
+      {
+        "title": "Rilevare identificadores in testo libero",
+        "desc": "NLP per localizar PII.",
+        "prompt": "Crea funzione DETECTAR_PII(texto) che use CORTEX.COMPLETE per identificare in texto clinico libre: nombres propios, DNI/NIE, teléfonos, direczioni, nombres di profesionales, nombres di familiares, números di cartella clinica, referencias a centri specificos. Retorna: texto con PII marcado, lista di entidades rilevadas, confianza. Dimostra il suo 10 report di dimissione."
+      },
+      {
+        "title": "Aplicar k-anonimato",
+        "desc": "Generalizazione di cuasi-identificadores.",
+        "prompt": "Crea funzione ANONIMIZAR_ESTRUCTURADO(dataset, k_minimo) che aplique:\n- Edad: generalizar a grupos di 5 anni (70-74, 75-79...)\n- Código postal: truncar a 3 dígitos\n- Diagnósticos raros: generalizar a categoría CIE-10 padre\n- Fechas: desplazar ±30 giorni mdavanti aniendo intervalos\n- Medicazione: mdavanti aner principio activo, eliminar dosis si única\nVerificar k-anonimato: ogni combinazione di cuasi-identificadores aparece ≥k veces."
+      },
+      {
+        "title": "Evaluar rischio di re-identificazione",
+        "desc": "Metriche di privacidad.",
+        "prompt": "Crea funzione EVALUAR_RIESGO(dataset_anonimizado) che calcule:\n- k_minimo_raggiungedo: minore grupo di equivalencia\n- registros_unicos_pct: porcentaje di registros únicos\n- diversidad_l: diversidad di atributos sensibles per grupo\n- rischio_prosecutor: probabilità di re-identificazione per atacdavanti a\n- utilidad_pprenotazioneda_pct: correlazioni mdavanti anidas vs original\nDimostra con il dataset anonimizado."
+      },
+      {
+        "title": "Enmascarar testo libero",
+        "desc": "Eliminar PII di report.",
+        "prompt": "Crea funzione ANONIMIZAR_TEXTO(texto) che use CORTEX.COMPLETE per: reemplazar nombres per [PACIENTE], [FAMILIAR], [MEDICO]; reemplazar DNI per [DNI]; reemplazar direczioni per [DIRECCION]; mdavanti aner informazione clinica intacta. Validar che il texto anonimizado mantiene utilidad clinica."
+      },
+      {
+        "title": "Dashboard di anonimizazione",
+        "desc": "Streamlit di gestione.",
+        "prompt": "Genera codice Streamlit con:\n1. Configurador di política di anonimizazione (k, tecnicas)\n2. Visualizazione davanti as/dopo anonimizazione\n3. Metriche: k raggiungedo, rischio, utilidad pprenotazioneda\n4. Rilevamento di PII in testo libero con resdimissionedo\n5. Informe di conformidad RGPD per comité ético\n6. Generazione di dataset anonimizado per descarga"
+      },
+      {
+        "title": "Pipeline di anonimizazione",
+        "desc": "Automatizar processo.",
+        "prompt": "Crea Tasks:\n1. DETECTAR_PII: il suo nuevos documentos\n2. ANONIMIZAR_ESTRUCTURADO: bajo domanda, aplica k-anonimato\n3. ANONIMIZAR_TEXTO: bajo domanda, enmascara report\n4. EVALUAR_RIESGO: dopo ogni anonimizazione\n5. Documenta. Objetivo: k≥5, utilidad >90%, conformità RGPD stringente."
+      }
+    ]
+  }
+});
+
+function verGuia(ucId) {
+  var g = GUIAS[ucId];
+  if (!g) return;
+  var html = '<span class="guide-badge">' + ucId + '</span>';
+  html += '<h2>' + g.title + '</h2>';
+  html += '<h3>Contesto</h3><p>' + g.contesto + '</p>';
+  html += '<h3>Focus del caso d&apos;uso</h3><p>' + g.focus + '</p>';
+  html += '<h3>Sfida</h3><p>' + g.reto + '</p>';
+  html += '<h3>Obiettivi di apprendimento</h3><ul>' + g.obiettivi.map(function(o){return '<li>' + o + '</li>';}).join('') + '</ul>';
+  html += '<h3>Funzionalità principali</h3><ul>' + g.funzionalità.map(function(f){return '<li>' + f + '</li>';}).join('') + '</ul>';
+  html += '<h3>Dati utilizzati</h3><ul>' + g.dati.map(function(d){return '<li>' + d + '</li>';}).join('') + '</ul>';
+  html += '<h3>Estratificazione e segmentazione</h3><ul>' + g.stratificazione.map(function(e){return '<li>' + e + '</li>';}).join('') + '</ul>';
+  html += '<h3>Come usare questo caso d&apos;uso</h3><ul>' + g.como_usar.map(function(c){return '<li>' + c + '</li>';}).join('') + '</ul>';
+  html += '<div class="guide-footer">Tempo di configurazione stimato: vedi la scheda del caso d&apos;uso</div>';
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function verPrompts(ucId) {
+  var data = PROMPTS[ucId];
+  if (!data) return;
+  var esc = function(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+  var html = '<span class="guide-badge">' + ucId + '</span>';
+  html += '<h2>' + data.title + '</h2>';
+  html += '<p class="prompt-intro">' + data.intro + '</p>';
+  data.steps.forEach(function(step, i) {
+    html += '<div class="prompt-step">';
+    html += '<div class="prompt-step-header"><span class="prompt-step-num">' + (i+1) + '</span><span class="prompt-step-title">' + step.title + '</span></div>';
+    html += '<p class="prompt-step-desc">' + step.desc + '</p>';
+    html += '<div class="prompt-code"><button class="copy-btn" onclick="copiarPrompt(this)">Copia</button>' + esc(step.prompt) + '</div>';
+    html += '</div>';
+  });
+  html += '<div class="guide-footer">Esegui i prompt in sequenza in Cortex Code</div>';
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function copiarPrompt(btn) {
+  var code = btn.parentElement.textContent.replace('Copia','').trim();
+  navigator.clipboard.writeText(code).then(function(){btn.textContent='\u2713 Copiato';setTimeout(function(){btn.textContent='Copia';},1500);});
+}
+
+function cerrarModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+
+</script>
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)cerrarModal();">
+  <div class="modal-box">
+    <button class="modal-close" onclick="cerrarModal()">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+</body>
+</html>
