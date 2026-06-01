@@ -509,7 +509,7 @@
     <button class="filter-btn" data-filter="nlp">IA e Linguaggio Naturale (3)</button>
     <button class="filter-btn" data-filter="sinistri">Gestione Sinistri (2)</button>
     <button class="filter-btn" data-filter="callcenter">Call Center IA (5)</button>
-    <button class="filter-btn" data-filter="asistentes">Assistenti IA (7)</button>
+    <button class="filter-btn" data-filter="asistentes">Assistente AI (7)</button>
     <button class="filter-btn" data-filter="comercial">Commerciale e Rete (2)</button>
     <button class="filter-btn" data-filter="operazioni">Operazioni (5)</button>
     <button class="filter-btn" data-filter="pricing">Pricing e Sottoscrizione (5)</button>
@@ -518,12 +518,12 @@
     <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round">
       <circle cx="9" cy="9" r="7"/><line x1="15" y1="15" x2="19" y2="19"/>
     </svg>
-    <input id="searchInput" type="text" placeholder="Buscar casi d'uso…" />
+    <input id="searchInput" type="text" placeholder="Cerca casi d'uso…" />
   </div>
 </div>
 
 <!-- ── RESULTS COUNT ─────────────────────────────────────── -->
-<div class="results-count" id="resultsCount">Mostrando 36 de 36 casi d'uso</div>
+<div class="results-count" id="resultsCount">Visualizzo 36 di 36 casi d'uso</div>
 
 <!-- ── CARDS ─────────────────────────────────────────────── -->
 <main class="cards-grid" id="cardsGrid"></main>
@@ -534,63 +534,63 @@ const USE_CASES = [
     id:"UC01", cat:"frode", catLabel:"Rilevamento Frodi", time:"12 min",
     title:"Punteggio Frode nei Sinistri",
     pain:"Miliardi vengono persi annualmente per sinistri fraudolenti. La revisione manuale rileva meno del 30% della frode prima di effettuare il pagamento.",
-    desc:"Punteggio ML di frode in tempo reale al registrare il sinistro, usando rilevamento anomalie e analisi di grafos di rete. Marca reclami sospechosas per revisione prima del pago, riducendo perdite per frode fino a un 40%.",
+    desc:"Punteggio ML di frode in tempo reale al registrare il sinistro, usando rilevamento anomalie e analisi di grafo di rete. Marca reclami sospetti per revisione prima del pagamento, riducendo perdite per frode fino a un 40%.",
     feature:["Modelli di rilevamento anomalie","Analisi di rete dei vincoli","Punteggio in tempo reale al FNOL","Integrazione alert al perito"]
   },
   {
     id:"UC02", cat:"frode", catLabel:"Rilevamento Frodi", time:"10 min",
     title:"Rilevamento Incidenti Simulati",
     pain:"Gli incidenti stradali simulati sono difficili da identificaree manualmente. Le reti di frode organizzata sfruttano le inconsistenze tra molteplici sinistri.",
-    desc:"Rilevamento di pattern con Cortex ML il suo atributos del sinistro, officine di reperzione, fornitori medicos e redes di contraenti per identificaree tramas di frode coordinado con alta precisión.",
+    desc:"Rilevamento di pattern con Cortex ML sugli attributi del sinistro, officine di riparazione, fornitori medici e rete di contraenti per identificare percorsi di frode con elevata confidenza.",
     feature:["Algoritmi di rilevamento delle trame","Analisi di rete dei fornitori","Incrocio di pattern tra sinistri","Automazione derivazione a investigazione"]
   },
   {
     id:"UC03", cat:"frode", catLabel:"Rilevamento Frodi", time:"11 min",
     title:"Frode nelle Richieste e Identità",
     pain:"Le richieste di polizza fraudolente utilizzano identità sintetiche. Le perdite si accumulano prima di essere rilevate al momento del sinistro.",
-    desc:"Punteggio di verifica di identità al momento di assunzione combinando segnali comportamentali, validazione di documenti e dati di terzos per rilevare identità sintetiche nella richiesta.",
+    desc:"Punteggio di verifica di identità al momento dell'apertura del sinistro, combinando segnali comportamentali, validazione di documenti e dati di terzi per rilevare identità sintetiche nella richiesta.",
     feature:["Punteggio di identità sintetica","Validazione di coerenza documentale","Analisi di segnali comportamentali","Marcatura di rischio in assunzione"]
   },
   {
     id:"UC04", cat:"rischio", catLabel:"Rischio e Sottoscrizione", time:"14 min",
     title:"Scoring Dinamico del Rischio Auto",
-    pain:"Le regole estáticas di sottoscrizione trascurano segnali di rischio sfumati. I concorrenti che usano ML tariffano con maggiore precisione e provocano selezione avversa.",
-    desc:"Punteggio di rischio in tempo reale con Cortex ML il suo segnali telematiche, del veicolo, demográficas e comportamentali. Permette ajustes di tariffazione a livello di segmento al momento della quotazione.",
-    feature:["Modelli ML con Cortex","Integrazione segnali telematici","Raccomandazioni di tariffazione per segmento","Framework di test A/B dei prezzi"]
+    pain:"Le regole statiche di sottoscrizione trascurano segnali di rischio sfumati. I concorrenti che usano ML tariffano con maggiore precisione e provocano selezione avversa.",
+    desc:"Punteggio di rischio in tempo reale con Cortex ML con telemetria del veicolo, demografica e comportamentale. Permette aggiustamenti tariffari a livello di segmento al momento della quotazione.",
+    feature:["Modelli ML con Cortex","Integrazione segnali di telemetria","Raccomandazioni di tariffazione per segmento","Framework di test A/B dei prezzi"]
   },
   {
     id:"UC05", cat:"rischio", catLabel:"Rischio e Sottoscrizione", time:"15 min",
     title:"Analisi dell\'Esposizione alle Catastrofi",
-    pain:"L\'esposizione a eventi CAT non è visibile in tempo reale. Il rischio di concentrazione si identifica solo dopo che si verificano i eventi, limitando le decisioni di riassicurazione.",
-    desc:"Analítica geospaziale in Snowflake che combina ubicazioni di polizzas con dati meteorológicos, di inundazione e sísmicos per calcolare la esposizione CAT in tempo reale per zona e tramo di riassicurazione.",
-    feature:["Aggregazione geospaziale del rischio","Dashboard di esposizione in tempo reale","Allineamento con trattati di riassicurazione","Modellizzazione di scenari multi-rischio"]
+    pain:"L\'esposizione a eventi catastrofici non è visibile in tempo reale. Il rischio di concentrazione si identifica solo dopo che si verificano i eventi, limitando le decisioni di riassicurazione.",
+    desc:"Analítica geospaziale in Snowflake che combina ubicazioni di polizzas con dati meteorologici, di inondazione e sismici per calcolare la esposizione CAT in tempo reale per zona e premio di riassicurazione.",
+    feature:["Aggregazione geospaziale del rischio","Dashboard di esposizione in tempo reale","Allineamento con polizze di riassicurazione","Modellizzazione di scenari multi-rischio"]
   },
   {
     id:"UC06", cat:"rischio", catLabel:"Rischio e Sottoscrizione", time:"13 min",
     title:"Previsione Abbandono al Rinnovo",
-    pain:"Tral 20-30% delle polizze scade annualmente. Non esistono segnali proattivi per identificaree contraenti a rischio prima della data di rinnovo.",
-    desc:"Analisi di supervivencia e modeli ML di abandono sul comportamento del contraente, storico di pagos e dati di interazione. Predice la non rinnovo con 90 giorni di antelazione per attivare campagnas di fidelizzazione.",
-    feature:["Modelli di analisi di sopravvivenza","Previsione di fuga a 90 giorni","Attivazione di campagne di fidelizzazione","Dashboard alert per agenti"]
+    pain:"Tra il 20% ed il 30% delle polizze scade annualmente. Non esistono segnali proattivi per identificaree contraenti a rischio prima della data di rinnovo.",
+    desc:"Analisi di sopravvivenza polizza e modeli ML di abandono sul comportamento del contraente, storico dei pagamenti e dati di interazione. Predice il non rinnovo con 90 giorni di anticipo per attivare campagna di fidelizzazione.",
+    feature:["Modelli di analisi di rinnovo","Previsione di fuga a 90 giorni","Attivazione di campagne di fidelizzazione","Dashboard alert per agenti"]
   },
   {
     id:"UC07", cat:"rischio", catLabel:"Rischio e Sottoscrizione", time:"12 min",
-    title:"Segmentazione del Rischio Telematico",
-    pain:"I prodotti pay-per-use utilizzano punteggi di base. I vasti dati telematici sono sottoutilizzati per una differenziazione granulare del rischio e la personaleizzazione.",
-    desc:"Clustering non supervisionato il suo características del comportamento di guida per creare segmentos di rischio granulares per tariffazione dinamica, feedback personaleizado e seguros di uso.",
+    title:"Segmentazione del Rischio",
+    pain:"I prodotti pay-per-use utilizzano punteggi di base. I vasti dati telemetrici sono sotto utilizzati per una differenziazione granulare del rischio e la personalizzazione.",
+    desc:"Clustering non supervisionato analizzando le característiche ed il comportamento di guida per creare segmenti di rischio granulari per tariffazione dinamica, feedback personalizzato per una guida in sicurezza.",
     feature:["Clustering di comportamento alla guida","Profilazione dei segmenti di rischio","Segnali di tariffazione dinamica","Alimentazione app di coaching al conducente"]
   },
   {
     id:"UC08", cat:"nlp", catLabel:"IA e Linguaggio Naturale", time:"10 min",
     title:"Estrazione Documentale IA nei Sinistri",
-    pain:"I team sinistri estraggono manualmente dati di PDFs, informese policiales e documentazione medica. Il processo può richiedere da 3 a 5 giorni per sinistro complesso.",
-    desc:"Pipeline di inteligencia documental con Cortex AI che extrae dati strutturados di documenti di sinistri non strutturados —verbali, facturas medicas, preventivi di reperzione— riducendo il tempo di trattazione un 70%.",
+    pain:"I team sinistri estraggono manualmente dati di PDFs, rapporti della polizia e documentazione medica. Il processo può richiedere da 3 a 5 giorni per sinistro complesso.",
+    desc:"Pipeline di revisione documentale con Cortex AI che extrae dati strutturati dai documenti dei sinistri — verbali, fatture mediche, preventivi di riparazione - riducendo il tempo di gestione sinistro fino al 70%.",
     feature:["Analisi documentale con Cortex AI","Estrazione da PDF e immagini","Output strutturato al sistema sinistri","Attivazione gestione automatica"]
   },
   {
     id:"UC09", cat:"nlp", catLabel:"IA e Linguaggio Naturale", time:"11 min",
     title:"Intelligence sui Reclami dei Clienti",
-    pain:"Migliaia di reclami dei clienti vengono elaborati manualmente ogni mesee. I pattern di causa radice vengono rilevati tardi, quando è già avvenuta un\'escalation normativa.",
-    desc:"Classificazione NLP e analisi di sentiment sul testo di reclami per rilevare problemas emergentes di servizio, prioritizzare cole di resoluzione e identificaree segnali di rischio normativo in modo proattiva.",
+    pain:"Migliaia di reclami dei clienti vengono elaborati manualmente ogni mesee. I pattern delle cause primarie vengono rilevati tardi, quando è già avvenuta un\'escalation normativa.",
+    desc:"Classificazione NLP e analisi di sentiment sul testo di reclami per rilevare problemi emergenti di servizio, prioritizzare code di risoluzione e identificaree segnali di rischio normativo in modo proattivo.",
     feature:["Classificazione automatica dei reclami","Monitoraggio delle tendenze di sentiment","Indicatori di rischio normativo","Alert proattivi di escalation"]
   },
   {
@@ -603,86 +603,86 @@ const USE_CASES = [
   {
     id:"UC11", cat:"sinistri", catLabel:"Gestione Sinistri", time:"13 min",
     title:"Previsione della Gravità nei Sinistri Auto",
-    pain:"I periti stimano manualmente i costi di reperzione con alta variabilità. La sottodotazione o sovradotazione delle riserve genera rischio finanziario e cattiva esperienza di cliente.",
-    desc:"Modelli di gradient boosting che predicnella severidad del sinistro al primo avviso di sinistro usando características del veicolo, dell\'incidente e del contraente. Genera raccomandazioni di prenotazione al perito in modo instantánea.",
+    pain:"I periti stimano manualmente i costi di riparazione con alta variabilità. La sotto-stima o sovra-stima delle riserve genera rischio finanziario e cattiva esperienza del cliente.",
+    desc:"Modelli di gradient boosting che predice la riparabilità del sinistro al primo avviso usando característiche del veicolo, dell\'incidente e del contraente. Genera raccomandazioni di prenotazione al perito in modo instantaneo.",
     feature:["Previsione di severità al FNOL","Ottimizzazione delle riserve tecniche","Benchmarking con pattern storici","Dashboard Streamlit per periti"]
   },
   {
     id:"UC12", cat:"sinistri", catLabel:"Gestione Sinistri", time:"14 min",
     title:"Identificatore di Opportunità di Surrogazione",
     pain:"Le opportunità di recupero tramite surrogazione si perdono perché i terzi responsabili non vengono identificati durante la gestione. Milioni di perdite recuperabili restano senza essere riscossi.",
-    desc:"Modelo di classificazione ML che identifica candidati di alta probabilità di surrogazione al cierre del sinistro, usando indicatori di colpevolezza, informese policiales e segnali del tipo di copertura.",
+    desc:"Modelo di classificazione ML che identifica candidati di alta probabilità di surrogazione all'accadere del sinistro, usando indicatori di colpevolezza, rapporti della polizia e segnali del tipo di copertura.",
     feature:["Punteggio di probabilità di surrogazione","Estrazione dei segnali di colpevolezza","Stima dell\'importo recuperabile","Derivazione automatica al team legale"]
   },
   {
     id:"UC13", cat:"callcenter", catLabel:"Call Center IA", time:"12 min",
-    title:"Classificazione Automatica delle Chiamate",
-    pain:"Gli agenti etichettano manualmente ogni chiamata con il motivo di contatto, generando errores e inconsistencias che distorcono il reporting e il routing.",
-    desc:"Pipeline NLP con CORTEX.COMPLETE che classifica trascrizioni in 6 categorías, extrae urgencia e sentiment, e alimenta routing intelligente in tempo reale.",
+    title:"Classificazione automatica delle chiamate",
+    pain:"Gli agenti etichettano manualmente ogni chiamata con il motivo di contatto, generando errori ed inconsistenze che distorcono il reporting e il routing.",
+    desc:"Pipeline NLP con AI_COMPLETE che classifica trascrizioni in 6 categorie, extrae urgenze e analisi del sentimento, alimenta routing intelligente in tempo reale.",
     feature:["Classificazione multi-classe con LLM","Analisi del sentiment con CORTEX.SENTIMENT","Estrazione di urgenza e escalation","Dashboard di routing intelligente"]
   },
   {
     id:"UC14", cat:"callcenter", catLabel:"Call Center IA", time:"13 min",
     title:"Valutazione Automatica degli Agenti (QA)",
     pain:"Solo il 2-5% delle chiamate viene controllato manualmente, lasciando senza supervisione il 95% delle interazioni e senza feedback agli agenti.",
-    desc:"Scoring automatico di qualità usando CORTEX.COMPLETE per valutare 5 criteri (saludo, empatía, normativa, resoluzione, professionaleismo) e generare ranking degli agenti.",
+    desc:"Scoring automatico di qualità usando CORTEX.COMPLETE per valutare 5 criteri (saluto, empatia, normativa, risoluzione, professionalismo) e generare ranking degli agenti.",
     feature:["Scoring multi-criterio con IA","Parsing JSON con TRY_PARSE_JSON","Ranking agenti con drill-down","Identificazione delle necessità di coaching"]
   },
   {
     id:"UC15", cat:"callcenter", catLabel:"Call Center IA", time:"11 min",
     title:"Generazione Automatica di Riassunti",
-    pain:"Gli agenti dedicano 5-8 minuti post-chiamata a documentare note CRM e inviare emails al cliente, riducendo la loro disponibilità per gestire nuove chiamate.",
-    desc:"Pipeline di generazione di testo con CORTEX.COMPLETE che produce resúmenes strutturados, notas CRM e emails post-chiamata automaticamente.",
-    feature:["Riepiloghi strutturati in JSON","Note CRM auto-generate","Email post-chiamata personaleizzate","Dashboard della documentazione generata"]
+    pain:"Gli agenti dedicano 5-8 minuti post-chiamata a documentare note CRM e inviare e-mail al cliente, riducendo la loro disponibilità per gestire nuove chiamate.",
+    desc:"Pipeline di generazione di testo con CORTEX.COMPLETE che produce riassunti strutturati, note CRM ed e-mail post-chiamata automaticamente.",
+    feature:["Riepiloghi strutturati in JSON","Note CRM auto-generate","Email post-chiamata personalizzate","Dashboard della documentazione generata"]
   },
   {
     id:"UC16", cat:"callcenter", catLabel:"Call Center IA", time:"12 min",
     title:"Miglioramento CX in Tempo Reale",
-    pain:"I segnali di frustrazione e rischio di abbandono non vengono rilevati finché il cliente non si n\'è già andato, perdendo opportunità di fidelizzazione proattiva.",
-    desc:"Motor di alert con CORTEX.SENTIMENT che rileva frustrazione, urgencia e rischio di abbandono in tempo reale, priorizando intervenzioni di supervisores.",
+    pain:"I segnali di frustrazione e rischio di abbandono non vengono rilevati finché il cliente non se n\'è già andato, perdendo opportunità di fidelizzazione proattiva.",
+    desc:"Motor di alert con CORTEX.SENTIMENT che rileva frustrazione, urgenza e rischio di abbandono in tempo reale, priorizando interventi di supervisori.",
     feature:["Rilevamento delle emozioni con IA","Sistema di alert per priorità","Correlazione sentiment-NPS","Dashboard CX in tempo reale"]
   },
   {
     id:"UC17", cat:"callcenter", catLabel:"Call Center IA", time:"13 min",
     title:"Conformità Normativa nelle Conversazioni",
-    pain:"Gli audit di compliance sono manuali, costias e coprono meno del 3% delle chiamate, lasciando un\'esposizione normativa significativa.",
-    desc:"Auditor automatico con CORTEX.COMPLETE che valuta 6 criteri normativos (RGPD, LOSSEAR, IDD) in ogni chiamata e genera scoring di rischio normativo.",
-    feature:["Audit di 6 criteri normativi","Rilevamento di false promesie","Controllo accesso a dati di terzi","Ranking di compliance per agente"]
+    pain:"Gli audit di compliance sono manuali, controlli che coprono meno del 3% delle chiamate, lasciando un\'esposizione normativa significativa.",
+    desc:"Auditor automatico con CORTEX.COMPLETE che valuta i criteri normativi in ogni chiamata e genera scoring di rischio normativo.",
+    feature:["Audit di criteri normativi","Rilevamento di false promesse","Controllo accesso a dati di terzi","Ranking di compliance per agente"]
   },
   {
-    id:"UC18", cat:"asistentes", catLabel:"Assistenti IA", time:"14 min",
+    id:"UC18", cat:"asistentes", catLabel:"Assistente AI", time:"14 min",
     title:"Gestione dei Lead con Assistente Vocale IA",
     pain:"Il 60% dei lead telefonici si perde per tempi di attesa o agenti non disponibili. La qualificazione manuale è lenta e inconsistente, riducendo il tasso di conversione in polizza.",
-    desc:"Asistente conversacional con Cortex LLM che atiende leads entrprima per voz, cualifica la oportunidad in tempo reale (prodotto, urgencia, preventivo), agenda citas con agenti especializados e genera un resumen strutturado del lead per il CRM.",
+    desc:"Asistente conversazionale con Cortex LLM che ascolta opportunità vocali, qualifica la oportunità in tempo reale (prodotto, urgenza, preventivo), agenti specializzati che generano un sommario strutturato dell'opportunità per il CRM.",
     feature:["Qualificazione dei lead con CORTEX.COMPLETE","Estrazione di intenzione e prodotto richiesto","Scoring di propensione alla conversione con ML","Integrazione con CRM e agenda agenti"]
   },
   {
-    id:"UC19", cat:"asistentes", catLabel:"Assistenti IA", time:"13 min",
-    title:"Assistente Front per Tariffazione Intelligente",
-    pain:"I mediatori perdono 15-20 minuti per preventivo cercando tariffe, interrogazionendo manuali tecnici e compilando moduli. L\'esperienza di tariffazione è lenta e genera l\'abbandono del mediatore.",
-    desc:"Asistente conversacional RAG con Cortex Search il suo manuali di tariffazione, table dei premi e normativa interna. Il mediatore describe il rischio in linguaggio naturale e il asistente genera la quotazione con dettaglio di coperture, supplementi e sconti applicables.",
-    feature:["RAG il suo manuali di tariffazione con Cortex Search","Generazione di preventivo in linguaggio naturale","Dettaglio automatico di coperture ed esclusioni","Integrazione con motore di calcolo premi"]
+    id:"UC19", cat:"asistentes", catLabel:"Assistente AI", time:"13 min",
+    title:"Assistente per Tariffazione Intelligente",
+    pain:"I mediatori perdono 15-20 minuti per preventivo cercando tariffe, interrogazionendo manuali tecnici e compilando moduli. L\'esperienza di tariffazione è lenta e genera l\'abbandono del cliente.",
+    desc:"Asistente di conversazione RAG con Cortex Search sul suo manuale di tariffazione, tabella dei premi e normativa interna. Il mediatore descrive il rischio in linguaggio naturale e l\'asistente genera la quotazione con dettaglio di coperture, supplementi e sconti applicabili.",
+    feature:["RAG su manuali di tariffazione con Cortex Search","Generazione di preventivo in linguaggio naturale","Dettaglio automatico di coperture ed esclusioni","Integrazione con motore di calcolo premi"]
   },
   {
-    id:"UC20", cat:"asistentes", catLabel:"Assistenti IA", time:"12 min",
+    id:"UC20", cat:"asistentes", catLabel:"Assistente AI", time:"12 min",
     title:"Assistente IA per Assicurazioni Monopattini e VMP",
-    pain:"Le assicurazioni per Veicoli di Mobilità Personalee (patinetes, e-bikes) sono prodotti nuovi senza storico attuariale. Gli agenti non conoscono le coperture specifiche e la tariffazione si basal suo regole generiche inadeguate.",
-    desc:"Chatbot especializado con Cortex LLM e RAG il suo normativa di VMPs (DGT), condizioni di copertura specificas e tarifas. Responde interrogaziones dei clienti e agenti il suo coperture, esclusioni, requisitos legales e genera preventivi adaptadas al perfil di uso.",
-    feature:["Base di conoscenza normativa VMP aggiornata","RAG il suo condizioni di copertura monopattini","Generazione preventivi per profilo d\'uso","Analisi del sentiment nelle interazioni"]
+    pain:"Le assicurazioni per Veicoli di Mobilità Personale (Monopattini, e-bikes) sono prodotti nuovi senza storico contrattuale. Gli agenti non conoscono le coperture specifiche e la tariffazione si basa su regole generiche inadeguate.",
+    desc:"Chatbot specializzato con Cortex LLM e RAG sulle normative di VMPs (DGT), condizioni di copertura specifiche e tariffarie. Risponde a interrogazioni dei clienti e agenti su coperture, esclusioni, requisiti legali e genera preventivi adattati aa profili d'uso.",
+    feature:["Base di conoscenza normativa VMP aggiornata","RAG su condizioni di copertura monopattini","Generazione preventivi per profilo d\'uso","Analisi del sentiment nelle interazioni"]
   },
   {
     id:"UC21", cat:"comercial", catLabel:"Commerciale e Rete", time:"15 min",
     title:"Ottimizzazione Commerciale degli Uffici con Feature Store",
     pain:"Gli uffici e agenti operano con obiettivi generici senza visibilità delle capacità reali della propria zona. Il 40% dello sforzo commerciale è dedicato a segmenti con bassa propensione, sprecando risorse della rete.",
-    desc:"Feature Store 360 della rete comercial che centraliza metriche di rendimento, potencial di zona, mix di cartera e capacidades per ufficio. Modelli ML predicen il potencial di venta per prodotto e zona, priorizando esfuerzos comerciales dove maggiore è la propensión a contratar.",
+    desc:"Feature Store 360 della rete comerciale che centralizza metriche di rendimento, potenziale di zona, mix di portafoglio e capacità per ufficio. Modelli ML predicono il potenciale di vendita per prodotto e zona, prioritizzando gli sforzi commerciali dove maggiore è la propensione a contrarre polizze.",
     feature:["Feature Store: Entità UFFICIO con 6 FeatureView","Previsione del potenziale commerciale per zona con ML","Scoring di propensione per prodotto e segmento","Dashboard capacità e obiettivi della rete"]
   },
   {
     id:"UC22", cat:"comercial", catLabel:"Commerciale e Rete", time:"12 min",
-    title:"Optimizazione Intelligente di Gestiones Comerciales",
-    pain:"I gestori commerciali effettuano 20-30 gestioni giornaliere senza prioritizzazione basata sui dati. Le visite improduttive rappresentano il 45% dell\'attività, riducendo il tasso di chiusura.",
-    desc:"Motor di raccomandazione con Cortex ML che prioriza le gestioni giornalieras di ogni agente secondo propensión del cliente, valore esperado, proximidad geografica e momento ottimale di contacto. Genera la agenda optimizada del giorno con argumentarios personaleizados.",
-    feature:["Scoring di propensione per cliente con ML.CLASSIFICATION","Ottimizzazione del percorso e agenda giornaliera","Argomentari personaleizzati con CORTEX.COMPLETE","Dashboard di produttività commerciale"]
+    title:"Ottimizzazione Intelligente della gestione Comerciale",
+    pain:"I rappresentanti commerciali effettuano 20-30 revisioni giornaliere senza prioritizzazione basata sui dati. Le visite improduttive rappresentano il 45% dell\'attività, riducendo il tasso di chiusura.",
+    desc:"Motore di raccomandazione con Cortex ML che prioritizza le gestioni giornalieras di ogni agente secondo propensione del cliente, valore atteso, prossimità geografica e momento ottimale di contatto. Genera agende ottimizzate del giorno con argomentazioni personalizzate.",
+    feature:["Scoring di propensione per cliente con ML.CLASSIFICATION","Ottimizzazione del percorso e agenda giornaliera","Argomentari personalizzati con CORTEX.COMPLETE","Dashboard di produttività commerciale"]
   },
   {
     id:"UC23", cat:"operazioni", catLabel:"Operazioni", time:"14 min",
@@ -692,94 +692,94 @@ const USE_CASES = [
     feature:["Incrocio di dati catastali e di mercato","Stima del valore di ricostruzione con ML","Rilevamento di sottoassicurazione e sovrassicurazione","Alert di discrepanze per sottoscrittori"]
   },
   {
-    id:"UC24", cat:"asistentes", catLabel:"Assistenti IA", time:"11 min",
+    id:"UC24", cat:"asistentes", catLabel:"Assistente AI", time:"11 min",
     title:"Assistente IA per Gestione Guasti",
-    pain:"I clienti che chiamano per guasto stradale sperimentano tempi di attesa di 8-12 minuti e devono ripetere i dati molteplici volte. Il processo manuale di assegnazione del carro attrezzi richiede 15-20 minuti aggiuntivaes.",
-    desc:"Asistente conversacional con Cortex LLM che recoge i dati della guasto (ubicazione, tipo di veicolo, síntomas), diagnostica possibili causas, asignal risorsa di assistenza più cercano e general parte di assistenza automaticamente.",
+    pain:"I clienti che chiamano per guasto stradale sperimentano tempi di attesa di 8-12 minuti e devono ripetere i dati molteplici volte. Il processo manuale di assegnazione del carro attrezzi richiede 15-20 minuti aggiuntivi.",
+    desc:"Asistente conversazionale con Cortex LLM che riconosce le informazioni della guasto (ubicazione, tipo di veicolo, síntomi), diagnostica possibili cause, assegna automaticamente le risorse di assistenza più adeguate al problema riscontrato.",
     feature:["Diagnosi di guasto con CORTEX.COMPLETE","Geolocalizzazione e assegnazione della risorsa ottimale","Generazione automatica del rapporto di assistenza","Stima del tempo di arrivo con ML"]
   },
   {
-    id:"UC25", cat:"asistentes", catLabel:"Assistenti IA", time:"10 min",
+    id:"UC25", cat:"asistentes", catLabel:"Assistente AI", time:"10 min",
     title:"Assistente IA Specializzato in Batteria",
     pain:"Gli incidenti per batteria rappresentano il 35% delle assistenze stradale. La diagnosi telefonica è imprecisa e il 20% degli invii di carro attrezzi sono non necessari (si risolve con avviamento ausiliario).",
-    desc:"Asistente especializado con Cortex LLM che guía al cliente paso a paso per diagnosticar il problema di batteria, determina si può resolverse senza grúa (arranque auxiliar, pinzas) e solo escala a presenza presenzal quando è necessario, riducendo spediziones innecessarios un 30%.",
+    desc:"Asistente specializzato con Cortex LLM che guía al cliente paso paso per diagnosticare il problema di batteria, determina se si può resolverse senza carro attrezzi (avviamento ausiliario) e scala solo quando è necessario, riducendo interventi non necessari del 30%.",
     feature:["Diagnosi guidata passo a passo con LLM","Classificazione: avviamento ausiliario vs. sostituzione vs. carro attrezzi","Riduzione degli invii non necessari con ML","Follow-up post-assistenza automatizzato"]
   },
   {
-    id:"UC26", cat:"asistentes", catLabel:"Assistenti IA", time:"10 min",
+    id:"UC26", cat:"asistentes", catLabel:"Assistente AI", time:"10 min",
     title:"Assistente IA per Foratura Pneumatico",
-    pain:"Il 25% delle assistenze per foratura potrebbe risolversi con kit antipinchazos o ruota di scorta, ma i clienti non sanno come utilizzarli. L\'attesa media del carro attrezzi è di 45 minuti.",
-    desc:"Asistente guiado con Cortex LLM che identifical modello di veicolo, verifica si dispone di rueda di reruolo o kit, e guía al cliente paso a paso con instruczioni adaptadas al suo veicolo. Se non è possibile la auto-resoluzione, escala a presenza presenzal.",
-    feature:["Identificazione del veicolo e dell\'equipaggiamento","Guida passo a passo adattata al modello con LLM","Classificazione auto-risolvibile vs. carro attrezzi necessario","Metriche di risoluzione senza assistenza in loco"]
+    pain:"Il 25% delle assistenze per foratura potrebbe risolversi con kit anti foratura o ruota di scorta, ma i clienti non sanno come utilizzarli. L\'attesa media del carro attrezzi è di 45 minuti.",
+    desc:"Asistente di guida con Cortex LLM che identifica modello di veicolo, verifica se dispone di ruota di scorta o kit, e guida il cliente passo paso con istruzioni adatte al suo veicolo. Se non è possibile la auto-risoluzione, scala per intervento carro attrezzi.",
+    feature:["Identificazione del veicolo e dell\'equipaggiamento","Guida passo passo adattata al modello con LLM","Classificazione auto-risolvibile vs. carro attrezzi necessario","Metriche di risoluzione senza assistenza in loco"]
   },
   {
-    id:"UC27", cat:"asistentes", catLabel:"Assistenti IA", time:"11 min",
+    id:"UC27", cat:"asistentes", catLabel:"Assistente AI", time:"11 min",
     title:"Assistente IA per Sinistri Acqua (Abitazione)",
-    pain:"I sinistri acqua in abitazione richiedono coordinamento tra molteplici partes (assicurato, comunidad, fontanero, perito). L\'apertura del sinistro è complessa e il 30% ha dati incompleti che ritardano la gestione.",
-    desc:"Asistente conversacional con Cortex LLM especializado in sinistri acqua che recoge dati strutturados del sinistro (origen, afectazione, terzos implicados), classifica la urgencia, coordina la intervento di professionalees e general parte completo listo per tramitar.",
+    pain:"I sinistri acqua in abitazione richiedono coordinamento tra molteplici parti (assicurato, amministratore, idraulico, perito). L\'apertura del sinistro è complessa e il 30% ha dati incompleti che ritardano la gestione.",
+    desc:"Asistente conversazionale con Cortex LLM specializzato in sinistri acqua che riconosce dati strutturati del sinistro (origine, effetti, implicazione terzi), classifica le urgenze, coordina gli interventi di professionisti e general lista completa per risoluzione.",
     feature:["Raccolta guidata dei dati del sinistro acqua","Classificazione di urgenza e gravità con LLM","Coordinamento automatico dei professionisti","Generazione del rapporto completo in formato standard"]
   },
   {
     id:"UC28", cat:"operazioni", catLabel:"Operazioni", time:"15 min",
     title:"Smart Triage dei Sinistri con Model Registry",
-    pain:"Il triage manuale dei sinistri assegna lo stesso livello di priorità al 70% dei casos, generando colli di bottiglia nei gestori senior mentre i casi semplici attendono inutilmente.",
-    desc:"Motor di triaje intelligente con modeli ML versionamentos in Model Registry che classifica ogni sinistro al momento del FNOL secondo complejidad, importe estimado, probabilità di frode e necesidad di peritaje. I modeli si retranan mensilmente e si versionan automaticamente.",
+    pain:"Il triage manuale dei sinistri assegna lo stesso livello di priorità al 70% dei casi, generando colli di bottiglia nei gestori senior mentre i casi semplici attendono inutilmente.",
+    desc:"Motore di triage intelligente con modeli ML versionati in Model Registry che classifica ogni sinistro al momento del FNOL secondo complessità, importo stimato, probabilità di frode e necesità di perito. I modelli si aggiornano mensilmente e si versionano automaticamente.",
     feature:["Model Registry: smart_triage_model con versionamento","Classificazione multi-dimensionale (complessità + frode + perizia)","Assegnazione automatica al gestore secondo expertise","Riaddestramento e promozione automatica delle versioni"]
   },
   {
     id:"UC29", cat:"operazioni", catLabel:"Operazioni", time:"13 min",
     title:"Riepilogo Intelligente dei Verbali di Polizia",
-    pain:"I periti dedicano 25-40 minuti per verbale di polizia estraendo manualmente dati rilevanti (colpevolezza, lesiones, dannos, testigos). L\'inconsistenza nell\'estrazione genera errori nella valutazione.",
-    desc:"Pipeline di procesamiento documental con Cortex LLM che analizal texto completo del verbale, extrae entità clave in formato strutturado (veicolos, conducenti, lesiones, colpevolezza, croquis) e genera un resumen ejecutivo estandarizado per il gestore.",
+    pain:"I periti dedicano 25-40 minuti per verbale di polizia estraendo manualmente dati rilevanti (colpevolezza, lesioni, danni, testimoni). L\'inconsistenza nell\'estrazione genera errori nella valutazione.",
+    desc:"Pipeline di processamento documentale con Cortex LLM che analizza il testo completo del verbale, extrae entità chiave in formato strutturato (veicolo, conducenti, lesioni, colpevolezza, testimoni) e genera un riassunto esecutivo standardizzato per il gestore.",
     feature:["Estrazione di entità dai verbali con CORTEX.COMPLETE","Determinazione automatica della colpevolezza","Riepilogo esecutivo strutturato in JSON","Rilevamento di inconsistenze nelle dichiarazioni"]
   },
   {
     id:"UC30", cat:"pricing", catLabel:"Pricing e Sottoscrizione", time:"15 min",
-    title:"Sofisticazione Pricing Nuovo Business Abitazione con Feature Store",
-    pain:"La tariffazione abitazione nuovo business usa modelli GLM con 15-20 variabili statiche. I concorrenti con ML usan 80+ variabili dinamiche, generando selezione avversa sui migliori rischi.",
-    desc:"Feature Store di rischio hogar che centraliza 60+ variabili di tariffazione (catastrales, senzaiestralidad zona, clima, sociodemográficas, IoT). Modelli di pricing ML tranados sul Feature Store predicnella frequenza e severidad con maggiore precisión che i GLM traggiuntivaes.",
+    title:"Pricing Nuovo Business Abitazione con Feature Store",
+    pain:"La tariffazione abitazione per nuovo business usa modelli GLM con 15-20 variabili statiche. I concorrenti con ML usa 80+ variabili dinamiche, generando selezione avversa sui maggioni rischi.",
+    desc:"Feature Store di rischio avverso che centralizza 60+ variabili di tariffazione (catastrale, zona, clima, sociodemografica, IoT, ...). Modelli di pricing ML salvati sul Feature Store predittivi con maggiore frequenza implementando un servizio con maggiore precisione.",
     feature:["Feature Store: Entità RISCHIO_ABITAZIONE con 5 FeatureView","60+ variabili di tariffazione centralizzate","Modello ML di frequenza e severità","Confronto ML vs GLM tradizionale in dashboard"]
   },
   {
     id:"UC31", cat:"pricing", catLabel:"Pricing e Sottoscrizione", time:"14 min",
-    title:"Sofisticazione Sottoscrizione Nuovo Business Abitazione",
-    pain:"La sottoscrizione abitazione approva o rifiuta con regole binarie che non capturan la granularità del rischio. Il 15% delle polizze rifiutate sono redditizie e il 10% delle accettate genera perdite.",
-    desc:"Modelo di sottoscrizione intelligente con Cortex ML che va più allá del accept/reject: classifica ogni richiesta in 5 livelli di rischio con condizioni specificas (franchigia, esclusioni, supplementi) e genera la raccomandazione di sottoscrizione con justificazione per il sottoscrittore.",
-    feature:["Classificazione in 5 livelli di rischio con ML","Raccomandazione di condizioni personaleizzate","Giustificazione della decisione con CORTEX.COMPLETE","Dashboard di sottoscrizione con analisi di redditività"]
+    title:"Sottoscrizione Nuovo Business Abitazione",
+    pain:"La sottoscrizione abitazione approvata o rifiutata con regole binarie che non catturano la granularità del rischio. Il 15% delle polizze rifiutate sono redditizie e il 10% delle accettate genera perdite.",
+    desc:"Modelo di sottoscrizione intelligente con Cortex ML che va più in là del accetto/respingo: classifica ogni richiesta in 5 livelli di rischio con condizioni specifiche (franchigia, esclusioni, supplementi) e genera la raccomandazione di sottoscrizione con giustificazione per il sottoscrittore.",
+    feature:["Classificazione in 5 livelli di rischio con ML","Raccomandazione di condizioni personalizzate","Giustificazione della decisione con CORTEX.COMPLETE","Dashboard di sottoscrizione con analisi di redditività"]
   },
   {
     id:"UC32", cat:"pricing", catLabel:"Pricing e Sottoscrizione", time:"13 min",
     title:"Automazione Tariffazione Collettivi Salute",
-    pain:"La tariffazione dei collettivi salute è manuale, richiede 3-5 giorni per proposta e dipende da attuari senior. Le compagnie assicurative possono quotare solo 10-15 collettivi al mesee, perdendo opportunità.",
-    desc:"Pipeline automatizzato con Cortex ML che analiza la composizione del collettivo (pirámide di edad, sector, storico di senzaiestralidad), applica fattori di ajuste e genera una propuesta tarifaria competitiva in minuti, incluyendo scenari di copertura e analisi di sensibilidad.",
+    pain:"La tariffazione dei collettivi salute è manuale, richiede 3-5 giorni per proposta e dipende da mediatori senior. Le compagnie assicurative possono quotare solo 10-15 collettivi al mesee, perdendo opportunità.",
+    desc:"Pipeline automatizzata con Cortex ML che analizza la composizione del collettivo (piramide di edad, settore, storico di sinistri), applica fattori di correzione e genera una propuesta tariffaria competitiva in minuti, includendo scenari di copertura e analisi.",
     feature:["Analisi automatica della composizione del collettivo","Modello ML di sinistralità attesa per profilo","Generazione della proposta tariffaria con scenari","Analisi di sensibilità e break-even"]
   },
   {
     id:"UC33", cat:"pricing", catLabel:"Pricing e Sottoscrizione", time:"15 min",
-    title:"Score Pricing Low Cost con Model Registry",
-    pain:"I prodotti low cost richiedono tariffazione ultra-precisa perché operano con margini del 2-5%. Un errore del 3% nel premio rendel prodotto non redditizio o non competitivo.",
-    desc:"Modelo di pricing di alta precisión per prodottos low cost, versionamento in Model Registry con A/B testing automatico. Combina variabili traggiuntivaes con segnali digitales (comportamento web, dispositivo, ora di quotazione) per micro-segmentar il rischio al máximo livello.",
+    title:"Score Pricing per Low Cost con Model Registry",
+    pain:"I prodotti low cost richiedono tariffazione ultra-precisa perché operano con margini del 2-5%. Un errore del 3% nel premio rende il prodotto non redditizio o non competitivo.",
+    desc:"Modello di pricing di alta precisione per prodotti low cost, versionamento in Model Registry con A/B testing automatico. Combina variabili oggettive con segnali digitali (comportamento web, dispositivo, ora di quotazione) per micro-segmentare il rischio al massimo livello.",
     feature:["Model Registry: low_cost_pricing_model con A/B testing","Micro-segmentazione con 50+ variabili digitali","Monitoraggio del loss ratio per versione del modello","Promozione automatica del miglior modello in produzione"]
   },
   {
     id:"UC34", cat:"operazioni", catLabel:"Operazioni", time:"12 min",
     title:"Valutazione Intelligente dei Danni ai Cristalli",
     pain:"I sinistri cristalli rappresentano il 20% del volume ma solo il 5% del costo. Tuttavia, la gestione è sproporzionatamente manuale: ogni sinistro richiede verifica di copertura, approvazione dell\'officina e valutazione.",
-    desc:"Pipeline automatizzato con Cortex AI che classifical tipo di danno in luna (reperzione vs. sostituzione), verifica copertura automaticamente, seleccional officina ottimale per zona e genera la autorizazione di reperzione senza intervento humana per il 80% dei casos.",
+    desc:"Pipeline automatizzato con Cortex AI che classifica il tipo di danno (riparazione vs. sostituzione), verifica copertura automaticamente, selecciona l\'officina ottimale per zona e genera le autorizazioni di riparazione senza intervento umano per il 80% dei casi.",
     feature:["Classificazione riparazione vs. sostituzione con LLM","Verifica automatica della copertura cristalli","Selezione ottimale dell\'officina per zona e prezzo","Auto-autorizzazione per casi standard"]
   },
   {
     id:"UC35", cat:"pricing", catLabel:"Pricing e Sottoscrizione", time:"14 min",
     title:"Disaccoppiamento del Pricing: Rischio vs. Commerciale",
-    pain:"Il prezzo finale mesecolal premio tecnico (rischio) con aggiustamenti commerciali senza tracciabilità. Quando ci sono perdite, non si può determinare si il problema è il modello di rischio o gli sconti commerciali.",
-    desc:"Framework di desacoplamiento che seper la prima di rischio (modello tecnico ML) dei ajustes comerciales (sconti, campagnas, fidelizzazione). Monitoriza indipendentemente il risultato tecnico e comercial, permettendo ottimizzare ogni componente per seperdo.",
+    pain:"Il prezzo finale mesecola il premio tecnico (rischio) con aggiustamenti commerciali senza tracciabilità. Quando ci sono perdite, non si può determinare se il problema è il modello di rischio o gli sconti commerciali.",
+    desc:"Framework di disaccoppiamento che separa il prima di rischio (modello tecnico ML) dagli aggiustamenti commerciali (sconti, campagne, fidelizzazione). Monitorizza indipendentemente il risultato tecnico e comerciale, permettendo di ottimizzare ogni componente indipendentemente.",
     feature:["Separazione premio tecnico vs. aggiustamento commerciale","Modello ML di premio puro di rischio","Monitoraggio indipendente del ratio tecnico","Dashboard di tracciabilità pricing con drill-down"]
   },
   {
     id:"UC36", cat:"operazioni", catLabel:"Operazioni", time:"13 min",
-    title:"API Tattica dei Rifiuti Intelligenti in Abitazione",
+    title:"Correzione Tattica dei Rifiuti Intelligenti in Abitazione",
     pain:"Il 12% dei preventivi abitazione viene rifiutato per regole rigide. Molti rifiuti sono evitabili con condizioni speciali (franchigia maggiore, esclusione specifica) che manterrebbero il cliente in portafoglio.",
-    desc:"Motor di decisione intelligente con Cortex ML que, prima di rechazar una quotazione, valuta alternativas viables: franchigia incrementada, esclusione di coperture specificas, premio con supplemento. Genera una contra-offerta automatica che convierte il 35% dei rechazos in polizzas rentables.",
+    desc:"Motore di decisione intelligente con Cortex ML, prima di rifiutare una quotazione, valuta alternative percorribili: franchigia incrementale, esclusione di coperture specificas, premio con supplemento. Genera una contro-offerta automatica che converte il 35% dei preventivi in polizze redditizie.",
     feature:["Valutazione di alternative prima del rifiuto con ML","Generazione di controproposte automatiche","Simulazione di redditività per scenario","Dashboard di recupero dei rifiuti"]
   }
 ];
@@ -790,9 +790,9 @@ function renderCards(list) {
   const grid = document.getElementById('cardsGrid');
   const count = document.getElementById('resultsCount');
   grid.innerHTML = '';
-  count.textContent = `Mostrando ${list.length} di ${TOTAL} casi d'uso`;
+  count.textContent = `Visualizzo ${list.length} di ${TOTAL} casi d'uso`;
   list.forEach(uc => {
-    const catClass = { 'Rischio e Sottoscrizione':'rischio', 'IA e Linguaggio Naturale':'nlp', 'Gestione Sinistri':'sinistri', 'Call Center IA':'callcenter', 'Assistenti IA':'asistentes', 'Commerciale e Rete':'comercial', 'Operazioni':'operazioni', 'Pricing e Sottoscrizione':'pricing' }[uc.catLabel] || '';
+    const catClass = { 'Rischio e Sottoscrizione':'rischio', 'IA e Linguaggio Naturale':'nlp', 'Gestione Sinistri':'sinistri', 'Call Center IA':'callcenter', 'Assistente AI':'asistentes', 'Commerciale e Rete':'comercial', 'Operazioni':'operazioni', 'Pricing e Sottoscrizione':'pricing' }[uc.catLabel] || '';
     grid.innerHTML += `
       <article class="card">
         <div class="card-header">
@@ -1509,8 +1509,8 @@ const PROMPTS = {
       { title: 'Scoring di propensión', desc: 'ML.CLASSIFICATION per prevedere conversión.', prompt: 'Crea tabella di feature per ML: canale_origen_encoded, prodotto_auto/hogar/vida/salud, urgencia_encoded, tiene_poliza_actual, preventivo_mencionado, duracion_chiamata, ora_del_dia, dia_settimana. Aggiungi target ha_convertido (35% conversión). Dividi 80/20 e addestra SNOWFLAKE.ML.CLASSIFICATION . Usa evaluate => TRUE per generare metriche di valutazione.. Usa evaluate => TRUE per generare metriche di valutazione."scoring_leads" con evaluate TRUE.' },
       { title: 'Assegnare punteggio e asignar', desc: 'Scoring + assegnazione a agente ottimale.', prompt: 'Puntúa leads con il modello. Clasifica: Lead Caliente (>=70%), Templado (40-70%), Frío (<40%). Asigna ogni lead caliente al agente del suo prodotto con maggiore tasa_conversion_historica e disponibilità. Genera tabella "assegnazioni_leads" con lead_id, agente_id, prioridad, accion_raccomandata.' },
       { title: 'Generaree resúmenes CRM', desc: 'Resúmenes strutturados per il CRM.', prompt: 'Usa CORTEX.COMPLETE per generare per ogni lead caliente/templado: resumen_crm (3 líneas: PRODUCTO | NECESIDAD | ACCIÓN), argumentario_personaleizado (50 palabras adaptadas al perfil del lead). Archivia in tabella "resumenes_crm".' },
-      { title: 'Analisi di pipeline', desc: 'Metriche di conversión per canaleee e prodotto.', prompt: 'Crea querys analíticas: tasa di conversión per canaleee_origen, distribuzione di leads per prodotto e prioridad, top 5 agenti per tasa di conversión, tempo medio di qualificazione per canaleee. Crea vista "pipeline_leads" con KPIs agregados.' },
-      { title: 'Dashboard di leads', desc: 'Panel di gestione del pipeline di leads.', prompt: 'Crea dashboard Streamlit con: 4 KPIs (leads totales, calientes, tasa conversión, tempo medio risposta), grafico di embudo (Entrprima → Cualificados → Calientes → Asignados), tabella di leads calientes con scoring e agente asignado, distribuzione per canaleee e prodotto. Usa snowflake.connector.connect() per ejecuzione local del dashboard.' },
+      { title: 'Analisi di pipeline', desc: 'Metriche di conversión per canale e prodotto.', prompt: 'Crea querys analíticas: tasa di conversión per canale_origen, distribuzione di leads per prodotto e prioridad, top 5 agenti per tasa di conversión, tempo medio di qualificazione per canale. Crea vista "pipeline_leads" con KPIs agregados.' },
+      { title: 'Dashboard di leads', desc: 'Panel di gestione del pipeline di leads.', prompt: 'Crea dashboard Streamlit con: 4 KPIs (leads totales, calientes, tasa conversión, tempo medio risposta), grafico di embudo (Entrprima → Cualificados → Calientes → Asignados), tabella di leads calientes con scoring e agente asignado, distribuzione per canale e prodotto. Usa snowflake.connector.connect() per ejecuzione local del dashboard.' },
       { title: 'Pipeline automatizzato', desc: 'Task per cualificazione continua.', prompt: 'Crea un Task che ogni 15 minuti: qualifichi leads nuovi con CORTEX.COMPLETE, puntúe con il modello ML, assegni a agenti e genere resúmenes CRM. Include ALTER TASK RESUME.' }
     ]
   },

@@ -79,7 +79,7 @@
   <a href="index.html" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.75);text-decoration:none;margin-bottom:8px;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.75)'"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="12,4 6,10 12,16"/></svg>Torna al catalogo dei settori</a>
   <p class="hero-eyebrow">Guida all'uso</p>
   <h1 class="hero-title">Come usare Cortex Code in Snowsight</h1>
-  <p class="hero-subtitle">Guida passo passo per eseguire i Cortex Code Prompt di ogni caso d'uso direttamente in Snowsight. Dall'apertura del pannello al deploy di dashboard Streamlit in produzione.</p>
+  <p class="hero-subtitle">Guida passo passo per eseguire i Cortex Code Prompt di ogni caso d'uso direttamente in Snowsight. Dall'apertura del pannello all'implementazione di dashboard Streamlit in produzione.</p>
 </header>
 
 <div class="content">
@@ -141,7 +141,7 @@
     <ul>
       <li>Account Snowflake con accesso a Snowsight</li>
       <li>Ruolo con permessi CREATE DATABASE, CREATE SCHEMA, CREATE TABLE</li>
-      <li>Warehouse attivo (consigliato: size S per sviluppo, M per produzione)</li>
+      <li>Warehouse attivo (consigliato: size XS per sviluppo, S per produzione, meglio ancora usiamo le adaptive warehouse che automaticamente usano la migliore dimensione per il job assegnato)</li>
       <li>Cortex Code abilitato nell'account (disponibile in tutte le edizioni)</li>
     </ul>
 
@@ -149,7 +149,7 @@
     <ul>
       <li><strong>Cortex AI/ML:</strong> Richiede che la regione supporti Cortex Functions (AWS us-west-2, us-east-1, eu-west-1, ecc.)</li>
       <li><strong>Feature Store:</strong> Pacchetto <code>snowflake-ml-python</code> disponibile</li>
-      <li><strong>Model Registry:</strong> Permessi per crearee modelli nello schema</li>
+      <li><strong>Model Registry:</strong> Permessi per creare modelli nello schema</li>
       <li><strong>Streamlit:</strong> Permesso CREATE STREAMLIT nello schema</li>
     </ul>
 
@@ -160,7 +160,7 @@
 
   <div class="section" id="aprire">
     <h2><span class="step-num">3</span> Aprire Cortex Code in Snowsight</h2>
-    <p>Cortex Code &egrave; integrato in diverse superfici di Snowsight. Ecco i modi per accedervi:</p>
+    <p>Cortex Code &egrave; integrato in diversi posti di Snowsight. Ecco i modi per accedervi:</p>
 
     <h3>Opzione A &mdash; Da Workspaces</h3>
     <ol>
@@ -220,7 +220,7 @@
     <p>Facendo clic su <strong>&laquo;Vedi Prompt&raquo;</strong> in qualsiasi scheda caso d'uso, vedrai:</p>
     <ul>
       <li><strong>Passo 1 &mdash; Configurare ambiente:</strong> Crea il database, lo schema e il warehouse. &Egrave; sempre il primo prompt.</li>
-      <li><strong>Passi 2-4 &mdash; Crearee dati:</strong> Genera tabelle con dati sintetici rappresentativi del dominio.</li>
+      <li><strong>Passi 2-4 &mdash; Creare dati:</strong> Genera tabelle con dati sintetici rappresentativi del dominio.</li>
       <li><strong>Passi 5-7 &mdash; Analizzare e modellare:</strong> Feature, modelli ML, funzioni Cortex AI, Feature Store o Model Registry.</li>
       <li><strong>Passo 8-9 &mdash; Dashboard:</strong> Codice Streamlit per visualizzazione interattiva.</li>
       <li><strong>Ultimo passo &mdash; Pipeline:</strong> Task per automazione e operativit&agrave; continua.</li>
@@ -301,7 +301,7 @@ USE WAREHOUSE BANCA_WH;</div>
     <h3>Checklist di revisione</h3>
     <ul>
       <li><strong>Nomi degli oggetti:</strong> Verifica che database, schema e warehouse corrispondano al tuo ambiente</li>
-      <li><strong>Warehouse size:</strong> Regola la dimensione in base al carico (S per sviluppo, M-L per produzione)</li>
+      <li><strong>Warehouse size:</strong> Regola la dimensione in base al carico (XS per sviluppo, S per produzione, oppure meglio adaptive)</li>
       <li><strong>Volume dati sintetici:</strong> I prompt suggeriscono volumi rappresentativi; regolali secondo necessit&agrave;</li>
       <li><strong>Modelli LLM:</strong> Verifica che il modello referenziato (es. <code>llama3.1-70b</code>, <code>mistral-large2</code>) sia disponibile nella tua regione</li>
       <li><strong>Funzioni ML:</strong> Conferma che ML.CLASSIFICATION, ML.FORECAST siano disponibili</li>
@@ -350,7 +350,7 @@ st.set_page_config(page_title="Dashboard", layout="wide")
 # KPI principali
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.metric("Metrica 1", valoree1)
+    st.metric("Metrica 1", valore1)
 # ... grafici, tabelle, filtri interattivi</div>
   </div>
 
@@ -452,7 +452,7 @@ Aggiungi commenti che spieghino ogni CTE.</div>
       <li><strong>Sii specifico nei prompt</strong> &mdash; I prompt del catalogo sono gi&agrave; dettagliati, ma puoi aggiungere contesto del tuo business</li>
       <li><strong>Itera sul codice</strong> &mdash; Se il codice generato non &egrave; esattamente ci&ograve; che ti serve, chiedi a Cortex Code di adattarlo</li>
       <li><strong>Usa il contesto del worksheet</strong> &mdash; Se hai gi&agrave; tabelle nell'editor, Cortex Code le referenzier&agrave; automaticamente</li>
-      <li><strong>Combina prompt se necessario</strong> &mdash; Per utenti avanzati, puoi combinare 2-3 passi in un senzagolo prompt pi&ugrave; lungo</li>
+      <li><strong>Combina prompt se necessario</strong> &mdash; Per utenti avanzati, puoi combinare 2-3 passi in un solo prompt pi&ugrave; lungo</li>
     </ul>
 
     <h3>Produzione</h3>
@@ -480,7 +480,7 @@ Aggiungi commenti che spieghino ogni CTE.</div>
 
     <div class="faq-item">
       <div class="faq-q">Posso usare i prompt con i miei dati reali fin dall'inizio?</div>
-      <div class="faq-a">S&igrave;. Sostituisci i passi di &laquo;Crearee dati&raquo; con riferimenti alle tue tabelle esistenti. Assicurati che i nomi delle colonne corrispondano a quanto atteso dai passi successivi, oppure chiedi a Cortex Code di adattare il codice.</div>
+      <div class="faq-a">S&igrave;. Sostituisci i passi di &laquo;Creare dati&raquo; con riferimenti alle tue tabelle esistenti. Assicurati che i nomi delle colonne corrispondano a quanto atteso dai passi successivi, oppure chiedi a Cortex Code di adattare il codice.</div>
     </div>
 
     <div class="faq-item">
